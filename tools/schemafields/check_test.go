@@ -28,7 +28,7 @@ ERROR github/runner_groups.go:14: CreateRunnerGroupRequest.Name: schema REQUIRES
 WARN  github/runner_groups.go:20: CreateRunnerGroupRequest.SelectedRepositoryIDs: "selected_repository_ids" is optional in the schema, but the Go field has no omitzero, so an unset value is indistinguishable from a zero one
 ERROR github/runner_groups.go:29: UpdateRunnerGroupRequest.Name: schema REQUIRES "name" and does not allow null in all 1 of its operation(s), but the Go field is a pointer, so a nil value is sent as null
 WARN  github/runner_groups.go:41: ValueTypeRequest.Count: "count" is optional in the schema, but the Go field is a value type, so it is always sent: make it a pointer with omitempty
-WARN  github/runner_groups.go:47: StructTypeRequest.Inner: "inner" is optional in the schema, but the Go field is a value type, so it is always sent: add omitzero
+WARN  github/runner_groups.go:47: StructTypeRequest.Inner: "inner" is optional in the schema, but the Go field is a value type, so it is always sent: make it a pointer with omitempty
 ERROR github/runner_groups.go:71: OneOfRequest.KindTag: schema REQUIRES "kind_tag" in all 1 of its operation(s), but omitempty makes it omittable, so it can be sent as absent
 ERROR github/runner_groups.go:78: MissingRequest.required_thing: schema REQUIRES property "required_thing" but the Go struct has no field with that JSON name
 `

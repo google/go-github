@@ -387,10 +387,12 @@ type Repository struct {
 
 Required fields should be non-pointer types without `omitempty`.
 Optional fields should be pointer types with `omitempty`.
-Use `omitzero` for structs and `time.Time` where you want to omit
-empty values (not just nil). For slices and maps, `omitzero` has the
-opposite behavior: it keeps empty (non-nil) values and only omits nil
-values.
+Use `omitzero` for `time.Time` where you want to omit empty values (not
+just nil). A struct declared in this package must not be a value with an
+omit option, because `omitempty` never omits a struct value and our linters
+reject `omitzero` on one: make such a field a pointer instead. For slices
+and maps, `omitzero` has the opposite behavior: it keeps empty (non-nil)
+values and only omits nil values.
 
 ```go
 type RepositoryRuleset struct {

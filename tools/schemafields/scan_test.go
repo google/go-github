@@ -167,6 +167,7 @@ func TestOmits(t *testing.T) {
 		{"no omit option", fieldInfo{}, false},
 		{"omitempty on a scalar", fieldInfo{hasOmit: true}, true},
 		{"omitempty on a struct", fieldInfo{hasOmit: true, isStruct: true}, false},
+		{"omitempty on a pointer to a struct", fieldInfo{hasOmit: true, isStruct: true, isPointer: true}, true},
 		{"omitzero on a struct", fieldInfo{hasOmit: true, omitZero: true, isStruct: true}, true},
 		{"omitzero on a scalar", fieldInfo{hasOmit: true, omitZero: true}, true},
 	}

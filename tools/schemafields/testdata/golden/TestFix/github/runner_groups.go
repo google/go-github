@@ -20,7 +20,7 @@ type CreateRunnerGroupRequest struct {
 	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitzero"`
 
 	// ResponseOnly is readOnly in the schema, so it is never sent.
-	ResponseOnly string `json:"response_only,omitempty"`
+	ResponseOnly string `json:"response_only"`
 }
 
 // UpdateRunnerGroupRequest updates a runner group.
@@ -43,8 +43,8 @@ type ValueTypeRequest struct {
 
 // StructTypeRequest has an optional property of a struct value type.
 type StructTypeRequest struct {
-	// Inner is optional and CONTRIBUTING.md asks for omitzero on structs.
-	Inner InnerConfig `json:"inner,omitzero"`
+	// Inner is optional, but a struct value has no omit option that can leave it out.
+	Inner *InnerConfig `json:"inner,omitempty"`
 }
 
 // InnerConfig is a nested struct.

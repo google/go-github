@@ -281,15 +281,10 @@ func (c *checker) checkOptional(f *fieldInfo, si *structInfo) {
 			owner: si.name, field: f.goName, info: f, action: &fixAction{addOmit: "omitempty"},
 			message: fmt.Sprintf("%q is optional in the schema, but the pointer has no omitempty, so a nil value is sent as null", f.jsonName),
 		})
-	case f.isStruct:
-		// CONTRIBUTING.md prefers omitzero over a pointer for structs, and it is the
-		// only omit option that works on a struct value.
-		c.add(&diagnostic{
-			sev: sevWarn, rule: ruleOptionalValueType, file: f.file, line: f.line,
-			owner: si.name, field: f.goName, info: f, action: &fixAction{addOmit: "omitzero"},
-			message: fmt.Sprintf("%q is optional in the schema, but the Go field is a value type, so it is always sent: add omitzero", f.jsonName),
-		})
 	case !f.omittable:
+		// CONTRIBUTING.md asks for a pointer on a field the schema does not require,
+		// and a struct value has no alternative: omitempty cannot leave one out, because
+		// a struct is never empty, and the structfield linter rejects omitzero on one.
 		c.add(&diagnostic{
 			sev: sevWarn, rule: ruleOptionalValueType, file: f.file, line: f.line,
 			owner: si.name, field: f.goName, info: f, action: &fixAction{makePointer: true, addOmit: "omitempty"},

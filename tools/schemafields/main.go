@@ -17,10 +17,14 @@
 // annotated with. Coverage therefore grows automatically as types are converted, and a
 // contributor adding an endpoint is checked without having to do anything extra.
 //
-// CONTRIBUTING.md requires that required fields be non-pointer types without an omit
-// option, and that optional fields be pointer types with "omitempty" (or "omitzero" for
-// structs, slices and maps). This tool reports every request body field that disagrees with
-// the schema, and -fix repairs the ones that can be repaired mechanically.
+// CONTRIBUTING.md requires that required fields be non-pointer types without an omit option,
+// and that optional fields be pointer types with "omitempty". Slices, maps and types from
+// other packages such as time.Time keep their type and use "omitzero" instead: omitempty
+// cannot leave out a time.Time, and on a slice or map it would drop an empty but non-nil
+// value. A struct declared in this package is optional only as a pointer, because the
+// structfield linter rejects "omitzero" on a struct value and omitempty cannot omit one.
+// This tool reports every request body field that disagrees with the schema, and -fix repairs
+// the ones that can be repaired mechanically.
 //
 // A repaired field whose type changes from a value to a pointer, or the other way around,
 // can require a caller or a test to be updated too, and the generated accessors must be

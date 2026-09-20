@@ -57,13 +57,16 @@ func (f *fieldInfo) omitOption() string {
 }
 
 // omits reports whether the struct tag can actually leave the field out of the JSON body.
-// omitzero omits the zero value of any type, but omitempty cannot omit a struct, because a
-// struct value is never empty. That is why CONTRIBUTING.md asks for omitzero on structs.
+// omitzero leaves out the zero value of any type. omitempty leaves out a nil pointer and an
+// empty slice, map or string, but never a struct value, which is not empty to encoding/json.
+// That restriction only applies to a struct *value*: a pointer to one is nil, and omitempty
+// leaves a nil pointer out. That is why CONTRIBUTING.md asks for a pointer, rather than a
+// value, for an optional struct.
 func (f *fieldInfo) omits() bool {
 	if !f.hasOmit {
 		return false
 	}
-	return f.omitZero || !f.isStruct
+	return f.omitZero || f.isPointer || !f.isStruct
 }
 
 // canBeAbsent reports whether a field of this type can be left out of the JSON body. A
