@@ -26,9 +26,19 @@
 // This tool reports every request body field that disagrees with the schema, and -fix repairs
 // the ones that can be repaired mechanically.
 //
-// A repaired field whose type changes from a value to a pointer, or the other way around,
-// can require a caller or a test to be updated too, and the generated accessors must be
-// regenerated with script/generate.sh. Run that before checking the result.
+// -fix repairs only what the check fails on: the error-severity findings that the exceptions
+// file does not grandfather. A warning is advisory, and an entry in the exceptions file is a
+// decision to leave a disagreement alone, so -fix rewrites neither without being asked. To
+// repair a grandfathered field, delete its line first, or pass "-exceptions /dev/null" to
+// treat every finding as new.
+//
+// A repaired field whose type changes between a value and a pointer leaves the callers that
+// still build it with the old type unable to compile. -fix therefore compiles the checkout
+// after it writes the repairs, and rewrites those call sites from what the compiler reports:
+// a literal that wrapped the value in new(...) or Ptr(...), or took its address, gives the
+// value back. A call site that no mechanical repair can express, such as one that passes a
+// variable, is reported instead. The accessors that script/generate.sh generates must still
+// be regenerated, so run that before checking the result.
 package main
 
 import (
@@ -78,7 +88,7 @@ func parseFlags(stderr io.Writer, args []string) (*options, error) {
 	fs.StringVar(&o.format, "format", "text", "output format: text or github")
 	fs.StringVar(&o.minSeverity, "min-severity", "warn", "report findings of at least this severity: warn or error")
 	fs.BoolVar(&o.fix, "fix", false,
-		"rewrite the Go sources to repair the findings that can be repaired; run script/generate.sh afterward to regenerate the accessors")
+		"rewrite the Go sources to repair the error-severity findings that the exceptions file does not grandfather, and the call sites that a changed field type leaves unable to compile; run script/generate.sh afterward to regenerate the accessors")
 	fs.BoolVar(&o.writeExceptions, "write-exceptions", false, "rewrite the exceptions file from the current findings")
 	fs.BoolVar(&o.verbose, "verbose", false, "list request bodies that cannot be mapped to an operation")
 	fs.Usage = func() {
@@ -180,7 +190,7 @@ func run(stdout, stderr io.Writer, args []string) error {
 		printFinding(stdout, o.format, d)
 	}
 
-	printSummary(stderr, c, o, shown, errored)
+	printSummary(stderr, c, o, shown, errored, exc)
 	if o.verbose {
 		for _, m := range c.unannotated {
 			fmt.Fprintf(stderr, "no //meta:operation annotation: %v:%v: %v (%v)\n", m.file, m.line, m.funcName, m.bodyType)
@@ -204,16 +214,55 @@ func run(stdout, stderr io.Writer, args []string) error {
 	return nil
 }
 
-// fixAll repairs what it can, re-checks the result, and drops the exceptions that the
-// repairs made obsolete.
+// fixCandidates returns the findings that -fix rewrites.
+func fixCandidates(diags []*diagnostic, exc *exceptions) []*diagnostic {
+	var out []*diagnostic
+	for _, d := range diags {
+		switch {
+		case d.sev != sevError:
+			// A warning is advisory, so it is reported for a human to decide about.
+		case d.action == nil || d.info == nil:
+			// Nothing can be done mechanically; the summary counts these.
+		case exc.suppress(d.key()):
+			// The exceptions file records a decision to leave this field alone.
+		default:
+			out = append(out, d)
+		}
+	}
+	return out
+}
+
+// fixAll repairs the findings that -fix is allowed to repair, repairs the call sites that the
+// repairs invalidate, re-checks the result, and drops the exceptions that the repairs made
+// obsolete.
 func fixAll(c *checker, exc *exceptions, o *options, stderr io.Writer) error {
-	fixed, written, notes, err := applyFixes(o.repo, c.diags)
+	planned := fixCandidates(c.diags, exc)
+	// The type changes have to be read from the sources before the repairs are written.
+	changes := typeChanges(o.repo, planned)
+	if len(planned) == 0 {
+		fmt.Fprint(stderr, "nothing to repair: -fix rewrites only the error-severity findings that the exceptions file does not grandfather\n")
+	} else {
+		fmt.Fprintf(stderr, "planned repairs (%v):\n", len(planned))
+		for _, d := range planned {
+			fmt.Fprintf(stderr, "  %v:%v: %v: %v\n", d.file, d.line, d.key(), d.action)
+		}
+	}
+
+	fixed, written, notes, err := applyFixes(o.repo, planned)
 	if err != nil {
 		return err
 	}
 	for _, note := range notes {
 		fmt.Fprintf(stderr, "not repaired: %v\n", note)
 	}
+	// A field that changed between a value type and a pointer leaves the call sites that
+	// still use the old type unable to compile, so repair them from what the compiler says
+	// before re-checking the tree. The count is reported on its own, because a call site is
+	// not a finding.
+	if _, err := repairCallSites(changes, o, stderr); err != nil {
+		return err
+	}
+
 	// Re-read the sources, so that the summary describes the repaired tree.
 	info, err := scanRepo(o.repo)
 	if err != nil {
@@ -221,8 +270,10 @@ func fixAll(c *checker, exc *exceptions, o *options, stderr io.Writer) error {
 	}
 	c.info = info
 	c.run()
-	fmt.Fprintf(stderr, "repaired %v finding(s) in %v Go file(s); %v finding(s) remain, %v of them repairable\n",
-		fixed, written, len(c.diags), len(c.diags)-unrepaired(c.diags))
+	if len(planned) > 0 {
+		fmt.Fprintf(stderr, "repaired %v finding(s) in %v Go file(s); %v finding(s) remain, %v of them repairable by -fix\n",
+			fixed, written, len(c.diags), len(fixCandidates(c.diags, exc)))
+	}
 
 	obsolete := exc.obsolete(c.diags)
 	if len(obsolete) > 0 {
@@ -236,6 +287,32 @@ func fixAll(c *checker, exc *exceptions, o *options, stderr io.Writer) error {
 		fmt.Fprintf(stderr, "dropped %v obsolete exception(s) from %v\n", len(obsolete), exc.path)
 	}
 	return nil
+}
+
+// repairCallSites repairs the struct literals that the type changes of the planned repairs
+// invalidate, and reports how many it repaired.
+func repairCallSites(changes []*typeChange, o *options, stderr io.Writer) (int, error) {
+	if len(changes) == 0 {
+		return 0, nil
+	}
+	changed := make([]string, 0, len(changes))
+	for _, change := range changes {
+		if !slices.Contains(changed, change.file) {
+			changed = append(changed, change.file)
+		}
+	}
+	dirs := modulesToCheck(o.repo, changed)
+	if len(dirs) == 0 {
+		return 0, nil
+	}
+	fixed, written, err := fixCallSites(context.Background(), o.repo, changes, dirs, stderr)
+	if err != nil {
+		return fixed, err
+	}
+	if fixed > 0 {
+		fmt.Fprintf(stderr, "repaired %v call site(s) in %v Go file(s)\n", fixed, written)
+	}
+	return fixed, nil
 }
 
 // splitList splits a comma-separated flag value.
@@ -266,20 +343,15 @@ func escapeAnnotation(s string) string {
 }
 
 // printSummary writes the run statistics.
-func printSummary(w io.Writer, c *checker, o *options, shown, errored int) {
+func printSummary(w io.Writer, c *checker, o *options, shown, errored int, exc *exceptions) {
 	s := c.stats
-	repairable := 0
-	for _, d := range c.diags {
-		if d.action != nil {
-			repairable++
-		}
-	}
 	fmt.Fprintf(w, "\nscanned %v files, %v methods (%v with //meta:operation)\n", s.files, s.methods, s.methodsWithOps)
 	fmt.Fprintf(w, "body params: %v by value, %v by pointer (skipped; run paramcheck to convert them)\n", s.bodyValue, s.bodyPointer)
 	fmt.Fprintf(w, "checked %v body structs: %v resolved operation uses, %v uses with no JSON request body\n",
 		s.structsChecked, s.usesResolved, s.usesNoSchema)
 	fmt.Fprintf(w, "fields checked: %v (%v conditionally required, left alone)\n", s.fieldsChecked, s.fieldsConditional)
-	fmt.Fprintf(w, "%v findings (%v shown, %v errors, %v repairable with -fix)\n", len(c.diags), shown, errored, repairable)
+	fmt.Fprintf(w, "%v findings (%v shown, %v errors, %v repairable by -fix)\n",
+		len(c.diags), shown, errored, len(fixCandidates(c.diags, exc)))
 
 	rules := make([]string, 0, len(c.byRule))
 	for rule := range c.byRule {

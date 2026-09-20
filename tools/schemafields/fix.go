@@ -13,6 +13,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strings"
 )
 
 // fixAction says how a finding is repaired. The checker decides, because only it knows
@@ -22,6 +23,24 @@ type fixAction struct {
 	unwrap      bool   // Replace a pointer type with the type it points at.
 	addOmit     string // Add "omitempty" or "omitzero" to the json tag.
 	makePointer bool   // Replace a value type with a pointer to it.
+}
+
+// String describes the repair, for the plan that -fix prints before it writes anything.
+func (a *fixAction) String() string {
+	var parts []string
+	if a.unomit {
+		parts = append(parts, "remove the omit option from the json tag")
+	}
+	if a.unwrap {
+		parts = append(parts, "replace the pointer type with the type it points at")
+	}
+	if a.makePointer {
+		parts = append(parts, "make the field a pointer")
+	}
+	if a.addOmit != "" {
+		parts = append(parts, "add "+a.addOmit+" to the json tag")
+	}
+	return strings.Join(parts, "; ")
 }
 
 // edit is a byte-range replacement within a Go source file.
@@ -154,16 +173,4 @@ func applyFixes(repo string, diags []*diagnostic) (fixed, written int, notes []s
 	}
 	slices.Sort(notes)
 	return fixed, written, notes, nil
-}
-
-// unrepaired counts the findings that -fix cannot repair, so that they are never silently
-// dropped.
-func unrepaired(diags []*diagnostic) int {
-	n := 0
-	for _, d := range diags {
-		if d.action == nil || d.info == nil {
-			n++
-		}
-	}
-	return n
 }

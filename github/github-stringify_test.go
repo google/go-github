@@ -46,7 +46,7 @@ func TestActionsAllowed_String(t *testing.T) {
 func TestActionsPermissions_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsPermissions{
-		EnabledRepositories: new(""),
+		EnabledRepositories: "",
 		AllowedActions:      new(""),
 		SelectedActionsURL:  new(""),
 		SHAPinningRequired:  new(false),
@@ -60,7 +60,7 @@ func TestActionsPermissions_String(t *testing.T) {
 func TestActionsPermissionsEnterprise_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsPermissionsEnterprise{
-		EnabledOrganizations: new(""),
+		EnabledOrganizations: "",
 		AllowedActions:       new(""),
 		SelectedActionsURL:   new(""),
 	}
@@ -73,7 +73,7 @@ func TestActionsPermissionsEnterprise_String(t *testing.T) {
 func TestActionsPermissionsRepository_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsPermissionsRepository{
-		Enabled:            new(false),
+		Enabled:            false,
 		AllowedActions:     new(""),
 		SelectedActionsURL: new(""),
 		SHAPinningRequired: new(false),
@@ -2275,7 +2275,7 @@ func TestSecurityAndAnalysis_String(t *testing.T) {
 func TestSelfHostRunnerPermissionsEnterprise_String(t *testing.T) {
 	t.Parallel()
 	v := SelfHostRunnerPermissionsEnterprise{
-		DisableSelfHostedRunnersForAllOrgs: new(false),
+		DisableSelfHostedRunnersForAllOrgs: false,
 	}
 	want := `github.SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs:false}`
 	if got := v.String(); got != want {

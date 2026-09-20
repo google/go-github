@@ -238,19 +238,21 @@ func TestEnterpriseService_CreateOrUpdateOrganizationCustomPropertyValues(t *tes
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	// The API expects "organization_logins" in the request body. The list endpoint's
+	// response uses the singular "organization_login", but the request does not.
+	values := []*CustomPropertyValue{{PropertyName: "team", Value: new("core")}}
+	opts := EnterpriseCustomPropertyValuesRequest{
+		OrganizationLogins: []string{"org1"},
+		Properties:         values,
+	}
+
 	mux.HandleFunc("/enterprises/e/org-properties/values", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
+		testJSONBody(t, r, opts)
 		fmt.Fprint(w, `{}`)
 	})
 
 	ctx := t.Context()
-	values := []*CustomPropertyValue{{PropertyName: "team", Value: new("core")}}
-	orgs := []string{"org1"}
-
-	opts := EnterpriseCustomPropertyValuesRequest{
-		OrganizationLogin: orgs,
-		Properties:        values,
-	}
 	_, err := client.Enterprise.CreateOrUpdateOrganizationCustomPropertyValues(ctx, "e", opts)
 	if err != nil {
 		t.Errorf("Enterprise.CreateOrUpdateOrganizationCustomPropertyValues returned error: %v", err)

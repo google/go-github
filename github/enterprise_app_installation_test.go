@@ -234,7 +234,7 @@ func TestEnterpriseService_UpdateAppInstallationRepositories(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := UpdateAppInstallationRepositoriesRequest{
-		RepositorySelection: new("selected"),
+		RepositorySelection: "selected",
 		Repositories:        []string{"hello-world", "hello-world-2"},
 	}
 

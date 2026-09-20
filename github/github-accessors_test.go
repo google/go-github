@@ -491,10 +491,7 @@ func TestActionsPermissions_GetAllowedActions(tt *testing.T) {
 
 func TestActionsPermissions_GetEnabledRepositories(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &ActionsPermissions{EnabledRepositories: &zeroValue}
-	a.GetEnabledRepositories()
-	a = &ActionsPermissions{}
+	a := &ActionsPermissions{}
 	a.GetEnabledRepositories()
 	a = nil
 	a.GetEnabledRepositories()
@@ -535,10 +532,7 @@ func TestActionsPermissionsEnterprise_GetAllowedActions(tt *testing.T) {
 
 func TestActionsPermissionsEnterprise_GetEnabledOrganizations(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &ActionsPermissionsEnterprise{EnabledOrganizations: &zeroValue}
-	a.GetEnabledOrganizations()
-	a = &ActionsPermissionsEnterprise{}
+	a := &ActionsPermissionsEnterprise{}
 	a.GetEnabledOrganizations()
 	a = nil
 	a.GetEnabledOrganizations()
@@ -568,10 +562,7 @@ func TestActionsPermissionsRepository_GetAllowedActions(tt *testing.T) {
 
 func TestActionsPermissionsRepository_GetEnabled(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	a := &ActionsPermissionsRepository{Enabled: &zeroValue}
-	a.GetEnabled()
-	a = &ActionsPermissionsRepository{}
+	a := &ActionsPermissionsRepository{}
 	a.GetEnabled()
 	a = nil
 	a.GetEnabled()
@@ -3105,10 +3096,7 @@ func TestArtifactPeriod_GetMaximumAllowedDays(tt *testing.T) {
 
 func TestArtifactPeriodOpt_GetDays(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	a := &ArtifactPeriodOpt{Days: &zeroValue}
-	a.GetDays()
-	a = &ArtifactPeriodOpt{}
+	a := &ArtifactPeriodOpt{}
 	a.GetDays()
 	a = nil
 	a.GetDays()
@@ -4300,10 +4288,7 @@ func TestBillingCostCenter_GetName(tt *testing.T) {
 
 func TestBlob_GetContent(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	b := &Blob{Content: &zeroValue}
-	b.GetContent()
-	b = &Blob{}
+	b := &Blob{}
 	b.GetContent()
 	b = nil
 	b.GetContent()
@@ -15591,10 +15576,7 @@ func TestCreateEnterpriseRunnerGroupRequest_GetAllowsPublicRepositories(tt *test
 
 func TestCreateEnterpriseRunnerGroupRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CreateEnterpriseRunnerGroupRequest{Name: &zeroValue}
-	c.GetName()
-	c = &CreateEnterpriseRunnerGroupRequest{}
+	c := &CreateEnterpriseRunnerGroupRequest{}
 	c.GetName()
 	c = nil
 	c.GetName()
@@ -16771,10 +16753,7 @@ func TestCreateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
 
 func TestCreateRunnerGroupRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CreateRunnerGroupRequest{Name: &zeroValue}
-	c.GetName()
-	c = &CreateRunnerGroupRequest{}
+	c := &CreateRunnerGroupRequest{}
 	c.GetName()
 	c = nil
 	c.GetName()
@@ -21382,15 +21361,15 @@ func TestEnterpriseCustomPropertySchema_GetProperties(tt *testing.T) {
 	e.GetProperties()
 }
 
-func TestEnterpriseCustomPropertyValuesRequest_GetOrganizationLogin(tt *testing.T) {
+func TestEnterpriseCustomPropertyValuesRequest_GetOrganizationLogins(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
-	e := &EnterpriseCustomPropertyValuesRequest{OrganizationLogin: zeroValue}
-	e.GetOrganizationLogin()
+	e := &EnterpriseCustomPropertyValuesRequest{OrganizationLogins: zeroValue}
+	e.GetOrganizationLogins()
 	e = &EnterpriseCustomPropertyValuesRequest{}
-	e.GetOrganizationLogin()
+	e.GetOrganizationLogins()
 	e = nil
-	e.GetOrganizationLogin()
+	e.GetOrganizationLogins()
 }
 
 func TestEnterpriseCustomPropertyValuesRequest_GetProperties(tt *testing.T) {
@@ -25646,10 +25625,7 @@ func TestIDPGroupList_GetGroups(tt *testing.T) {
 
 func TestImmutableReleasePolicy_GetEnforcedRepositories(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &ImmutableReleasePolicy{EnforcedRepositories: &zeroValue}
-	i.GetEnforcedRepositories()
-	i = &ImmutableReleasePolicy{}
+	i := &ImmutableReleasePolicy{}
 	i.GetEnforcedRepositories()
 	i = nil
 	i.GetEnforcedRepositories()
@@ -33904,10 +33880,7 @@ func TestOIDCSubjectClaimCustomTemplate_GetSubClaimPrefix(tt *testing.T) {
 
 func TestOIDCSubjectClaimCustomTemplate_GetUseDefault(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	o := &OIDCSubjectClaimCustomTemplate{UseDefault: &zeroValue}
-	o.GetUseDefault()
-	o = &OIDCSubjectClaimCustomTemplate{}
+	o := &OIDCSubjectClaimCustomTemplate{}
 	o.GetUseDefault()
 	o = nil
 	o.GetUseDefault()
@@ -46192,10 +46165,7 @@ func TestRepository_GetWebCommitSignoffRequired(tt *testing.T) {
 
 func TestRepositoryActionsAccessLevel_GetAccessLevel(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryActionsAccessLevel{AccessLevel: &zeroValue}
-	r.GetAccessLevel()
-	r = &RepositoryActionsAccessLevel{}
+	r := &RepositoryActionsAccessLevel{}
 	r.GetAccessLevel()
 	r = nil
 	r.GetAccessLevel()
@@ -50808,10 +50778,7 @@ func TestSCIMEnterpriseDisplayReference_GetValue(tt *testing.T) {
 
 func TestSCIMEnterpriseGroupAttributes_GetDisplayName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SCIMEnterpriseGroupAttributes{DisplayName: &zeroValue}
-	s.GetDisplayName()
-	s = &SCIMEnterpriseGroupAttributes{}
+	s := &SCIMEnterpriseGroupAttributes{}
 	s.GetDisplayName()
 	s = nil
 	s.GetDisplayName()
@@ -50819,10 +50786,7 @@ func TestSCIMEnterpriseGroupAttributes_GetDisplayName(tt *testing.T) {
 
 func TestSCIMEnterpriseGroupAttributes_GetExternalID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SCIMEnterpriseGroupAttributes{ExternalID: &zeroValue}
-	s.GetExternalID()
-	s = &SCIMEnterpriseGroupAttributes{}
+	s := &SCIMEnterpriseGroupAttributes{}
 	s.GetExternalID()
 	s = nil
 	s.GetExternalID()
@@ -53599,10 +53563,7 @@ func TestSelfHostedRunnersSettingsOrganization_GetSelectedRepositoriesURL(tt *te
 
 func TestSelfHostedRunnersSettingsOrganizationOpt_GetEnabledRepositories(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SelfHostedRunnersSettingsOrganizationOpt{EnabledRepositories: &zeroValue}
-	s.GetEnabledRepositories()
-	s = &SelfHostedRunnersSettingsOrganizationOpt{}
+	s := &SelfHostedRunnersSettingsOrganizationOpt{}
 	s.GetEnabledRepositories()
 	s = nil
 	s.GetEnabledRepositories()
@@ -53610,10 +53571,7 @@ func TestSelfHostedRunnersSettingsOrganizationOpt_GetEnabledRepositories(tt *tes
 
 func TestSelfHostRunnerPermissionsEnterprise_GetDisableSelfHostedRunnersForAllOrgs(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	s := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: &zeroValue}
-	s.GetDisableSelfHostedRunnersForAllOrgs()
-	s = &SelfHostRunnerPermissionsEnterprise{}
+	s := &SelfHostRunnerPermissionsEnterprise{}
 	s.GetDisableSelfHostedRunnersForAllOrgs()
 	s = nil
 	s.GetDisableSelfHostedRunnersForAllOrgs()
@@ -56517,10 +56475,7 @@ func TestUpdateAppInstallationRepositoriesRequest_GetRepositories(tt *testing.T)
 
 func TestUpdateAppInstallationRepositoriesRequest_GetRepositorySelection(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	u := &UpdateAppInstallationRepositoriesRequest{RepositorySelection: &zeroValue}
-	u.GetRepositorySelection()
-	u = &UpdateAppInstallationRepositoriesRequest{}
+	u := &UpdateAppInstallationRepositoriesRequest{}
 	u.GetRepositorySelection()
 	u = nil
 	u.GetRepositorySelection()
@@ -57854,10 +57809,7 @@ func TestUpdateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
 
 func TestUpdateRunnerGroupRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	u := &UpdateRunnerGroupRequest{Name: &zeroValue}
-	u.GetName()
-	u = &UpdateRunnerGroupRequest{}
+	u := &UpdateRunnerGroupRequest{}
 	u.GetName()
 	u = nil
 	u.GetName()

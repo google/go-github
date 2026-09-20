@@ -17,7 +17,7 @@ type CreateRunnerGroupRequest struct {
 	Visibility *string `json:"visibility,omitempty"`
 
 	// SelectedRepositoryIDs is optional and has no omit option.
-	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitzero"`
+	SelectedRepositoryIDs []int64 `json:"selected_repository_ids"`
 
 	// ResponseOnly is readOnly in the schema, so it is never sent.
 	ResponseOnly string `json:"response_only"`
@@ -38,13 +38,13 @@ type NullableRequest struct {
 // ValueTypeRequest has an optional property of a value type.
 type ValueTypeRequest struct {
 	// Count is optional, but a value type is always sent.
-	Count *int `json:"count,omitempty"`
+	Count int `json:"count"`
 }
 
 // StructTypeRequest has an optional property of a struct value type.
 type StructTypeRequest struct {
 	// Inner is optional, but a struct value has no omit option that can leave it out.
-	Inner *InnerConfig `json:"inner,omitempty"`
+	Inner InnerConfig `json:"inner"`
 }
 
 // InnerConfig is a nested struct.

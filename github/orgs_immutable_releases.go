@@ -22,7 +22,7 @@ type ImmutableReleaseSettings struct {
 // ImmutableReleasePolicy is for setting the immutable releases policy for repositories in an organization.
 type ImmutableReleasePolicy struct {
 	// EnforcedRepositories specifies how immutable releases are enforced in the organization. Possible values include "all", "none", or "selected".
-	EnforcedRepositories *string `json:"enforced_repositories,omitempty"`
+	EnforcedRepositories string `json:"enforced_repositories"`
 	// An array of repository ids for which immutable releases enforcement should be applied.
 	// You can only provide a list of repository ids when the enforced_repositories is set to "selected"
 	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`

@@ -76,7 +76,7 @@ func (a ArtifactPeriod) String() string { return Stringify(a) }
 // ArtifactPeriodOpt is used to specify the retention period of
 // artifacts and logs in a workflow run.
 type ArtifactPeriodOpt struct {
-	Days *int `json:"days,omitempty"`
+	Days int `json:"days"`
 }
 
 // ListArtifacts lists all artifacts that belong to a repository.

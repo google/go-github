@@ -239,7 +239,7 @@ func TestScanRepoFixture(t *testing.T) {
 	t.Parallel()
 	info, err := scanRepo(fixtureRepo)
 	assertNilError(t, err)
-	assertEqual(t, 3, info.files)
+	assertEqual(t, 4, info.files)
 	assertEqual(t, 16, len(info.methods))
 
 	names := make([]string, 0, len(info.structs))

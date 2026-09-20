@@ -580,7 +580,19 @@ Conventions to follow:
   - `testMethod` - asserts the HTTP method.
   - `testFormValues` - asserts query parameters.
   - `testHeader` - asserts a request header.
-  - `testJSONBody` / `testPlainBody` - assert the request body.
+  - `testJSONBody` - asserts that the request body is the JSON encoding of a
+    value. Pass the value that the method was called with, or the one it builds
+    internally, rather than a hand-written copy of the body: the helper encodes
+    the value and compares it with the body as JSON, so it does not care whether
+    a field is a pointer, what a tag leaves out, or how a custom marshaler
+    reshapes the value, and it reports any field the body carries that the value
+    does not.
+  - `testJSONBodyRaw` - asserts the exact body, given as JSON text. Use it when
+    which fields are present is the point, such as a required field that must
+    not be omitted or a list that must be an empty array rather than null.
+    `testJSONBody` cannot see the difference, because an omitted field and a
+    zero-valued one encode the same way.
+  - `testPlainBody` - asserts a body that is not JSON.
   - `testNewRequestAndDoFailure` - exercises the request-building and
     request-doing error paths for a method.
   - `testBadOptions` - asserts that invalid options return an error.
@@ -677,9 +689,20 @@ Its flags are:
 
 - `-fix` repairs the findings that can be repaired mechanically: adding or
   removing `omitempty` and `omitzero`, and converting fields between value and
-  pointer types. A field whose type changes can require a call site or a test
-  to be updated, and `script/generate.sh` must be run afterward to regenerate
-  the accessors.
+  pointer types. It is deliberately narrow, and repairs only what fails the
+  run: the `ERROR` findings that `exceptions.txt` does not grandfather. A
+  `WARN`ing is advisory, and an entry in the exceptions file is a decision to
+  leave a disagreement alone, so `-fix` rewrites neither. It prints the repairs
+  it plans before it writes them, and then re-checks the tree.
+  A field whose type changes between a value and a pointer leaves the callers
+  that still build one with the old type unable to compile, so `-fix` compiles
+  the checkout afterward and repairs those call sites too, unwrapping a
+  `new(...)` that the field no longer needs. It reports the call sites that no
+  mechanical repair can express, such as one that passes a variable, rather
+  than leaving them to be found by a build. `script/generate.sh` must still be
+  run afterward to regenerate the accessors.
+  To repair a grandfathered field, delete its line from `exceptions.txt`
+  first, or pass `-exceptions /dev/null` to treat every finding as new.
 - `-write-exceptions` rewrites `tools/schemafields/exceptions.txt` from the
   current findings.
 - `-descriptions` checks against local OpenAPI description files instead of
@@ -695,7 +718,9 @@ Findings are reported as `ERROR`s, which fail the run, and `WARN`ings, which
 are advisory. `tools/schemafields/exceptions.txt` grandfathers the findings
 that the repository already has, so that a pull request is only told about the
 ones it introduces. An entry that no finding needs any more is reported as
-obsolete, and `-fix` removes it, so the file can only shrink.
+obsolete, and `-fix` removes it, so the file can only shrink. Because an entry
+also says that the field should be left alone, `-fix` will not repair a field
+that the file names.
 
 [OpenAPI descriptions of their API]: https://github.com/github/rest-api-description
 

@@ -327,8 +327,9 @@ func missingRequiredProps(si *structInfo, uses []*structUse) []string {
 // ------------------------------------------------------------------ exceptions
 
 // exceptions grandfathers the findings that the repository already has, so that a pull
-// request is only told about the ones it introduces. Entries that are no longer needed are
-// reported, so that the file can only shrink.
+// request is only told about the ones it introduces. An entry is a decision to leave a
+// disagreement alone: -fix never rewrites a field that the file names. Entries that are no
+// longer needed are reported, so that the file can only shrink.
 type exceptions struct {
 	path     string
 	comments []string
@@ -407,10 +408,15 @@ func (e *exceptions) write(entries []string) error {
 			"#",
 			"# Each line names a Go struct field whose request-body optionality disagrees with",
 			"# GitHub's OpenAPI descriptions. The findings are grandfathered so that CI only",
-			"# reports problems that a change introduces.",
+			"# reports problems that a change introduces, and so that a disagreement can be",
+			"# accepted deliberately.",
 			"#",
-			"# Run \"script/check-schema-fields.sh -fix\" to repair what can be repaired",
-			"# automatically, and delete the lines that become obsolete.",
+			"# A line here is a decision to leave the field alone, so -fix never rewrites a",
+			"# field that this file names. Delete the line to have a later -fix repair it.",
+			"#",
+			"# Run \"script/check-schema-fields.sh -fix\" to repair the error-severity findings",
+			"# that no line here grandfathers. It drops the lines that no finding needs any",
+			"# more, so the file can only shrink.",
 		}
 	}
 	var b strings.Builder

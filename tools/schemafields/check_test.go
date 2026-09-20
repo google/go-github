@@ -33,12 +33,25 @@ ERROR github/runner_groups.go:71: OneOfRequest.KindTag: schema REQUIRES "kind_ta
 ERROR github/runner_groups.go:78: MissingRequest.required_thing: schema REQUIRES property "required_thing" but the Go struct has no field with that JSON name
 `
 
+// fixtureGoMod makes a copy of the fixture a buildable module, which is what -fix compiles to
+// find the call sites a changed field type leaves unable to compile. The fixture cannot carry a
+// go.mod of its own: script/lint.sh and test-all.sh read the modules to lint and test from
+// "git ls-files '*go.mod'", so a tracked go.mod under testdata would be linted as a real module.
+const fixtureGoMod = "module github.com/google/go-github/v92\n\ngo 1.26.0\n"
+
+// copyFixture copies the fixture checkout into dir and makes the copy a module.
+func copyFixture(t *testing.T, dir string) {
+	t.Helper()
+	copyTree(t, fixtureRepo, dir)
+	mustWriteFile(t, filepath.Join(dir, "go.mod"), fixtureGoMod)
+}
+
 // runOnFixture copies the fixture checkout into a temporary directory and runs the tool
 // over the copy, so that -fix cannot touch the testdata.
 func runOnFixture(t *testing.T, args ...string) (stdout, stderr string, err error) {
 	t.Helper()
 	dir := t.TempDir()
-	copyTree(t, fixtureRepo, dir)
+	copyFixture(t, dir)
 	return runIn(t, dir, args...)
 }
 
@@ -61,7 +74,7 @@ func TestCheck(t *testing.T) {
 	assertContains(t, err.Error(), "4 schema field issue(s) found")
 	assertEqual(t, wantFindings, stdout)
 	assertContains(t, stderr, "checked 12 body structs: 13 resolved operation uses, 1 uses with no JSON request body")
-	assertContains(t, stderr, "9 findings (9 shown, 4 errors, 7 repairable with -fix)")
+	assertContains(t, stderr, "9 findings (9 shown, 4 errors, 3 repairable by -fix)")
 	assertContains(t, stderr, "1 conditionally required, left alone")
 }
 
@@ -146,7 +159,7 @@ func TestCheckMissingDescriptions(t *testing.T) {
 func TestExceptions(t *testing.T) {
 	t.Parallel()
 	dir := t.TempDir()
-	copyTree(t, fixtureRepo, dir)
+	copyFixture(t, dir)
 	exceptions := filepath.Join(t.TempDir(), "exceptions.txt")
 	// Every current finding, so that the run itself is clean, plus one that nothing needs.
 	mustWriteFile(t, exceptions, wantExceptionFile+"Gone.Field\n")
@@ -166,10 +179,15 @@ const exceptionHeader = `# Schema field exceptions for tools/schemafields.
 #
 # Each line names a Go struct field whose request-body optionality disagrees with
 # GitHub's OpenAPI descriptions. The findings are grandfathered so that CI only
-# reports problems that a change introduces.
+# reports problems that a change introduces, and so that a disagreement can be
+# accepted deliberately.
 #
-# Run "script/check-schema-fields.sh -fix" to repair what can be repaired
-# automatically, and delete the lines that become obsolete.
+# A line here is a decision to leave the field alone, so -fix never rewrites a
+# field that this file names. Delete the line to have a later -fix repair it.
+#
+# Run "script/check-schema-fields.sh -fix" to repair the error-severity findings
+# that no line here grandfathers. It drops the lines that no finding needs any
+# more, so the file can only shrink.
 `
 
 // wantExceptionFile is the exceptions file that -write-exceptions writes for the fixture:
@@ -188,7 +206,7 @@ ValueTypeRequest.Count
 func TestWriteExceptions(t *testing.T) {
 	t.Parallel()
 	dir := t.TempDir()
-	copyTree(t, fixtureRepo, dir)
+	copyFixture(t, dir)
 	exceptions := filepath.Join(t.TempDir(), "exceptions.txt")
 
 	// Every finding becomes an exception, so the run that regenerated the file is
@@ -203,53 +221,142 @@ func TestWriteExceptions(t *testing.T) {
 }
 
 // TestFix repairs the fixture and compares each rewritten file with its golden copy.
+//
+// -fix repairs the findings that fail the check, so it rewrites only the three errors that
+// can be repaired mechanically, and leaves the four warnings and the error that no repair
+// can express alone. Two of the repairs change a field type, so it repairs the call sites
+// that the compiler then reports as well.
 func TestFix(t *testing.T) {
 	t.Parallel()
 	dir := t.TempDir()
-	copyTree(t, fixtureRepo, dir)
+	copyFixture(t, dir)
 
 	_, stderr, err := runIn(t, dir, "-fix")
 	if err == nil {
 		t.Fatal("expected an error for the finding that cannot be repaired")
 	}
-	assertContains(t, stderr, "repaired 7 finding(s) in 2 Go file(s)")
-	assertContains(t, stderr, "2 finding(s) remain, 0 of them repairable")
+	assertContains(t, stderr, "planned repairs (3):")
+	assertContains(t, stderr, "planned call site repairs (3):")
+	assertContains(t, stderr, `repaired 3 call site(s) in 1 Go file(s)`)
+	assertContains(t, stderr, "repaired 3 finding(s) in 1 Go file(s)")
+	assertContains(t, stderr, "6 finding(s) remain, 0 of them repairable by -fix")
 
-	for _, name := range []string{"github/enterprise.go", "github/issues.go", "github/runner_groups.go"} {
-		got, readErr := os.ReadFile(filepath.Join(dir, name))
-		assertNilError(t, readErr)
-		checkGolden(t, name, string(got))
-	}
+	checkFileGolden(t, fixedFixtureGolden, dir, "github/runner_groups.go")
+	checkFileGolden(t, fixedFixtureGolden, dir, "github/runner_groups_callers.go")
+
+	// A file that holds only warnings and an unrepairable error comes back unchanged.
+	assertSameAsFixture(t, dir, "github/enterprise.go", "github/issues.go")
 }
 
-// TestFixDropsObsoleteExceptions checks that a repair drops the exception that grandfathered
-// the finding it repaired, and that the findings it cannot repair keep theirs.
-func TestFixDropsObsoleteExceptions(t *testing.T) {
+// TestFixReportsCallSitesItCannotRepair checks that a call site which the change breaks and
+// which no mechanical repair can express is reported, rather than left in a tree that no
+// longer compiles.
+func TestFixReportsCallSitesItCannotRepair(t *testing.T) {
 	t.Parallel()
 	dir := t.TempDir()
-	copyTree(t, fixtureRepo, dir)
+	copyFixture(t, dir)
+	// A literal that passes a variable, which -fix cannot unwrap the way it unwraps new(...).
+	mustWriteFile(t, filepath.Join(dir, "github", "callers_extra.go"), `package github
+
+// ptrName is a variable, so the repair of a literal that uses it is not mechanical.
+var ptrName = new("d")
+
+// PtrCaller passes the variable to the field whose type the repair changes.
+var PtrCaller = UpdateRunnerGroupRequest{Name: ptrName}
+`)
+	_, stderr, err := runIn(t, dir, "-fix")
+	if err == nil {
+		t.Fatal("expected an error for the finding that cannot be repaired")
+	}
+	assertContains(t, stderr, "not repaired: github/callers_extra.go:")
+	assertContains(t, stderr, "UpdateRunnerGroupRequest.Name is now string")
+	assertContains(t, stderr, "is not new(...), Ptr(...) or &...")
+}
+
+// TestFixLeavesGrandfatheredFindings checks that -fix never rewrites a field that the
+// exceptions file names, however the finding is worded, and that it still drops an entry
+// that no finding needs any more.
+func TestFixLeavesGrandfatheredFindings(t *testing.T) {
+	t.Parallel()
+	dir := t.TempDir()
+	copyFixture(t, dir)
 	exceptions := filepath.Join(t.TempDir(), "exceptions.txt")
-	// Grandfather every finding, so that the run starts out clean.
-	mustWriteFile(t, exceptions, wantExceptionFile)
+	// Grandfather every finding, which is the state of the repository, plus one entry
+	// that nothing needs.
+	mustWriteFile(t, exceptions, wantExceptionFile+"Gone.Field\n")
 
 	_, stderr, err := runIn(t, dir, "-exceptions", exceptions, "-fix")
-	// The two findings that -fix cannot repair keep their exceptions, so the run
-	// that repaired the other seven ends up clean.
 	assertNilError(t, err)
-	assertContains(t, stderr, "repaired 7 finding(s) in 2 Go file(s)")
-	assertContains(t, stderr, "dropped 7 obsolete exception(s) from "+exceptions)
+	assertContains(t, stderr, "nothing to repair")
+	assertContains(t, stderr, "dropped 1 obsolete exception(s) from "+exceptions)
 
 	data, readErr := os.ReadFile(exceptions)
 	assertNilError(t, readErr)
-	assertEqual(t, exceptionHeader+"CreateCommentRequest.Extra\nMissingRequest.required_thing\n", string(data))
+	assertEqual(t, wantExceptionFile, string(data))
+	// Nothing was repaired, so no field type changed and no call site can be broken.
+	assertSameAsFixture(t, dir, "github/enterprise.go", "github/issues.go",
+		"github/runner_groups.go", "github/runner_groups_callers.go")
 }
 
-// checkGolden compares got with the golden file named by the current test. A missing golden
+// TestFixRepairsNewErrors checks the case a pull request creates: the findings that the
+// exceptions file does not name are repaired, and the grandfathered ones keep their lines.
+func TestFixRepairsNewErrors(t *testing.T) {
+	t.Parallel()
+	dir := t.TempDir()
+	copyFixture(t, dir)
+	exceptions := filepath.Join(t.TempDir(), "exceptions.txt")
+	// Grandfather the warnings only, so that the errors are the findings a change adds.
+	grandfathered := exceptionHeader + `CreateCommentRequest.Extra
+CreateEnterpriseRunnerGroupRequest.SelectedWorkflows
+CreateRunnerGroupRequest.SelectedRepositoryIDs
+StructTypeRequest.Inner
+ValueTypeRequest.Count
+`
+	mustWriteFile(t, exceptions, grandfathered)
+
+	_, stderr, err := runIn(t, dir, "-exceptions", exceptions, "-fix")
+	// The error that no repair can express is not grandfathered, so the run still fails.
+	if err == nil {
+		t.Fatal("expected an error for the error that cannot be repaired")
+	}
+	assertContains(t, err.Error(), "1 schema field issue(s) found")
+	assertContains(t, stderr, "planned repairs (3):")
+	assertContains(t, stderr, "planned call site repairs (3):")
+	assertContains(t, stderr, `repaired 3 call site(s) in 1 Go file(s)`)
+	assertContains(t, stderr, "repaired 3 finding(s) in 1 Go file(s)")
+	assertContains(t, stderr, "6 finding(s) remain, 0 of them repairable by -fix")
+
+	// The repaired errors had no entries, and the warnings still have findings, so the
+	// exceptions file keeps every line it had.
+	data, readErr := os.ReadFile(exceptions)
+	assertNilError(t, readErr)
+	assertEqual(t, grandfathered, string(data))
+	assertSameAsFixture(t, dir, "github/enterprise.go", "github/issues.go")
+
+	checkFileGolden(t, fixedFixtureGolden, dir, "github/runner_groups.go")
+	checkFileGolden(t, fixedFixtureGolden, dir, "github/runner_groups_callers.go")
+}
+
+// fixedFixtureGolden names the test whose golden files hold the fixture as -fix leaves it.
+// Every test that repairs the fixture repairs it the same way, so they compare against these
+// files rather than each keeping a copy of the same output.
+const fixedFixtureGolden = "TestFix"
+
+// checkFileGolden compares a file of the repaired checkout with the golden file that testName
+// holds under it.
+func checkFileGolden(t *testing.T, testName, dir, name string) {
+	t.Helper()
+	got, err := os.ReadFile(filepath.Join(dir, filepath.FromSlash(name)))
+	assertNilError(t, err)
+	checkGolden(t, testName, name, string(got))
+}
+
+// checkGolden compares got with the golden file of the named test and file. A missing golden
 // file is written, so that a new case regenerates itself; run UPDATE_GOLDEN=1 script/test.sh
 // to refresh every golden file at once.
-func checkGolden(t *testing.T, name, got string) {
+func checkGolden(t *testing.T, testName, name, got string) {
 	t.Helper()
-	path := filepath.Join("testdata", "golden", t.Name(), filepath.FromSlash(name))
+	path := filepath.Join("testdata", "golden", testName, filepath.FromSlash(name))
 	if _, err := os.Stat(path); os.IsNotExist(err) || os.Getenv("UPDATE_GOLDEN") != "" {
 		mustWriteFile(t, path, got)
 		t.Logf("wrote golden file %v", path)
@@ -266,6 +373,19 @@ func checkGolden(t *testing.T, name, got string) {
 // equal to one that uses LF.
 func normalizeEOL(s string) string {
 	return strings.ReplaceAll(s, "\r\n", "\n")
+}
+
+// assertSameAsFixture fails unless the checkout at dir holds the same content as the fixture
+// for each named file, which is how a test asserts that a file was not rewritten.
+func assertSameAsFixture(t *testing.T, dir string, names ...string) {
+	t.Helper()
+	for _, name := range names {
+		want, err := os.ReadFile(filepath.Join(fixtureRepo, name))
+		assertNilError(t, err)
+		got, err := os.ReadFile(filepath.Join(dir, name))
+		assertNilError(t, err)
+		assertEqual(t, string(want), string(got))
+	}
 }
 
 // copyTree copies every file of src into dst, preserving relative paths.
