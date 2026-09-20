@@ -641,15 +641,15 @@ to this auto-generated file.
 
 The `tools/metadata` package is a command-line tool for working with metadata.
 In a typical workflow, you won't use it directly, but you will use it indirectly
-through `script/generate.sh` and `script/lint.sh`.
+through `script/generate.sh`.
 
 Its subcommands are:
 
 - `update-openapi` - updates `openapi_operations.yaml` with the latest
   information from GitHub's OpenAPI descriptions. With `--validate` it will
   validate that the descriptions are correct as of the commit
-  in `openapi_commit`. `update-openapi --validate` is called
-  by `script/lint.sh`.
+  in `openapi_commit`. `update-openapi --validate` needs a `GITHUB_TOKEN`,
+  so it is run by the `linter` workflow rather than by `script/lint.sh`.
 
 - `update-go` - updates Go files with documentation URLs and formats comments.
   It is used by `script/generate.sh`.
@@ -706,7 +706,7 @@ tasks:
 
 - `script/fmt.sh` formats all Go code in the repository.
 - `script/generate.sh` runs code generators and `go mod tidy` on all modules. With `--check` it checks that the generated files are current.
-- `script/lint.sh` runs linters on the project and checks generated files are current.
+- `script/lint.sh` runs linters, checks request body fields against the OpenAPI schemas, and checks generated files are current.
 - `script/metadata.sh` runs `tools/metadata`. See the [Metadata](#metadata) section for more information.
 - `script/check-schema-fields.sh` runs `tools/schemafields`. See the [tools/schemafields](#toolsschemafields) section for more information.
 - `script/test.sh` runs tests on all modules.

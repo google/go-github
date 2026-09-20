@@ -1,7 +1,7 @@
 #!/bin/sh
-#/ [ CHECK_GITHUB_OPENAPI=1 ] script/lint.sh runs linters and validates generated files.
-#/ When CHECK_GITHUB is set, it validates that openapi_operations.yaml is consistent with the
-#/ descriptions from github.com/github/rest-api-description.
+#/ script/lint.sh runs linters, checks request body fields against GitHub's OpenAPI
+#/ schemas, and validates generated files. The validation of openapi_operations.yaml,
+#/ which needs a GITHUB_TOKEN, is left to the `linter` workflow.
 
 set -e
 
@@ -88,22 +88,12 @@ done
 
 wait_pids
 
-if [ -n "$CHECK_GITHUB_OPENAPI" ]; then
-  print_header "Validating openapi_operations.yaml"
-  if script/metadata.sh update-openapi --validate; then
-    printf "${GREEN}✔ openapi_operations.yaml is valid${NC}\n"
-  else
-    printf "${RED}✘ openapi_operations.yaml validation failed${NC}\n"
-    fail
-  fi
-
-  print_header "Checking request body fields against the OpenAPI schemas"
-  if script/check-schema-fields.sh; then
-    printf "${GREEN}✔ request body fields match the OpenAPI schemas${NC}\n"
-  else
-    printf "${RED}✘ request body fields disagree with the OpenAPI schemas${NC}\n"
-    fail
-  fi
+print_header "Checking request body fields against the OpenAPI schemas"
+if script/check-schema-fields.sh; then
+  printf "${GREEN}✔ request body fields match the OpenAPI schemas${NC}\n"
+else
+  printf "${RED}✘ request body fields disagree with the OpenAPI schemas${NC}\n"
+  fail
 fi
 
 print_header "Validating generated files"
