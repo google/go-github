@@ -3,11 +3,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// check-structfield-settings reads the settings for
-// the custom `structfield` linter in ".golangci.yml" -
-// specifically, the "allowed-tag-names" and "allowed-tag-types"
-// exceptions, then scans the code repo to find all exceptions
-// that are no longer needed and reports a list.
+// check-structfield-settings reads the settings for the custom `structfield` linter in
+// ".golangci.yml" - specifically, the "allowed-tag-names" and "allowed-tag-types" exceptions -
+// then scans the code repo and reports the exceptions that are no longer needed and the ones
+// that are listed twice. It exits non-zero when it reports anything, so that it can be used as
+// a check, and it never writes the config in that mode. With -fix it removes the obsolete
+// exceptions and sorts and dedupes the lists instead of reporting them.
 package main
 
 import (
@@ -117,6 +118,10 @@ func main() {
 			fmt.Printf("  - %v (%v)\n", name, duplicateTypes[name])
 		}
 	}
+
+	// The settings are reported rather than repaired, so that this mode can be used as a
+	// check: a caller that wants the changes applies them with -fix.
+	log.Fatalf("\n%v is out of date; run script/run-check-structfield-settings.sh -fix to update it\n", resolvedConfig)
 }
 
 type golangciConfig struct {

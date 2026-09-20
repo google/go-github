@@ -96,11 +96,11 @@ else
   fail
 fi
 
-print_header "Validating generated files"
+print_header "Validating generated files and linter exceptions"
 if script/generate.sh --check; then
-  printf "${GREEN}✔ Generated files are up to date${NC}\n"
+  printf "${GREEN}✔ Generated files and linter exceptions are up to date${NC}\n"
 else
-  printf "${RED}✘ Generated files out of sync${NC}\n"
+  printf "${RED}✘ Generated files or linter exceptions are out of date${NC}\n"
   fail
 fi
 

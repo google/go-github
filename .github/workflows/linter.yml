@@ -48,4 +48,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
     - name: Check request body fields against the OpenAPI schemas
-      run: ./script/check-schema-fields.sh
+      run: ./script/check-schema-fields.sh -format github
