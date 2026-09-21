@@ -2383,13 +2383,7 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 		return nil, err
 	}
 
-	var resp *http.Response
-	// Use http.DefaultTransport if no custom Transport is configured
-	if c.client.Transport == nil {
-		resp, err = http.DefaultTransport.RoundTrip(req)
-	} else {
-		resp, err = c.client.Transport.RoundTrip(req)
-	}
+	resp, err := c.clientIgnoreRedirects.Do(req)
 	if err != nil {
 		return nil, err
 	}
