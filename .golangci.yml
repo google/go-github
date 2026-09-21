@@ -185,7 +185,7 @@ linters:
       extraneousnew:
         type: module
         description: Reports problematic usage of 'new' or '&SomeStruct{}' when a more idiomatic 'var' pointer would be more appropriate.
-        original-url: github.com/google/go-github/v90/tools/extraneousnew
+        original-url: github.com/google/go-github/v92/tools/extraneousnew
         settings:
           ignored-methods:
             - RateLimitService.Get
@@ -193,11 +193,11 @@ linters:
       fmtpercentv:
         type: module
         description: Reports usage of %d or %s in format strings.
-        original-url: github.com/google/go-github/v90/tools/fmtpercentv
+        original-url: github.com/google/go-github/v92/tools/fmtpercentv
       paramcheck:
         type: module
         description: Reports parameter naming and type convention issues.
-        original-url: github.com/google/go-github/v90/tools/paramcheck
+        original-url: github.com/google/go-github/v92/tools/paramcheck
         settings:
           # Body type names exempt from the "pass by value, not by pointer" rule.
           # TODO: fix and remove these exceptions.
@@ -205,18 +205,14 @@ linters:
             - AddProjectItemOptions
             - AuthorizationRequest
             - CodeScanningAlertState
-            - CodespaceCreateForUserOptions
             - ConfigApplyOptions
             - ConfigSettings
-            - CreateCodespaceOptions
             - CreateOrUpdateIssueTypesOptions
-            - CreateOrgInvitationOptions
             - CreateUpdateEnvironment
             - CreateWorkflowDispatchEventRequest
             - CustomDeploymentProtectionRuleRequest
             - CustomProperty
             - DependabotAlertState
-            - DependencyGraphSnapshot
             - EncryptedSecret
             - EnterpriseSecurityAnalysisSettings
             - Hook
@@ -230,13 +226,11 @@ linters:
             - PagesUpdate
             - PagesUpdateWithoutCNAME
             - ProtectionRequest
-            - PublishCodespaceOptions
             - PullRequestBranchUpdateOptions
             - PullRequestReviewRequest
             - PullRequestReviewsEnforcementUpdate
             - Repository
             - RepositoryAddCollaboratorOptions
-            - RepositoryComment
             - RepositoryContentFileOptions
             - RepositoryCreateForkOptions
             - RequiredStatusChecksRequest
@@ -248,7 +242,6 @@ linters:
             - TeamAddTeamMembershipOptions
             - TeamAddTeamRepoOptions
             - TeamProjectOptions
-            - UpdateCodespaceOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
             - UserSuspendOptions
@@ -258,18 +251,14 @@ linters:
           body-allowed-wrong-names:
             - AddProjectItemOptions
             - CheckSuitePreferenceOptions
-            - CodespaceCreateForUserOptions
             - ConfigApplyOptions
             - CreateCheckRunOptions
             - CreateCheckSuiteOptions
-            - CreateCodespaceOptions
             - CreateOrUpdateIssueTypesOptions
-            - CreateOrgInvitationOptions
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
             - LockIssueOptions
             - MaintenanceOptions
-            - PublishCodespaceOptions
             - PullRequestBranchUpdateOptions
             - RepositoryAddCollaboratorOptions
             - RepositoryContentFileOptions
@@ -280,18 +269,17 @@ linters:
             - TeamAddTeamRepoOptions
             - TeamProjectOptions
             - UpdateCheckRunOptions
-            - UpdateCodespaceOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
             - UserSuspendOptions
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
-        original-url: github.com/google/go-github/v90/tools/sliceofpointers
+        original-url: github.com/google/go-github/v92/tools/sliceofpointers
       structfield:
         type: module
         description: Reports mismatches between Go field and JSON, URL tag names and types.
-        original-url: github.com/google/go-github/v90/tools/structfield
+        original-url: github.com/google/go-github/v92/tools/structfield
         settings:
           allowed-tag-names:
             - ActionsCacheUsageList.RepoCacheUsage # TODO: RepoCacheUsages ?
@@ -304,8 +292,6 @@ linters:
             - CommitAuthor.Login
             - CommitsSearchResult.Commits
             - CommitsSearchResult.Total
-            - CreateOrgInvitationOptions.TeamID # TODO: TeamIDs
-            - DependencyGraphSnapshot.Sha # TODO: SHA
             - Discussion.DiscussionCategory # TODO: Category ?
             - EditOwner.OwnerInfo
             - EnterpriseLicensedUsers.GithubComSamlNameID # TODO: GithubComSAMLNameID

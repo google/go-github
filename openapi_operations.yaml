@@ -79,6 +79,36 @@ operations:
 operation_overrides:
   - name: GET /meta
     documentation_url: https://docs.github.com/rest/meta/meta#get-github-meta-information
+  - name: GET /orgs/{org}/agents/secrets
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#list-organization-secrets
+  - name: GET /orgs/{org}/agents/secrets/public-key
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#get-an-organization-public-key
+  - name: DELETE /orgs/{org}/agents/secrets/{secret_name}
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#delete-an-organization-secret
+  - name: GET /orgs/{org}/agents/secrets/{secret_name}
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#get-an-organization-secret
+  - name: PUT /orgs/{org}/agents/secrets/{secret_name}
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#create-or-update-an-organization-secret
+  - name: GET /orgs/{org}/agents/secrets/{secret_name}/repositories
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#list-selected-repositories-for-an-organization-secret
+  - name: PUT /orgs/{org}/agents/secrets/{secret_name}/repositories
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#set-selected-repositories-for-an-organization-secret
+  - name: DELETE /orgs/{org}/agents/secrets/{secret_name}/repositories/{repository_id}
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#remove-selected-repository-from-an-organization-secret
+  - name: PUT /orgs/{org}/agents/secrets/{secret_name}/repositories/{repository_id}
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#add-selected-repository-to-an-organization-secret
+  - name: GET /repos/{owner}/{repo}/agents/organization-secrets
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#list-repository-organization-secrets
+  - name: GET /repos/{owner}/{repo}/agents/secrets
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#list-repository-secrets
+  - name: GET /repos/{owner}/{repo}/agents/secrets/public-key
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#get-a-repository-public-key
+  - name: DELETE /repos/{owner}/{repo}/agents/secrets/{secret_name}
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#delete-a-repository-secret
+  - name: GET /repos/{owner}/{repo}/agents/secrets/{secret_name}
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#get-a-repository-secret
+  - name: PUT /repos/{owner}/{repo}/agents/secrets/{secret_name}
+    documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#create-or-update-a-repository-secret
   - name: GET /orgs/{org}/private-registries
     documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#list-private-registries-for-an-organization
   - name: POST /orgs/{org}/private-registries

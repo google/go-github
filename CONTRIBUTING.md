@@ -66,8 +66,8 @@ file.
 
 4. Run `script/fmt.sh`, `script/test.sh` and `script/lint.sh` to format your code and
    check that it passes all tests and linters. `script/lint.sh` may also tell you
-   that generated files need to be updated. If so, run `script/generate.sh` to
-   update them.
+   that the generated files or the linter exceptions in `.golangci.yml` need to be
+   updated. If so, run `script/generate.sh` to update them.
 
 5. Do your best to have [well-formed commit messages][] for each change. This
    provides consistency throughout the project, and ensures that commit messages
@@ -387,10 +387,12 @@ type Repository struct {
 
 Required fields should be non-pointer types without `omitempty`.
 Optional fields should be pointer types with `omitempty`.
-Use `omitzero` for structs and `time.Time` where you want to omit
-empty values (not just nil). For slices and maps, `omitzero` has the
-opposite behavior: it keeps empty (non-nil) values and only omits nil
-values.
+Use `omitzero` for `time.Time` where you want to omit empty values (not
+just nil). A struct declared in this package must not be a value with an
+omit option, because `omitempty` never omits a struct value and our linters
+reject `omitzero` on one: make such a field a pointer instead. For slices
+and maps, `omitzero` has the opposite behavior: it keeps empty (non-nil)
+values and only omits nil values.
 
 ```go
 type RepositoryRuleset struct {
@@ -415,6 +417,11 @@ type RepositoryRuleset struct {
 
 For optional boolean fields where you need to distinguish between `false`
 and "not set", use `*bool` with `omitzero`.
+
+Whether a request body property is required is documented by GitHub in their
+OpenAPI descriptions, not in this repository, so these rules are checked by
+`script/check-schema-fields.sh` against those descriptions. See the
+[tools/schemafields](#toolsschemafields) section for more information.
 
 #### Response Bodies
 
@@ -584,11 +591,12 @@ Conventions to follow:
 ## Metadata
 
 GitHub publishes [OpenAPI descriptions of their API][]. We use these
-descriptions to keep documentation links up to date and to keep track of which
+descriptions to keep documentation links up to date, to keep track of which
 methods call which endpoints via the `//meta:operation` comments described
-above. GitHub's descriptions are far too large to keep in this repository or to
-pull down every time we generate code, so we keep only the metadata we need
-in `openapi_operations.yaml`.
+above, and to check that request body fields are required exactly when the API
+requires them. GitHub's descriptions are far too large to keep in this
+repository or to pull down every time we generate code, so we keep only the
+metadata we need in `openapi_operations.yaml`.
 
 ### openapi_operations.yaml
 
@@ -633,24 +641,62 @@ to this auto-generated file.
 
 The `tools/metadata` package is a command-line tool for working with metadata.
 In a typical workflow, you won't use it directly, but you will use it indirectly
-through `script/generate.sh` and `script/lint.sh`.
+through `script/generate.sh`.
 
 Its subcommands are:
 
 - `update-openapi` - updates `openapi_operations.yaml` with the latest
   information from GitHub's OpenAPI descriptions. With `--validate` it will
   validate that the descriptions are correct as of the commit
-  in `openapi_commit`. `update-openapi --validate` is called
-  by `script/lint.sh`.
+  in `openapi_commit`. `update-openapi --validate` needs a `GITHUB_TOKEN`,
+  so it is run by the `linter` workflow rather than by `script/lint.sh`.
 
 - `update-go` - updates Go files with documentation URLs and formats comments.
   It is used by `script/generate.sh`.
 
 - `format` - formats white space in `openapi_operations.yaml` and sorts its
-  arrays. It is used by `script/fmt.sh`.
+  arrays. It is not needed after `update-openapi`, which writes the file the
+  same way.
 
 - `unused` - lists operations from `openapi_operations.yaml` that are not mapped
   from any methods.
+
+### tools/schemafields
+
+The `tools/schemafields` package checks Go request body struct field
+optionality against GitHub's OpenAPI request body schemas. It is run by
+`script/check-schema-fields.sh`, which `script/lint.sh` and the `linter`
+workflow call, so you rarely need to run it directly.
+
+The struct-to-schema mapping is derived automatically: the tool takes the
+`//meta:operation` annotation that a method already has, and checks the `body`
+parameter that `paramcheck` requires to be passed by value. An endpoint is
+therefore checked without any extra annotation, and coverage grows as pointer
+bodies are converted to by-value ones.
+
+Its flags are:
+
+- `-fix` repairs the findings that can be repaired mechanically: adding or
+  removing `omitempty` and `omitzero`, and converting fields between value and
+  pointer types. A field whose type changes can require a call site or a test
+  to be updated, and `script/generate.sh` must be run afterward to regenerate
+  the accessors.
+- `-write-exceptions` rewrites `tools/schemafields/exceptions.txt` from the
+  current findings.
+- `-descriptions` checks against local OpenAPI description files instead of
+  downloading the ones pinned in `openapi_operations.yaml`.
+- `-verbose` lists request bodies that no operation could be found to check.
+
+GitHub's descriptions are large, so a run without `-descriptions` downloads
+them from `github/rest-api-description` at the `openapi_commit` pinned in
+`openapi_operations.yaml` and caches them in the user cache directory; a
+repeated run is therefore offline.
+
+Findings are reported as `ERROR`s, which fail the run, and `WARN`ings, which
+are advisory. `tools/schemafields/exceptions.txt` grandfathers the findings
+that the repository already has, so that a pull request is only told about the
+ones it introduces. An entry that no finding needs any more is reported as
+obsolete, and `-fix` removes it, so the file can only shrink.
 
 [OpenAPI descriptions of their API]: https://github.com/github/rest-api-description
 
@@ -660,9 +706,11 @@ The `script` directory has shell scripts that help with common development
 tasks:
 
 - `script/fmt.sh` formats all Go code in the repository.
-- `script/generate.sh` runs code generators and `go mod tidy` on all modules. With `--check` it checks that the generated files are current.
-- `script/lint.sh` runs linters on the project and checks generated files are current.
+- `script/generate.sh` runs code generators and `go mod tidy` on all modules, and keeps the `structfield` linter exceptions in `.golangci.yml` up to date. With `--check` it verifies all three without writing anything.
+- `script/lint.sh` runs linters, checks request body fields against the OpenAPI schemas, and checks generated files and linter exceptions are current.
 - `script/metadata.sh` runs `tools/metadata`. See the [Metadata](#metadata) section for more information.
+- `script/check-schema-fields.sh` runs `tools/schemafields`. See the [tools/schemafields](#toolsschemafields) section for more information.
+- `script/run-check-structfield-settings.sh` reports the `structfield` linter exceptions in `.golangci.yml` that are no longer needed or are listed twice, and fails if there are any; with `-fix` it removes them instead.
 - `script/test.sh` runs tests on all modules.
 
 ## Maintainer's Guide

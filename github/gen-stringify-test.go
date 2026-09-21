@@ -61,7 +61,7 @@ var (
 				return "false"
 			case "new(false)":
 				return "false"
-			case "new(0.0)":
+			case "0.0", "new(0.0)":
 				return "0"
 			case "0", "new(0)", "new(int64(0))":
 				return "0"

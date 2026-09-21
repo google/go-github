@@ -1,0 +1,73 @@
+# Schema field exceptions for tools/schemafields.
+#
+# Each line names a Go struct field whose request-body optionality disagrees with
+# GitHub's OpenAPI descriptions. The findings are grandfathered so that CI only
+# reports problems that a change introduces.
+#
+# Run "script/check-schema-fields.sh -fix" to repair what can be repaired
+# automatically, and delete the lines that become obsolete.
+ActionsPermissions.EnabledRepositories
+ActionsPermissions.SelectedActionsURL
+ActionsPermissionsEnterprise.EnabledOrganizations
+ActionsPermissionsEnterprise.SelectedActionsURL
+ActionsPermissionsRepository.Enabled
+ActionsPermissionsRepository.SelectedActionsURL
+ArtifactPeriodOpt.Days
+Blob.Content
+Blob.NodeID
+Blob.SHA
+Blob.Size
+Blob.URL
+CodeSecurityConfiguration.CreatedAt
+CodeSecurityConfiguration.Description
+CodeSecurityConfiguration.HTMLURL
+CodeSecurityConfiguration.ID
+CodeSecurityConfiguration.TargetType
+CodeSecurityConfiguration.URL
+CodeSecurityConfiguration.UpdatedAt
+CreateCheckSuiteOptions.HeadBranch
+CreateEnterpriseRunnerGroupRequest.Name
+CreateRunnerGroupRequest.Name
+CreateTag.Message
+CreateTag.Object
+CreateTag.Tag
+CreateTag.Type
+CreateTeamRequest.LDAPDN
+CustomProperty.PropertyName
+CustomProperty.RequireExplicitValues
+CustomProperty.SourceType
+CustomProperty.URL
+EnterpriseCreateBudget.BudgetAlerting
+EnterpriseCustomPropertySchema.Properties
+EnterpriseCustomPropertyValuesRequest.OrganizationLogin
+EnterpriseCustomPropertyValuesRequest.organization_logins
+IDPGroupList.Groups
+ImmutableReleasePolicy.EnforcedRepositories
+OIDCSubjectClaimCustomTemplate.SubClaimPrefix
+OIDCSubjectClaimCustomTemplate.UseDefault
+OrganizationCustomPropertyValues.Properties
+RepositoryActionsAccessLevel.AccessLevel
+RepositoryRuleset.CreatedAt
+RepositoryRuleset.CurrentUserCanBypass
+RepositoryRuleset.ID
+RepositoryRuleset.Links
+RepositoryRuleset.NodeID
+RepositoryRuleset.Source
+RepositoryRuleset.SourceType
+RepositoryRuleset.UpdatedAt
+ReviewCustomDeploymentProtectionRuleRequest.Comment
+ReviewCustomDeploymentProtectionRuleRequest.State
+SCIMEnterpriseGroupAttributes.DisplayName
+SCIMEnterpriseGroupAttributes.ExternalID
+SCIMEnterpriseGroupAttributes.ID
+SCIMEnterpriseGroupAttributes.Meta
+SCIMEnterpriseGroupAttributes.Schemas
+SCIMEnterpriseUserAttributes.Groups
+SCIMEnterpriseUserAttributes.ID
+SCIMEnterpriseUserAttributes.Meta
+SelfHostRunnerPermissionsEnterprise.DisableSelfHostedRunnersForAllOrgs
+SelfHostedRunnersSettingsOrganizationOpt.EnabledRepositories
+UpdateAppInstallationRepositoriesRequest.RepositorySelection
+UpdateCheckRunOptions.Name
+UpdateRunnerGroupRequest.Name
+UpdateTeamRequest.Name

@@ -1,7 +1,7 @@
 # go-github #
 
 [![go-github release (latest SemVer)](https://img.shields.io/github/v/release/google/go-github?sort=semver)](https://github.com/google/go-github/releases)
-[![Go Reference](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v90/github)
+[![Go Reference](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v92/github)
 [![Test Status](https://github.com/google/go-github/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/google/go-github/actions/workflows/tests.yml)
 [![Test Coverage](https://codecov.io/gh/google/go-github/branch/master/graph/badge.svg)](https://codecov.io/gh/google/go-github)
 [![Discuss at go-github@googlegroups.com](https://img.shields.io/badge/discuss-go--github%40googlegroups.com-blue.svg)](https://groups.google.com/group/go-github)
@@ -30,7 +30,7 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 go-github is compatible with modern Go releases in module mode, with Go installed:
 
 ```bash
-go get github.com/google/go-github/v90
+go get github.com/google/go-github/v92
 ```
 
 will resolve and add the package to the current development module, along with its dependencies.
@@ -38,7 +38,7 @@ will resolve and add the package to the current development module, along with i
 Alternatively the same can be achieved if you use import in a package:
 
 ```go
-import "github.com/google/go-github/v90/github"
+import "github.com/google/go-github/v92/github"
 ```
 
 and run `go get` without parameters.
@@ -46,20 +46,20 @@ and run `go get` without parameters.
 Finally, to use the top-of-trunk version of this repo, use the following command:
 
 ```bash
-go get github.com/google/go-github/v90@master
+go get github.com/google/go-github/v92@master
 ```
 
 To discover all the changes that have occurred since a prior release, you can
 first clone the repo, then run (for example):
 
 ```bash
-go run tools/gen-release-notes/main.go --tag v90.0.0
+go run tools/gen-release-notes/main.go --tag v92.0.0
 ```
 
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/v90/github"
+import "github.com/google/go-github/v92/github"
 ```
 
 Construct a new GitHub client, then use the various services on the client to
@@ -123,7 +123,7 @@ include the specified OAuth token. Therefore, authenticated clients should
 almost never be shared between different users.
 
 For API methods that require HTTP Basic Authentication, use the
-[`BasicAuthTransport`](https://pkg.go.dev/github.com/google/go-github/v90/github#BasicAuthTransport).
+[`BasicAuthTransport`](https://pkg.go.dev/github.com/google/go-github/v92/github#BasicAuthTransport).
 
 #### As a GitHub App ####
 
@@ -146,7 +146,7 @@ import (
 	"net/http"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
-	"github.com/google/go-github/v90/github"
+	"github.com/google/go-github/v92/github"
 )
 
 func main() {
@@ -172,6 +172,8 @@ func main() {
 
 `go-githubauth` implements a set of `oauth2.TokenSource` to be used with `oauth2.Client`. An `oauth2.Client` can be injected into the `github.Client` to authenticate requests.
 
+`NewApplicationTokenSource` accepts either the App's client ID (a `string`, which GitHub now recommends) or its legacy app ID (an `int64`).
+
 Another example using `go-githubauth`:
 
 ```go
@@ -183,21 +185,28 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/google/go-github/v90/github"
+	"github.com/google/go-github/v92/github"
 	"github.com/jferrl/go-githubauth"
 	"golang.org/x/oauth2"
 )
 
 func main() {
 	privateKey := []byte(os.Getenv("GITHUB_APP_PRIVATE_KEY"))
+	clientID := os.Getenv("GITHUB_APP_CLIENT_ID")
 
-	appTokenSource, err := githubauth.NewApplicationTokenSource(1112, privateKey)
+	installationID, err := strconv.ParseInt(os.Getenv("GITHUB_APP_INSTALLATION_ID"), 10, 64)
+	if err != nil {
+		fmt.Println("Error parsing installation ID:", err)
+		return
+	}
+
+	appTokenSource, err := githubauth.NewApplicationTokenSource(clientID, privateKey)
 	if err != nil {
 		fmt.Println("Error creating application token source:", err)
 		return
-	 }
+	}
 
-	installationTokenSource := githubauth.NewInstallationTokenSource(1113, appTokenSource)
+	installationTokenSource := githubauth.NewInstallationTokenSource(installationID, appTokenSource)
 
 	// oauth2.NewClient uses oauth2.ReuseTokenSource to reuse the token until it expires.
 	// The token will be automatically refreshed when it expires.
@@ -208,6 +217,8 @@ func main() {
 	if err != nil {
 		// Handle error.
 	}
+
+	// Use client...
 }
 ```
 
@@ -465,7 +476,7 @@ For complete usage of go-github, see the full [package docs][].
 
 [GitHub API v3]: https://docs.github.com/en/rest
 [personal access token]: https://github.com/blog/1509-personal-api-tokens
-[package docs]: https://pkg.go.dev/github.com/google/go-github/v90/github
+[package docs]: https://pkg.go.dev/github.com/google/go-github/v92/github
 [GraphQL API v4]: https://developer.github.com/v4/
 [shurcooL/githubv4]: https://github.com/shurcooL/githubv4
 [GitHub webhook events]: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads
@@ -541,7 +552,7 @@ Versions prior to 48.2.0 are not listed.
 
 | go-github Version | GitHub v3 API Version |
 | ----------------- | --------------------- |
-| 90.0.0            | 2022-11-28            |
+| 92.0.0            | 2022-11-28            |
 | ...               | 2022-11-28            |
 | 48.2.0            | 2022-11-28            |
 
