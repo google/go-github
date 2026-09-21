@@ -240,7 +240,7 @@ func TestScanRepoFixture(t *testing.T) {
 	info, err := scanRepo(fixtureRepo)
 	assertNilError(t, err)
 	assertEqual(t, 4, info.files)
-	assertEqual(t, 16, len(info.methods))
+	assertEqual(t, 18, len(info.methods))
 
 	names := make([]string, 0, len(info.structs))
 	for name := range info.structs {
@@ -251,8 +251,9 @@ func TestScanRepoFixture(t *testing.T) {
 		"AllOfRequest", "CreateCommentRequest", "CreateEnterpriseRunnerGroupRequest",
 		"CreateRunnerGroupRequest", "DualRequest", "EnterpriseRunnerGroupsService",
 		"InnerConfig", "IssuesService", "MissingRequest", "NullableRequest",
-		"OneOfRequest", "RunnerGroupsService", "StructTypeRequest", "UntrackedRequest",
-		"UpdateCommentRequest", "UpdateRunnerGroupRequest", "ValueTypeRequest",
+		"OneOfRequest", "RunnerGroupsService", "SharedRequest", "StructTypeRequest",
+		"UntrackedRequest", "UpdateCommentRequest", "UpdateRunnerGroupRequest",
+		"ValueTypeRequest",
 	}, names)
 
 	si := info.structs["CreateRunnerGroupRequest"]

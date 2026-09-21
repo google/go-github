@@ -33880,7 +33880,10 @@ func TestOIDCSubjectClaimCustomTemplate_GetSubClaimPrefix(tt *testing.T) {
 
 func TestOIDCSubjectClaimCustomTemplate_GetUseDefault(tt *testing.T) {
 	tt.Parallel()
-	o := &OIDCSubjectClaimCustomTemplate{}
+	var zeroValue bool
+	o := &OIDCSubjectClaimCustomTemplate{UseDefault: &zeroValue}
+	o.GetUseDefault()
+	o = &OIDCSubjectClaimCustomTemplate{}
 	o.GetUseDefault()
 	o = nil
 	o.GetUseDefault()

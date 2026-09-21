@@ -31,6 +31,8 @@ WARN  github/runner_groups.go:41: ValueTypeRequest.Count: "count" is optional in
 WARN  github/runner_groups.go:47: StructTypeRequest.Inner: "inner" is optional in the schema, but the Go field is a value type, so it is always sent: make it a pointer with omitempty
 ERROR github/runner_groups.go:71: OneOfRequest.KindTag: schema REQUIRES "kind_tag" in all 1 of its operation(s), but omitempty makes it omittable, so it can be sent as absent
 ERROR github/runner_groups.go:78: MissingRequest.required_thing: schema REQUIRES property "required_thing" but the Go struct has no field with that JSON name
+ERROR github/runner_groups.go:88: SharedRequest.Name: schema REQUIRES "name" in 1 of the 2 operations that send this struct, which do not all agree, but omitempty makes it omittable, so it can be sent as absent
+ERROR github/runner_groups.go:92: SharedRequest.Code: schema REQUIRES "code" in 1 of the 2 operations that send this struct, which do not all agree, but omitempty makes it omittable, so it can be sent as absent
 `
 
 // fixtureGoMod makes a copy of the fixture a buildable module, which is what -fix compiles to
@@ -71,10 +73,10 @@ func TestCheck(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected an error for the fixture findings")
 	}
-	assertContains(t, err.Error(), "4 schema field issue(s) found")
+	assertContains(t, err.Error(), "6 schema field issue(s) found")
 	assertEqual(t, wantFindings, stdout)
-	assertContains(t, stderr, "checked 12 body structs: 13 resolved operation uses, 1 uses with no JSON request body")
-	assertContains(t, stderr, "9 findings (9 shown, 4 errors, 3 repairable by -fix)")
+	assertContains(t, stderr, "checked 13 body structs: 15 resolved operation uses, 1 uses with no JSON request body")
+	assertContains(t, stderr, "11 findings (11 shown, 6 errors, 3 repairable by -fix)")
 	assertContains(t, stderr, "1 conditionally required, left alone")
 }
 
@@ -88,7 +90,7 @@ func TestCheckMinSeverity(t *testing.T) {
 		t.Errorf("warnings were reported at -min-severity=error:\n%v", stdout)
 	}
 	assertContains(t, stdout, "CreateRunnerGroupRequest.Name")
-	assertContains(t, stderr, "9 findings (4 shown, 4 errors")
+	assertContains(t, stderr, "11 findings (6 shown, 6 errors")
 }
 
 func TestCheckGithubFormat(t *testing.T) {
@@ -198,6 +200,8 @@ CreateRunnerGroupRequest.Name
 CreateRunnerGroupRequest.SelectedRepositoryIDs
 MissingRequest.required_thing
 OneOfRequest.KindTag
+SharedRequest.Code
+SharedRequest.Name
 StructTypeRequest.Inner
 UpdateRunnerGroupRequest.Name
 ValueTypeRequest.Count
@@ -213,7 +217,7 @@ func TestWriteExceptions(t *testing.T) {
 	// clean and can be used to set a baseline.
 	_, stderr, err := runIn(t, dir, "-exceptions", exceptions, "-write-exceptions")
 	assertNilError(t, err)
-	assertContains(t, stderr, "wrote 9 exception(s)")
+	assertContains(t, stderr, "wrote 11 exception(s)")
 
 	data, readErr := os.ReadFile(exceptions)
 	assertNilError(t, readErr)
@@ -223,9 +227,9 @@ func TestWriteExceptions(t *testing.T) {
 // TestFix repairs the fixture and compares each rewritten file with its golden copy.
 //
 // -fix repairs the findings that fail the check, so it rewrites only the three errors that
-// can be repaired mechanically, and leaves the four warnings and the error that no repair
-// can express alone. Two of the repairs change a field type, so it repairs the call sites
-// that the compiler then reports as well.
+// can be repaired mechanically, and leaves the five warnings, the error that no repair can
+// express, and the two errors on a struct whose operations disagree alone. Two of the repairs
+// change a field type, so it repairs the call sites that the compiler then reports as well.
 func TestFix(t *testing.T) {
 	t.Parallel()
 	dir := t.TempDir()
@@ -239,7 +243,11 @@ func TestFix(t *testing.T) {
 	assertContains(t, stderr, "planned call site repairs (3):")
 	assertContains(t, stderr, `repaired 3 call site(s) in 1 Go file(s)`)
 	assertContains(t, stderr, "repaired 3 finding(s) in 1 Go file(s)")
-	assertContains(t, stderr, "6 finding(s) remain, 0 of them repairable by -fix")
+	assertContains(t, stderr, "8 finding(s) remain, 0 of them repairable by -fix")
+	// The fields of the struct that two operations send with schemas that disagree stay as
+	// they are, even though nothing grandfathers them: -fix neither plans nor notes a repair
+	// for them.
+	assertNotContains(t, stderr, "SharedRequest")
 
 	checkFileGolden(t, fixedFixtureGolden, dir, "github/runner_groups.go")
 	checkFileGolden(t, fixedFixtureGolden, dir, "github/runner_groups_callers.go")
@@ -315,16 +323,18 @@ ValueTypeRequest.Count
 	mustWriteFile(t, exceptions, grandfathered)
 
 	_, stderr, err := runIn(t, dir, "-exceptions", exceptions, "-fix")
-	// The error that no repair can express is not grandfathered, so the run still fails.
+	// The three errors that no repair can express are not grandfathered, so the run still
+	// fails: the required property the struct cannot supply, and the two fields of the
+	// struct whose operations disagree about them.
 	if err == nil {
-		t.Fatal("expected an error for the error that cannot be repaired")
+		t.Fatal("expected an error for the errors that cannot be repaired")
 	}
-	assertContains(t, err.Error(), "1 schema field issue(s) found")
+	assertContains(t, err.Error(), "3 schema field issue(s) found")
 	assertContains(t, stderr, "planned repairs (3):")
 	assertContains(t, stderr, "planned call site repairs (3):")
 	assertContains(t, stderr, `repaired 3 call site(s) in 1 Go file(s)`)
 	assertContains(t, stderr, "repaired 3 finding(s) in 1 Go file(s)")
-	assertContains(t, stderr, "6 finding(s) remain, 0 of them repairable by -fix")
+	assertContains(t, stderr, "8 finding(s) remain, 0 of them repairable by -fix")
 
 	// The repaired errors had no entries, and the warnings still have findings, so the
 	// exceptions file keeps every line it had.
@@ -431,6 +441,13 @@ func assertContains(t *testing.T, haystack, needle string) {
 	t.Helper()
 	if !strings.Contains(haystack, needle) {
 		t.Errorf("missing %q in:\n%v", needle, haystack)
+	}
+}
+
+func assertNotContains(t *testing.T, haystack, needle string) {
+	t.Helper()
+	if strings.Contains(haystack, needle) {
+		t.Errorf("%q unexpectedly found in:\n%v", needle, haystack)
 	}
 }
 

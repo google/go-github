@@ -722,6 +722,15 @@ obsolete, and `-fix` removes it, so the file can only shrink. Because an entry
 also says that the field should be left alone, `-fix` will not repair a field
 that the file names.
 
+A struct can be the request body of more than one operation, and those
+operations can disagree: one schema can require a property that another does
+not have at all, or holds as `readOnly`, which is never sent. No one Go field
+suits both, because making the field mandatory would start sending a property
+that the other operation does not accept. `-fix` therefore rewrites a field
+only when every operation that sends the struct agrees about it, and reports
+the ones that do not for you to settle. An entry in `exceptions.txt` is how
+that decision is recorded.
+
 [OpenAPI descriptions of their API]: https://github.com/github/rest-api-description
 
 ## Scripts

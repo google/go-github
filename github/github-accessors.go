@@ -27118,12 +27118,12 @@ func (o *OIDCSubjectClaimCustomTemplate) GetSubClaimPrefix() string {
 	return *o.SubClaimPrefix
 }
 
-// GetUseDefault returns the UseDefault field.
+// GetUseDefault returns the UseDefault field if it's non-nil, zero value otherwise.
 func (o *OIDCSubjectClaimCustomTemplate) GetUseDefault() bool {
-	if o == nil {
+	if o == nil || o.UseDefault == nil {
 		return false
 	}
-	return o.UseDefault
+	return *o.UseDefault
 }
 
 // GetUseImmutableSubject returns the UseImmutableSubject field if it's non-nil, zero value otherwise.

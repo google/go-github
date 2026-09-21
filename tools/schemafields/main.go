@@ -32,6 +32,12 @@
 // repair a grandfathered field, delete its line first, or pass "-exceptions /dev/null" to
 // treat every finding as new.
 //
+// A struct can be the request body of more than one operation. -fix rewrites a field only
+// when every one of those operations has the property, because a repair that suits one of
+// them would make a property that another does not have always sent. When their schemas
+// disagree the finding is reported for a human to settle, and the exceptions file is where
+// that decision is recorded.
+//
 // A repaired field whose type changes between a value and a pointer leaves the callers that
 // still build it with the old type unable to compile. -fix therefore compiles the checkout
 // after it writes the repairs, and rewrites those call sites from what the compiler reports:
@@ -215,9 +221,9 @@ func run(stdout, stderr io.Writer, args []string) error {
 }
 
 // fixCandidates returns the findings that -fix rewrites.
-func fixCandidates(diags []*diagnostic, exc *exceptions) []*diagnostic {
+func (c *checker) fixCandidates(exc *exceptions) []*diagnostic {
 	var out []*diagnostic
-	for _, d := range diags {
+	for _, d := range c.diags {
 		switch {
 		case d.sev != sevError:
 			// A warning is advisory, so it is reported for a human to decide about.
@@ -225,6 +231,11 @@ func fixCandidates(diags []*diagnostic, exc *exceptions) []*diagnostic {
 			// Nothing can be done mechanically; the summary counts these.
 		case exc.suppress(d.key()):
 			// The exceptions file records a decision to leave this field alone.
+		case !c.agrees(d):
+			// A struct can be the body of more than one operation, and their
+			// schemas can disagree about the field. A repair that suits the
+			// operation the finding came from would then contradict another, so
+			// this one is reported for a human to decide about instead.
 		default:
 			out = append(out, d)
 		}
@@ -236,7 +247,7 @@ func fixCandidates(diags []*diagnostic, exc *exceptions) []*diagnostic {
 // repairs invalidate, re-checks the result, and drops the exceptions that the repairs made
 // obsolete.
 func fixAll(c *checker, exc *exceptions, o *options, stderr io.Writer) error {
-	planned := fixCandidates(c.diags, exc)
+	planned := c.fixCandidates(exc)
 	// The type changes have to be read from the sources before the repairs are written.
 	changes := typeChanges(o.repo, planned)
 	if len(planned) == 0 {
@@ -272,7 +283,7 @@ func fixAll(c *checker, exc *exceptions, o *options, stderr io.Writer) error {
 	c.run()
 	if len(planned) > 0 {
 		fmt.Fprintf(stderr, "repaired %v finding(s) in %v Go file(s); %v finding(s) remain, %v of them repairable by -fix\n",
-			fixed, written, len(c.diags), len(fixCandidates(c.diags, exc)))
+			fixed, written, len(c.diags), len(c.fixCandidates(exc)))
 	}
 
 	obsolete := exc.obsolete(c.diags)
@@ -351,7 +362,7 @@ func printSummary(w io.Writer, c *checker, o *options, shown, errored int, exc *
 		s.structsChecked, s.usesResolved, s.usesNoSchema)
 	fmt.Fprintf(w, "fields checked: %v (%v conditionally required, left alone)\n", s.fieldsChecked, s.fieldsConditional)
 	fmt.Fprintf(w, "%v findings (%v shown, %v errors, %v repairable by -fix)\n",
-		len(c.diags), shown, errored, len(fixCandidates(c.diags, exc)))
+		len(c.diags), shown, errored, len(c.fixCandidates(exc)))
 
 	rules := make([]string, 0, len(c.byRule))
 	for rule := range c.byRule {

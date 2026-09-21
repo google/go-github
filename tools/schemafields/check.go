@@ -109,7 +109,11 @@ type checker struct {
 	diags       []*diagnostic
 	byRule      map[string]int
 	unannotated []*methodInfo
-	stats       stats
+	// usesByStruct maps each request body struct to the operations that send it, in the
+	// order they were found. A struct can be the body of more than one operation, so a
+	// finding is only safe to repair when those operations agree about the field.
+	usesByStruct map[string][]*structUse
+	stats        stats
 }
 
 func (c *checker) add(d *diagnostic) {
@@ -125,7 +129,7 @@ func (c *checker) run() {
 	c.byRule = map[string]int{}
 	c.stats = stats{files: c.info.files}
 
-	usesByStruct := map[string][]*structUse{}
+	c.usesByStruct = map[string][]*structUse{}
 	seenUse := map[string]bool{}
 
 	for _, m := range c.info.methods {
@@ -165,18 +169,18 @@ func (c *checker) run() {
 			}
 			seenUse[key] = true
 			c.stats.usesResolved++
-			usesByStruct[si.name] = append(usesByStruct[si.name], &structUse{op: op, schema: schema})
+			c.usesByStruct[si.name] = append(c.usesByStruct[si.name], &structUse{op: op, schema: schema})
 		}
 	}
 
-	names := make([]string, 0, len(usesByStruct))
-	for n := range usesByStruct {
+	names := make([]string, 0, len(c.usesByStruct))
+	for n := range c.usesByStruct {
 		names = append(names, n)
 	}
 	slices.Sort(names)
 	for _, name := range names {
 		c.stats.structsChecked++
-		c.checkStruct(c.info.structs[name], usesByStruct[name])
+		c.checkStruct(c.info.structs[name], c.usesByStruct[name])
 	}
 
 	slices.SortStableFunc(c.diags, func(a, b *diagnostic) int {
@@ -227,7 +231,7 @@ func (c *checker) checkStruct(si *structInfo, uses []*structUse) {
 
 		switch required {
 		case checkable:
-			c.checkRequired(f, si, checkable, nullable)
+			c.checkRequired(f, si, checkable, len(uses), nullable)
 		case 0:
 			c.checkOptional(f, si)
 		default:
@@ -248,25 +252,55 @@ func (c *checker) checkStruct(si *structInfo, uses []*structUse) {
 	}
 }
 
-// checkRequired reports a required property that the Go field can leave out.
-func (c *checker) checkRequired(f *fieldInfo, si *structInfo, uses int, nullable bool) {
+// checkRequired reports a required property that the Go field can leave out. required counts
+// the operations whose schema requires the property, and total the operations that send the
+// struct: they differ when the other operations' schemas do not have the property, or hold it
+// readOnly, so no one Go field can suit them all and -fix leaves the field alone.
+func (c *checker) checkRequired(f *fieldInfo, si *structInfo, required, total int, nullable bool) {
+	in := fmt.Sprintf("in all %v of its operation(s)", total)
+	if required != total {
+		in = fmt.Sprintf("in %v of the %v operations that send this struct, which do not all agree", required, total)
+	}
 	switch {
 	case f.hasOmit:
 		action := &fixAction{unomit: true, unwrap: f.isPointer && !nullable}
 		c.add(&diagnostic{
 			sev: sevError, rule: ruleRequiredOmit, file: f.file, line: f.line,
 			owner: si.name, field: f.goName, info: f, action: action,
-			message: fmt.Sprintf("schema REQUIRES %q in all %v of its operation(s), but %v makes it omittable, so it can be sent as absent",
-				f.jsonName, uses, f.omitOption()),
+			message: fmt.Sprintf("schema REQUIRES %q %v, but %v makes it omittable, so it can be sent as absent",
+				f.jsonName, in, f.omitOption()),
 		})
 	case f.isPointer && !nullable:
 		c.add(&diagnostic{
 			sev: sevError, rule: ruleRequiredPointer, file: f.file, line: f.line,
 			owner: si.name, field: f.goName, info: f, action: &fixAction{unwrap: true},
-			message: fmt.Sprintf("schema REQUIRES %q and does not allow null in all %v of its operation(s), but the Go field is a pointer, so a nil value is sent as null",
-				f.jsonName, uses),
+			message: fmt.Sprintf("schema REQUIRES %q and does not allow null %v, but the Go field is a pointer, so a nil value is sent as null",
+				f.jsonName, in),
 		})
 	}
+}
+
+// agrees reports whether every operation that sends the struct of d agrees about the field, so
+// that one Go field can suit all of them. An operation disagrees when its schema does not have
+// the property, or holds it readOnly, which is never sent: making the Go field mandatory would
+// start sending a property that operation does not accept, so the finding is reported for a
+// human to settle and -fix leaves it alone.
+//
+// Only this kind of disagreement leaves a repair free to contradict another operation. The
+// checker settles the other two before it reports a finding: required by some operations and
+// optional in others is left to author judgement, and a property that any operation allows to
+// be null keeps its pointer, so the repair never unwraps one.
+func (c *checker) agrees(d *diagnostic) bool {
+	uses := c.usesByStruct[d.owner]
+	if d.info == nil || len(uses) < 2 {
+		return true // One operation cannot disagree with itself.
+	}
+	for _, u := range uses {
+		if meta, ok := u.schema.props[d.info.jsonName]; !ok || meta.readOnly {
+			return false
+		}
+	}
+	return true
 }
 
 // checkOptional reports an optional property that the Go field cannot leave out, or that it

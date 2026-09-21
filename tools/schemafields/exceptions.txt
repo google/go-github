@@ -33,6 +33,7 @@ CustomProperty.SourceType
 CustomProperty.URL
 IDPGroupList.Groups
 OIDCSubjectClaimCustomTemplate.SubClaimPrefix
+OIDCSubjectClaimCustomTemplate.UseDefault
 RepositoryRuleset.CreatedAt
 RepositoryRuleset.CurrentUserCanBypass
 RepositoryRuleset.ID

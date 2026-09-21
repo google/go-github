@@ -80,6 +80,18 @@ type MissingRequest struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// SharedRequest is the body of two operations whose schemas disagree about it, so no one Go
+// field can suit both and -fix leaves the fields alone.
+type SharedRequest struct {
+	// Name is required by the repository operation, and not in the organization
+	// operation's schema at all.
+	Name *string `json:"name,omitempty"`
+
+	// Code is required by the repository operation, and readOnly in the organization
+	// operation's schema, which never sends it.
+	Code *string `json:"code,omitempty"`
+}
+
 //meta:operation POST /orgs/{org}/actions/runner-groups
 func (s *RunnerGroupsService) CreateRunnerGroup(body CreateRunnerGroupRequest) error { return nil }
 
@@ -103,3 +115,9 @@ func (s *RunnerGroupsService) OneOf(body OneOfRequest) error { return nil }
 
 //meta:operation POST /orgs/{org}/missing
 func (s *RunnerGroupsService) Missing(body MissingRequest) error { return nil }
+
+//meta:operation POST /orgs/{org}/shared
+func (s *RunnerGroupsService) CreateShared(body SharedRequest) error { return nil }
+
+//meta:operation PATCH /repos/{owner}/{repo}/shared
+func (s *RunnerGroupsService) UpdateShared(body SharedRequest) error { return nil }
