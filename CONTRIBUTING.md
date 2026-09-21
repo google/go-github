@@ -66,8 +66,8 @@ file.
 
 4. Run `script/fmt.sh`, `script/test.sh` and `script/lint.sh` to format your code and
    check that it passes all tests and linters. `script/lint.sh` may also tell you
-   that generated files need to be updated. If so, run `script/generate.sh` to
-   update them.
+   that the generated files or the linter exceptions in `.golangci.yml` need to be
+   updated. If so, run `script/generate.sh` to update them.
 
 5. Do your best to have [well-formed commit messages][] for each change. This
    provides consistency throughout the project, and ensures that commit messages
@@ -655,7 +655,8 @@ Its subcommands are:
   It is used by `script/generate.sh`.
 
 - `format` - formats white space in `openapi_operations.yaml` and sorts its
-  arrays. It is used by `script/fmt.sh`.
+  arrays. It is not needed after `update-openapi`, which writes the file the
+  same way.
 
 - `unused` - lists operations from `openapi_operations.yaml` that are not mapped
   from any methods.
@@ -705,10 +706,11 @@ The `script` directory has shell scripts that help with common development
 tasks:
 
 - `script/fmt.sh` formats all Go code in the repository.
-- `script/generate.sh` runs code generators and `go mod tidy` on all modules. With `--check` it checks that the generated files are current.
-- `script/lint.sh` runs linters, checks request body fields against the OpenAPI schemas, and checks generated files are current.
+- `script/generate.sh` runs code generators and `go mod tidy` on all modules, and keeps the `structfield` linter exceptions in `.golangci.yml` up to date. With `--check` it verifies all three without writing anything.
+- `script/lint.sh` runs linters, checks request body fields against the OpenAPI schemas, and checks generated files and linter exceptions are current.
 - `script/metadata.sh` runs `tools/metadata`. See the [Metadata](#metadata) section for more information.
 - `script/check-schema-fields.sh` runs `tools/schemafields`. See the [tools/schemafields](#toolsschemafields) section for more information.
+- `script/run-check-structfield-settings.sh` reports the `structfield` linter exceptions in `.golangci.yml` that are no longer needed or are listed twice, and fails if there are any; with `-fix` it removes them instead.
 - `script/test.sh` runs tests on all modules.
 
 ## Maintainer's Guide
