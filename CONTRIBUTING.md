@@ -413,15 +413,15 @@ type RepositoryRuleset struct {
 }
 ```
 
-For optional primitive fields where the zero value has API semantics, use a
-pointer with `omitempty`. A nil pointer omits the field, while a pointer to the
-zero value includes it, such as `false`, `0`, or `""`.
+Optional pointer fields should use `omitempty`: a nil pointer omits the field,
+while a pointer to a zero value such as `false`, `0`, or `""` includes it.
+`omitzero` behaves identically for pointers, so prefer `omitempty`.
 
-Neither `omitempty` nor `omitzero` makes a pointer to a zero value encode as
-JSON `null`. When an update must distinguish omission, assignment, and explicit
-removal using `null`, follow `UpdateTeamRequest.RemoveParentTeam`: add a Go-only
-removal flag and a value-receiver `MarshalJSON` method. This supports marshaling
-both request values and pointers without changing the request.
+Neither tag can send JSON `null`, so an update that must distinguish omission,
+assignment, and removal follows `UpdateTeamRequest.RemoveParentTeam` in
+`github/teams.go`: a Go-only removal flag tagged `json:"-"`, plus a
+value-receiver `MarshalJSON` that also serves `*T` call sites. `new("")` sends
+an empty string, not `null`.
 
 #### Response Bodies
 
