@@ -97,6 +97,24 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#remove-selected-repository-from-an-organization-secret
   - name: PUT /orgs/{org}/agents/secrets/{secret_name}/repositories/{repository_id}
     documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#add-selected-repository-to-an-organization-secret
+  - name: GET /orgs/{org}/agents/variables
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#list-organization-variables
+  - name: POST /orgs/{org}/agents/variables
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#create-an-organization-variable
+  - name: DELETE /orgs/{org}/agents/variables/{name}
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#delete-an-organization-variable
+  - name: GET /orgs/{org}/agents/variables/{name}
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#get-an-organization-variable
+  - name: PATCH /orgs/{org}/agents/variables/{name}
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#update-an-organization-variable
+  - name: GET /orgs/{org}/agents/variables/{name}/repositories
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#list-selected-repositories-for-an-organization-variable
+  - name: PUT /orgs/{org}/agents/variables/{name}/repositories
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#set-selected-repositories-for-an-organization-variable
+  - name: DELETE /orgs/{org}/agents/variables/{name}/repositories/{repository_id}
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#remove-selected-repository-from-an-organization-variable
+  - name: PUT /orgs/{org}/agents/variables/{name}/repositories/{repository_id}
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#add-selected-repository-to-an-organization-variable
   - name: GET /orgs/{org}/private-registries
     documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#list-private-registries-for-an-organization
   - name: POST /orgs/{org}/private-registries
@@ -121,6 +139,18 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#get-a-repository-secret
   - name: PUT /repos/{owner}/{repo}/agents/secrets/{secret_name}
     documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#create-or-update-a-repository-secret
+  - name: GET /repos/{owner}/{repo}/agents/organization-variables
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#list-repository-organization-variables
+  - name: GET /repos/{owner}/{repo}/agents/variables
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#list-repository-variables
+  - name: POST /repos/{owner}/{repo}/agents/variables
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#create-a-repository-variable
+  - name: DELETE /repos/{owner}/{repo}/agents/variables/{name}
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#delete-a-repository-variable
+  - name: GET /repos/{owner}/{repo}/agents/variables/{name}
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#get-a-repository-variable
+  - name: PATCH /repos/{owner}/{repo}/agents/variables/{name}
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#update-a-repository-variable
   - name: DELETE /repos/{owner}/{repo}/pages
     documentation_url: https://docs.github.com/rest/pages/pages#delete-a-github-pages-site
   - name: GET /repos/{owner}/{repo}/pages
