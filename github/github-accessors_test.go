@@ -49222,6 +49222,17 @@ func TestRepoStatus_GetNodeID(tt *testing.T) {
 	r.GetNodeID()
 }
 
+func TestRepoStatus_GetRequired(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepoStatus{Required: &zeroValue}
+	r.GetRequired()
+	r = &RepoStatus{}
+	r.GetRequired()
+	r = nil
+	r.GetRequired()
+}
+
 func TestRepoStatus_GetState(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
