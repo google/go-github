@@ -256,6 +256,49 @@ func TestFix(t *testing.T) {
 	assertSameAsFixture(t, dir, "github/enterprise.go", "github/issues.go")
 }
 
+// TestFixWithDefaultRepo checks that -fix finds the call sites when -repo is left at its
+// default, ".", which is how script/check-schema-fields.sh runs it. A checkout named "." has to
+// reach the module walk that decides which modules to compile: when it does not, no call site is
+// repaired, and the run reports the finding as repaired all the same, leaving a tree that no
+// longer builds.
+//
+// The test changes the working directory, which the testing package allows only when no other
+// test runs beside it, and the others resolve the fixture's descriptions relative to it.
+//
+//nolint:paralleltest // cannot use t.Parallel() when the test calls t.Chdir
+func TestFixWithDefaultRepo(t *testing.T) {
+	dir := t.TempDir()
+	copyFixture(t, dir)
+	// The descriptions are resolved against the working directory, which the test changes.
+	descriptions := absolutePaths(t, fixtureDescriptions)
+	t.Chdir(dir)
+
+	var stdout, stderr bytes.Buffer
+	err := run(&stdout, &stderr, []string{"-descriptions", descriptions, "-fix"})
+	if err == nil {
+		t.Fatal("expected an error for the finding that cannot be repaired")
+	}
+	assertContains(t, stderr.String(), "planned call site repairs (3):")
+	assertContains(t, stderr.String(), `repaired 3 call site(s) in 1 Go file(s)`)
+	assertNotContains(t, stderr.String(), "not checked:")
+
+	checkFileGolden(t, fixedFixtureGolden, dir, "github/runner_groups.go")
+	checkFileGolden(t, fixedFixtureGolden, dir, "github/runner_groups_callers.go")
+}
+
+// absolutePaths returns a comma-separated flag value with each path made absolute, for a test
+// that changes the working directory and so can no longer resolve them relative to it.
+func absolutePaths(t *testing.T, value string) string {
+	t.Helper()
+	wd, err := os.Getwd()
+	assertNilError(t, err)
+	paths := strings.Split(value, ",")
+	for i, path := range paths {
+		paths[i] = filepath.Join(wd, filepath.FromSlash(path))
+	}
+	return strings.Join(paths, ",")
+}
+
 // TestFixReportsCallSitesItCannotRepair checks that a call site which the change breaks and
 // which no mechanical repair can express is reported, rather than left in a tree that no
 // longer compiles.

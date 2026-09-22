@@ -104,6 +104,15 @@ func parseFlags(stderr io.Writer, args []string) (*options, error) {
 	if err := fs.Parse(args); err != nil {
 		return nil, err
 	}
+	// The checkout path is compared with the paths of the files under it by prefix, and
+	// filepath.Join drops the leading "./" of a checkout named ".", so the two spellings would
+	// never match and -fix would find no module to compile for the call sites of a changed field
+	// type. Making the path absolute once, here, keeps them equal.
+	abs, err := filepath.Abs(o.repo)
+	if err != nil {
+		return nil, err
+	}
+	o.repo = abs
 	if o.format != "text" && o.format != "github" {
 		return nil, fmt.Errorf("unknown -format %q", o.format)
 	}
@@ -314,6 +323,11 @@ func repairCallSites(changes []*typeChange, o *options, stderr io.Writer) (int, 
 	}
 	dirs := modulesToCheck(o.repo, changed)
 	if len(dirs) == 0 {
+		// Nothing to compile, so no call site can be found. Say so rather than report the
+		// finding as repaired: the repairs are written either way, and the tree they were
+		// written to may no longer build.
+		fmt.Fprintf(stderr, "not checked: no module found for %v, so the call sites that the changed field types break were not repaired\n",
+			strings.Join(changed, ", "))
 		return 0, nil
 	}
 	fixed, written, err := fixCallSites(context.Background(), o.repo, changes, dirs, stderr)
