@@ -15,7 +15,9 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/google/go-github/v91/github"
@@ -107,15 +109,42 @@ func main() {
 
 	var b *bundle.Bundle
 	for _, attestation := range attestations.Attestations {
-		if err := json.Unmarshal(attestation.Bundle, &b); err != nil {
+		bundleJSON, err := getAttestationBundle(ctx, attestation)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if err := json.Unmarshal(bundleJSON, &b); err != nil {
 			log.Fatal(err)
 		}
 
-		err := runVerification(sev, pb, b)
+		err = runVerification(sev, pb, b)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
+}
+
+func getAttestationBundle(ctx context.Context, attestation *github.Attestation) ([]byte, error) {
+	if attestation.BundleURL != nil {
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, *attestation.BundleURL, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create bundle request: %w", err)
+		}
+
+		resp, err := http.DefaultClient.Do(req)
+		if err != nil {
+			return nil, fmt.Errorf("failed to fetch attestation bundle: %w", err)
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != http.StatusOK {
+			return nil, fmt.Errorf("failed to fetch attestation bundle: %s", resp.Status)
+		}
+		return io.ReadAll(resp.Body)
+	}
+
+	// Bundle is retained for responses from older GitHub API versions and GHES.
+	return attestation.Bundle, nil //nolint:staticcheck
 }
 
 func getTrustedMaterial() (root.TrustedMaterialCollection, error) {
