@@ -126,7 +126,7 @@ func main() {
 
 func getAttestationBundle(ctx context.Context, attestation *github.Attestation) ([]byte, error) {
 	if attestation.BundleURL != nil {
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, *attestation.BundleURL, nil)
+		req, err := http.NewRequestWithContext(ctx, "GET", *attestation.BundleURL, nil)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create bundle request: %w", err)
 		}
