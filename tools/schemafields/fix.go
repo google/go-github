@@ -13,6 +13,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strings"
 )
 
 // fixAction says how a finding is repaired. The checker decides, because only it knows
@@ -22,6 +23,24 @@ type fixAction struct {
 	unwrap      bool   // Replace a pointer type with the type it points at.
 	addOmit     string // Add "omitempty" or "omitzero" to the json tag.
 	makePointer bool   // Replace a value type with a pointer to it.
+}
+
+// String describes the repair, for the plan that -fix prints before it writes anything.
+func (a *fixAction) String() string {
+	var parts []string
+	if a.unomit {
+		parts = append(parts, "remove the omit option from the json tag")
+	}
+	if a.unwrap {
+		parts = append(parts, "replace the pointer type with the type it points at")
+	}
+	if a.makePointer {
+		parts = append(parts, "make the field a pointer")
+	}
+	if a.addOmit != "" {
+		parts = append(parts, "add "+a.addOmit+" to the json tag")
+	}
+	return strings.Join(parts, "; ")
 }
 
 // edit is a byte-range replacement within a Go source file.
@@ -100,10 +119,35 @@ func applyEdits(src []byte, edits []*edit) ([]byte, error) {
 	return out, nil
 }
 
+// writeEdits writes the edits to the file at path, formatted as go/format formats it. The edits
+// must not overlap.
+func writeEdits(path string, src []byte, edits []*edit) error {
+	edited, err := applyEdits(src, edits)
+	if err != nil {
+		return err
+	}
+	formatted, err := format.Source(edited)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(path, formatted, 0o600)
+}
+
+// fileError names a file and why -fix could not rewrite it. The error of the call that failed
+// holds the absolute path it was given, which the note does not need: the file is already named
+// relative to the checkout.
+func fileError(file string, err error) string {
+	if pe, ok := errors.AsType[*os.PathError](err); ok {
+		return fmt.Sprintf("%v: %v", file, pe.Err)
+	}
+	return fmt.Sprintf("%v: %v", file, err)
+}
+
 // applyFixes rewrites the Go sources of the findings that can be repaired automatically.
-// It returns the number of findings repaired, the number of files rewritten, a note for each
-// finding it could not repair, and the first error that stopped a file from being written.
-func applyFixes(repo string, diags []*diagnostic) (fixed, written int, notes []string, err error) {
+// It returns the number of findings repaired, the number of files rewritten, and a note for
+// each finding, or file, it could not repair. A file that cannot be rewritten is noted rather
+// than fatal, so that it does not leave the findings in every file after it unrepaired.
+func applyFixes(repo string, diags []*diagnostic) (fixed, written int, notes []string) {
 	byFile := map[string][]*diagnostic{}
 	for _, d := range diags {
 		if d.action == nil || d.info == nil {
@@ -122,7 +166,8 @@ func applyFixes(repo string, diags []*diagnostic) (fixed, written int, notes []s
 		path := filepath.Join(repo, file)
 		src, err := os.ReadFile(path)
 		if err != nil {
-			return fixed, written, notes, err
+			notes = append(notes, fileError(file, err))
+			continue
 		}
 		var edits []*edit
 		var repaired []*diagnostic
@@ -138,32 +183,13 @@ func applyFixes(repo string, diags []*diagnostic) (fixed, written int, notes []s
 		if len(edits) == 0 {
 			continue
 		}
-		edited, err := applyEdits(src, edits)
-		if err != nil {
-			return fixed, written, notes, fmt.Errorf("%v: %w", file, err)
-		}
-		formatted, err := format.Source(edited)
-		if err != nil {
-			return fixed, written, notes, fmt.Errorf("%v: %w", file, err)
-		}
-		if err := os.WriteFile(path, formatted, 0o600); err != nil {
-			return fixed, written, notes, err
+		if err := writeEdits(path, src, edits); err != nil {
+			notes = append(notes, fileError(file, err))
+			continue
 		}
 		fixed += len(repaired)
 		written++
 	}
 	slices.Sort(notes)
-	return fixed, written, notes, nil
-}
-
-// unrepaired counts the findings that -fix cannot repair, so that they are never silently
-// dropped.
-func unrepaired(diags []*diagnostic) int {
-	n := 0
-	for _, d := range diags {
-		if d.action == nil || d.info == nil {
-			n++
-		}
-	}
-	return n
+	return fixed, written, notes
 }

@@ -65,11 +65,11 @@ type description struct {
 	// natural thing to do with 36 MB of schemas.
 	mu      sync.Mutex
 	opCache map[string]*flat
-	opMiss  map[string]bool
+	opMiss  map[string]bodyReason
 }
 
 func newDescription() *description {
-	return &description{opCache: map[string]*flat{}, opMiss: map[string]bool{}}
+	return &description{opCache: map[string]*flat{}, opMiss: map[string]bodyReason{}}
 }
 
 // loadDescriptionFile reads one OpenAPI description file.
@@ -214,9 +214,26 @@ func (d *description) flatten(s *schema, visiting map[string]bool) (*flat, error
 	return out, nil
 }
 
-// requestSchema returns the application/json request body schema for an operation. ok is
-// false when the operation has no JSON object request body.
-func (d *description) requestSchema(op *opRef) (*flat, bool, error) {
+// bodyReason says why an operation has, or has not, a request body schema to check the fields
+// of a request body struct against. The two ways of having none are worth keeping apart: a
+// newer pinned revision can check one of them, and nothing can check the other.
+type bodyReason int
+
+const (
+	// bodyFound: the operation's application/json request body schema is available.
+	bodyFound bodyReason = iota
+	// bodyNotInPlan: the descriptions do not document the operation at all, which is what a
+	// pinned revision older than the operation looks like. Advancing the pin in
+	// openapi_operations.yaml makes it checkable.
+	bodyNotInPlan
+	// bodyNoJSONBody: the operation is documented but has no application/json object request
+	// body, so it has no fields to check.
+	bodyNoJSONBody
+)
+
+// requestSchema returns the application/json request body schema for an operation. reason says
+// why there is none when there is none, and is bodyFound exactly when a schema is returned.
+func (d *description) requestSchema(op *opRef) (*flat, bodyReason, error) {
 	// The caches are written below, so the lookup holds the lock throughout.
 	// requestSchema does not call itself, so a plain mutex cannot deadlock.
 	d.mu.Lock()
@@ -224,44 +241,44 @@ func (d *description) requestSchema(op *opRef) (*flat, bool, error) {
 
 	key := op.String()
 	if f, ok := d.opCache[key]; ok {
-		return f, true, nil
+		return f, bodyFound, nil
 	}
-	if d.opMiss[key] {
-		return nil, false, nil
+	if reason, ok := d.opMiss[key]; ok {
+		return nil, reason, nil
 	}
 	item, ok := d.Paths[op.path]
 	if !ok {
-		d.opMiss[key] = true
-		return nil, false, nil
+		d.opMiss[key] = bodyNotInPlan
+		return nil, bodyNotInPlan, nil
 	}
 	raw, ok := item[strings.ToLower(op.method)]
 	if !ok {
-		d.opMiss[key] = true
-		return nil, false, nil
+		d.opMiss[key] = bodyNotInPlan
+		return nil, bodyNotInPlan, nil
 	}
 	var o operation
 	if err := json.Unmarshal(raw, &o); err != nil {
-		return nil, false, err
+		return nil, bodyFound, err
 	}
 	if o.RequestBody == nil {
-		d.opMiss[key] = true
-		return nil, false, nil
+		d.opMiss[key] = bodyNoJSONBody
+		return nil, bodyNoJSONBody, nil
 	}
 	mt, ok := o.RequestBody.Content["application/json"]
 	if !ok || mt.Schema == nil {
-		d.opMiss[key] = true
-		return nil, false, nil
+		d.opMiss[key] = bodyNoJSONBody
+		return nil, bodyNoJSONBody, nil
 	}
 	f, err := d.flatten(mt.Schema, map[string]bool{})
 	if err != nil {
-		return nil, false, err
+		return nil, bodyFound, err
 	}
 	if len(f.props) == 0 {
-		d.opMiss[key] = true
-		return nil, false, nil
+		d.opMiss[key] = bodyNoJSONBody
+		return nil, bodyNoJSONBody, nil
 	}
 	d.opCache[key] = f
-	return f, true, nil
+	return f, bodyFound, nil
 }
 
 // descriptions holds the OpenAPI plans in load order (api.github.com, then ghec, then
@@ -269,18 +286,25 @@ func (d *description) requestSchema(op *opRef) (*flat, bool, error) {
 type descriptions struct{ files []*description }
 
 // requestSchema returns the request body schema from the first plan that documents the
-// operation, so GHEC-only and GHES-only operations resolve as well.
-func (ds *descriptions) requestSchema(op *opRef) (*flat, bool, error) {
+// operation, so GHEC-only and GHES-only operations resolve as well. When no plan has one, it
+// reports whether any plan documents the operation at all: an operation no plan documents is
+// the one a newer pinned revision would check.
+func (ds *descriptions) requestSchema(op *opRef) (*flat, bodyReason, error) {
+	reason := bodyNotInPlan
 	for _, d := range ds.files {
-		f, ok, err := d.requestSchema(op)
+		f, r, err := d.requestSchema(op)
 		if err != nil {
-			return nil, false, err
+			return nil, bodyFound, err
 		}
-		if ok {
-			return f, true, nil
+		if f != nil {
+			return f, bodyFound, nil
+		}
+		if r == bodyNoJSONBody {
+			// The plan documents the operation, so a later plan cannot make it absent.
+			reason = bodyNoJSONBody
 		}
 	}
-	return nil, false, nil
+	return nil, reason, nil
 }
 
 // planRe matches the description paths stored in openapi_operations.yaml.
@@ -387,7 +411,46 @@ func fetchDescriptions(ctx context.Context, ref string, paths []string, cacheDir
 			return nil, err
 		}
 	}
+	// The cache is keyed by ref, so without pruning it would grow by the size of the
+	// descriptions at every revision the repository is ever pinned to.
+	pruneCache(cacheDir, ref)
 	return local, nil
+}
+
+// pruneCache drops the cached descriptions of every revision but the one in use, so that the
+// cache does not grow by the size of the descriptions at every revision the repository is ever
+// pinned to. It is best effort: a revision that cannot be removed, such as one that another run
+// has open, is left for a later run to drop.
+func pruneCache(cacheDir, inUse string) {
+	entries, err := os.ReadDir(cacheDir)
+	if err != nil {
+		return
+	}
+	for _, entry := range entries {
+		dir := filepath.Join(cacheDir, entry.Name())
+		// Only the directories this tool filled with descriptions are the cache's to remove,
+		// so a -cache-dir that holds anything else keeps it.
+		if entry.Name() == inUse || !entry.IsDir() || !holdsDescriptions(dir) {
+			continue
+		}
+		_ = os.RemoveAll(dir)
+	}
+}
+
+// holdsDescriptions reports whether dir holds a downloaded description, which is how the cache
+// tells its own directories from anything else that shares the cache directory.
+func holdsDescriptions(dir string) bool {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return false
+	}
+	for _, entry := range entries {
+		name := entry.Name()
+		if !entry.IsDir() && strings.HasPrefix(name, "descriptions_") && strings.HasSuffix(name, ".json") {
+			return true
+		}
+	}
+	return false
 }
 
 // download fetches one description file from baseURL and writes it to dest.

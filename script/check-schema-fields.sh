@@ -4,7 +4,9 @@
 #/
 #/ It reports every request body struct field whose optionality disagrees with the OpenAPI
 #/ request body schema of the operation the method is annotated with. `-fix` repairs the
-#/ findings that can be repaired automatically.
+#/ error-severity findings that the exceptions file does not grandfather, and the call sites
+#/ that a field type change leaves unable to compile, and prints the repairs it plans before
+#/ it writes them.
 
 set -e
 
