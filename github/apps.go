@@ -78,8 +78,8 @@ type InstallationTokenListRepoOptions struct {
 //
 // Permission names taken from:
 //
-//	https://docs.github.com/enterprise-server@3.0/rest/apps#create-an-installation-access-token-for-an-app
-//	https://docs.github.com/rest/apps?apiVersion=2022-11-28#create-an-installation-access-token-for-an-app
+//	https://docs.github.com/enterprise-server@3.22/rest/apps/apps#create-an-installation-access-token-for-an-app
+//	https://docs.github.com/rest/apps/apps?apiVersion=2022-11-28#create-an-installation-access-token-for-an-app
 type InstallationPermissions struct {
 	Actions                                 *string `json:"actions,omitempty"`
 	ActionsVariables                        *string `json:"actions_variables,omitempty"`
@@ -144,6 +144,7 @@ type InstallationPermissions struct {
 	OrganizationPersonalAccessTokenRequests *string `json:"organization_personal_access_token_requests,omitempty"`
 	OrganizationPlan                        *string `json:"organization_plan,omitempty"`
 	OrganizationPreReceiveHooks             *string `json:"organization_pre_receive_hooks,omitempty"`
+	OrganizationPrivateRegistries           *string `json:"organization_private_registries,omitempty"`
 	OrganizationProjects                    *string `json:"organization_projects,omitempty"`
 	OrganizationSecrets                     *string `json:"organization_secrets,omitempty"`
 	OrganizationSelfHostedRunners           *string `json:"organization_self_hosted_runners,omitempty"`
