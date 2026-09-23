@@ -97,7 +97,9 @@ type stats struct {
 	bodyPointer       int
 	structsChecked    int
 	usesResolved      int
-	usesNoSchema      int
+	usesNotInPlan     int
+	usesNoJSONBody    int
+	usesUnreadable    int
 	fieldsChecked     int
 	fieldsConditional int
 }
@@ -109,6 +111,9 @@ type checker struct {
 	diags       []*diagnostic
 	byRule      map[string]int
 	unannotated []*methodInfo
+	// unstructured are the methods whose by-value body is not a struct this repository
+	// declares, so there are no fields to check. It is only listed by -verbose.
+	unstructured []*methodInfo
 	// usesByStruct maps each request body struct to the operations that send it, in the
 	// order they were found. A struct can be the body of more than one operation, so a
 	// finding is only safe to repair when those operations agree about the field.
@@ -126,6 +131,7 @@ func (c *checker) add(d *diagnostic) {
 func (c *checker) run() {
 	c.diags = nil
 	c.unannotated = nil
+	c.unstructured = nil
 	c.byRule = map[string]int{}
 	c.stats = stats{files: c.info.files}
 
@@ -148,6 +154,10 @@ func (c *checker) run() {
 		}
 		si, ok := c.info.structs[m.bodyType]
 		if !ok {
+			// The body is not a struct this repository declares, so there are no fields to
+			// check, and nothing else can check it either. -verbose names these, and the
+			// summary leaves them out of the methods it counts.
+			c.unstructured = append(c.unstructured, m)
 			continue
 		}
 		c.stats.bodyValue++
@@ -158,9 +168,19 @@ func (c *checker) run() {
 			continue
 		}
 		for _, op := range m.ops {
-			schema, ok, err := c.d.requestSchema(op)
-			if err != nil || !ok {
-				c.stats.usesNoSchema++
+			schema, reason, err := c.d.requestSchema(op)
+			if err != nil {
+				// A description that cannot be read leaves this use unchecked, and the
+				// count of unchecked uses says so.
+				c.stats.usesUnreadable++
+				continue
+			}
+			switch reason {
+			case bodyNotInPlan:
+				c.stats.usesNotInPlan++
+				continue
+			case bodyNoJSONBody:
+				c.stats.usesNoJSONBody++
 				continue
 			}
 			key := si.name + "|" + op.String()

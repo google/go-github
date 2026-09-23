@@ -10,7 +10,6 @@ import (
 	"context"
 	"fmt"
 	"go/ast"
-	"go/format"
 	"go/parser"
 	"go/token"
 	"io"
@@ -32,11 +31,24 @@ const maxCompilePasses = 4
 // checkTimeout bounds one compiler run, so that a checkout that hangs does not hang -fix.
 const checkTimeout = 10 * time.Minute
 
+// generateTimeout bounds one run of the checkout's generator, which compiles and runs the
+// generators of every module in it and tidies their module files, so it takes longer than one
+// compiler run.
+const generateTimeout = 15 * time.Minute
+
 // structLitErrRe matches the error that the compiler reports at a struct literal that still
 // sets a field with the type the field had before -fix changed it, for example:
 //
 //	github/actions_oidc_test.go:125:21: cannot use new(false) (value of type *bool) as bool value in struct literal
 var structLitErrRe = regexp.MustCompile(`^(.+?\.go):(\d+):(\d+): cannot use .*? as (.+?) value in struct literal$`)
+
+// compilerErrRe matches the file, position and message that the compiler puts at the head of
+// every diagnostic, which is what is left of an error that is not a struct-literal error.
+var compilerErrRe = regexp.MustCompile(`^(.+?\.go):(\d+):(\d+): (.+)$`)
+
+// failedBuildRe matches the line the go command prints for a package it could not build, which
+// is how a checkout that does not build says so when the compiler named no file at all.
+var failedBuildRe = regexp.MustCompile(`^FAIL\s+(\S+)\s+\[(?:build|setup) failed\]$`)
 
 // typeChange is one field whose Go type a repair changed. The call sites that the change
 // invalidates are the struct literals that still use the old type, and the compiler names
@@ -100,6 +112,16 @@ func typeChanges(repo string, diags []*diagnostic) []*typeChange {
 	return out
 }
 
+// repoPath returns the path of a file the compiler named, relative to the repo. The compiler
+// names it relative to the module directory it ran in.
+func repoPath(repo, dir, file string) string {
+	rel, err := filepath.Rel(repo, filepath.Join(dir, filepath.FromSlash(file)))
+	if err != nil {
+		return file
+	}
+	return filepath.ToSlash(rel)
+}
+
 // compileErr is one struct-literal error from the compiler.
 type compileErr struct {
 	dir      string // the module directory the compiler ran in
@@ -111,35 +133,120 @@ type compileErr struct {
 
 // path returns the path of the failing file relative to the repo.
 func (e *compileErr) path(repo string) string {
-	rel, err := filepath.Rel(repo, filepath.Join(e.dir, filepath.FromSlash(e.file)))
-	if err != nil {
-		return e.file
-	}
-	return filepath.ToSlash(rel)
+	return repoPath(repo, e.dir, e.file)
 }
 
-// compileStructLitErrors builds each module, including its test files, and returns the
-// struct-literal errors the compiler reports, in file order. It includes test files, because
-// that is where most call sites are.
-func compileStructLitErrors(ctx context.Context, repo string, dirs []string) ([]*compileErr, error) {
-	var out []*compileErr
+// buildErr is a compiler error that -fix does not repair: a diagnostic that is not a
+// struct-literal error, or the failure line of a package that did not build at all. It says that
+// the checkout does not compile for a reason the change may or may not explain, which is why it
+// is reported rather than passed over.
+type buildErr struct {
+	dir  string // the module directory the compiler ran in
+	file string // the file as the compiler named it, relative to dir, or "" when it named none
+	line int
+	col  int
+	text string
+}
+
+// String names the error the way the compiler does, relative to the repo.
+func (e *buildErr) String(repo string) string {
+	if e.file == "" {
+		return e.text
+	}
+	return fmt.Sprintf("%v:%v:%v: %v", repoPath(repo, e.dir, e.file), e.line, e.col, e.text)
+}
+
+// compileResult is what one round of compiling the checkout reported: the struct-literal errors
+// that name a call site the change broke, and the errors that are not struct-literal errors.
+type compileResult struct {
+	lits   []*compileErr
+	others []*buildErr
+}
+
+// compileCheckout builds each module, including its test files, and returns what the compiler
+// reported. It includes test files, because that is where most call sites are.
+func compileCheckout(ctx context.Context, repo string, dirs []string) (*compileResult, error) {
+	var out compileResult
 	for _, dir := range dirs {
 		output, err := checkModule(ctx, dir)
 		if err != nil && output == "" {
 			return nil, fmt.Errorf("go test %v: %w", dir, err)
 		}
-		for line := range strings.Lines(output) {
-			if e := parseStructLitErr(dir, line); e != nil {
-				out = append(out, e)
-			}
-		}
+		parsed := parseCompilerOutput(dir, output)
+		out.lits = append(out.lits, parsed.lits...)
+		out.others = append(out.others, parsed.others...)
 	}
 	// The compiler reports a module at a time, so sort by file to keep the plan stable
 	// however the modules were ordered.
-	slices.SortStableFunc(out, func(a, b *compileErr) int {
+	slices.SortStableFunc(out.lits, func(a, b *compileErr) int {
 		return strings.Compare(a.path(repo), b.path(repo))
 	})
-	return out, nil
+	return &out, nil
+}
+
+// parseCompilerOutput parses one compiler run. A line that is not a diagnostic, such as a
+// package header or a test result, is ignored. A package that the go command reports as failed
+// without the compiler naming a file in it is reported by its failure line instead, because
+// that is all there is to say about why nothing in it could be checked: an unresolved import
+// that the module cannot supply is the usual reason, and it leaves the struct literals in that
+// package unbuilt and so unreported.
+func parseCompilerOutput(dir, output string) *compileResult {
+	var out compileResult
+	var pkg string
+	failed := map[string]string{}
+	named := map[string]bool{}
+	for line := range strings.Lines(output) {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
+		}
+		if rest, ok := strings.CutPrefix(line, "# "); ok {
+			pkg = rest
+			continue
+		}
+		if m := failedBuildRe.FindStringSubmatch(line); m != nil {
+			failed[m[1]] = line
+			continue
+		}
+		if e := parseStructLitErr(dir, line); e != nil {
+			out.lits = append(out.lits, e)
+			named[pkg] = true
+			continue
+		}
+		if e := parseBuildErr(dir, line); e != nil {
+			out.others = append(out.others, e)
+			named[pkg] = true
+		}
+	}
+	pkgs := make([]string, 0, len(failed))
+	for name := range failed {
+		pkgs = append(pkgs, name)
+	}
+	slices.Sort(pkgs)
+	for _, name := range pkgs {
+		if !named[name] {
+			out.others = append(out.others, &buildErr{dir: dir, text: "the checkout does not compile: " + failed[name]})
+		}
+	}
+	return &out
+}
+
+// parseBuildErr parses a compiler error that is not a struct-literal error. It names a file and
+// a position, which is enough to report it, but the repair it needs is not one -fix can make.
+func parseBuildErr(dir, line string) *buildErr {
+	m := compilerErrRe.FindStringSubmatch(line)
+	if m == nil {
+		return nil
+	}
+	lineNo, err := strconv.Atoi(m[2])
+	if err != nil {
+		return nil
+	}
+	col, err := strconv.Atoi(m[3])
+	if err != nil {
+		return nil
+	}
+	return &buildErr{dir: dir, file: m[1], line: lineNo, col: col, text: m[4]}
 }
 
 // checkModule compiles one module, including its test files, and returns the combined output
@@ -226,51 +333,100 @@ type callSiteFix struct {
 }
 
 // fixCallSites rewrites the call sites that the type changes invalidate. It returns the number
-// of literals repaired and the number of files rewritten.
-func fixCallSites(ctx context.Context, repo string, changes []*typeChange, dirs []string, stderr io.Writer) (fixed, written int, err error) {
+// of literals repaired, the number of files rewritten, and a note for every repair that is still
+// needed and that it could not write. A note is what makes the run fail: a repair that is left
+// unwritten leaves the checkout unable to build, so reporting it as repaired would be a lie.
+//
+// The loop compiles again after every pass, so a file that it cannot rewrite, a call site that no
+// repair can express, and an error that is not a struct-literal error are each named once rather
+// than on every pass.
+func fixCallSites(ctx context.Context, repo string, changes []*typeChange, dirs []string, stderr io.Writer) (fixed, written int, notes []string, err error) {
 	if len(changes) == 0 {
-		return 0, 0, nil
+		return 0, 0, nil, nil
 	}
+	// A repair that changes a field's Go type changes the code the checkout's generators write
+	// from it, such as the accessors of the struct the field belongs to. Those files are
+	// regenerated rather than repaired by hand: the generator rewrites the file, so a repair
+	// written into it would be discarded by the generator's next run, and the repository's own
+	// generators leave their output read-only, so the write would be refused as well.
+	ran, note := runGenerator(ctx, repo, stderr)
+	notes = addNote(notes, note)
+
+	// left records what the tree still needs once the loop can make no more repairs.
+	left := func(res *compileResult) {
+		notes = append(notes, unrepairedLiterals(repo, res.lits, changes)...)
+		for _, e := range res.others {
+			notes = addNote(notes, e.String(repo))
+		}
+	}
+
 	for range maxCompilePasses {
-		errs, err := compileStructLitErrors(ctx, repo, dirs)
+		res, err := compileCheckout(ctx, repo, dirs)
 		if err != nil {
-			return fixed, written, err
+			return fixed, written, notes, err
 		}
-		planned := planCallSites(repo, errs, changes)
+		planned, skipped := planCallSites(repo, res.lits, changes)
+		for _, file := range skipped {
+			notes = addNote(notes, generatedNote(file, ran))
+		}
 		if len(planned) == 0 {
-			reportUnrepaired(stderr, repo, errs, changes)
-			return fixed, written, nil
+			left(res)
+			return fixed, written, notes, nil
 		}
-		fmt.Fprintf(stderr, "planned call site repairs (%v):\n", len(planned))
-		for _, p := range planned {
-			fmt.Fprintf(stderr, "  %v:%v: %v: replace %v with %v\n", p.path, p.line, p.field, p.before, p.after)
-		}
-		n, w, err := applyCallSites(repo, planned)
-		if err != nil {
-			return fixed, written, err
-		}
-		if n == 0 {
-			return fixed, written, nil
-		}
+		printPlan(stderr, planned)
+		n, w, fileNotes := applyCallSites(repo, planned)
 		fixed += n
 		written += w
+		if len(fileNotes) > 0 {
+			// A file that cannot be rewritten fails the same way on the next pass, so the plan
+			// stops here rather than repeat the failure. The repairs written above are kept, and
+			// what the tree still needs is read from the sources as they are now.
+			notes = append(notes, fileNotes...)
+			if res, err := compileCheckout(ctx, repo, dirs); err == nil {
+				left(res)
+			}
+			return fixed, written, notes, nil
+		}
 	}
 	// Out of passes, which the loop above needs only when a repair exposes another one. Look
 	// once more, so that what is still broken is reported rather than left for the caller to
 	// find in a tree that does not compile.
-	if errs, err := compileStructLitErrors(ctx, repo, dirs); err == nil {
-		reportUnrepaired(stderr, repo, errs, changes)
+	if res, err := compileCheckout(ctx, repo, dirs); err == nil {
+		left(res)
 	}
-	return fixed, written, nil
+	return fixed, written, notes, nil
 }
 
-// reportUnrepaired writes a note for each error that a type change explains and that the
+// printPlan writes the call site repairs that a pass is about to write.
+func printPlan(w io.Writer, planned []*callSiteFix) {
+	fmt.Fprintf(w, "planned call site repairs (%v):\n", len(planned))
+	for _, p := range planned {
+		fmt.Fprintf(w, "  %v:%v: %v: replace %v with %v\n", p.path, p.line, p.field, p.before, p.after)
+	}
+}
+
+// addNote appends a note unless it is empty or already there, so that a note that several passes
+// produce is printed once.
+func addNote(notes []string, note string) []string {
+	if note == "" || slices.Contains(notes, note) {
+		return notes
+	}
+	return append(notes, note)
+}
+
+// unrepairedLiterals returns a note for each error that a type change explains and that the
 // literal's shape leaves no mechanical repair for.
-func reportUnrepaired(w io.Writer, repo string, errs []*compileErr, changes []*typeChange) {
+func unrepairedLiterals(repo string, errs []*compileErr, changes []*typeChange) []string {
+	var notes []string
 	parsed := map[string]*parsedFile{}
 	for _, e := range errs {
 		pf := parseFor(repo, parsed, e)
 		if pf == nil {
+			continue
+		}
+		if pf.generated() {
+			// Every literal in a generated file gets the same answer, which fixCallSites
+			// has already given for the file.
 			continue
 		}
 		lit, err := pf.locate(e.offset)
@@ -285,21 +441,83 @@ func reportUnrepaired(w io.Writer, repo string, errs []*compileErr, changes []*t
 		if note == nil {
 			continue // The next pass repairs it; the loop ended for another reason.
 		}
-		fmt.Fprintf(w, "not repaired: %v:%v: %v.%v is now %v, but %v\n",
-			e.path(repo), e.line, change.structName, change.fieldName, change.newType, note)
+		notes = addNote(notes, fmt.Sprintf("%v:%v: %v.%v is now %v, but %v",
+			e.path(repo), e.line, change.structName, change.fieldName, change.newType, note))
 	}
+	return notes
+}
+
+// generatedNote says why a call site in a generated file is left out of the plan.
+func generatedNote(file string, ranGenerator bool) string {
+	if ranGenerator {
+		return fmt.Sprintf("%v is generated, and script/generate.sh did not repair it", file)
+	}
+	return fmt.Sprintf("%v is generated, and this checkout has no script/generate.sh to rewrite it", file)
+}
+
+// generatorScript is the checkout's generator, named relative to the checkout so that the go
+// command is given a path it can trust rather than one built from the flags.
+const generatorScript = "script/generate.sh"
+
+// runGenerator runs the checkout's generator, which rewrites the files it generates from the
+// declarations that -fix has just changed. It returns whether it ran, and a note when it could
+// not be run or failed: a generated file that stayed out of date leaves the checkout unable to
+// build.
+//
+// A checkout without script/generate.sh is left alone. Its generated files belong to whatever
+// generator writes them, and a call site in one that the plan had to leave out is reported there
+// instead.
+func runGenerator(ctx context.Context, repo string, stderr io.Writer) (bool, string) {
+	if _, err := os.Stat(filepath.Join(repo, "script", "generate.sh")); err != nil {
+		return false, ""
+	}
+	ctx, cancel := context.WithTimeout(ctx, generateTimeout)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, "sh", generatorScript)
+	cmd.Dir = repo
+	out, err := cmd.CombinedOutput()
+	if ctx.Err() != nil {
+		return true, fmt.Sprintf("script/generate.sh: %v", ctx.Err())
+	}
+	if err != nil {
+		if reason := firstLine(out); reason != "" {
+			return true, fmt.Sprintf("script/generate.sh failed: %v: %v", err, reason)
+		}
+		return true, fmt.Sprintf("script/generate.sh failed: %v", err)
+	}
+	fmt.Fprint(stderr, "ran script/generate.sh, because the changed field types are generated into its files\n")
+	return true, ""
+}
+
+// firstLine returns the first non-blank line of a command's output, which is where the go command
+// reports the step that failed, so that a note can name it on one line.
+func firstLine(out []byte) string {
+	for line := range strings.Lines(string(out)) {
+		if line = strings.TrimSpace(line); line != "" {
+			return line
+		}
+	}
+	return ""
 }
 
 // planCallSites matches the compiler errors against the type changes and returns the repairs
-// that -fix can make. An error is repaired only when the literal sets a field whose type the
-// repair changed to exactly the type the compiler reports, so an unrelated error in the same
-// tree is left alone.
-func planCallSites(repo string, errs []*compileErr, changes []*typeChange) []*callSiteFix {
-	var out []*callSiteFix
+// that -fix can make, and the generated files whose call sites it leaves alone. An error is
+// repaired only when the literal sets a field whose type the repair changed to exactly the type
+// the compiler reports, so an unrelated error in the same tree is left alone.
+//
+// A generated file is never repaired: the generator that owns it rewrites it, so the repair
+// would be discarded by the next run of script/generate.sh, and the repository's own generators
+// chmod their output read-only, so the write would be refused as well.
+func planCallSites(repo string, errs []*compileErr, changes []*typeChange) (planned []*callSiteFix, generated []string) {
+	left := map[string]bool{}
 	parsed := map[string]*parsedFile{}
 	for _, e := range errs {
 		pf := parseFor(repo, parsed, e)
 		if pf == nil {
+			continue
+		}
+		if pf.generated() {
+			left[e.path(repo)] = true
 			continue
 		}
 		lit, err := pf.locate(e.offset)
@@ -318,7 +536,7 @@ func planCallSites(repo string, errs []*compileErr, changes []*typeChange) []*ca
 		if start < 0 || end < start {
 			continue
 		}
-		out = append(out, &callSiteFix{
+		planned = append(planned, &callSiteFix{
 			path:   e.path(repo),
 			line:   e.line,
 			field:  change.structName + "." + change.fieldName,
@@ -327,7 +545,11 @@ func planCallSites(repo string, errs []*compileErr, changes []*typeChange) []*ca
 			edit:   &edit{start: start, end: end, text: after},
 		})
 	}
-	return out
+	for file := range left {
+		generated = append(generated, file)
+	}
+	slices.Sort(generated)
+	return planned, generated
 }
 
 // matchChange returns the type change that explains the compiler error at a literal: the field
@@ -359,7 +581,8 @@ type parsedFile struct {
 }
 
 // parseFor returns the parsed file that holds the error, parsing it on first use. It returns
-// nil for a file that cannot be read or parsed.
+// nil for a file that cannot be read or parsed. The comments are parsed as well, because the
+// marker that says a file is generated is a comment.
 func parseFor(repo string, cache map[string]*parsedFile, e *compileErr) *parsedFile {
 	path := filepath.Join(repo, filepath.FromSlash(e.path(repo)))
 	if pf, ok := cache[path]; ok {
@@ -370,7 +593,7 @@ func parseFor(repo string, cache map[string]*parsedFile, e *compileErr) *parsedF
 		return nil
 	}
 	fset := token.NewFileSet()
-	file, err := parser.ParseFile(fset, path, src, parser.SkipObjectResolution)
+	file, err := parser.ParseFile(fset, path, src, parser.ParseComments|parser.SkipObjectResolution)
 	if err != nil {
 		return nil
 	}
@@ -385,6 +608,12 @@ func (p *parsedFile) offsetOf(pos token.Pos) int {
 		return -1
 	}
 	return p.fset.Position(pos).Offset
+}
+
+// generated reports whether the file carries the marker that says a program generated it, which
+// is the rule go/ast applies and the one the Go tools use to leave a file alone.
+func (p *parsedFile) generated() bool {
+	return ast.IsGenerated(p.file)
 }
 
 // litAt is the struct literal context of one expression: the expression itself, the field name
@@ -491,8 +720,11 @@ func (p *parsedFile) text(e ast.Expr) string {
 	return string(p.src[p.offsetOf(e.Pos()):p.offsetOf(e.End())])
 }
 
-// applyCallSites rewrites the files that hold the planned repairs.
-func applyCallSites(repo string, planned []*callSiteFix) (fixed, written int, err error) {
+// applyCallSites rewrites the files that hold the planned repairs. It returns the number of
+// literals repaired, the number of files rewritten, and a note for each file it could not read
+// or write. A file that cannot be rewritten is noted rather than fatal, so that it does not
+// leave the repairs in every file after it unwritten.
+func applyCallSites(repo string, planned []*callSiteFix) (fixed, written int, notes []string) {
 	byFile := map[string][]*callSiteFix{}
 	for _, p := range planned {
 		byFile[p.path] = append(byFile[p.path], p)
@@ -507,27 +739,21 @@ func applyCallSites(repo string, planned []*callSiteFix) (fixed, written int, er
 		path := filepath.Join(repo, filepath.FromSlash(file))
 		src, err := os.ReadFile(path)
 		if err != nil {
-			return fixed, written, err
+			notes = append(notes, fileError(file, err))
+			continue
 		}
 		edits := make([]*edit, 0, len(byFile[file]))
 		for _, p := range byFile[file] {
 			edits = append(edits, p.edit)
 		}
-		edited, err := applyEdits(src, edits)
-		if err != nil {
-			return fixed, written, fmt.Errorf("%v: %w", file, err)
-		}
-		formatted, err := format.Source(edited)
-		if err != nil {
-			return fixed, written, fmt.Errorf("%v: %w", file, err)
-		}
-		if err := os.WriteFile(path, formatted, 0o600); err != nil {
-			return fixed, written, err
+		if err := writeEdits(path, src, edits); err != nil {
+			notes = append(notes, fileError(file, err))
+			continue
 		}
 		fixed += len(edits)
 		written++
 	}
-	return fixed, written, nil
+	return fixed, written, notes
 }
 
 // modulesToCheck returns the module directories that a type change can break: the module that

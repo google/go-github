@@ -91,6 +91,45 @@ func TestParseStructLitErr(t *testing.T) {
 	}
 }
 
+// TestParseCompilerOutput checks that one compiler run is split into the struct-literal errors
+// that -fix repairs and the errors it can only report, including the failure line of a package
+// that did not build and named no file, which is how an unresolved import is reported.
+func TestParseCompilerOutput(t *testing.T) {
+	t.Parallel()
+	const src = "package github\n\nvar X = T{Name: new(\"a\")}\n"
+	dir := t.TempDir()
+	mustWriteFile(t, filepath.Join(dir, "callers.go"), src)
+
+	// The shape of a real run: the headers, a struct-literal error, an error that -fix does not
+	// repair, the failure line of the package that reported them, and the failure line of a
+	// package that reported no error of its own.
+	output := "# github.com/google/go-github/v92/github\n" +
+		`callers.go:3:17: cannot use new("a") (value of type *string) as string value in struct literal` + "\n" +
+		"callers.go:5:2: undefined: Q\n" +
+		"FAIL\tgithub.com/google/go-github/v92/github [build failed]\n" +
+		"# example.com/other\n" +
+		"FAIL\texample.com/other [setup failed]\n" +
+		"FAIL\n"
+	got := parseCompilerOutput(dir, output)
+
+	if len(got.lits) != 1 {
+		t.Fatalf("parseCompilerOutput() parsed %v struct-literal error(s), want 1", len(got.lits))
+	}
+	assertEqual(t, "callers.go", got.lits[0].file)
+
+	// The package that named a file says what is wrong itself, so its failure line would only
+	// repeat it. The one that named none is reported by it, because it is all that is known
+	// about why nothing in that package could be checked.
+	others := make([]string, 0, len(got.others))
+	for _, e := range got.others {
+		others = append(others, e.String(dir))
+	}
+	assertEqual(t, []string{
+		"callers.go:5:2: undefined: Q",
+		"the checkout does not compile: FAIL\texample.com/other [setup failed]",
+	}, others)
+}
+
 func TestOffsetOf(t *testing.T) {
 	t.Parallel()
 	src := []byte("one\ntwo\nthree\n")

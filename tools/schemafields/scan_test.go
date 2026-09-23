@@ -59,7 +59,7 @@ func TestFixTagShapes(t *testing.T) {
 			info: si.goField(goName), action: action,
 		}
 	}
-	fixed, written, notes, err := applyFixes(dir, []*diagnostic{
+	fixed, written, notes := applyFixes(dir, []*diagnostic{
 		diag("A", &fixAction{addOmit: "omitzero"}),                     // No struct tag at all.
 		diag("B", &fixAction{addOmit: "omitempty"}),                    // A tag without a json key.
 		diag("C", &fixAction{addOmit: "omitzero"}),                     // A json tag.
@@ -67,7 +67,6 @@ func TestFixTagShapes(t *testing.T) {
 		diag("G", &fixAction{unomit: true, unwrap: true}),              // Required, not nullable.
 		diag("I", &fixAction{makePointer: true, addOmit: "omitempty"}), // Optional value type.
 	})
-	assertNilError(t, err)
 	assertEqual(t, 5, fixed)
 	assertEqual(t, 1, written)
 	assertEqual(t, []string{"T.E: the declaration lists several fields, which share one type and tag"}, notes)
@@ -93,14 +92,60 @@ func TestApplyFixesUnrepairable(t *testing.T) {
 	dir := t.TempDir()
 	mustWriteFile(t, filepath.Join(dir, "github", "t.go"), fixSource)
 	// A finding without an action, and one whose file is gone, change nothing.
-	fixed, written, notes, err := applyFixes(dir, []*diagnostic{
+	fixed, written, notes := applyFixes(dir, []*diagnostic{
 		{file: "github/t.go", owner: "T", field: "A"},
 		{file: "github/gone.go", owner: "T", field: "B", info: &fieldInfo{}},
 	})
-	assertNilError(t, err)
 	assertEqual(t, 0, fixed)
 	assertEqual(t, 0, written)
 	assertEqual(t, []string(nil), notes)
+}
+
+// TestApplyFixesReportsAFileItCannotRewrite checks that a file that cannot be rewritten is
+// noted rather than fatal, so that the findings in the files after it are still repaired.
+func TestApplyFixesReportsAFileItCannotRewrite(t *testing.T) {
+	t.Parallel()
+	dir := t.TempDir()
+	// The read-only file sorts before github/t.go, so that a repair that stopped at the first
+	// failure would leave the file after it unrepaired.
+	const readOnlySource = "package github\n\ntype ReadOnly struct {\n\tX string\n}\n"
+	readOnly := filepath.Join(dir, "github", "a.go")
+	mustWriteFile(t, readOnly, readOnlySource)
+	mustWriteFile(t, filepath.Join(dir, "github", "t.go"), fixSource)
+	assertNilError(t, os.Chmod(readOnly, 0o444))
+
+	info, err := scanRepo(dir)
+	assertNilError(t, err)
+	diag := func(file, owner, goName string) *diagnostic {
+		si, ok := info.structs[owner]
+		if !ok {
+			t.Fatalf("%v was not scanned", owner)
+		}
+		return &diagnostic{
+			file: file, owner: owner, field: goName,
+			info: si.goField(goName), action: &fixAction{addOmit: "omitzero"},
+		}
+	}
+	fixed, written, notes := applyFixes(dir, []*diagnostic{
+		diag("github/a.go", "ReadOnly", "X"),
+		diag("github/t.go", "T", "A"),
+	})
+	assertEqual(t, 1, fixed)
+	assertEqual(t, 1, written)
+	if len(notes) != 1 {
+		t.Fatalf("applyFixes() notes = %v, want one note", notes)
+	}
+	// The reason is the operating system's word for why the file cannot be written, which
+	// differs between them, so the file alone is asserted.
+	assertContains(t, notes[0], "github/a.go: ")
+
+	// The read-only file kept its content, and the file after it was rewritten all the same.
+	got, readErr := os.ReadFile(readOnly)
+	assertNilError(t, readErr)
+	assertEqual(t, readOnlySource, string(got))
+	got, readErr = os.ReadFile(filepath.Join(dir, "github", "t.go"))
+	assertNilError(t, readErr)
+	assertContains(t, string(got), "A    string `json:\"A,omitzero\"`")
 }
 
 func TestApplyEditsRejectsOverlap(t *testing.T) {

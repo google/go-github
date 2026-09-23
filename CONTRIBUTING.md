@@ -685,6 +685,17 @@ parameter that `paramcheck` requires to be passed by value. An endpoint is
 therefore checked without any extra annotation, and coverage grows as pointer
 bodies are converted to by-value ones.
 
+A run ends with a summary of the state of the tree rather than of the run, so
+that a maintainer reads what there is to do rather than what happened:
+how many of the methods that take a struct request body were checked, what was
+not checked and why (bodies passed by pointer, and operations that the pinned
+revision does not document), and what the findings are, counting the ones that
+`exceptions.txt` grandfathers alongside the new ones. It also reports what
+`-fix` can do about them, including the repairs that the exceptions file is
+holding back, and the errors that no mechanical repair settles. A body that is
+not a struct has no fields for a schema check to apply to, so it is left out of
+those counts and named by `-verbose` instead.
+
 Its flags are:
 
 - `-fix` repairs the findings that can be repaired mechanically: adding or
@@ -699,20 +710,32 @@ Its flags are:
   the checkout afterward and repairs those call sites too, unwrapping a
   `new(...)` that the field no longer needs. It reports the call sites that no
   mechanical repair can express, such as one that passes a variable, rather
-  than leaving them to be found by a build. `script/generate.sh` must still be
-  run afterward to regenerate the accessors.
+  than leaving them to be found by a build. A changed field type is generated
+  into other files as well, such as the accessors of its struct, so `-fix` runs
+  `script/generate.sh` for you when the checkout has one. It never rewrites a
+  generated file itself: the generator would discard the repair, and the
+  repository's generators leave their output read-only.
+  A repair that `-fix` planned and could not write, a call site it cannot
+  repair, and a checkout that does not compile are each reported as a
+  `not repaired:` line, and the run fails, so a run that reports a field
+  repaired has not left a broken tree behind it.
   To repair a grandfathered field, delete its line from `exceptions.txt`
   first, or pass `-exceptions /dev/null` to treat every finding as new.
 - `-write-exceptions` rewrites `tools/schemafields/exceptions.txt` from the
   current findings.
 - `-descriptions` checks against local OpenAPI description files instead of
   downloading the ones pinned in `openapi_operations.yaml`.
-- `-verbose` lists request bodies that no operation could be found to check.
+- `-verbose` adds the full breakdown to the summary: the scan counts, the
+  operation uses that resolved, the fields that a rule leaves alone, the
+  per-rule tally, and every request body that was left unchecked, with the
+  reason.
 
 GitHub's descriptions are large, so a run without `-descriptions` downloads
 them from `github/rest-api-description` at the `openapi_commit` pinned in
 `openapi_operations.yaml` and caches them in the user cache directory; a
-repeated run is therefore offline.
+repeated run is therefore offline. The cache holds the revision in use alone, so
+it does not grow by the size of the descriptions at every revision the
+repository is pinned to.
 
 Findings are reported as `ERROR`s, which fail the run, and `WARN`ings, which
 are advisory. `tools/schemafields/exceptions.txt` grandfathers the findings

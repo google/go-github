@@ -6,45 +6,23 @@
 // Command schemafields checks Go request-body struct field optionality against GitHub's
 // official OpenAPI request body schemas.
 //
-// The struct-to-schema mapping is derived automatically, with no new annotations:
+// The schemas are the source of truth, and they are not in this repository. GitHub publishes
+// them in github/rest-api-description, and the root openapi_operations.yaml pins the revision
+// to check against in its openapi_commit field. A run downloads the three descriptions that
+// revision names (api.github.com, ghec, and the newest ghes-3.x) and caches them in the user
+// cache directory, so a repeated run is offline; -descriptions checks local files instead.
+// Maintainers advance the pin with script/metadata.sh update-openapi, which regenerates the
+// openapi_operations section from the descriptions at the revision it sees, and the linter
+// workflow's update-openapi --validate checks that the pinned revision still matches. A
+// finding that is then new is repaired with -fix, or recorded in
+// tools/schemafields/exceptions.txt to leave it alone. CONTRIBUTING.md has the field rules
+// and the full account of what -fix does.
 //
-//	//meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/comments
-//	func (s *IssuesService) CreateComment(ctx context.Context, owner, repo string, number int, body IssueCommentRequest) (*IssueComment, *Response, error) {
-//
-// The //meta:operation annotation already names the operation, and paramcheck already
-// requires the body parameter to be named "body" and passed by value. So every by-value
-// body parameter is checked against the request body schema of the operation its method is
-// annotated with. Coverage therefore grows automatically as types are converted, and a
+// The struct-to-schema mapping needs no new annotations. //meta:operation already names the
+// operation a method calls, and paramcheck already requires the body parameter to be named
+// "body" and passed by value, so every by-value body parameter is checked against the request
+// body schema of its operation. Coverage grows as pointer bodies are converted, and a
 // contributor adding an endpoint is checked without having to do anything extra.
-//
-// CONTRIBUTING.md requires that required fields be non-pointer types without an omit option,
-// and that optional fields be pointer types with "omitempty". Slices, maps and types from
-// other packages such as time.Time keep their type and use "omitzero" instead: omitempty
-// cannot leave out a time.Time, and on a slice or map it would drop an empty but non-nil
-// value. A struct declared in this package is optional only as a pointer, because the
-// structfield linter rejects "omitzero" on a struct value and omitempty cannot omit one.
-// This tool reports every request body field that disagrees with the schema, and -fix repairs
-// the ones that can be repaired mechanically.
-//
-// -fix repairs only what the check fails on: the error-severity findings that the exceptions
-// file does not grandfather. A warning is advisory, and an entry in the exceptions file is a
-// decision to leave a disagreement alone, so -fix rewrites neither without being asked. To
-// repair a grandfathered field, delete its line first, or pass "-exceptions /dev/null" to
-// treat every finding as new.
-//
-// A struct can be the request body of more than one operation. -fix rewrites a field only
-// when every one of those operations has the property, because a repair that suits one of
-// them would make a property that another does not have always sent. When their schemas
-// disagree the finding is reported for a human to settle, and the exceptions file is where
-// that decision is recorded.
-//
-// A repaired field whose type changes between a value and a pointer leaves the callers that
-// still build it with the old type unable to compile. -fix therefore compiles the checkout
-// after it writes the repairs, and rewrites those call sites from what the compiler reports:
-// a literal that wrapped the value in new(...) or Ptr(...), or took its address, gives the
-// value back. A call site that no mechanical repair can express, such as one that passes a
-// variable, is reported instead. The accessors that script/generate.sh generates must still
-// be regenerated, so run that before checking the result.
 package main
 
 import (
@@ -90,13 +68,14 @@ func parseFlags(stderr io.Writer, args []string) (*options, error) {
 		"comma-separated OpenAPI description files, tried in order; the default is to download the ones pinned in openapi_operations.yaml")
 	fs.StringVar(&o.cacheDir, "cache-dir", "", "directory in which to cache downloaded descriptions")
 	fs.StringVar(&o.exceptions, "exceptions", "",
-		"path to the exceptions file of findings to ignore; the default is tools/schemafields/exceptions.txt in the checkout")
+		"path to the exceptions file of findings to ignore; the default is tools/schemafields/exceptions.txt in the checkout, and an empty file, such as /dev/null, treats every finding as new")
 	fs.StringVar(&o.format, "format", "text", "output format: text or github")
 	fs.StringVar(&o.minSeverity, "min-severity", "warn", "report findings of at least this severity: warn or error")
 	fs.BoolVar(&o.fix, "fix", false,
-		"rewrite the Go sources to repair the error-severity findings that the exceptions file does not grandfather, and the call sites that a changed field type leaves unable to compile; run script/generate.sh afterward to regenerate the accessors")
+		"rewrite the Go sources to repair the error-severity findings that the exceptions file does not grandfather, and the call sites that a changed field type leaves unable to compile; a changed field type is generated into other files as well, so -fix runs the checkout's script/generate.sh, and fails the run rather than report success when it cannot write a repair it planned")
 	fs.BoolVar(&o.writeExceptions, "write-exceptions", false, "rewrite the exceptions file from the current findings")
-	fs.BoolVar(&o.verbose, "verbose", false, "list request bodies that cannot be mapped to an operation")
+	fs.BoolVar(&o.verbose, "verbose", false,
+		"add the full breakdown to the summary: the scan counts, the fields a rule leaves alone, the per-rule tally, and every request body that was left unchecked, with the reason")
 	fs.Usage = func() {
 		fmt.Fprint(stderr, "Usage: schemafields [flags]\n\nChecks request body struct fields against GitHub's OpenAPI schemas.\n\nFlags:\n")
 		fs.PrintDefaults()
@@ -168,8 +147,10 @@ func run(stdout, stderr io.Writer, args []string) error {
 		return err
 	}
 
+	unrepaired := 0
 	if o.fix {
-		if err := fixAll(c, exc, o, stderr); err != nil {
+		unrepaired, err = fixAll(c, exc, o, stderr)
+		if err != nil {
 			return err
 		}
 	}
@@ -193,22 +174,24 @@ func run(stdout, stderr io.Writer, args []string) error {
 	if o.minSeverity == "error" {
 		threshold = sevError
 	}
-	shown, errored := 0, 0
+	errored := 0
 	for _, d := range c.diags {
 		if d.sev < threshold || exc.suppress(d.key()) {
 			continue
 		}
-		shown++
 		if d.sev == sevError {
 			errored++
 		}
 		printFinding(stdout, o.format, d)
 	}
 
-	printSummary(stderr, c, o, shown, errored, exc)
+	printSummary(stderr, c, o, exc)
 	if o.verbose {
 		for _, m := range c.unannotated {
 			fmt.Fprintf(stderr, "no //meta:operation annotation: %v:%v: %v (%v)\n", m.file, m.line, m.funcName, m.bodyType)
+		}
+		for _, m := range c.unstructured {
+			fmt.Fprintf(stderr, "the body is not a struct this repository declares: %v:%v: %v (%v)\n", m.file, m.line, m.funcName, m.bodyType)
 		}
 	}
 
@@ -221,6 +204,10 @@ func run(stdout, stderr io.Writer, args []string) error {
 	}
 
 	switch {
+	case unrepaired > 0:
+		// -fix was asked to repair these and could not, so the run must not report success:
+		// whatever it left behind, the checkout no longer builds as it stands.
+		return fmt.Errorf("%v repair(s) could not be applied, so the checkout may not build", unrepaired)
 	case errored > 0:
 		return fmt.Errorf("%v schema field issue(s) found", errored)
 	case len(obsolete) > 0:
@@ -229,8 +216,22 @@ func run(stdout, stderr io.Writer, args []string) error {
 	return nil
 }
 
-// fixCandidates returns the findings that -fix rewrites.
+// fixCandidates returns the findings that -fix rewrites: the error-severity findings that the
+// exceptions file does not grandfather.
 func (c *checker) fixCandidates(exc *exceptions) []*diagnostic {
+	var out []*diagnostic
+	for _, d := range c.repairableFindings() {
+		if !exc.suppress(d.key()) {
+			out = append(out, d)
+		}
+	}
+	return out
+}
+
+// repairableFindings returns every finding that -fix is built to rewrite, whether or not the
+// exceptions file grandfathers it. It is what tells a maintainer what the baseline is holding
+// back, so it does not consult the exceptions file.
+func (c *checker) repairableFindings() []*diagnostic {
 	var out []*diagnostic
 	for _, d := range c.diags {
 		switch {
@@ -238,8 +239,6 @@ func (c *checker) fixCandidates(exc *exceptions) []*diagnostic {
 			// A warning is advisory, so it is reported for a human to decide about.
 		case d.action == nil || d.info == nil:
 			// Nothing can be done mechanically; the summary counts these.
-		case exc.suppress(d.key()):
-			// The exceptions file records a decision to leave this field alone.
 		case !c.agrees(d):
 			// A struct can be the body of more than one operation, and their
 			// schemas can disagree about the field. A repair that suits the
@@ -254,8 +253,9 @@ func (c *checker) fixCandidates(exc *exceptions) []*diagnostic {
 
 // fixAll repairs the findings that -fix is allowed to repair, repairs the call sites that the
 // repairs invalidate, re-checks the result, and drops the exceptions that the repairs made
-// obsolete.
-func fixAll(c *checker, exc *exceptions, o *options, stderr io.Writer) error {
+// obsolete. It returns the number of repairs that are still needed and that it could not write,
+// which is what makes the run fail: a repair left unwritten leaves the checkout unable to build.
+func fixAll(c *checker, exc *exceptions, o *options, stderr io.Writer) (unrepaired int, err error) {
 	planned := c.fixCandidates(exc)
 	// The type changes have to be read from the sources before the repairs are written.
 	changes := typeChanges(o.repo, planned)
@@ -268,25 +268,24 @@ func fixAll(c *checker, exc *exceptions, o *options, stderr io.Writer) error {
 		}
 	}
 
-	fixed, written, notes, err := applyFixes(o.repo, planned)
-	if err != nil {
-		return err
-	}
-	for _, note := range notes {
-		fmt.Fprintf(stderr, "not repaired: %v\n", note)
-	}
+	fixed, written, notes := applyFixes(o.repo, planned)
 	// A field that changed between a value type and a pointer leaves the call sites that
 	// still use the old type unable to compile, so repair them from what the compiler says
 	// before re-checking the tree. The count is reported on its own, because a call site is
 	// not a finding.
-	if _, err := repairCallSites(changes, o, stderr); err != nil {
-		return err
+	_, callNotes, err := repairCallSites(changes, o, stderr)
+	if err != nil {
+		return len(notes), err
 	}
+	for _, note := range append(notes, callNotes...) {
+		fmt.Fprintf(stderr, "not repaired: %v\n", note)
+	}
+	unrepaired = len(notes) + len(callNotes)
 
 	// Re-read the sources, so that the summary describes the repaired tree.
 	info, err := scanRepo(o.repo)
 	if err != nil {
-		return err
+		return unrepaired, err
 	}
 	c.info = info
 	c.run()
@@ -301,19 +300,20 @@ func fixAll(c *checker, exc *exceptions, o *options, stderr io.Writer) error {
 			return slices.Contains(obsolete, entry)
 		})
 		if err := exc.write(kept); err != nil {
-			return err
+			return unrepaired, err
 		}
 		exc.setEntries(kept)
 		fmt.Fprintf(stderr, "dropped %v obsolete exception(s) from %v\n", len(obsolete), exc.path)
 	}
-	return nil
+	return unrepaired, nil
 }
 
 // repairCallSites repairs the struct literals that the type changes of the planned repairs
-// invalidate, and reports how many it repaired.
-func repairCallSites(changes []*typeChange, o *options, stderr io.Writer) (int, error) {
+// invalidate, and reports how many it repaired. It returns a note for every repair that is still
+// needed and that it could not write.
+func repairCallSites(changes []*typeChange, o *options, stderr io.Writer) (fixed int, notes []string, err error) {
 	if len(changes) == 0 {
-		return 0, nil
+		return 0, nil, nil
 	}
 	changed := make([]string, 0, len(changes))
 	for _, change := range changes {
@@ -326,18 +326,36 @@ func repairCallSites(changes []*typeChange, o *options, stderr io.Writer) (int, 
 		// Nothing to compile, so no call site can be found. Say so rather than report the
 		// finding as repaired: the repairs are written either way, and the tree they were
 		// written to may no longer build.
-		fmt.Fprintf(stderr, "not checked: no module found for %v, so the call sites that the changed field types break were not repaired\n",
-			strings.Join(changed, ", "))
-		return 0, nil
+		return 0, []string{fmt.Sprintf("no module found for %v, so the call sites that the changed field types break were not repaired",
+			strings.Join(changed, ", "))}, nil
 	}
-	fixed, written, err := fixCallSites(context.Background(), o.repo, changes, dirs, stderr)
+	fixed, written, notes, err := fixCallSites(context.Background(), o.repo, changes, dirs, stderr)
 	if err != nil {
-		return fixed, err
+		return fixed, notes, err
 	}
 	if fixed > 0 {
 		fmt.Fprintf(stderr, "repaired %v call site(s) in %v Go file(s)\n", fixed, written)
 	}
-	return fixed, nil
+	return fixed, notes, nil
+}
+
+// plural picks the word that agrees with a count of n, so that a summary line reads as a
+// sentence whatever the numbers are.
+func plural(n int, one, many string) string {
+	if n == 1 {
+		return one
+	}
+	return many
+}
+
+// repoRelative returns a path as the summary shows it: relative to the checkout when it is
+// inside it, so that it is named the way the findings name their files.
+func repoRelative(repo, path string) string {
+	rel, err := filepath.Rel(repo, path)
+	if err != nil || rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
+		return path
+	}
+	return rel
 }
 
 // splitList splits a comma-separated flag value.
@@ -367,26 +385,106 @@ func escapeAnnotation(s string) string {
 	return strings.NewReplacer("%", "%25", "\r", "%0D", "\n", "%0A", ":", "%3A", ",", "%2C").Replace(s)
 }
 
-// printSummary writes the run statistics.
-func printSummary(w io.Writer, c *checker, o *options, shown, errored int, exc *exceptions) {
+// printSummary writes the run statistics: how much of the API was checked, what could not be
+// checked and why, and what the findings are, counting the ones that the exceptions file
+// grandfathers alongside the new ones. It reports the state of the tree, which is what a
+// maintainer acts on, and -verbose adds the full breakdown.
+func printSummary(w io.Writer, c *checker, o *options, exc *exceptions) {
 	s := c.stats
-	fmt.Fprintf(w, "\nscanned %v files, %v methods (%v with //meta:operation)\n", s.files, s.methods, s.methodsWithOps)
-	fmt.Fprintf(w, "body params: %v by value, %v by pointer (skipped; run paramcheck to convert them)\n", s.bodyValue, s.bodyPointer)
-	fmt.Fprintf(w, "checked %v body structs: %v resolved operation uses, %v uses with no JSON request body\n",
-		s.structsChecked, s.usesResolved, s.usesNoSchema)
-	fmt.Fprintf(w, "fields checked: %v (%v conditionally required, left alone)\n", s.fieldsChecked, s.fieldsConditional)
-	fmt.Fprintf(w, "%v findings (%v shown, %v errors, %v repairable by -fix)\n",
-		len(c.diags), shown, errored, len(c.fixCandidates(exc)))
-
-	rules := make([]string, 0, len(c.byRule))
-	for rule := range c.byRule {
-		rules = append(rules, rule)
+	fmt.Fprintln(w)
+	if o.verbose {
+		fmt.Fprintf(w, "scanned %v files, %v methods (%v with //meta:operation)\n",
+			s.files, s.methods, s.methodsWithOps)
 	}
-	slices.SortFunc(rules, func(a, b string) int {
-		return cmp.Or(cmp.Compare(c.byRule[b], c.byRule[a]), strings.Compare(a, b))
-	})
-	for _, rule := range rules {
-		fmt.Fprintf(w, "  %4d  %v: %v\n", c.byRule[rule], rule, ruleDescriptions[rule])
+	// Every method whose request body is a struct, and how many of them this tool can judge. A
+	// body that is not a struct has no fields for a schema check to apply to, so it is left out
+	// of the population rather than reported: -verbose names those bodies. What this tool cannot
+	// judge is the coverage it will not have until a body is converted or the pin moves, so each
+	// kind of gap is named rather than folded into a total.
+	bodyMethods := s.bodyValue + s.bodyPointer
+	fmt.Fprintf(w, "checked %v of %v %v that %v a struct request body (%v body structs, %v fields)\n",
+		s.bodyValue, bodyMethods, plural(bodyMethods, "method", "methods"), plural(bodyMethods, "takes", "take"),
+		s.structsChecked, s.fieldsChecked)
+	if s.bodyPointer > 0 {
+		fmt.Fprintf(w, "  not checked: %v %v whose body is passed by pointer (run paramcheck to convert %v)\n",
+			s.bodyPointer, plural(s.bodyPointer, "method", "methods"), plural(s.bodyPointer, "it", "them"))
+	}
+	if s.usesNoJSONBody > 0 {
+		fmt.Fprintf(w, "  not checked: %v operation %v with no JSON request body\n",
+			s.usesNoJSONBody, plural(s.usesNoJSONBody, "use", "uses"))
+	}
+	if s.usesNotInPlan > 0 {
+		fmt.Fprintf(w, "  not checked: %v operation %v that the pinned revision does not document\n",
+			s.usesNotInPlan, plural(s.usesNotInPlan, "use", "uses"))
+		fmt.Fprintf(w, "    a newer openapi_commit in %v would check %v\n",
+			operationsFile, plural(s.usesNotInPlan, "it", "them"))
+	}
+	if s.usesUnreadable > 0 {
+		fmt.Fprintf(w, "  not checked: %v operation %v whose description could not be read\n",
+			s.usesUnreadable, plural(s.usesUnreadable, "use", "uses"))
+	}
+	if o.verbose {
+		fmt.Fprintf(w, "  resolved operation uses: %v\n", s.usesResolved)
+		fmt.Fprintf(w, "  conditionally required, and left alone: %v of the %v fields\n",
+			s.fieldsConditional, s.fieldsChecked)
+	}
+
+	// A finding the exceptions file does not name is the only kind a change can be told about,
+	// but the findings it does name are still the state of the tree, so both are reported: a
+	// summary that counts only the new ones is how a baseline hides an error behind "0 errors".
+	warn, errs, fresh := 0, 0, 0
+	for _, d := range c.diags {
+		if d.sev == sevError {
+			errs++
+		} else {
+			warn++
+		}
+		if !exc.suppress(d.key()) {
+			fresh++
+		}
+	}
+	switch {
+	case len(c.diags) == 0:
+		fmt.Fprint(w, "no findings\n")
+	case fresh == 0:
+		fmt.Fprintf(w, "%v %v (%v warn, %v error), all grandfathered by %v\n",
+			len(c.diags), plural(len(c.diags), "finding", "findings"), warn, errs, repoRelative(c.repo, exc.path))
+	case fresh == len(c.diags):
+		fmt.Fprintf(w, "%v %v (%v warn, %v error)\n",
+			len(c.diags), plural(len(c.diags), "finding", "findings"), warn, errs)
+	default:
+		fmt.Fprintf(w, "%v %v (%v warn, %v error), %v new, %v grandfathered by %v\n",
+			len(c.diags), plural(len(c.diags), "finding", "findings"), warn, errs, fresh, len(c.diags)-fresh,
+			repoRelative(c.repo, exc.path))
+	}
+	// What -fix is built to rewrite, which the exceptions file can hold back: an entry that
+	// grandfathered a repairable finding is a decision that costs a repair. An error that -fix
+	// will not rewrite is worth the same line, because it is the part of the baseline that only
+	// a person can clear.
+	fixable, freshFixable := len(c.repairableFindings()), len(c.fixCandidates(exc))
+	if fixable > 0 {
+		fmt.Fprintf(w, "  repairable by -fix: %v new", freshFixable)
+		if held := fixable - freshFixable; held > 0 {
+			fmt.Fprintf(w, ", %v grandfathered (drop the entries for -fix to repair)", held)
+		}
+		fmt.Fprint(w, "\n")
+	}
+	if manual := errs - fixable; manual > 0 {
+		fmt.Fprintf(w, "  %v of the errors %v not repairable by -fix\n",
+			manual, plural(manual, "is", "are"))
+	}
+
+	if o.verbose {
+		rules := make([]string, 0, len(c.byRule))
+		for rule := range c.byRule {
+			rules = append(rules, rule)
+		}
+		slices.SortFunc(rules, func(a, b string) int {
+			return cmp.Or(cmp.Compare(c.byRule[b], c.byRule[a]), strings.Compare(a, b))
+		})
+		for _, rule := range rules {
+			fmt.Fprintf(w, "  %4d  %v: %v\n", c.byRule[rule], rule, ruleDescriptions[rule])
+		}
 	}
 	if o.minSeverity == "error" {
 		fmt.Fprint(w, "warnings are hidden; remove -min-severity=error to see them\n")
