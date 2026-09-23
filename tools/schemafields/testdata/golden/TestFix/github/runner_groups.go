@@ -17,7 +17,7 @@ type CreateRunnerGroupRequest struct {
 	Visibility *string `json:"visibility,omitempty"`
 
 	// SelectedRepositoryIDs is optional and has no omit option.
-	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitzero"`
+	SelectedRepositoryIDs []int64 `json:"selected_repository_ids"`
 
 	// ResponseOnly is readOnly in the schema, so it is never sent.
 	ResponseOnly string `json:"response_only"`
@@ -38,13 +38,13 @@ type NullableRequest struct {
 // ValueTypeRequest has an optional property of a value type.
 type ValueTypeRequest struct {
 	// Count is optional, but a value type is always sent.
-	Count *int `json:"count,omitempty"`
+	Count int `json:"count"`
 }
 
 // StructTypeRequest has an optional property of a struct value type.
 type StructTypeRequest struct {
 	// Inner is optional, but a struct value has no omit option that can leave it out.
-	Inner *InnerConfig `json:"inner,omitempty"`
+	Inner InnerConfig `json:"inner"`
 }
 
 // InnerConfig is a nested struct.
@@ -80,6 +80,18 @@ type MissingRequest struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// SharedRequest is the body of two operations whose schemas disagree about it, so no one Go
+// field can suit both and -fix leaves the fields alone.
+type SharedRequest struct {
+	// Name is required by the repository operation, and not in the organization
+	// operation's schema at all.
+	Name *string `json:"name,omitempty"`
+
+	// Code is required by the repository operation, and readOnly in the organization
+	// operation's schema, which never sends it.
+	Code *string `json:"code,omitempty"`
+}
+
 //meta:operation POST /orgs/{org}/actions/runner-groups
 func (s *RunnerGroupsService) CreateRunnerGroup(body CreateRunnerGroupRequest) error { return nil }
 
@@ -103,3 +115,9 @@ func (s *RunnerGroupsService) OneOf(body OneOfRequest) error { return nil }
 
 //meta:operation POST /orgs/{org}/missing
 func (s *RunnerGroupsService) Missing(body MissingRequest) error { return nil }
+
+//meta:operation POST /orgs/{org}/shared
+func (s *RunnerGroupsService) CreateShared(body SharedRequest) error { return nil }
+
+//meta:operation PATCH /repos/{owner}/{repo}/shared
+func (s *RunnerGroupsService) UpdateShared(body SharedRequest) error { return nil }

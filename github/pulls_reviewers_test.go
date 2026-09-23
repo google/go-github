@@ -77,12 +77,9 @@ func TestRemoveReviewers_teamsOnly(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		want := ReviewersRequest{
-			NodeID:        nil,
-			Reviewers:     []string{},
-			TeamReviewers: input.TeamReviewers,
-		}
-		testJSONBody(t, r, want)
+		// "reviewers" is required, and an empty list is not the same as null, so
+		// removeReviewersRequest deliberately has no omitempty on it.
+		testJSONBodyRaw(t, r, `{"reviewers":[],"team_reviewers":["justice-league"]}`)
 	})
 
 	ctx := t.Context()

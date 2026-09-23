@@ -170,7 +170,7 @@ type AppInstallationRepositoriesRequest struct {
 // EnterpriseService.UpdateAppInstallationRepositories.
 type UpdateAppInstallationRepositoriesRequest struct {
 	// Can be "all" or "selected".
-	RepositorySelection *string `json:"repository_selection,omitempty"`
+	RepositorySelection string `json:"repository_selection"`
 	// Repository names to grant the installation access to. Only required
 	// when RepositorySelection is "selected".
 	Repositories []string `json:"repositories,omitempty"`

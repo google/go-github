@@ -27,7 +27,7 @@ func TestActionsService_GetActionsPermissionsInEnterprise(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.GetActionsPermissionsInEnterprise returned error: %v", err)
 	}
-	want := &ActionsPermissionsEnterprise{EnabledOrganizations: new("all"), AllowedActions: new("all")}
+	want := &ActionsPermissionsEnterprise{EnabledOrganizations: "all", AllowedActions: new("all")}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.GetActionsPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}
@@ -51,7 +51,7 @@ func TestActionsService_UpdateActionsPermissionsInEnterprise(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsPermissionsEnterprise{EnabledOrganizations: new("all"), AllowedActions: new("selected")}
+	input := &ActionsPermissionsEnterprise{EnabledOrganizations: "all", AllowedActions: new("selected")}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -65,7 +65,7 @@ func TestActionsService_UpdateActionsPermissionsInEnterprise(t *testing.T) {
 		t.Errorf("Actions.UpdateActionsPermissionsInEnterprise returned error: %v", err)
 	}
 
-	want := &ActionsPermissionsEnterprise{EnabledOrganizations: new("all"), AllowedActions: new("selected")}
+	want := &ActionsPermissionsEnterprise{EnabledOrganizations: "all", AllowedActions: new("selected")}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.UpdateActionsPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}
@@ -404,7 +404,7 @@ func TestActionsService_UpdateArtifactAndLogRetentionPeriodInEnterprise(t *testi
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ArtifactPeriodOpt{Days: new(90)}
+	input := &ArtifactPeriodOpt{Days: 90}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -447,7 +447,7 @@ func TestActionsService_GetSelfHostedRunnerPermissionsInEnterprise(t *testing.T)
 	if err != nil {
 		t.Errorf("Actions.GetSelfHostedRunnerPermissionsInEnterprise returned error: %v", err)
 	}
-	want := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: new(true)}
+	want := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: true}
 	if !cmp.Equal(permissions, want) {
 		t.Errorf("Actions.GetSelfHostedRunnerPermissionsInEnterprise returned %+v, want %+v", permissions, want)
 	}
@@ -471,7 +471,7 @@ func TestActionsService_UpdateSelfHostedRunnerPermissionsInEnterprise(t *testing
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: new(false)}
+	input := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: false}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/self-hosted-runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
