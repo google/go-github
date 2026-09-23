@@ -349,13 +349,14 @@ func plural(n int, one, many string) string {
 }
 
 // repoRelative returns a path as the summary shows it: relative to the checkout when it is
-// inside it, so that it is named the way the findings name their files.
+// inside it, so that it is named the way the findings name their files. The findings, and the
+// rest of the summary, use forward slashes on every platform, so this does too.
 func repoRelative(repo, path string) string {
 	rel, err := filepath.Rel(repo, path)
 	if err != nil || rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
 		return path
 	}
-	return rel
+	return filepath.ToSlash(rel)
 }
 
 // splitList splits a comma-separated flag value.
