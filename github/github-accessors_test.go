@@ -27007,6 +27007,17 @@ func TestInstallationPermissions_GetOrganizationPreReceiveHooks(tt *testing.T) {
 	i.GetOrganizationPreReceiveHooks()
 }
 
+func TestInstallationPermissions_GetOrganizationPrivateRegistries(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationPrivateRegistries: &zeroValue}
+	i.GetOrganizationPrivateRegistries()
+	i = &InstallationPermissions{}
+	i.GetOrganizationPrivateRegistries()
+	i = nil
+	i.GetOrganizationPrivateRegistries()
+}
+
 func TestInstallationPermissions_GetOrganizationProjects(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

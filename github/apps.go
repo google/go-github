@@ -144,6 +144,7 @@ type InstallationPermissions struct {
 	OrganizationPersonalAccessTokenRequests *string `json:"organization_personal_access_token_requests,omitempty"`
 	OrganizationPlan                        *string `json:"organization_plan,omitempty"`
 	OrganizationPreReceiveHooks             *string `json:"organization_pre_receive_hooks,omitempty"`
+	OrganizationPrivateRegistries           *string `json:"organization_private_registries,omitempty"`
 	OrganizationProjects                    *string `json:"organization_projects,omitempty"`
 	OrganizationSecrets                     *string `json:"organization_secrets,omitempty"`
 	OrganizationSelfHostedRunners           *string `json:"organization_self_hosted_runners,omitempty"`
