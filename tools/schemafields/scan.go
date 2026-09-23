@@ -93,6 +93,9 @@ type structInfo struct {
 	file   string
 	line   int
 	fields []*fieldInfo
+	// response is set when some method of the package returns the struct, which makes
+	// its fields the fields of an API response as well as, sometimes, of a request body.
+	response bool
 }
 
 // field returns the field with the given JSON name, if the struct has one.
@@ -128,12 +131,19 @@ type repoInfo struct {
 	structs map[string]*structInfo
 	methods []*methodInfo
 	files   int
+	// resultTypes names every type that a method returns, whether or not this package
+	// declares it. scanRepo settles the ones that do onto structInfo once every file
+	// has been read.
+	resultTypes map[string]bool
 }
 
 // scanRepo parses the Go sources under <repo>/github and returns the structs and the
 // methods that take a body.
 func scanRepo(repo string) (*repoInfo, error) {
-	info := &repoInfo{structs: map[string]*structInfo{}}
+	info := &repoInfo{
+		structs:     map[string]*structInfo{},
+		resultTypes: map[string]bool{},
+	}
 	fset := token.NewFileSet()
 	dir := filepath.Join(repo, "github")
 
@@ -189,6 +199,9 @@ func scanRepo(repo string) (*repoInfo, error) {
 					m.bodyType, m.bodyPtr = body, ptr
 				}
 				info.methods = append(info.methods, m)
+				for _, name := range resultTypeNames(d.Type.Results) {
+					info.resultTypes[name] = true
+				}
 			}
 		}
 		return nil
@@ -197,8 +210,11 @@ func scanRepo(repo string) (*repoInfo, error) {
 		return nil, err
 	}
 
-	// A field's type is only known to be a struct once every file has been read.
+	// A field's type is only known to be a struct once every file has been read, and the
+	// same goes for a result type: the method that returns it can be read before the
+	// declaration of the struct it names.
 	for _, si := range info.structs {
+		si.response = info.resultTypes[si.name]
 		for _, f := range si.fields {
 			if f.typeName != "" {
 				_, f.isStruct = info.structs[f.typeName]
@@ -249,6 +265,36 @@ func findBodyParam(fn *ast.FuncDecl) (name string, pointer bool) {
 		}
 	}
 	return "", false
+}
+
+// resultTypeNames returns the names of the types that a result list mentions. A name from
+// another package (io.ReadCloser, *http.Response) names no struct this repository declares,
+// so collecting it costs nothing.
+func resultTypeNames(results *ast.FieldList) []string {
+	if results == nil {
+		return nil
+	}
+	var names []string
+	for _, r := range results.List {
+		names = append(names, typeNames(r.Type)...)
+	}
+	return names
+}
+
+// typeNames returns the names that t mentions, looking through the pointers and slices that
+// a result is built from.
+func typeNames(t ast.Expr) []string {
+	switch e := t.(type) {
+	case *ast.Ident:
+		return []string{e.Name}
+	case *ast.StarExpr:
+		return typeNames(e.X)
+	case *ast.ArrayType:
+		return typeNames(e.Elt)
+	case *ast.ParenExpr:
+		return typeNames(e.X)
+	}
+	return nil
 }
 
 // collectStruct returns the exported fields of a struct declaration.
