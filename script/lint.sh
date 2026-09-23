@@ -1,7 +1,8 @@
 #!/bin/sh
 #/ script/lint.sh runs linters, checks request body fields against GitHub's OpenAPI
-#/ schemas, and validates generated files. The validation of openapi_operations.yaml,
-#/ which needs a GITHUB_TOKEN, is left to the `linter` workflow.
+#/ schemas, checks openapi_operations.yaml for entries that no longer do anything,
+#/ and validates generated files. The validation of the operations against the OpenAPI
+#/ descriptions, which needs a GITHUB_TOKEN, is left to the `linter` workflow.
 
 set -e
 
@@ -93,6 +94,14 @@ if script/check-schema-fields.sh; then
   printf "${GREEN}✔ request body fields match the OpenAPI schemas${NC}\n"
 else
   printf "${RED}✘ request body fields disagree with the OpenAPI schemas${NC}\n"
+  fail
+fi
+
+print_header "Checking openapi_operations.yaml for entries that no longer do anything"
+if script/metadata.sh check; then
+  printf "${GREEN}✔ openapi_operations.yaml has no stale entries${NC}\n"
+else
+  printf "${RED}✘ openapi_operations.yaml has stale entries${NC}\n"
   fail
 fi
 
