@@ -142,17 +142,13 @@ func (m *operationsFile) resolve() {
 		m.resolvedOps[op.Name] = op.clone()
 	}
 	for _, override := range m.OverrideOps {
-		_, ok := m.resolvedOps[override.Name]
+		op, ok := m.resolvedOps[override.Name]
 		if !ok {
+			// An override that names an operation the file does not have does
+			// nothing, which "check" reports.
 			continue
 		}
-		override = override.clone()
-		if override.DocumentationURL != "" {
-			m.resolvedOps[override.Name].DocumentationURL = override.DocumentationURL
-		}
-		if len(override.OpenAPIFiles) > 0 {
-			m.resolvedOps[override.Name].OpenAPIFiles = override.OpenAPIFiles
-		}
+		m.resolvedOps[override.Name] = applyOverride(op, override)
 	}
 }
 
@@ -498,8 +494,9 @@ func methodOps(opsFile *operationsFile, cmap ast.CommentMap, fn *ast.FuncDecl) (
 	return ops, err
 }
 
-// metadataDocsAPIVersion is appended to generated docs links.
-// Keep this in sync with defaultAPIVersion in github/github.go.
+// metadataDocsAPIVersion is appended to generated docs links, so that the documentation a
+// reader follows describes the API version the client sends by default. Keep it in sync with
+// api20221128, the default of the X-Github-Api-Version header, in github/github.go.
 const metadataDocsAPIVersion = "2022-11-28"
 
 // normalizeDocURL cleans docURL's path and enforces metadataDocsAPIVersion for

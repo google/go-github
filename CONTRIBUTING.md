@@ -632,6 +632,14 @@ may be useful to know what it is. Its sections are:
 - `operation_overrides` - is where we override the documentation_url for
   operations where the link in the OpenAPI descriptions is wrong.
 
+Only `openapi_operations` is replaced wholesale every time it is updated, so it
+cannot go stale. The two hand-written sections are never pruned, and an entry
+that stops doing anything stays until someone notices.
+`script/metadata.sh check` reports those entries: an override whose operation
+the file no longer lists, an override that no longer changes anything, a name
+that both `operations` and `openapi_operations` list, and a name a section lists
+twice. Delete what it reports, so that the file only shrinks.
+
 Please note that if your PR unit tests are failing due to an out-of-date
 `openapi_operations.yaml` file, simply ask the maintainer(s) of this repo
 to update it for you so that your PR doesn't need to include changes
@@ -660,6 +668,11 @@ Its subcommands are:
 
 - `unused` - lists operations from `openapi_operations.yaml` that are not mapped
   from any methods.
+
+- `check` - reports the entries in `openapi_operations.yaml` that no longer do
+  anything, so that the hand-written sections can be kept minimal rather than
+  only sorted. It needs no `GITHUB_TOKEN`, so `script/lint.sh` and the `linter`
+  workflow run it.
 
 ### tools/schemafields
 
@@ -707,7 +720,7 @@ tasks:
 
 - `script/fmt.sh` formats all Go code in the repository.
 - `script/generate.sh` runs code generators and `go mod tidy` on all modules, and keeps the `structfield` linter exceptions in `.golangci.yml` up to date. With `--check` it verifies all three without writing anything.
-- `script/lint.sh` runs linters, checks request body fields against the OpenAPI schemas, and checks generated files and linter exceptions are current.
+- `script/lint.sh` runs linters, checks request body fields against the OpenAPI schemas, checks that `openapi_operations.yaml` has no stale entries, and checks generated files and linter exceptions are current.
 - `script/metadata.sh` runs `tools/metadata`. See the [Metadata](#metadata) section for more information.
 - `script/check-schema-fields.sh` runs `tools/schemafields`. See the [tools/schemafields](#toolsschemafields) section for more information.
 - `script/run-check-structfield-settings.sh` reports the `structfield` linter exceptions in `.golangci.yml` that are no longer needed or are listed twice, and fails if there are any; with `-fix` it removes them instead.
