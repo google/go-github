@@ -2734,6 +2734,14 @@ func (a *Attestation) GetBundle() json.RawMessage {
 	return a.Bundle
 }
 
+// GetBundleURL returns the BundleURL field if it's non-nil, zero value otherwise.
+func (a *Attestation) GetBundleURL() string {
+	if a == nil || a.BundleURL == nil {
+		return ""
+	}
+	return *a.BundleURL
+}
+
 // GetRepositoryID returns the RepositoryID field.
 func (a *Attestation) GetRepositoryID() int64 {
 	if a == nil {
