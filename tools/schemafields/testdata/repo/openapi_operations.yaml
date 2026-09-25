@@ -1,0 +1,21 @@
+# Fixture for tools/schemafields tests. It mirrors the shape of the real file: a legacy
+# "operations" list, the pinned commit, and the "openapi_operations" list that names the
+# description files each operation comes from.
+operations:
+  - name: GET /repos/{owner}/{repo}/issues/{number}/comments
+openapi_commit: 0123456789abcdef0123456789abcdef01234567
+openapi_operations:
+  - name: POST /repos/{owner}/{repo}/issues/{number}/comments
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+      - descriptions/ghes-3.20/ghes-3.20.json
+  - name: POST /admin/hooks
+    openapi_files:
+      - descriptions/ghes-3.21/ghes-3.21.json
+  - name: POST /enterprises/{enterprise}/runner-groups
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/pages
+    openapi_files:
+      - descriptions/ghes-3.3/ghes-3.3.json

@@ -46,7 +46,7 @@ func TestActionsAllowed_String(t *testing.T) {
 func TestActionsPermissions_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsPermissions{
-		EnabledRepositories: new(""),
+		EnabledRepositories: "",
 		AllowedActions:      new(""),
 		SelectedActionsURL:  new(""),
 		SHAPinningRequired:  new(false),
@@ -60,7 +60,7 @@ func TestActionsPermissions_String(t *testing.T) {
 func TestActionsPermissionsEnterprise_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsPermissionsEnterprise{
-		EnabledOrganizations: new(""),
+		EnabledOrganizations: "",
 		AllowedActions:       new(""),
 		SelectedActionsURL:   new(""),
 	}
@@ -73,7 +73,7 @@ func TestActionsPermissionsEnterprise_String(t *testing.T) {
 func TestActionsPermissionsRepository_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsPermissionsRepository{
-		Enabled:            new(false),
+		Enabled:            false,
 		AllowedActions:     new(""),
 		SelectedActionsURL: new(""),
 		SHAPinningRequired: new(false),
@@ -520,8 +520,9 @@ func TestCreateTeamRequest_String(t *testing.T) {
 		Permission:          new(""),
 		ParentTeamID:        new(int64(0)),
 		ParentTeamSlug:      new(""),
+		LDAPDN:              new(""),
 	}
-	want := `github.CreateTeamRequest{Name:"", Description:"", Maintainers:[""], RepoNames:[""], Privacy:"", NotificationSetting:"", Permission:"", ParentTeamID:0, ParentTeamSlug:""}`
+	want := `github.CreateTeamRequest{Name:"", Description:"", Maintainers:[""], RepoNames:[""], Privacy:"", NotificationSetting:"", Permission:"", ParentTeamID:0, ParentTeamSlug:"", LDAPDN:""}`
 	if got := v.String(); got != want {
 		t.Errorf("CreateTeamRequest.String = %v, want %v", got, want)
 	}
@@ -2274,7 +2275,7 @@ func TestSecurityAndAnalysis_String(t *testing.T) {
 func TestSelfHostRunnerPermissionsEnterprise_String(t *testing.T) {
 	t.Parallel()
 	v := SelfHostRunnerPermissionsEnterprise{
-		DisableSelfHostedRunnersForAllOrgs: new(false),
+		DisableSelfHostedRunnersForAllOrgs: false,
 	}
 	want := `github.SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs:false}`
 	if got := v.String(); got != want {

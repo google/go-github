@@ -17,7 +17,7 @@ type RepositoryActionsAccessLevel struct {
 	// AccessLevel specifies the level of access that workflows outside of the repository have
 	// to actions and reusable workflows within the repository.
 	// Possible values are: "none", "organization" "enterprise".
-	AccessLevel *string `json:"access_level,omitempty"`
+	AccessLevel string `json:"access_level"`
 }
 
 // GetActionsAccessLevel gets the level of access that workflows outside of the repository have

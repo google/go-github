@@ -491,10 +491,7 @@ func TestActionsPermissions_GetAllowedActions(tt *testing.T) {
 
 func TestActionsPermissions_GetEnabledRepositories(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &ActionsPermissions{EnabledRepositories: &zeroValue}
-	a.GetEnabledRepositories()
-	a = &ActionsPermissions{}
+	a := &ActionsPermissions{}
 	a.GetEnabledRepositories()
 	a = nil
 	a.GetEnabledRepositories()
@@ -535,10 +532,7 @@ func TestActionsPermissionsEnterprise_GetAllowedActions(tt *testing.T) {
 
 func TestActionsPermissionsEnterprise_GetEnabledOrganizations(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &ActionsPermissionsEnterprise{EnabledOrganizations: &zeroValue}
-	a.GetEnabledOrganizations()
-	a = &ActionsPermissionsEnterprise{}
+	a := &ActionsPermissionsEnterprise{}
 	a.GetEnabledOrganizations()
 	a = nil
 	a.GetEnabledOrganizations()
@@ -568,10 +562,7 @@ func TestActionsPermissionsRepository_GetAllowedActions(tt *testing.T) {
 
 func TestActionsPermissionsRepository_GetEnabled(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	a := &ActionsPermissionsRepository{Enabled: &zeroValue}
-	a.GetEnabled()
-	a = &ActionsPermissionsRepository{}
+	a := &ActionsPermissionsRepository{}
 	a.GetEnabled()
 	a = nil
 	a.GetEnabled()
@@ -3105,10 +3096,7 @@ func TestArtifactPeriod_GetMaximumAllowedDays(tt *testing.T) {
 
 func TestArtifactPeriodOpt_GetDays(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	a := &ArtifactPeriodOpt{Days: &zeroValue}
-	a.GetDays()
-	a = &ArtifactPeriodOpt{}
+	a := &ArtifactPeriodOpt{}
 	a.GetDays()
 	a = nil
 	a.GetDays()
@@ -4300,10 +4288,7 @@ func TestBillingCostCenter_GetName(tt *testing.T) {
 
 func TestBlob_GetContent(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	b := &Blob{Content: &zeroValue}
-	b.GetContent()
-	b = &Blob{}
+	b := &Blob{}
 	b.GetContent()
 	b = nil
 	b.GetContent()
@@ -15591,10 +15576,7 @@ func TestCreateEnterpriseRunnerGroupRequest_GetAllowsPublicRepositories(tt *test
 
 func TestCreateEnterpriseRunnerGroupRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CreateEnterpriseRunnerGroupRequest{Name: &zeroValue}
-	c.GetName()
-	c = &CreateEnterpriseRunnerGroupRequest{}
+	c := &CreateEnterpriseRunnerGroupRequest{}
 	c.GetName()
 	c = nil
 	c.GetName()
@@ -16302,48 +16284,48 @@ func TestCreateOrganizationPrivateRegistry_GetVisibility(tt *testing.T) {
 	c.GetVisibility()
 }
 
-func TestCreateOrgInvitationOptions_GetEmail(tt *testing.T) {
+func TestCreateOrgInvitationRequest_GetEmail(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateOrgInvitationOptions{Email: &zeroValue}
+	c := &CreateOrgInvitationRequest{Email: &zeroValue}
 	c.GetEmail()
-	c = &CreateOrgInvitationOptions{}
+	c = &CreateOrgInvitationRequest{}
 	c.GetEmail()
 	c = nil
 	c.GetEmail()
 }
 
-func TestCreateOrgInvitationOptions_GetInviteeID(tt *testing.T) {
+func TestCreateOrgInvitationRequest_GetInviteeID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
-	c := &CreateOrgInvitationOptions{InviteeID: &zeroValue}
+	c := &CreateOrgInvitationRequest{InviteeID: &zeroValue}
 	c.GetInviteeID()
-	c = &CreateOrgInvitationOptions{}
+	c = &CreateOrgInvitationRequest{}
 	c.GetInviteeID()
 	c = nil
 	c.GetInviteeID()
 }
 
-func TestCreateOrgInvitationOptions_GetRole(tt *testing.T) {
+func TestCreateOrgInvitationRequest_GetRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateOrgInvitationOptions{Role: &zeroValue}
+	c := &CreateOrgInvitationRequest{Role: &zeroValue}
 	c.GetRole()
-	c = &CreateOrgInvitationOptions{}
+	c = &CreateOrgInvitationRequest{}
 	c.GetRole()
 	c = nil
 	c.GetRole()
 }
 
-func TestCreateOrgInvitationOptions_GetTeamID(tt *testing.T) {
+func TestCreateOrgInvitationRequest_GetTeamIDs(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []int64{}
-	c := &CreateOrgInvitationOptions{TeamID: zeroValue}
-	c.GetTeamID()
-	c = &CreateOrgInvitationOptions{}
-	c.GetTeamID()
+	c := &CreateOrgInvitationRequest{TeamIDs: zeroValue}
+	c.GetTeamIDs()
+	c = &CreateOrgInvitationRequest{}
+	c.GetTeamIDs()
 	c = nil
-	c.GetTeamID()
+	c.GetTeamIDs()
 }
 
 func TestCreateOrUpdateIssueTypesOptions_GetColor(tt *testing.T) {
@@ -16771,10 +16753,7 @@ func TestCreateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
 
 func TestCreateRunnerGroupRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CreateRunnerGroupRequest{Name: &zeroValue}
-	c.GetName()
-	c = &CreateRunnerGroupRequest{}
+	c := &CreateRunnerGroupRequest{}
 	c.GetName()
 	c = nil
 	c.GetName()
@@ -16914,6 +16893,17 @@ func TestCreateTeamRequest_GetDescription(tt *testing.T) {
 	c.GetDescription()
 	c = nil
 	c.GetDescription()
+}
+
+func TestCreateTeamRequest_GetLDAPDN(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{LDAPDN: &zeroValue}
+	c.GetLDAPDN()
+	c = &CreateTeamRequest{}
+	c.GetLDAPDN()
+	c = nil
+	c.GetLDAPDN()
 }
 
 func TestCreateTeamRequest_GetMaintainers(tt *testing.T) {
@@ -17588,6 +17578,17 @@ func TestCustomProperty_GetRequired(tt *testing.T) {
 	c.GetRequired()
 	c = nil
 	c.GetRequired()
+}
+
+func TestCustomProperty_GetRequireExplicitValues(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CustomProperty{RequireExplicitValues: &zeroValue}
+	c.GetRequireExplicitValues()
+	c = &CustomProperty{}
+	c.GetRequireExplicitValues()
+	c = nil
+	c.GetRequireExplicitValues()
 }
 
 func TestCustomProperty_GetSourceType(tt *testing.T) {
@@ -21360,15 +21361,15 @@ func TestEnterpriseCustomPropertySchema_GetProperties(tt *testing.T) {
 	e.GetProperties()
 }
 
-func TestEnterpriseCustomPropertyValuesRequest_GetOrganizationLogin(tt *testing.T) {
+func TestEnterpriseCustomPropertyValuesRequest_GetOrganizationLogins(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
-	e := &EnterpriseCustomPropertyValuesRequest{OrganizationLogin: zeroValue}
-	e.GetOrganizationLogin()
+	e := &EnterpriseCustomPropertyValuesRequest{OrganizationLogins: zeroValue}
+	e.GetOrganizationLogins()
 	e = &EnterpriseCustomPropertyValuesRequest{}
-	e.GetOrganizationLogin()
+	e.GetOrganizationLogins()
 	e = nil
-	e.GetOrganizationLogin()
+	e.GetOrganizationLogins()
 }
 
 func TestEnterpriseCustomPropertyValuesRequest_GetProperties(tt *testing.T) {
@@ -25040,6 +25041,17 @@ func TestHostedRunner_GetImageDetails(tt *testing.T) {
 	h.GetImageDetails()
 }
 
+func TestHostedRunner_GetImageGen(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	h := &HostedRunner{ImageGen: &zeroValue}
+	h.GetImageGen()
+	h = &HostedRunner{}
+	h.GetImageGen()
+	h = nil
+	h.GetImageGen()
+}
+
 func TestHostedRunner_GetLastActiveOn(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -25613,10 +25625,7 @@ func TestIDPGroupList_GetGroups(tt *testing.T) {
 
 func TestImmutableReleasePolicy_GetEnforcedRepositories(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &ImmutableReleasePolicy{EnforcedRepositories: &zeroValue}
-	i.GetEnforcedRepositories()
-	i = &ImmutableReleasePolicy{}
+	i := &ImmutableReleasePolicy{}
 	i.GetEnforcedRepositories()
 	i = nil
 	i.GetEnforcedRepositories()
@@ -42035,6 +42044,14 @@ func TestPullRequestReviewEvent_GetAction(tt *testing.T) {
 	p.GetAction()
 }
 
+func TestPullRequestReviewEvent_GetChanges(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestReviewEvent{}
+	p.GetChanges()
+	p = nil
+	p.GetChanges()
+}
+
 func TestPullRequestReviewEvent_GetInstallation(tt *testing.T) {
 	tt.Parallel()
 	p := &PullRequestReviewEvent{}
@@ -44454,6 +44471,54 @@ func TestReleaseAsset_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestReleaseChangeFrom_GetFrom(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChangeFrom{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
+}
+
+func TestReleaseChanges_GetBody(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChanges{}
+	r.GetBody()
+	r = nil
+	r.GetBody()
+}
+
+func TestReleaseChanges_GetMakeLatest(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChanges{}
+	r.GetMakeLatest()
+	r = nil
+	r.GetMakeLatest()
+}
+
+func TestReleaseChanges_GetName(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChanges{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestReleaseChanges_GetTagName(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChanges{}
+	r.GetTagName()
+	r = nil
+	r.GetTagName()
+}
+
+func TestReleaseChangeToBool_GetTo(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChangeToBool{}
+	r.GetTo()
+	r = nil
+	r.GetTo()
+}
+
 func TestReleaseEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -44463,6 +44528,22 @@ func TestReleaseEvent_GetAction(tt *testing.T) {
 	r.GetAction()
 	r = nil
 	r.GetAction()
+}
+
+func TestReleaseEvent_GetChanges(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseEvent{}
+	r.GetChanges()
+	r = nil
+	r.GetChanges()
+}
+
+func TestReleaseEvent_GetEnterprise(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseEvent{}
+	r.GetEnterprise()
+	r = nil
+	r.GetEnterprise()
 }
 
 func TestReleaseEvent_GetInstallation(tt *testing.T) {
@@ -46087,10 +46168,7 @@ func TestRepository_GetWebCommitSignoffRequired(tt *testing.T) {
 
 func TestRepositoryActionsAccessLevel_GetAccessLevel(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryActionsAccessLevel{AccessLevel: &zeroValue}
-	r.GetAccessLevel()
-	r = &RepositoryActionsAccessLevel{}
+	r := &RepositoryActionsAccessLevel{}
 	r.GetAccessLevel()
 	r = nil
 	r.GetAccessLevel()
@@ -50329,6 +50407,17 @@ func TestSBOM_GetSBOM(tt *testing.T) {
 	s.GetSBOM()
 }
 
+func TestSBOMGeneration_GetSBOMURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SBOMGeneration{SBOMURL: &zeroValue}
+	s.GetSBOMURL()
+	s = &SBOMGeneration{}
+	s.GetSBOMURL()
+	s = nil
+	s.GetSBOMURL()
+}
+
 func TestSBOMInfo_GetCreationInfo(tt *testing.T) {
 	tt.Parallel()
 	s := &SBOMInfo{}
@@ -50692,10 +50781,7 @@ func TestSCIMEnterpriseDisplayReference_GetValue(tt *testing.T) {
 
 func TestSCIMEnterpriseGroupAttributes_GetDisplayName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SCIMEnterpriseGroupAttributes{DisplayName: &zeroValue}
-	s.GetDisplayName()
-	s = &SCIMEnterpriseGroupAttributes{}
+	s := &SCIMEnterpriseGroupAttributes{}
 	s.GetDisplayName()
 	s = nil
 	s.GetDisplayName()
@@ -50703,10 +50789,7 @@ func TestSCIMEnterpriseGroupAttributes_GetDisplayName(tt *testing.T) {
 
 func TestSCIMEnterpriseGroupAttributes_GetExternalID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SCIMEnterpriseGroupAttributes{ExternalID: &zeroValue}
-	s.GetExternalID()
-	s = &SCIMEnterpriseGroupAttributes{}
+	s := &SCIMEnterpriseGroupAttributes{}
 	s.GetExternalID()
 	s = nil
 	s.GetExternalID()
@@ -53507,10 +53590,7 @@ func TestSelfHostedRunnersSettingsOrganization_GetSelectedRepositoriesURL(tt *te
 
 func TestSelfHostedRunnersSettingsOrganizationOpt_GetEnabledRepositories(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SelfHostedRunnersSettingsOrganizationOpt{EnabledRepositories: &zeroValue}
-	s.GetEnabledRepositories()
-	s = &SelfHostedRunnersSettingsOrganizationOpt{}
+	s := &SelfHostedRunnersSettingsOrganizationOpt{}
 	s.GetEnabledRepositories()
 	s = nil
 	s.GetEnabledRepositories()
@@ -53518,10 +53598,7 @@ func TestSelfHostedRunnersSettingsOrganizationOpt_GetEnabledRepositories(tt *tes
 
 func TestSelfHostRunnerPermissionsEnterprise_GetDisableSelfHostedRunnersForAllOrgs(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	s := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: &zeroValue}
-	s.GetDisableSelfHostedRunnersForAllOrgs()
-	s = &SelfHostRunnerPermissionsEnterprise{}
+	s := &SelfHostRunnerPermissionsEnterprise{}
 	s.GetDisableSelfHostedRunnersForAllOrgs()
 	s = nil
 	s.GetDisableSelfHostedRunnersForAllOrgs()
@@ -56425,10 +56502,7 @@ func TestUpdateAppInstallationRepositoriesRequest_GetRepositories(tt *testing.T)
 
 func TestUpdateAppInstallationRepositoriesRequest_GetRepositorySelection(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	u := &UpdateAppInstallationRepositoriesRequest{RepositorySelection: &zeroValue}
-	u.GetRepositorySelection()
-	u = &UpdateAppInstallationRepositoriesRequest{}
+	u := &UpdateAppInstallationRepositoriesRequest{}
 	u.GetRepositorySelection()
 	u = nil
 	u.GetRepositorySelection()
@@ -56927,6 +57001,17 @@ func TestUpdateHostedRunnerRequest_GetEnableStaticIP(tt *testing.T) {
 	u.GetEnableStaticIP()
 	u = nil
 	u.GetEnableStaticIP()
+}
+
+func TestUpdateHostedRunnerRequest_GetImageGen(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateHostedRunnerRequest{ImageGen: &zeroValue}
+	u.GetImageGen()
+	u = &UpdateHostedRunnerRequest{}
+	u.GetImageGen()
+	u = nil
+	u.GetImageGen()
 }
 
 func TestUpdateHostedRunnerRequest_GetImageID(tt *testing.T) {
@@ -57751,10 +57836,7 @@ func TestUpdateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
 
 func TestUpdateRunnerGroupRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	u := &UpdateRunnerGroupRequest{Name: &zeroValue}
-	u.GetName()
-	u = &UpdateRunnerGroupRequest{}
+	u := &UpdateRunnerGroupRequest{}
 	u.GetName()
 	u = nil
 	u.GetName()

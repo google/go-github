@@ -41,7 +41,7 @@ type EnterpriseRunnerGroups struct {
 
 // CreateEnterpriseRunnerGroupRequest represents a request to create a Runner group for an enterprise.
 type CreateEnterpriseRunnerGroupRequest struct {
-	Name       *string `json:"name,omitempty"`
+	Name       string  `json:"name"`
 	Visibility *string `json:"visibility,omitempty"`
 	// List of organization IDs that can access the runner group.
 	SelectedOrganizationIDs []int64 `json:"selected_organization_ids,omitempty"`

@@ -98,13 +98,13 @@ type EnterpriseGetUserStatesOptions struct {
 
 // EnterpriseCreateBudget represents the payload to create a GitHub enterprise budget.
 type EnterpriseCreateBudget struct {
-	BudgetAmount        int                       `json:"budget_amount"`
-	PreventFurtherUsage bool                      `json:"prevent_further_usage"`
-	BudgetAlerting      *EnterpriseBudgetAlerting `json:"budget_alerting"`
-	BudgetScope         string                    `json:"budget_scope"`
-	BudgetEntityName    *string                   `json:"budget_entity_name,omitempty"`
-	BudgetType          string                    `json:"budget_type"`
-	BudgetProductSKU    *string                   `json:"budget_product_sku,omitempty"`
+	BudgetAmount        int                      `json:"budget_amount"`
+	PreventFurtherUsage bool                     `json:"prevent_further_usage"`
+	BudgetAlerting      EnterpriseBudgetAlerting `json:"budget_alerting"`
+	BudgetScope         string                   `json:"budget_scope"`
+	BudgetEntityName    *string                  `json:"budget_entity_name,omitempty"`
+	BudgetType          string                   `json:"budget_type"`
+	BudgetProductSKU    *string                  `json:"budget_product_sku,omitempty"`
 }
 
 // EnterpriseUpdateBudget represents the payload to update a GitHub enterprise budget.

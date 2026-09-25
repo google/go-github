@@ -23,7 +23,7 @@ import (
 	"github.com/alecthomas/kong"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v91/github"
+	"github.com/google/go-github/v92/github"
 )
 
 func TestUpdateGo(t *testing.T) {
@@ -139,6 +139,32 @@ func TestFormat(t *testing.T) {
 	res.assertOutput("", "")
 	res.assertNoErr()
 	res.checkGolden()
+}
+
+func TestCheck(t *testing.T) {
+	t.Parallel()
+
+	t.Run("clean", func(t *testing.T) {
+		t.Parallel()
+		res := runTest(t, "testdata/check/clean", "check")
+		res.assertOutput("Found 0 problem(s) in openapi_operations.yaml", "")
+		res.assertNoErr()
+	})
+
+	t.Run("stale", func(t *testing.T) {
+		t.Parallel()
+		res := runTest(t, "testdata/check/stale", "check")
+		res.assertOutput(`
+Found 5 problem(s) in openapi_operations.yaml
+
+operation_overrides: "DELETE /gone/{id}" overrides no operation in openapi_operations or operations, so it is ignored
+operation_overrides: "GET /dup/{id}" is listed more than once, so the entries overlap and should be merged into one
+operation_overrides: "GET /same/{id}" sets what its operation already has, so it can be deleted
+operations: "GET /twice/{id}" is listed more than once, so only the last entry is used
+operations: "POST /both/{id}" is also in openapi_operations, so the hand-written entry replaces the generated one
+`, "")
+		res.assertErr("5 problem(s) in openapi_operations.yaml")
+	})
 }
 
 func updateGoldenDir(t *testing.T, origDir, resultDir, goldenDir string) {

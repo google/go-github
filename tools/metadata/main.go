@@ -17,7 +17,7 @@ import (
 	"slices"
 
 	"github.com/alecthomas/kong"
-	"github.com/google/go-github/v91/github"
+	"github.com/google/go-github/v92/github"
 )
 
 var helpVars = kong.Vars{
@@ -35,6 +35,15 @@ Update go source code to be consistent with openapi_operations.yaml.
 
 	"format_help": `Format white space in openapi_operations.yaml and sort its operations.`,
 	"unused_help": `List operations in openapi_operations.yaml that aren't used by any service methods.`,
+
+	"check_help": `
+Report the entries of openapi_operations.yaml that no longer do anything: an override that names
+no operation, an override that sets what its operation already has, a name that both the
+hand-written "operations" section and the generated "openapi_operations" section list, and a name
+a section lists twice. The generated section cannot go stale, so a problem is a hand-written
+entry to delete or a name to correct. This needs no network access, so it runs in script/lint.sh
+and in the linter workflow.
+`,
 
 	"working_dir_help": `Working directory. Should be the root of the go-github repository.`,
 	"openapi_ref_help": `Git ref to pull OpenAPI descriptions from.`,
@@ -54,6 +63,7 @@ type rootCmd struct {
 	UpdateGo      updateGoCmd      `kong:"cmd,help=${update_go_help}"`
 	Format        formatCmd        `kong:"cmd,help=${format_help}"`
 	Unused        unusedCmd        `kong:"cmd,help=${unused_help}"`
+	Check         checkCmd         `kong:"cmd,help=${check_help}"`
 
 	WorkingDir string `kong:"short=C,default=.,help=${working_dir_help}"`
 
@@ -180,6 +190,25 @@ func (c *unusedCmd) Run(root *rootCmd, k *kong.Context) error {
 		fmt.Fprintln(k.Stdout, "")
 	}
 	return nil
+}
+
+type checkCmd struct{}
+
+func (c *checkCmd) Run(root *rootCmd, k *kong.Context) error {
+	_, opsFile, err := root.opsFile()
+	if err != nil {
+		return err
+	}
+	problems := checkProblems(opsFile)
+	fmt.Fprintf(k.Stdout, "Found %v problem(s) in openapi_operations.yaml\n", len(problems))
+	if len(problems) == 0 {
+		return nil
+	}
+	fmt.Fprintln(k.Stdout, "")
+	for _, problem := range problems {
+		fmt.Fprintln(k.Stdout, problem)
+	}
+	return fmt.Errorf("%v problem(s) in openapi_operations.yaml", len(problems))
 }
 
 func main() {

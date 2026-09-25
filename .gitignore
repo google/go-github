@@ -10,6 +10,7 @@ vendor/
 .DS_Store
 .vscode
 .claude/
+.zed
 # vim temp files
 *.swp
 

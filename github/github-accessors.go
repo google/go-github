@@ -398,12 +398,12 @@ func (a *ActionsPermissions) GetAllowedActions() string {
 	return *a.AllowedActions
 }
 
-// GetEnabledRepositories returns the EnabledRepositories field if it's non-nil, zero value otherwise.
+// GetEnabledRepositories returns the EnabledRepositories field.
 func (a *ActionsPermissions) GetEnabledRepositories() string {
-	if a == nil || a.EnabledRepositories == nil {
+	if a == nil {
 		return ""
 	}
-	return *a.EnabledRepositories
+	return a.EnabledRepositories
 }
 
 // GetSelectedActionsURL returns the SelectedActionsURL field if it's non-nil, zero value otherwise.
@@ -430,12 +430,12 @@ func (a *ActionsPermissionsEnterprise) GetAllowedActions() string {
 	return *a.AllowedActions
 }
 
-// GetEnabledOrganizations returns the EnabledOrganizations field if it's non-nil, zero value otherwise.
+// GetEnabledOrganizations returns the EnabledOrganizations field.
 func (a *ActionsPermissionsEnterprise) GetEnabledOrganizations() string {
-	if a == nil || a.EnabledOrganizations == nil {
+	if a == nil {
 		return ""
 	}
-	return *a.EnabledOrganizations
+	return a.EnabledOrganizations
 }
 
 // GetSelectedActionsURL returns the SelectedActionsURL field if it's non-nil, zero value otherwise.
@@ -454,12 +454,12 @@ func (a *ActionsPermissionsRepository) GetAllowedActions() string {
 	return *a.AllowedActions
 }
 
-// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+// GetEnabled returns the Enabled field.
 func (a *ActionsPermissionsRepository) GetEnabled() bool {
-	if a == nil || a.Enabled == nil {
+	if a == nil {
 		return false
 	}
-	return *a.Enabled
+	return a.Enabled
 }
 
 // GetSelectedActionsURL returns the SelectedActionsURL field if it's non-nil, zero value otherwise.
@@ -2478,12 +2478,12 @@ func (a *ArtifactPeriod) GetMaximumAllowedDays() int {
 	return *a.MaximumAllowedDays
 }
 
-// GetDays returns the Days field if it's non-nil, zero value otherwise.
+// GetDays returns the Days field.
 func (a *ArtifactPeriodOpt) GetDays() int {
-	if a == nil || a.Days == nil {
+	if a == nil {
 		return 0
 	}
-	return *a.Days
+	return a.Days
 }
 
 // GetArtifactURL returns the ArtifactURL field if it's non-nil, zero value otherwise.
@@ -3406,12 +3406,12 @@ func (b *BillingCostCenter) GetName() string {
 	return b.Name
 }
 
-// GetContent returns the Content field if it's non-nil, zero value otherwise.
+// GetContent returns the Content field.
 func (b *Blob) GetContent() string {
-	if b == nil || b.Content == nil {
+	if b == nil {
 		return ""
 	}
-	return *b.Content
+	return b.Content
 }
 
 // GetEncoding returns the Encoding field if it's non-nil, zero value otherwise.
@@ -12366,12 +12366,12 @@ func (c *CreateEnterpriseRunnerGroupRequest) GetAllowsPublicRepositories() bool 
 	return *c.AllowsPublicRepositories
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (c *CreateEnterpriseRunnerGroupRequest) GetName() string {
-	if c == nil || c.Name == nil {
+	if c == nil {
 		return ""
 	}
-	return *c.Name
+	return c.Name
 }
 
 // GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.
@@ -12927,7 +12927,7 @@ func (c *CreateOrganizationPrivateRegistry) GetVisibility() PrivateRegistryVisib
 }
 
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
-func (c *CreateOrgInvitationOptions) GetEmail() string {
+func (c *CreateOrgInvitationRequest) GetEmail() string {
 	if c == nil || c.Email == nil {
 		return ""
 	}
@@ -12935,7 +12935,7 @@ func (c *CreateOrgInvitationOptions) GetEmail() string {
 }
 
 // GetInviteeID returns the InviteeID field if it's non-nil, zero value otherwise.
-func (c *CreateOrgInvitationOptions) GetInviteeID() int64 {
+func (c *CreateOrgInvitationRequest) GetInviteeID() int64 {
 	if c == nil || c.InviteeID == nil {
 		return 0
 	}
@@ -12943,19 +12943,19 @@ func (c *CreateOrgInvitationOptions) GetInviteeID() int64 {
 }
 
 // GetRole returns the Role field if it's non-nil, zero value otherwise.
-func (c *CreateOrgInvitationOptions) GetRole() string {
+func (c *CreateOrgInvitationRequest) GetRole() string {
 	if c == nil || c.Role == nil {
 		return ""
 	}
 	return *c.Role
 }
 
-// GetTeamID returns the TeamID slice if it's non-nil, nil otherwise.
-func (c *CreateOrgInvitationOptions) GetTeamID() []int64 {
-	if c == nil || c.TeamID == nil {
+// GetTeamIDs returns the TeamIDs slice if it's non-nil, nil otherwise.
+func (c *CreateOrgInvitationRequest) GetTeamIDs() []int64 {
+	if c == nil || c.TeamIDs == nil {
 		return nil
 	}
-	return c.TeamID
+	return c.TeamIDs
 }
 
 // GetColor returns the Color field if it's non-nil, zero value otherwise.
@@ -13294,12 +13294,12 @@ func (c *CreateRunnerGroupRequest) GetAllowsPublicRepositories() bool {
 	return *c.AllowsPublicRepositories
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (c *CreateRunnerGroupRequest) GetName() string {
-	if c == nil || c.Name == nil {
+	if c == nil {
 		return ""
 	}
-	return *c.Name
+	return c.Name
 }
 
 // GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.
@@ -13412,6 +13412,14 @@ func (c *CreateTeamRequest) GetDescription() string {
 		return ""
 	}
 	return *c.Description
+}
+
+// GetLDAPDN returns the LDAPDN field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetLDAPDN() string {
+	if c == nil || c.LDAPDN == nil {
+		return ""
+	}
+	return *c.LDAPDN
 }
 
 // GetMaintainers returns the Maintainers slice if it's non-nil, nil otherwise.
@@ -13924,6 +13932,14 @@ func (c *CustomProperty) GetRequired() bool {
 		return false
 	}
 	return *c.Required
+}
+
+// GetRequireExplicitValues returns the RequireExplicitValues field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetRequireExplicitValues() bool {
+	if c == nil || c.RequireExplicitValues == nil {
+		return false
+	}
+	return *c.RequireExplicitValues
 }
 
 // GetSourceType returns the SourceType field if it's non-nil, zero value otherwise.
@@ -16903,9 +16919,9 @@ func (e *EnterpriseConsumedLicenses) GetUsers() []*EnterpriseLicensedUsers {
 }
 
 // GetBudgetAlerting returns the BudgetAlerting field.
-func (e *EnterpriseCreateBudget) GetBudgetAlerting() *EnterpriseBudgetAlerting {
+func (e *EnterpriseCreateBudget) GetBudgetAlerting() EnterpriseBudgetAlerting {
 	if e == nil {
-		return nil
+		return EnterpriseBudgetAlerting{}
 	}
 	return e.BudgetAlerting
 }
@@ -17006,12 +17022,12 @@ func (e *EnterpriseCustomPropertySchema) GetProperties() []*CustomProperty {
 	return e.Properties
 }
 
-// GetOrganizationLogin returns the OrganizationLogin slice if it's non-nil, nil otherwise.
-func (e *EnterpriseCustomPropertyValuesRequest) GetOrganizationLogin() []string {
-	if e == nil || e.OrganizationLogin == nil {
+// GetOrganizationLogins returns the OrganizationLogins slice if it's non-nil, nil otherwise.
+func (e *EnterpriseCustomPropertyValuesRequest) GetOrganizationLogins() []string {
+	if e == nil || e.OrganizationLogins == nil {
 		return nil
 	}
-	return e.OrganizationLogin
+	return e.OrganizationLogins
 }
 
 // GetProperties returns the Properties slice if it's non-nil, nil otherwise.
@@ -19966,6 +19982,14 @@ func (h *HostedRunner) GetImageDetails() *HostedRunnerImageDetail {
 	return h.ImageDetails
 }
 
+// GetImageGen returns the ImageGen field if it's non-nil, zero value otherwise.
+func (h *HostedRunner) GetImageGen() bool {
+	if h == nil || h.ImageGen == nil {
+		return false
+	}
+	return *h.ImageGen
+}
+
 // GetLastActiveOn returns the LastActiveOn field if it's non-nil, zero value otherwise.
 func (h *HostedRunner) GetLastActiveOn() Timestamp {
 	if h == nil || h.LastActiveOn == nil {
@@ -20462,12 +20486,12 @@ func (i *IDPGroupList) GetGroups() []*IDPGroup {
 	return i.Groups
 }
 
-// GetEnforcedRepositories returns the EnforcedRepositories field if it's non-nil, zero value otherwise.
+// GetEnforcedRepositories returns the EnforcedRepositories field.
 func (i *ImmutableReleasePolicy) GetEnforcedRepositories() string {
-	if i == nil || i.EnforcedRepositories == nil {
+	if i == nil {
 		return ""
 	}
-	return *i.EnforcedRepositories
+	return i.EnforcedRepositories
 }
 
 // GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
@@ -33550,6 +33574,14 @@ func (p *PullRequestReviewEvent) GetAction() string {
 	return *p.Action
 }
 
+// GetChanges returns the Changes field.
+func (p *PullRequestReviewEvent) GetChanges() *EditChange {
+	if p == nil {
+		return nil
+	}
+	return p.Changes
+}
+
 // GetInstallation returns the Installation field.
 func (p *PullRequestReviewEvent) GetInstallation() *Installation {
 	if p == nil {
@@ -35582,12 +35614,76 @@ func (r *ReleaseAsset) GetURL() string {
 	return *r.URL
 }
 
+// GetFrom returns the From field.
+func (r *ReleaseChangeFrom) GetFrom() string {
+	if r == nil {
+		return ""
+	}
+	return r.From
+}
+
+// GetBody returns the Body field.
+func (r *ReleaseChanges) GetBody() *ReleaseChangeFrom {
+	if r == nil {
+		return nil
+	}
+	return r.Body
+}
+
+// GetMakeLatest returns the MakeLatest field.
+func (r *ReleaseChanges) GetMakeLatest() *ReleaseChangeToBool {
+	if r == nil {
+		return nil
+	}
+	return r.MakeLatest
+}
+
+// GetName returns the Name field.
+func (r *ReleaseChanges) GetName() *ReleaseChangeFrom {
+	if r == nil {
+		return nil
+	}
+	return r.Name
+}
+
+// GetTagName returns the TagName field.
+func (r *ReleaseChanges) GetTagName() *ReleaseChangeFrom {
+	if r == nil {
+		return nil
+	}
+	return r.TagName
+}
+
+// GetTo returns the To field.
+func (r *ReleaseChangeToBool) GetTo() bool {
+	if r == nil {
+		return false
+	}
+	return r.To
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (r *ReleaseEvent) GetAction() string {
 	if r == nil || r.Action == nil {
 		return ""
 	}
 	return *r.Action
+}
+
+// GetChanges returns the Changes field.
+func (r *ReleaseEvent) GetChanges() *ReleaseChanges {
+	if r == nil {
+		return nil
+	}
+	return r.Changes
+}
+
+// GetEnterprise returns the Enterprise field.
+func (r *ReleaseEvent) GetEnterprise() *Enterprise {
+	if r == nil {
+		return nil
+	}
+	return r.Enterprise
 }
 
 // GetInstallation returns the Installation field.
@@ -36814,12 +36910,12 @@ func (r *Repository) GetWebCommitSignoffRequired() bool {
 	return *r.WebCommitSignoffRequired
 }
 
-// GetAccessLevel returns the AccessLevel field if it's non-nil, zero value otherwise.
+// GetAccessLevel returns the AccessLevel field.
 func (r *RepositoryActionsAccessLevel) GetAccessLevel() string {
-	if r == nil || r.AccessLevel == nil {
+	if r == nil {
 		return ""
 	}
-	return *r.AccessLevel
+	return r.AccessLevel
 }
 
 // GetAdvancedSecurityCommitters returns the AdvancedSecurityCommitters field.
@@ -40326,6 +40422,14 @@ func (s *SBOM) GetSBOM() *SBOMInfo {
 	return s.SBOM
 }
 
+// GetSBOMURL returns the SBOMURL field if it's non-nil, zero value otherwise.
+func (s *SBOMGeneration) GetSBOMURL() string {
+	if s == nil || s.SBOMURL == nil {
+		return ""
+	}
+	return *s.SBOMURL
+}
+
 // GetCreationInfo returns the CreationInfo field.
 func (s *SBOMInfo) GetCreationInfo() *CreationInfo {
 	if s == nil {
@@ -40606,20 +40710,20 @@ func (s *SCIMEnterpriseDisplayReference) GetValue() string {
 	return s.Value
 }
 
-// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+// GetDisplayName returns the DisplayName field.
 func (s *SCIMEnterpriseGroupAttributes) GetDisplayName() string {
-	if s == nil || s.DisplayName == nil {
+	if s == nil {
 		return ""
 	}
-	return *s.DisplayName
+	return s.DisplayName
 }
 
-// GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
+// GetExternalID returns the ExternalID field.
 func (s *SCIMEnterpriseGroupAttributes) GetExternalID() string {
-	if s == nil || s.ExternalID == nil {
+	if s == nil {
 		return ""
 	}
-	return *s.ExternalID
+	return s.ExternalID
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
@@ -42902,20 +43006,20 @@ func (s *SelfHostedRunnersSettingsOrganization) GetSelectedRepositoriesURL() str
 	return *s.SelectedRepositoriesURL
 }
 
-// GetEnabledRepositories returns the EnabledRepositories field if it's non-nil, zero value otherwise.
+// GetEnabledRepositories returns the EnabledRepositories field.
 func (s *SelfHostedRunnersSettingsOrganizationOpt) GetEnabledRepositories() string {
-	if s == nil || s.EnabledRepositories == nil {
+	if s == nil {
 		return ""
 	}
-	return *s.EnabledRepositories
+	return s.EnabledRepositories
 }
 
-// GetDisableSelfHostedRunnersForAllOrgs returns the DisableSelfHostedRunnersForAllOrgs field if it's non-nil, zero value otherwise.
+// GetDisableSelfHostedRunnersForAllOrgs returns the DisableSelfHostedRunnersForAllOrgs field.
 func (s *SelfHostRunnerPermissionsEnterprise) GetDisableSelfHostedRunnersForAllOrgs() bool {
-	if s == nil || s.DisableSelfHostedRunnersForAllOrgs == nil {
+	if s == nil {
 		return false
 	}
-	return *s.DisableSelfHostedRunnersForAllOrgs
+	return s.DisableSelfHostedRunnersForAllOrgs
 }
 
 // GetServerInstances returns the ServerInstances field.
@@ -45214,12 +45318,12 @@ func (u *UpdateAppInstallationRepositoriesRequest) GetRepositories() []string {
 	return u.Repositories
 }
 
-// GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
+// GetRepositorySelection returns the RepositorySelection field.
 func (u *UpdateAppInstallationRepositoriesRequest) GetRepositorySelection() string {
-	if u == nil || u.RepositorySelection == nil {
+	if u == nil {
 		return ""
 	}
-	return *u.RepositorySelection
+	return u.RepositorySelection
 }
 
 // GetOp returns the Op field.
@@ -45604,6 +45708,14 @@ func (u *UpdateHostedRunnerRequest) GetEnableStaticIP() bool {
 		return false
 	}
 	return *u.EnableStaticIP
+}
+
+// GetImageGen returns the ImageGen field if it's non-nil, zero value otherwise.
+func (u *UpdateHostedRunnerRequest) GetImageGen() bool {
+	if u == nil || u.ImageGen == nil {
+		return false
+	}
+	return *u.ImageGen
 }
 
 // GetImageID returns the ImageID field if it's non-nil, zero value otherwise.
@@ -46222,12 +46334,12 @@ func (u *UpdateRunnerGroupRequest) GetAllowsPublicRepositories() bool {
 	return *u.AllowsPublicRepositories
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (u *UpdateRunnerGroupRequest) GetName() string {
-	if u == nil || u.Name == nil {
+	if u == nil {
 		return ""
 	}
-	return *u.Name
+	return u.Name
 }
 
 // GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.

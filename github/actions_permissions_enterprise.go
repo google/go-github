@@ -20,7 +20,7 @@ type ActionsEnabledOnEnterpriseRepos struct {
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions?apiVersion=2022-11-28
 type ActionsPermissionsEnterprise struct {
-	EnabledOrganizations *string `json:"enabled_organizations,omitempty"`
+	EnabledOrganizations string  `json:"enabled_organizations"`
 	AllowedActions       *string `json:"allowed_actions,omitempty"`
 	SelectedActionsURL   *string `json:"selected_actions_url,omitempty"`
 }
@@ -39,7 +39,7 @@ type DefaultWorkflowPermissionEnterprise struct {
 
 // SelfHostRunnerPermissionsEnterprise represents the settings for whether organizations in the enterprise are allowed to manage self-hosted runners at the repository level.
 type SelfHostRunnerPermissionsEnterprise struct {
-	DisableSelfHostedRunnersForAllOrgs *bool `json:"disable_self_hosted_runners_for_all_orgs,omitempty"`
+	DisableSelfHostedRunnersForAllOrgs bool `json:"disable_self_hosted_runners_for_all_orgs"`
 }
 
 func (a SelfHostRunnerPermissionsEnterprise) String() string {

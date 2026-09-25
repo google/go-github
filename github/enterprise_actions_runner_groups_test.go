@@ -184,7 +184,7 @@ func TestEnterpriseService_CreateEnterpriseRunnerGroup(t *testing.T) {
 
 	ctx := t.Context()
 	req := CreateEnterpriseRunnerGroupRequest{
-		Name:                     new("octo-runner-group"),
+		Name:                     "octo-runner-group",
 		Visibility:               new("selected"),
 		AllowsPublicRepositories: new(true),
 		RestrictedToWorkflows:    new(false),

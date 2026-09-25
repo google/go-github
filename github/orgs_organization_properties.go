@@ -13,7 +13,7 @@ import (
 // OrganizationCustomPropertyValues represents the custom property values for an organization.
 type OrganizationCustomPropertyValues struct {
 	// List of custom property names and associated values to apply to the organization.
-	Properties []*CustomPropertyValue `json:"properties,omitempty"`
+	Properties []*CustomPropertyValue `json:"properties"`
 }
 
 // GetOrganizationCustomPropertyValues returns all custom property names and their values for an organization.
