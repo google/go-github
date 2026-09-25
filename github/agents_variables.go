@@ -196,7 +196,7 @@ func (s *AgentsService) UpdateOrgVariable(ctx context.Context, org, name string,
 	return s.client.Do(req, nil)
 }
 
-// DeleteRepoVariable deletes an Agents variable in a repository using the variable name.
+// DeleteRepoVariable deletes a repository Agents variable using the variable name.
 //
 // GitHub API docs: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#delete-a-repository-variable
 //
@@ -212,7 +212,7 @@ func (s *AgentsService) DeleteRepoVariable(ctx context.Context, owner, repo, nam
 	return s.client.Do(req, nil)
 }
 
-// DeleteOrgVariable deletes an Agents variable in an organization using the variable name.
+// DeleteOrgVariable deletes an organization Agents variable using the variable name.
 //
 // GitHub API docs: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#delete-an-organization-variable
 //
@@ -228,7 +228,7 @@ func (s *AgentsService) DeleteOrgVariable(ctx context.Context, org, name string)
 	return s.client.Do(req, nil)
 }
 
-// ListSelectedReposForOrgVariable lists all repositories that have access to an Agents variable.
+// ListSelectedReposForOrgVariable lists all repositories that have access to an organization Agents variable.
 //
 // GitHub API docs: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#list-selected-repositories-for-an-organization-variable
 //
@@ -254,7 +254,7 @@ func (s *AgentsService) ListSelectedReposForOrgVariable(ctx context.Context, org
 	return result, resp, nil
 }
 
-// SetSelectedReposForOrgVariable sets the repositories that have access to an Agents variable.
+// SetSelectedReposForOrgVariable sets the repositories that have access to an organization Agents variable.
 //
 // GitHub API docs: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#set-selected-repositories-for-an-organization-variable
 //
