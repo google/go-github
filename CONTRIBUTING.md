@@ -415,8 +415,15 @@ type RepositoryRuleset struct {
 }
 ```
 
-For optional boolean fields where you need to distinguish between `false`
-and "not set", use `*bool` with `omitzero`.
+Optional pointer fields should use `omitempty`: a nil pointer omits the field,
+while a pointer to a zero value such as `false`, `0`, or `""` includes it.
+`omitzero` behaves identically for pointers, so prefer `omitempty`.
+
+Neither tag can send JSON `null`, so an update that must distinguish omission,
+assignment, and removal follows `UpdateTeamRequest.RemoveParentTeam` in
+`github/teams.go`: a Go-only removal flag tagged `json:"-"`, plus a
+value-receiver `MarshalJSON` that also serves `*T` call sites. `new("")` sends
+an empty string, not `null`.
 
 Whether a request body property is required is documented by GitHub in their
 OpenAPI descriptions, not in this repository, so these rules are checked by
