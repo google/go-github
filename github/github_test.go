@@ -5038,9 +5038,30 @@ func TestIsAllowedOrigin(t *testing.T) {
 	}
 }
 
+func TestClient_longAuthToken(t *testing.T) {
+	t.Parallel()
+
+	server, auth := authRecorderServer(t)
+	longToken := "ghs_" + strings.Repeat("a", 256)
+
+	client := mustNewClient(t, WithAuthToken(longToken), WithURLs(&server.URL, &server.URL))
+
+	req, err := client.NewRequest(t.Context(), "GET", server.URL, nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+
+	if _, err := client.Do(req, nil); err != nil {
+		t.Fatalf("Do returned error: %v", err)
+	}
+
+	assertRecordedAuthHeader(t, auth, "Bearer "+longToken)
+}
+
 // TestClient_tokenOriginScope is the policy's end-to-end guarantee on the
 // default client: a [WithAuthToken] token reaches the client's configured API
 // and upload origins, and no other destination.
+
 func TestClient_tokenOriginScope(t *testing.T) {
 	t.Parallel()
 	api, apiAuth := authRecorderServer(t)
