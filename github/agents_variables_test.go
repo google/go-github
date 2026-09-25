@@ -215,9 +215,10 @@ func TestAgentsService_DeleteRepoVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/agents/variables/NAME", func(_ http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/agents/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
@@ -446,7 +447,7 @@ func TestAgentsService_SetSelectedReposForOrgVariable(t *testing.T) {
 
 	input := []int64{64780797}
 
-	mux.HandleFunc("/orgs/o/agents/variables/NAME/repositories", func(_ http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/agents/variables/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		testHeader(t, r, "Content-Type", "application/json")
@@ -455,6 +456,7 @@ func TestAgentsService_SetSelectedReposForOrgVariable(t *testing.T) {
 		}{
 			SelectedIDs: input,
 		})
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
@@ -478,9 +480,10 @@ func TestAgentsService_AddSelectedRepoToOrgVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/agents/variables/NAME/repositories/1234", func(_ http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/agents/variables/NAME/repositories/1234", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	repoID := int64(1234)
@@ -509,9 +512,10 @@ func TestAgentsService_RemoveSelectedRepoFromOrgVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/agents/variables/NAME/repositories/1234", func(_ http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/agents/variables/NAME/repositories/1234", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	repoID := int64(1234)
@@ -540,9 +544,10 @@ func TestAgentsService_DeleteOrgVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/agents/variables/NAME", func(_ http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/agents/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
