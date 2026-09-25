@@ -39462,6 +39462,14 @@ func (r *RepoStatus) GetNodeID() string {
 	return *r.NodeID
 }
 
+// GetRequired returns the Required field if it's non-nil, zero value otherwise.
+func (r *RepoStatus) GetRequired() bool {
+	if r == nil || r.Required == nil {
+		return false
+	}
+	return *r.Required
+}
+
 // GetState returns the State field if it's non-nil, zero value otherwise.
 func (r *RepoStatus) GetState() string {
 	if r == nil || r.State == nil {
