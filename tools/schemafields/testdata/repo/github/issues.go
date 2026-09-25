@@ -35,8 +35,26 @@ type UntrackedRequest struct {
 	Name string `json:"name"`
 }
 
+// CommentRequest is the body of the operation that creates a comment, and the operation
+// returns what the server made of it, so the struct is a model of a response as well.
+type CommentRequest struct {
+	// Body is required by the schema.
+	Body string `json:"body"`
+
+	// URL is set by the server, and no request body schema has it.
+	URL *string `json:"url,omitempty"`
+}
+
 //meta:operation POST /repos/{owner}/{repo}/issues/{number}/comments
 func (s *IssuesService) CreateComment(body CreateCommentRequest) error { return nil }
+
+// CreateCommentAndReturn sends the struct it returns, the way an operation that answers with
+// the resource it created does.
+//
+//meta:operation POST /repos/{owner}/{repo}/issues/{number}/comments
+func (s *IssuesService) CreateCommentAndReturn(body CommentRequest) (*CommentRequest, error) {
+	return &body, nil
+}
 
 //meta:operation PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}
 func (s *IssuesService) UpdateComment(body UpdateCommentRequest) error { return nil }

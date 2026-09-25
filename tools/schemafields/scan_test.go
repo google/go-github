@@ -285,7 +285,7 @@ func TestScanRepoFixture(t *testing.T) {
 	info, err := scanRepo(fixtureRepo)
 	assertNilError(t, err)
 	assertEqual(t, 4, info.files)
-	assertEqual(t, 18, len(info.methods))
+	assertEqual(t, 19, len(info.methods))
 
 	names := make([]string, 0, len(info.structs))
 	for name := range info.structs {
@@ -293,12 +293,12 @@ func TestScanRepoFixture(t *testing.T) {
 	}
 	slices.Sort(names)
 	assertEqual(t, []string{
-		"AllOfRequest", "CreateCommentRequest", "CreateEnterpriseRunnerGroupRequest",
-		"CreateRunnerGroupRequest", "DualRequest", "EnterpriseRunnerGroupsService",
-		"InnerConfig", "IssuesService", "MissingRequest", "NullableRequest",
-		"OneOfRequest", "RunnerGroupsService", "SharedRequest", "StructTypeRequest",
-		"UntrackedRequest", "UpdateCommentRequest", "UpdateRunnerGroupRequest",
-		"ValueTypeRequest",
+		"AllOfRequest", "CommentRequest", "CreateCommentRequest",
+		"CreateEnterpriseRunnerGroupRequest", "CreateRunnerGroupRequest", "DualRequest",
+		"EnterpriseRunnerGroupsService", "InnerConfig", "IssuesService", "MissingRequest",
+		"NullableRequest", "OneOfRequest", "RunnerGroupsService", "SharedRequest",
+		"StructTypeRequest", "UntrackedRequest", "UpdateCommentRequest",
+		"UpdateRunnerGroupRequest", "ValueTypeRequest",
 	}, names)
 
 	si := info.structs["CreateRunnerGroupRequest"]
@@ -315,6 +315,11 @@ func TestScanRepoFixture(t *testing.T) {
 	// A nested struct is only recognized as one after every file has been read.
 	assertEqual(t, true, info.structs["StructTypeRequest"].field("inner").isStruct)
 	assertEqual(t, false, info.structs["ValueTypeRequest"].field("count").isStruct)
+
+	// The struct an operation returns is marked, so that the checker leaves its server-set
+	// fields alone, and one that operations only send is not.
+	assertEqual(t, true, info.structs["CommentRequest"].response)
+	assertEqual(t, false, info.structs["CreateCommentRequest"].response)
 
 	// The field is looked up by JSON name, which the tag overrides.
 	if f := si.field("response_only"); f == nil {
@@ -359,6 +364,61 @@ func TestScanRepoMissingGitHubDir(t *testing.T) {
 	if _, err := scanRepo(filepath.Join(t.TempDir(), "absent")); err == nil {
 		t.Error("scanRepo accepted a checkout without a github directory")
 	}
+}
+
+// TestResultTypeNames checks that a method's results are read through the pointers and slices
+// they are built from. A name from another package is collected with them, and settles onto
+// nothing, because no struct of this repository has the name.
+func TestResultTypeNames(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name    string
+		results string
+		want    []string
+	}{
+		{"no results", "", nil},
+		{"error alone", "(error)", []string{"error"}},
+		{"struct with the response", "(*T, *Response, error)", []string{"T", "Response", "error"}},
+		{"slice of pointers", "([]*T, error)", []string{"T", "error"}},
+		{"value", "(T, error)", []string{"T", "error"}},
+		{"qualified", "(*pkg.T, error)", []string{"error"}},
+		{"named results", "(t T, err error)", []string{"T", "error"}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			fn := parseFunc(t, "package github\n\nfunc (s *S) M() "+tt.results+" {}\n")
+			assertEqual(t, tt.want, resultTypeNames(fn.Type.Results))
+		})
+	}
+}
+
+// TestScanRepoMarksReturnedStructs checks that a struct some method returns is marked as a
+// response model, and that one which is only sent is not. The file with the method is read
+// before the file that declares the struct, so the marking cannot depend on the scan order.
+func TestScanRepoMarksReturnedStructs(t *testing.T) {
+	t.Parallel()
+	dir := t.TempDir()
+	mustWriteFile(t, filepath.Join(dir, "github", "a.go"), "package github\n"+
+		"\n"+
+		"//meta:operation POST /t\n"+
+		"func (s *S) Create(body T) (*T, *Response, error) { return nil, nil, nil }\n"+
+		"\n"+
+		"//meta:operation POST /u\n"+
+		"func (s *S) Update(body U) error { return nil }\n")
+	mustWriteFile(t, filepath.Join(dir, "github", "b.go"), "package github\n"+
+		"\n"+
+		"type T struct {\n"+
+		"\tA string `json:\"a\"`\n"+
+		"}\n"+
+		"\n"+
+		"type U struct {\n"+
+		"\tA string `json:\"a\"`\n"+
+		"}\n")
+	info, err := scanRepo(dir)
+	assertNilError(t, err)
+	assertEqual(t, true, info.structs["T"].response)
+	assertEqual(t, false, info.structs["U"].response)
 }
 
 // parseFunc parses a one-method source file and returns the method declaration.
