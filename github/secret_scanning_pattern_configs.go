@@ -39,10 +39,8 @@ type SecretScanningPatternConfigsUpdate struct {
 	PatternConfigVersion *string `json:"pattern_config_version,omitempty"`
 }
 
-// SecretScanningPatternConfigsUpdateOptions specifies optional parameters to
-// the SecretScanningService.UpdatePatternConfigsForEnterprise method and
-// the SecretScanningService.UpdatePatternConfigsForOrg method.
-type SecretScanningPatternConfigsUpdateOptions struct {
+// UpdateSecretScanningPatternConfigsRequest represents a request to update secret scanning pattern configurations.
+type UpdateSecretScanningPatternConfigsRequest struct {
 	// The version of the entity.
 	PatternConfigVersion *string `json:"pattern_config_version,omitempty"`
 
@@ -125,7 +123,7 @@ func (s *SecretScanningService) ListPatternConfigsForOrg(ctx context.Context, or
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/push-protection?apiVersion=2022-11-28#update-enterprise-pattern-configurations
 //
 //meta:operation PATCH /enterprises/{enterprise}/secret-scanning/pattern-configurations
-func (s *SecretScanningService) UpdatePatternConfigsForEnterprise(ctx context.Context, enterprise string, body *SecretScanningPatternConfigsUpdateOptions) (*SecretScanningPatternConfigsUpdate, *Response, error) {
+func (s *SecretScanningService) UpdatePatternConfigsForEnterprise(ctx context.Context, enterprise string, body UpdateSecretScanningPatternConfigsRequest) (*SecretScanningPatternConfigsUpdate, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/secret-scanning/pattern-configurations", enterprise)
 
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
@@ -147,7 +145,7 @@ func (s *SecretScanningService) UpdatePatternConfigsForEnterprise(ctx context.Co
 // GitHub API docs: https://docs.github.com/rest/secret-scanning/push-protection?apiVersion=2022-11-28#update-organization-pattern-configurations
 //
 //meta:operation PATCH /orgs/{org}/secret-scanning/pattern-configurations
-func (s *SecretScanningService) UpdatePatternConfigsForOrg(ctx context.Context, org string, body *SecretScanningPatternConfigsUpdateOptions) (*SecretScanningPatternConfigsUpdate, *Response, error) {
+func (s *SecretScanningService) UpdatePatternConfigsForOrg(ctx context.Context, org string, body UpdateSecretScanningPatternConfigsRequest) (*SecretScanningPatternConfigsUpdate, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/secret-scanning/pattern-configurations", org)
 
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
