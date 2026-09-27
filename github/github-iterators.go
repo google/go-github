@@ -8166,6 +8166,37 @@ func (s *UsersService) ListPackagesIter(ctx context.Context, user string, opts *
 	}
 }
 
+// ListPublicEmailsIter returns an iterator that paginates through all results of ListPublicEmails.
+func (s *UsersService) ListPublicEmailsIter(ctx context.Context, opts *ListOptions) iter.Seq2[*UserEmail, error] {
+	return func(yield func(*UserEmail, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListPublicEmails(ctx, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListSSHSigningKeysIter returns an iterator that paginates through all results of ListSSHSigningKeys.
 func (s *UsersService) ListSSHSigningKeysIter(ctx context.Context, user string, opts *ListOptions) iter.Seq2[*SSHSigningKey, error] {
 	return func(yield func(*SSHSigningKey, error) bool) {
