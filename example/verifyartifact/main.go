@@ -138,7 +138,7 @@ func getAttestationBundle(ctx context.Context, attestation *github.Attestation) 
 		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusOK {
-			return nil, fmt.Errorf("failed to fetch attestation bundle: %s", resp.Status)
+			return nil, fmt.Errorf("failed to fetch attestation bundle: %v", resp.Status)
 		}
 		return io.ReadAll(resp.Body)
 	}
