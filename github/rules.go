@@ -151,6 +151,17 @@ const (
 	RulesetReviewerTypeTeam RulesetReviewerType = "Team"
 )
 
+// DismissalRestrictionActorType represents the type of actor allowed to dismiss pull request reviews.
+type DismissalRestrictionActorType string
+
+// This is the set of GitHub dismissal restriction actor types.
+const (
+	DismissalRestrictionActorTypeUser                    DismissalRestrictionActorType = "User"
+	DismissalRestrictionActorTypeTeam                    DismissalRestrictionActorType = "Team"
+	DismissalRestrictionActorTypeIntegrationInstallation DismissalRestrictionActorType = "IntegrationInstallation"
+	DismissalRestrictionActorTypeRepositoryRole          DismissalRestrictionActorType = "RepositoryRole"
+)
+
 // PatternRuleOperator models a GitHub pattern rule operator.
 type PatternRuleOperator string
 
@@ -466,12 +477,25 @@ type RequiredDeploymentsRuleParameters struct {
 // PullRequestRuleParameters represents the pull_request rule parameters.
 type PullRequestRuleParameters struct {
 	AllowedMergeMethods            []PullRequestMergeMethod   `json:"allowed_merge_methods,omitempty"`
+	DismissalRestriction           *DismissalRestriction      `json:"dismissal_restriction,omitempty"`
 	DismissStaleReviewsOnPush      bool                       `json:"dismiss_stale_reviews_on_push"`
 	RequireCodeOwnerReview         bool                       `json:"require_code_owner_review"`
 	RequireLastPushApproval        bool                       `json:"require_last_push_approval"`
 	RequiredApprovingReviewCount   int                        `json:"required_approving_review_count"`
 	RequiredReviewers              []*RulesetRequiredReviewer `json:"required_reviewers,omitempty"`
 	RequiredReviewThreadResolution bool                       `json:"required_review_thread_resolution"`
+}
+
+// DismissalRestriction represents the people, teams, or apps allowed to dismiss pull request reviews.
+type DismissalRestriction struct {
+	AllowedActors []*DismissalRestrictionActor `json:"allowed_actors,omitempty"`
+	Enabled       bool                         `json:"enabled"`
+}
+
+// DismissalRestrictionActor represents an actor allowed to dismiss pull request reviews.
+type DismissalRestrictionActor struct {
+	ID   int64                         `json:"id"`
+	Type DismissalRestrictionActorType `json:"type"`
 }
 
 // RulesetRequiredReviewer represents required reviewer parameters for pull requests in rulesets.

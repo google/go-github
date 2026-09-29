@@ -16190,6 +16190,38 @@ func (d *DiscussionListOptions) GetDirection() string {
 	return d.Direction
 }
 
+// GetAllowedActors returns the AllowedActors slice if it's non-nil, nil otherwise.
+func (d *DismissalRestriction) GetAllowedActors() []*DismissalRestrictionActor {
+	if d == nil || d.AllowedActors == nil {
+		return nil
+	}
+	return d.AllowedActors
+}
+
+// GetEnabled returns the Enabled field.
+func (d *DismissalRestriction) GetEnabled() bool {
+	if d == nil {
+		return false
+	}
+	return d.Enabled
+}
+
+// GetID returns the ID field.
+func (d *DismissalRestrictionActor) GetID() int64 {
+	if d == nil {
+		return 0
+	}
+	return d.ID
+}
+
+// GetType returns the Type field.
+func (d *DismissalRestrictionActor) GetType() DismissalRestrictionActorType {
+	if d == nil {
+		return ""
+	}
+	return d.Type
+}
+
 // GetApps returns the Apps slice if it's non-nil, nil otherwise.
 func (d *DismissalRestrictions) GetApps() []*App {
 	if d == nil || d.Apps == nil {
@@ -33884,6 +33916,14 @@ func (p *PullRequestRuleParameters) GetAllowedMergeMethods() []PullRequestMergeM
 		return nil
 	}
 	return p.AllowedMergeMethods
+}
+
+// GetDismissalRestriction returns the DismissalRestriction field.
+func (p *PullRequestRuleParameters) GetDismissalRestriction() *DismissalRestriction {
+	if p == nil {
+		return nil
+	}
+	return p.DismissalRestriction
 }
 
 // GetDismissStaleReviewsOnPush returns the DismissStaleReviewsOnPush field.

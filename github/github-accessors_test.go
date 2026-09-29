@@ -20352,6 +20352,41 @@ func TestDiscussionListOptions_GetDirection(tt *testing.T) {
 	d.GetDirection()
 }
 
+func TestDismissalRestriction_GetAllowedActors(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*DismissalRestrictionActor{}
+	d := &DismissalRestriction{AllowedActors: zeroValue}
+	d.GetAllowedActors()
+	d = &DismissalRestriction{}
+	d.GetAllowedActors()
+	d = nil
+	d.GetAllowedActors()
+}
+
+func TestDismissalRestriction_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	d := &DismissalRestriction{}
+	d.GetEnabled()
+	d = nil
+	d.GetEnabled()
+}
+
+func TestDismissalRestrictionActor_GetID(tt *testing.T) {
+	tt.Parallel()
+	d := &DismissalRestrictionActor{}
+	d.GetID()
+	d = nil
+	d.GetID()
+}
+
+func TestDismissalRestrictionActor_GetType(tt *testing.T) {
+	tt.Parallel()
+	d := &DismissalRestrictionActor{}
+	d.GetType()
+	d = nil
+	d.GetType()
+}
+
 func TestDismissalRestrictions_GetApps(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*App{}
@@ -42390,6 +42425,14 @@ func TestPullRequestRuleParameters_GetAllowedMergeMethods(tt *testing.T) {
 	p.GetAllowedMergeMethods()
 	p = nil
 	p.GetAllowedMergeMethods()
+}
+
+func TestPullRequestRuleParameters_GetDismissalRestriction(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestRuleParameters{}
+	p.GetDismissalRestriction()
+	p = nil
+	p.GetDismissalRestriction()
 }
 
 func TestPullRequestRuleParameters_GetDismissStaleReviewsOnPush(tt *testing.T) {

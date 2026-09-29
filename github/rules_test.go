@@ -837,6 +837,42 @@ func TestRepositoryRule(t *testing.T) {
 			`{"type":"pull_request","parameters":{"allowed_merge_methods":["merge","squash","rebase"],"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":0,"required_reviewers":[{"minimum_approvals":1,"file_patterns":["*"],"reviewer":{"id":123456,"type":"Team"}}],"required_review_thread_resolution":false}}`,
 		},
 		{
+			"pull_request_with_dismissal_restriction",
+			&RepositoryRule{
+				Type: RulesetRuleTypePullRequest,
+				Parameters: &PullRequestRuleParameters{
+					DismissalRestriction: &DismissalRestriction{
+						AllowedActors: []*DismissalRestrictionActor{
+							{ID: 123456, Type: DismissalRestrictionActorTypeTeam},
+							{ID: 5, Type: DismissalRestrictionActorTypeRepositoryRole},
+						},
+						Enabled: true,
+					},
+					DismissStaleReviewsOnPush:      false,
+					RequireCodeOwnerReview:         false,
+					RequireLastPushApproval:        false,
+					RequiredApprovingReviewCount:   1,
+					RequiredReviewThreadResolution: false,
+				},
+			},
+			`{"type":"pull_request","parameters":{"dismissal_restriction":{"allowed_actors":[{"id":123456,"type":"Team"},{"id":5,"type":"RepositoryRole"}],"enabled":true},"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":1,"required_review_thread_resolution":false}}`,
+		},
+		{
+			"pull_request_with_dismissal_restricted_to_nobody",
+			&RepositoryRule{
+				Type: RulesetRuleTypePullRequest,
+				Parameters: &PullRequestRuleParameters{
+					DismissalRestriction:           &DismissalRestriction{Enabled: true},
+					DismissStaleReviewsOnPush:      false,
+					RequireCodeOwnerReview:         false,
+					RequireLastPushApproval:        false,
+					RequiredApprovingReviewCount:   1,
+					RequiredReviewThreadResolution: false,
+				},
+			},
+			`{"type":"pull_request","parameters":{"dismissal_restriction":{"enabled":true},"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":1,"required_review_thread_resolution":false}}`,
+		},
+		{
 			"pull_request_string_id",
 			&RepositoryRule{
 				Type: RulesetRuleTypePullRequest,
