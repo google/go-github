@@ -1,0 +1,26 @@
+openapi_commit: b8dafbe912a3be421d21346faa2b29bf15e6f84d
+operations:
+  - name: POST /both/{id}
+    documentation_url: https://docs.github.com/rest/b/b#create-b
+  - name: GET /twice/{id}
+    documentation_url: https://docs.github.com/rest/c/c#get-c
+  - name: GET /twice/{id}
+    documentation_url: https://docs.github.com/rest/c/c#get-c-again
+operation_overrides:
+  - name: DELETE /gone/{id}
+    documentation_url: https://docs.github.com/rest/d/d#delete-d
+  - name: GET /dup/{id}
+    documentation_url: https://docs.github.com/rest/f/f#get-f-old
+  - name: GET /dup/{id}
+    documentation_url: https://docs.github.com/rest/f/f#get-f-new
+  - name: GET /same/{id}
+    documentation_url: https://docs.github.com/rest/e/e?apiVersion=2022-11-28#get-e
+openapi_operations:
+  - name: POST /both/{id}
+    documentation_url: https://docs.github.com/rest/b/b#create-b
+  - name: GET /dup/{id}
+    documentation_url: https://docs.github.com/rest/f/f#get-f
+  - name: GET /same/{id}
+    documentation_url: https://docs.github.com/rest/e/e#get-e
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json

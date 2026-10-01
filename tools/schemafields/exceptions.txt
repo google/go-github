@@ -2,18 +2,18 @@
 #
 # Each line names a Go struct field whose request-body optionality disagrees with
 # GitHub's OpenAPI descriptions. The findings are grandfathered so that CI only
-# reports problems that a change introduces.
+# reports problems that a change introduces, and so that a disagreement can be
+# accepted deliberately.
 #
-# Run "script/check-schema-fields.sh -fix" to repair what can be repaired
-# automatically, and delete the lines that become obsolete.
-ActionsPermissions.EnabledRepositories
+# A line here is a decision to leave the field alone, so -fix never rewrites a
+# field that this file names. Delete the line to have a later -fix repair it.
+#
+# Run "script/check-schema-fields.sh -fix" to repair the error-severity findings
+# that no line here grandfathers. It drops the lines that no finding needs any
+# more, so the file can only shrink.
 ActionsPermissions.SelectedActionsURL
-ActionsPermissionsEnterprise.EnabledOrganizations
 ActionsPermissionsEnterprise.SelectedActionsURL
-ActionsPermissionsRepository.Enabled
 ActionsPermissionsRepository.SelectedActionsURL
-ArtifactPeriodOpt.Days
-Blob.Content
 Blob.NodeID
 Blob.SHA
 Blob.Size
@@ -26,27 +26,14 @@ CodeSecurityConfiguration.TargetType
 CodeSecurityConfiguration.URL
 CodeSecurityConfiguration.UpdatedAt
 CreateCheckSuiteOptions.HeadBranch
-CreateEnterpriseRunnerGroupRequest.Name
-CreateRunnerGroupRequest.Name
-CreateTag.Message
-CreateTag.Object
-CreateTag.Tag
-CreateTag.Type
 CreateTeamRequest.LDAPDN
 CustomProperty.PropertyName
 CustomProperty.RequireExplicitValues
 CustomProperty.SourceType
 CustomProperty.URL
-EnterpriseCreateBudget.BudgetAlerting
-EnterpriseCustomPropertySchema.Properties
-EnterpriseCustomPropertyValuesRequest.OrganizationLogin
-EnterpriseCustomPropertyValuesRequest.organization_logins
 IDPGroupList.Groups
-ImmutableReleasePolicy.EnforcedRepositories
 OIDCSubjectClaimCustomTemplate.SubClaimPrefix
 OIDCSubjectClaimCustomTemplate.UseDefault
-OrganizationCustomPropertyValues.Properties
-RepositoryActionsAccessLevel.AccessLevel
 RepositoryRuleset.CreatedAt
 RepositoryRuleset.CurrentUserCanBypass
 RepositoryRuleset.ID
@@ -57,17 +44,10 @@ RepositoryRuleset.SourceType
 RepositoryRuleset.UpdatedAt
 ReviewCustomDeploymentProtectionRuleRequest.Comment
 ReviewCustomDeploymentProtectionRuleRequest.State
-SCIMEnterpriseGroupAttributes.DisplayName
-SCIMEnterpriseGroupAttributes.ExternalID
 SCIMEnterpriseGroupAttributes.ID
 SCIMEnterpriseGroupAttributes.Meta
-SCIMEnterpriseGroupAttributes.Schemas
 SCIMEnterpriseUserAttributes.Groups
 SCIMEnterpriseUserAttributes.ID
 SCIMEnterpriseUserAttributes.Meta
-SelfHostRunnerPermissionsEnterprise.DisableSelfHostedRunnersForAllOrgs
-SelfHostedRunnersSettingsOrganizationOpt.EnabledRepositories
-UpdateAppInstallationRepositoriesRequest.RepositorySelection
 UpdateCheckRunOptions.Name
-UpdateRunnerGroupRequest.Name
 UpdateTeamRequest.Name

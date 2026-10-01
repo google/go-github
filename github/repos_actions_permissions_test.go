@@ -27,7 +27,7 @@ func TestRepositoriesService_GetActionsPermissions(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetActionsPermissions returned error: %v", err)
 	}
-	want := &ActionsPermissionsRepository{Enabled: new(true), AllowedActions: new("all"), SHAPinningRequired: new(true)}
+	want := &ActionsPermissionsRepository{Enabled: true, AllowedActions: new("all"), SHAPinningRequired: new(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.GetActionsPermissions returned %+v, want %+v", org, want)
 	}
@@ -51,7 +51,7 @@ func TestRepositoriesService_UpdateActionsPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsPermissionsRepository{Enabled: new(true), AllowedActions: new("selected"), SHAPinningRequired: new(true)}
+	input := &ActionsPermissionsRepository{Enabled: true, AllowedActions: new("selected"), SHAPinningRequired: new(true)}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -65,7 +65,7 @@ func TestRepositoriesService_UpdateActionsPermissions(t *testing.T) {
 		t.Errorf("Repositories.UpdateActionsPermissions returned error: %v", err)
 	}
 
-	want := &ActionsPermissionsRepository{Enabled: new(true), AllowedActions: new("selected"), SHAPinningRequired: new(true)}
+	want := &ActionsPermissionsRepository{Enabled: true, AllowedActions: new("selected"), SHAPinningRequired: new(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.UpdateActionsPermissions returned %+v, want %+v", org, want)
 	}
@@ -199,7 +199,7 @@ func TestRepositoriesService_UpdateArtifactAndLogRetentionPeriod(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ArtifactPeriodOpt{Days: new(90)}
+	input := &ArtifactPeriodOpt{Days: 90}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")

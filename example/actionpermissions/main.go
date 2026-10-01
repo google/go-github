@@ -47,7 +47,7 @@ func main() {
 
 	fmt.Printf("Current ActionsPermissions %v\n", actionsPermissionsRepository)
 
-	actionsPermissionsRepository = &github.ActionsPermissionsRepository{Enabled: new(true), AllowedActions: new("selected")}
+	actionsPermissionsRepository = &github.ActionsPermissionsRepository{Enabled: true, AllowedActions: new("selected")}
 	_, _, err = client.Repositories.UpdateActionsPermissions(ctx, *owner, *name, *actionsPermissionsRepository)
 	if err != nil {
 		log.Fatal(err)
@@ -70,7 +70,7 @@ func main() {
 
 	fmt.Printf("Current ActionsAllowed %v\n", actionsAllowed)
 
-	actionsPermissionsRepository = &github.ActionsPermissionsRepository{Enabled: new(true), AllowedActions: new("all")}
+	actionsPermissionsRepository = &github.ActionsPermissionsRepository{Enabled: true, AllowedActions: new("all")}
 	_, _, err = client.Repositories.UpdateActionsPermissions(ctx, *owner, *name, *actionsPermissionsRepository)
 	if err != nil {
 		log.Fatal(err)

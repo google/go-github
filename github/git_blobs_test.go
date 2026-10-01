@@ -35,7 +35,7 @@ func TestGitService_GetBlob(t *testing.T) {
 
 	want := Blob{
 		SHA:     new("s"),
-		Content: new("blob content"),
+		Content: "blob content",
 	}
 
 	if !cmp.Equal(*blob, want) {
@@ -109,7 +109,7 @@ func TestGitService_CreateBlob(t *testing.T) {
 
 	input := Blob{
 		SHA:      new("s"),
-		Content:  new("blob content"),
+		Content:  "blob content",
 		Encoding: new("utf-8"),
 		Size:     new(12),
 	}

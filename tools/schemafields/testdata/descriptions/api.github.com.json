@@ -132,6 +132,28 @@
           }
         }
       }
+    },
+    "/orgs/{org}/shared": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/shared-org"}
+            }
+          }
+        }
+      }
+    },
+    "/repos/{owner}/{repo}/shared": {
+      "patch": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/shared-repo"}
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -242,6 +264,20 @@
         "properties": {
           "required_thing": {"type": "string"},
           "name": {"type": "string"}
+        }
+      },
+      "shared-org": {
+        "type": "object",
+        "properties": {
+          "code": {"type": "string", "readOnly": true}
+        }
+      },
+      "shared-repo": {
+        "type": "object",
+        "required": ["name", "code"],
+        "properties": {
+          "name": {"type": "string"},
+          "code": {"type": "string"}
         }
       }
     }

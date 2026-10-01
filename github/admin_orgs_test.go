@@ -23,7 +23,7 @@ func TestAdminService_CreateOrg(t *testing.T) {
 
 	mux.HandleFunc("/admin/organizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, &createOrgRequest{Login: new("github"), Admin: new("ghAdmin")})
 		fmt.Fprint(w, `{"login":"github","id":1}`)
 	})
 

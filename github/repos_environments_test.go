@@ -268,8 +268,9 @@ func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			callCount++
 		} else {
-			want := &CreateUpdateEnvironment{}
-			testJSONBody(t, r, want)
+			// The retry sends a createUpdateEnvironmentNoEnterprise, whose only
+			// field is deployment_branch_policy, null here because input is empty.
+			testJSONBodyRaw(t, r, `{"deployment_branch_policy":null}`)
 			fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": []}`)
 		}
 	})
@@ -299,7 +300,9 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testJSONBody(t, r, input)
+		// The no-enterprise path sends only deployment_branch_policy: none of
+		// can_admins_bypass, reviewers or wait_timer.
+		testJSONBodyRaw(t, r, `{"deployment_branch_policy":{"protected_branches":true,"custom_branch_policies":false}}`)
 		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "node_id": "id", "type": "branch_policy"}], "deployment_branch_policy": {"protected_branches": true, "custom_branch_policies": false}}`)
 	})
 

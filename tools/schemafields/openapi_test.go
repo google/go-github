@@ -147,36 +147,43 @@ func TestRequestSchema(t *testing.T) {
 	t.Parallel()
 	d := descFromJSON(t, requestDesc)
 	tests := []struct {
-		name string
-		op   opRef
-		want bool
+		name       string
+		op         opRef
+		wantReason bodyReason
 	}{
-		{"json body", opRef{method: "POST", path: "/a"}, true},
-		{"lowercase method", opRef{method: "post", path: "/a"}, true},
-		{"no request body", opRef{method: "GET", path: "/a"}, false},
-		{"no json content", opRef{method: "PUT", path: "/a"}, false},
-		{"no properties", opRef{method: "PATCH", path: "/a"}, false},
-		{"no schema", opRef{method: "DELETE", path: "/a"}, false},
-		{"unknown path", opRef{method: "POST", path: "/b"}, false},
+		{"json body", opRef{method: "POST", path: "/a"}, bodyFound},
+		{"lowercase method", opRef{method: "post", path: "/a"}, bodyFound},
+		{"no request body", opRef{method: "GET", path: "/a"}, bodyNoJSONBody},
+		{"no json content", opRef{method: "PUT", path: "/a"}, bodyNoJSONBody},
+		{"no properties", opRef{method: "PATCH", path: "/a"}, bodyNoJSONBody},
+		{"no schema", opRef{method: "DELETE", path: "/a"}, bodyNoJSONBody},
+		{"unknown path", opRef{method: "POST", path: "/b"}, bodyNotInPlan},
+		{"unknown method", opRef{method: "TRACE", path: "/a"}, bodyNotInPlan},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			f, ok, err := d.requestSchema(&tt.op)
+			f, reason, err := d.requestSchema(&tt.op)
 			assertNilError(t, err)
-			assertEqual(t, tt.want, ok)
-			if tt.want {
+			assertEqual(t, tt.wantReason, reason)
+			if reason == bodyFound {
 				assertEqual(t, map[string]bool{"x": true}, f.required)
 			}
 		})
 	}
 
-	// The result is cached, so a repeated lookup does not re-flatten.
+	// The result is cached, so a repeated lookup does not re-flatten, and a repeated miss
+	// keeps the reason it was recorded with.
 	first, _, err := d.requestSchema(&opRef{method: "POST", path: "/a"})
 	assertNilError(t, err)
 	second, _, err := d.requestSchema(&opRef{method: "POST", path: "/a"})
 	assertNilError(t, err)
 	assertEqual(t, true, first == second)
+	_, firstReason, err := d.requestSchema(&opRef{method: "GET", path: "/a"})
+	assertNilError(t, err)
+	_, secondReason, err := d.requestSchema(&opRef{method: "GET", path: "/a"})
+	assertNilError(t, err)
+	assertEqual(t, firstReason, secondReason)
 }
 
 func TestDescriptionsPlanOrder(t *testing.T) {
@@ -189,19 +196,25 @@ func TestDescriptionsPlanOrder(t *testing.T) {
 		"components": {"schemas": {"c": {"type": "object", "required": ["y"], "properties": {"y": {"type": "string"}}}}}}`)
 	ds := &descriptions{files: []*description{api, c}}
 
-	f, ok, err := ds.requestSchema(&opRef{method: "POST", path: "/a"})
+	f, reason, err := ds.requestSchema(&opRef{method: "POST", path: "/a"})
 	assertNilError(t, err)
-	assertEqual(t, true, ok)
+	assertEqual(t, bodyFound, reason)
 	assertEqual(t, map[string]bool{"x": true}, f.required)
 
-	f, ok, err = ds.requestSchema(&opRef{method: "POST", path: "/c"})
+	f, reason, err = ds.requestSchema(&opRef{method: "POST", path: "/c"})
 	assertNilError(t, err)
-	assertEqual(t, true, ok)
+	assertEqual(t, bodyFound, reason)
 	assertEqual(t, map[string]bool{"y": true}, f.required)
 
-	_, ok, err = ds.requestSchema(&opRef{method: "POST", path: "/nowhere"})
+	// A plan that documents the operation without a JSON body outvotes the plans that do not
+	// document it at all: only an operation no plan documents is missing from the revision.
+	_, reason, err = ds.requestSchema(&opRef{method: "GET", path: "/a"})
 	assertNilError(t, err)
-	assertEqual(t, false, ok)
+	assertEqual(t, bodyNoJSONBody, reason)
+
+	_, reason, err = ds.requestSchema(&opRef{method: "POST", path: "/nowhere"})
+	assertNilError(t, err)
+	assertEqual(t, bodyNotInPlan, reason)
 }
 
 func TestSelectPlans(t *testing.T) {
@@ -364,6 +377,44 @@ func TestFetchDescriptionsCached(t *testing.T) {
 	got, err := fetchDescriptions(t.Context(), "REF", []string{path}, cacheDir)
 	assertNilError(t, err)
 	assertEqual(t, []string{dest}, got)
+}
+
+// TestFetchDescriptionsPrunesTheCache checks that the cache does not grow with every revision
+// the repository is pinned to: the descriptions of the revision a run uses are kept, and those
+// of every other revision are dropped by the end of that run.
+func TestFetchDescriptionsPrunesTheCache(t *testing.T) {
+	t.Parallel()
+	cacheDir := t.TempDir()
+	const path = "descriptions/ghec/ghec.json"
+	cached := "descriptions_ghec_ghec.json"
+	// The revision in use, and two that a run has no use for.
+	for _, ref := range []string{"in-use", "older", "oldest"} {
+		mustWriteFile(t, filepath.Join(cacheDir, ref, cached), `{"cached": true}`)
+	}
+	// A directory that this tool did not fill is not the cache's to remove.
+	foreign := filepath.Join(cacheDir, "notes", "notes.txt")
+	mustWriteFile(t, foreign, "mine\n")
+
+	// The requested file is in the cache, so nothing is downloaded.
+	got, err := fetchDescriptions(t.Context(), "in-use", []string{path}, cacheDir)
+	assertNilError(t, err)
+	assertEqual(t, []string{filepath.Join(cacheDir, "in-use", cached)}, got)
+
+	tests := []struct {
+		name string
+		want bool
+	}{
+		{"in-use", true},
+		{"older", false},
+		{"oldest", false},
+		{"notes", true},
+	}
+	for _, tt := range tests {
+		_, err := os.Stat(filepath.Join(cacheDir, tt.name))
+		if got := err == nil; got != tt.want {
+			t.Errorf("%v is in the cache = %v, want %v", tt.name, got, tt.want)
+		}
+	}
 }
 
 // sortedProps returns the property names of f in sorted order.

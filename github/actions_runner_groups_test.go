@@ -186,7 +186,7 @@ func TestActionsService_CreateOrganizationRunnerGroup(t *testing.T) {
 
 	ctx := t.Context()
 	req := CreateRunnerGroupRequest{
-		Name:                     new("octo-runner-group"),
+		Name:                     "octo-runner-group",
 		Visibility:               new("selected"),
 		AllowsPublicRepositories: new(true),
 		RestrictedToWorkflows:    new(false),
@@ -243,7 +243,7 @@ func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
 
 	ctx := t.Context()
 	req := UpdateRunnerGroupRequest{
-		Name:                     new("octo-runner-group"),
+		Name:                     "octo-runner-group",
 		Visibility:               new("selected"),
 		AllowsPublicRepositories: new(true),
 		RestrictedToWorkflows:    new(false),

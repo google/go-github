@@ -109,7 +109,7 @@ func (g AssignmentGrade) String() string {
 //
 // Deprecated: This endpoint has been deprecated by GitHub.
 //
-// GitHub API docs: https://docs.github.com/rest/classroom/classroom?apiVersion=2022-11-28#closing-down---get-an-assignment
+// GitHub API docs: https://docs.github.com/rest/classroom/classroom?apiVersion=2022-11-28#closed---get-an-assignment
 //
 //meta:operation GET /assignments/{assignment_id}
 func (s *ClassroomService) GetAssignment(ctx context.Context, assignmentID int64) (*ClassroomAssignment, *Response, error) {
@@ -134,7 +134,7 @@ func (s *ClassroomService) GetAssignment(ctx context.Context, assignmentID int64
 //
 // Deprecated: This endpoint has been deprecated by GitHub.
 //
-// GitHub API docs: https://docs.github.com/rest/classroom/classroom?apiVersion=2022-11-28#closing-down---get-a-classroom
+// GitHub API docs: https://docs.github.com/rest/classroom/classroom?apiVersion=2022-11-28#closed---get-a-classroom
 //
 //meta:operation GET /classrooms/{classroom_id}
 func (s *ClassroomService) GetClassroom(ctx context.Context, classroomID int64) (*Classroom, *Response, error) {
@@ -159,7 +159,7 @@ func (s *ClassroomService) GetClassroom(ctx context.Context, classroomID int64) 
 //
 // Deprecated: This endpoint has been deprecated by GitHub.
 //
-// GitHub API docs: https://docs.github.com/rest/classroom/classroom?apiVersion=2022-11-28#closing-down---list-classrooms
+// GitHub API docs: https://docs.github.com/rest/classroom/classroom?apiVersion=2022-11-28#closed---list-classrooms
 //
 //meta:operation GET /classrooms
 func (s *ClassroomService) ListClassrooms(ctx context.Context, opts *ListOptions) ([]*Classroom, *Response, error) {
@@ -187,7 +187,7 @@ func (s *ClassroomService) ListClassrooms(ctx context.Context, opts *ListOptions
 //
 // Deprecated: This endpoint has been deprecated by GitHub.
 //
-// GitHub API docs: https://docs.github.com/rest/classroom/classroom?apiVersion=2022-11-28#closing-down---list-assignments-for-a-classroom
+// GitHub API docs: https://docs.github.com/rest/classroom/classroom?apiVersion=2022-11-28#closed---list-assignments-for-a-classroom
 //
 //meta:operation GET /classrooms/{classroom_id}/assignments
 func (s *ClassroomService) ListClassroomAssignments(ctx context.Context, classroomID int64, opts *ListOptions) ([]*ClassroomAssignment, *Response, error) {
@@ -217,7 +217,7 @@ func (s *ClassroomService) ListClassroomAssignments(ctx context.Context, classro
 //
 // Deprecated: This endpoint has been deprecated by GitHub.
 //
-// GitHub API docs: https://docs.github.com/rest/classroom/classroom?apiVersion=2022-11-28#closing-down---list-accepted-assignments-for-an-assignment
+// GitHub API docs: https://docs.github.com/rest/classroom/classroom?apiVersion=2022-11-28#closed---list-accepted-assignments-for-an-assignment
 //
 //meta:operation GET /assignments/{assignment_id}/accepted_assignments
 func (s *ClassroomService) ListAcceptedAssignments(ctx context.Context, assignmentID int64, opts *ListOptions) ([]*AcceptedAssignment, *Response, error) {
@@ -247,7 +247,7 @@ func (s *ClassroomService) ListAcceptedAssignments(ctx context.Context, assignme
 //
 // Deprecated: This endpoint has been deprecated by GitHub.
 //
-// GitHub API docs: https://docs.github.com/rest/classroom/classroom?apiVersion=2022-11-28#closing-down---get-assignment-grades
+// GitHub API docs: https://docs.github.com/rest/classroom/classroom?apiVersion=2022-11-28#closed---get-assignment-grades
 //
 //meta:operation GET /assignments/{assignment_id}/grades
 func (s *ClassroomService) GetAssignmentGrades(ctx context.Context, assignmentID int64) ([]*AssignmentGrade, *Response, error) {

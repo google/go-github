@@ -221,20 +221,62 @@ func testPlainBody(t *testing.T, r *http.Request, want string) {
 	}
 }
 
-func testJSONBody[T any](t *testing.T, r *http.Request, want T, opts ...cmp.Option) {
+// testJSONBody asserts that the request body is the JSON encoding of want.
+//
+// want is marshaled and read back before the comparison, so that both sides have been
+// through the same conversion. A test can therefore pass the very value that it passed to
+// the method, whatever JSON does to that value on the way: a pointer and the value it
+// points at compare equal, a field that a tag keeps out of the body is absent on both
+// sides, and a field of type any compares as the JSON it holds.
+//
+// The comparison cannot tell a field that the tag leaves out from one that is sent as its
+// zero value, because both sides are encoded the same way. testJSONBodyRaw asserts the exact
+// body for the cases where that matters.
+func testJSONBody[T any](t *testing.T, r *http.Request, want T) {
 	t.Helper()
 	b, err := io.ReadAll(r.Body)
 	if err != nil {
 		t.Errorf("Error reading request body: %v", err)
 	}
 
-	var got T
+	wantJSON, err := json.Marshal(want)
+	if err != nil {
+		t.Errorf("Error marshaling want: %v", err)
+	}
 
+	var got, wantAny any
 	if err := json.Unmarshal(b, &got); err != nil {
 		t.Errorf("Error unmarshaling request body JSON: %v", err)
 	}
+	if err := json.Unmarshal(wantJSON, &wantAny); err != nil {
+		t.Errorf("Error unmarshaling want: %v", err)
+	}
 
-	if diff := cmp.Diff(want, got, opts...); diff != "" {
+	if diff := cmp.Diff(wantAny, got); diff != "" {
+		t.Errorf("request JSON body mismatch (-want +got):\n%v", diff)
+	}
+}
+
+// testJSONBodyRaw asserts that the request body is exactly the given JSON. The two are
+// compared as JSON, so key order and white space do not matter, but a field that the body
+// leaves out does. Use it for the assertions that testJSONBody cannot express, such as a
+// required field that must not be omitted.
+func testJSONBodyRaw(t *testing.T, r *http.Request, want string) {
+	t.Helper()
+	b, err := io.ReadAll(r.Body)
+	if err != nil {
+		t.Errorf("Error reading request body: %v", err)
+	}
+
+	var got, wantAny any
+	if err := json.Unmarshal(b, &got); err != nil {
+		t.Errorf("Error unmarshaling request body JSON: %v", err)
+	}
+	if err := json.Unmarshal([]byte(want), &wantAny); err != nil {
+		t.Errorf("Error unmarshaling want: %v", err)
+	}
+
+	if diff := cmp.Diff(wantAny, got); diff != "" {
 		t.Errorf("request JSON body mismatch (-want +got):\n%v", diff)
 	}
 }

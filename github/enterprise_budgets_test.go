@@ -203,7 +203,7 @@ func TestEnterpriseService_CreateBudget(t *testing.T) {
 		BudgetScope:         BudgetScopeEnterprise,
 		BudgetType:          BudgetTypeProductPricing,
 		BudgetProductSKU:    new("actions"),
-		BudgetAlerting:      &EnterpriseBudgetAlerting{},
+		BudgetAlerting:      EnterpriseBudgetAlerting{},
 	}
 
 	mux.HandleFunc("/enterprises/e/settings/billing/budgets", func(w http.ResponseWriter, r *http.Request) {
