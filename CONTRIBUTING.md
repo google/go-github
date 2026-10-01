@@ -413,15 +413,8 @@ type RepositoryRuleset struct {
 }
 ```
 
-Optional pointer fields should use `omitempty`: a nil pointer omits the field,
-while a pointer to a zero value such as `false`, `0`, or `""` includes it.
-`omitzero` behaves identically for pointers, so prefer `omitempty`.
-
-Neither tag can send JSON `null`, so an update that must distinguish omission,
-assignment, and removal follows `UpdateTeamRequest.RemoveParentTeam` in
-`github/teams.go`: a Go-only removal flag tagged `json:"-"`, plus a
-value-receiver `MarshalJSON` that also serves `*T` call sites. `new("")` sends
-an empty string, not `null`.
+If you need to differentiate between an unset pointer to a basic type and a `nil` value you can add an un-marshaled struct field to control this behaviour and provide a custom `MarshalJSON` implementation for the struct (see `UpdateTeamRequest.RemoveParentTeam` in
+`github/teams.go`).
 
 #### Response Bodies
 
