@@ -6550,6 +6550,28 @@ func TestClusterStatusNodeServiceItem_GetStatus(tt *testing.T) {
 	c.GetStatus()
 }
 
+func TestCodeCoverageRuleParameters_GetMaxCoverageDrop(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue float64
+	c := &CodeCoverageRuleParameters{MaxCoverageDrop: &zeroValue}
+	c.GetMaxCoverageDrop()
+	c = &CodeCoverageRuleParameters{}
+	c.GetMaxCoverageDrop()
+	c = nil
+	c.GetMaxCoverageDrop()
+}
+
+func TestCodeCoverageRuleParameters_GetMinimumCoverage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue float64
+	c := &CodeCoverageRuleParameters{MinimumCoverage: &zeroValue}
+	c.GetMinimumCoverage()
+	c = &CodeCoverageRuleParameters{}
+	c.GetMinimumCoverage()
+	c = nil
+	c.GetMinimumCoverage()
+}
+
 func TestCodeOfConduct_GetBody(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -48536,6 +48558,14 @@ func TestRepositoryRulesetRules_GetBranchNamePattern(tt *testing.T) {
 	r.GetBranchNamePattern()
 	r = nil
 	r.GetBranchNamePattern()
+}
+
+func TestRepositoryRulesetRules_GetCodeCoverage(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetCodeCoverage()
+	r = nil
+	r.GetCodeCoverage()
 }
 
 func TestRepositoryRulesetRules_GetCodeScanning(tt *testing.T) {

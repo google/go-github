@@ -72,6 +72,7 @@ type RepositoryRuleType string
 const (
 	// Branch or tag target rules.
 	RulesetRuleTypeBranchNamePattern        RepositoryRuleType = "branch_name_pattern"
+	RulesetRuleTypeCodeCoverage             RepositoryRuleType = "code_coverage"
 	RulesetRuleTypeCodeScanning             RepositoryRuleType = "code_scanning"
 	RulesetRuleTypeCommitAuthorEmailPattern RepositoryRuleType = "commit_author_email_pattern"
 	RulesetRuleTypeCommitMessagePattern     RepositoryRuleType = "commit_message_pattern"
@@ -308,6 +309,7 @@ type RepositoryRulesetRules struct {
 	TagNamePattern           *PatternRuleParameters
 	Workflows                *WorkflowsRuleParameters
 	CodeScanning             *CodeScanningRuleParameters
+	CodeCoverage             *CodeCoverageRuleParameters
 	CopilotCodeReview        *CopilotCodeReviewRuleParameters
 
 	// Push target rules.
@@ -579,6 +581,12 @@ type CodeScanningRuleParameters struct {
 	CodeScanningTools []*RuleCodeScanningTool `json:"code_scanning_tools"`
 }
 
+// CodeCoverageRuleParameters represents the code_coverage rule parameters.
+type CodeCoverageRuleParameters struct {
+	MaxCoverageDrop *float64 `json:"max_coverage_drop,omitempty"`
+	MinimumCoverage *float64 `json:"minimum_coverage,omitempty"`
+}
+
 // CopilotCodeReviewRuleParameters represents the copilot_code_review rule parameters.
 type CopilotCodeReviewRuleParameters struct {
 	ReviewOnPush            bool `json:"review_on_push"`
@@ -777,6 +785,14 @@ func (r RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 
 	if r.CodeScanning != nil {
 		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCodeScanning, r.CodeScanning)
+		if err != nil {
+			return nil, err
+		}
+		rawRules = append(rawRules, json.RawMessage(bytes))
+	}
+
+	if r.CodeCoverage != nil {
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCodeCoverage, r.CodeCoverage)
 		if err != nil {
 			return nil, err
 		}
@@ -1019,6 +1035,14 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 
 			if w.Parameters != nil {
 				if err := json.Unmarshal(w.Parameters, r.CodeScanning); err != nil {
+					return err
+				}
+			}
+		case RulesetRuleTypeCodeCoverage:
+			r.CodeCoverage = &CodeCoverageRuleParameters{}
+
+			if w.Parameters != nil {
+				if err := json.Unmarshal(w.Parameters, r.CodeCoverage); err != nil {
 					return err
 				}
 			}
@@ -1397,6 +1421,16 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = p
 	case RulesetRuleTypeCodeScanning:
 		p := &CodeScanningRuleParameters{}
+
+		if w.Parameters != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
+				return err
+			}
+		}
+
+		r.Parameters = p
+	case RulesetRuleTypeCodeCoverage:
+		p := &CodeCoverageRuleParameters{}
 
 		if w.Parameters != nil {
 			if err := json.Unmarshal(w.Parameters, p); err != nil {

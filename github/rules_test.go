@@ -7,10 +7,98 @@ package github
 
 import (
 	"encoding/json"
+	"math"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
+
+func TestCodeCoverageRuleRoundTrip(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name   string
+		params CodeCoverageRuleParameters
+		json   string
+	}{
+		{
+			"fractional_thresholds",
+			CodeCoverageRuleParameters{MaxCoverageDrop: new(2.5), MinimumCoverage: new(80.5)},
+			`{"max_coverage_drop":2.5,"minimum_coverage":80.5}`,
+		},
+		{
+			"minimum_only",
+			CodeCoverageRuleParameters{MinimumCoverage: new(80.5)},
+			`{"minimum_coverage":80.5}`,
+		},
+		{
+			"no_coverage_drop",
+			CodeCoverageRuleParameters{MaxCoverageDrop: new(0.0)},
+			`{"max_coverage_drop":0}`,
+		},
+		{
+			"zero_thresholds",
+			CodeCoverageRuleParameters{MaxCoverageDrop: new(0.0), MinimumCoverage: new(0.0)},
+			`{"max_coverage_drop":0,"minimum_coverage":0}`,
+		},
+		{
+			"empty_parameters",
+			CodeCoverageRuleParameters{},
+			`{}`,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			ruleJSON := `{"type":"code_coverage","parameters":` + tt.json + `}`
+			testJSONMarshal(t, &RepositoryRule{
+				Type:       RulesetRuleTypeCodeCoverage,
+				Parameters: &tt.params,
+			}, ruleJSON)
+			testJSONMarshal(t, &RepositoryRulesetRules{CodeCoverage: &tt.params}, `[`+ruleJSON+`]`)
+		})
+	}
+
+	t.Run("missing_parameters", func(t *testing.T) {
+		t.Parallel()
+		testJSONUnmarshalOnly(t, &RepositoryRule{
+			Type:       RulesetRuleTypeCodeCoverage,
+			Parameters: &CodeCoverageRuleParameters{},
+		}, `{"type":"code_coverage"}`)
+		testJSONUnmarshalOnly(t, &RepositoryRulesetRules{
+			CodeCoverage: &CodeCoverageRuleParameters{},
+		}, `[{"type":"code_coverage"}]`)
+	})
+}
+
+func TestCodeCoverageRuleInvalidParameters(t *testing.T) {
+	t.Parallel()
+	for _, params := range []string{
+		`{"max_coverage_drop":"invalid"}`,
+		`{"minimum_coverage":"invalid"}`,
+		`"not_an_object"`,
+	} {
+		t.Run(params, func(t *testing.T) {
+			t.Parallel()
+			data := `{"type":"code_coverage","parameters":` + params + `}`
+			if err := json.Unmarshal([]byte(data), &RepositoryRule{}); err == nil {
+				t.Errorf("Expected error unmarshaling %q, got nil", data)
+			}
+			if err := json.Unmarshal([]byte(`[`+data+`]`), &RepositoryRulesetRules{}); err == nil {
+				t.Errorf("Expected error unmarshaling [%v], got nil", data)
+			}
+		})
+	}
+}
+
+func TestRepositoryRulesetRules_CodeCoverageMarshalError(t *testing.T) {
+	t.Parallel()
+	rules := &RepositoryRulesetRules{
+		CodeCoverage: &CodeCoverageRuleParameters{MinimumCoverage: new(math.NaN())},
+	}
+	if _, err := json.Marshal(rules); err == nil {
+		t.Error("Expected error marshaling a NaN coverage threshold, got nil")
+	}
+}
 
 func TestRepositoryRulesetRules(t *testing.T) {
 	t.Parallel()
