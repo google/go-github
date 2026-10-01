@@ -3855,6 +3855,57 @@ func TestRoundTripWithOptionalFollowRedirect_AllowsSameHostRedirect(t *testing.T
 	}
 }
 
+func TestRoundTripWithOptionalFollowRedirect_HonorsHTTPClientTimeout(t *testing.T) {
+	t.Parallel()
+	synctest.Test(t, func(t *testing.T) {
+		const (
+			clientTimeout = time.Second
+			parentTimeout = 2 * clientTimeout
+		)
+
+		client, err := NewClient(WithTimeout(clientTimeout))
+		if err != nil {
+			t.Fatalf("Client.Clone returned error: %v", err)
+		}
+
+		transportStarted := make(chan struct{})
+		requestContextDone := make(chan struct{})
+		client.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+			close(transportStarted)
+			<-req.Context().Done()
+			close(requestContextDone)
+			return nil, req.Context().Err()
+		})
+
+		ctx, cancel := context.WithTimeout(t.Context(), parentTimeout)
+		defer cancel()
+
+		type result struct {
+			err error
+		}
+		resultCh := make(chan result, 1)
+		startedAt := time.Now()
+		go func() {
+			_, err := client.roundTripWithOptionalFollowRedirect(ctx, ".", 0)
+			resultCh <- result{err: err}
+		}()
+
+		<-transportStarted
+		got := <-resultCh
+		if !errors.Is(got.err, context.DeadlineExceeded) {
+			t.Fatalf("roundTripWithOptionalFollowRedirect error = %v, want context deadline exceeded", got.err)
+		}
+		var urlErr *url.Error
+		if errors.As(got.err, &urlErr) {
+			t.Fatalf("roundTripWithOptionalFollowRedirect error = %v, want the underlying transport error", got.err)
+		}
+		if elapsed := time.Since(startedAt); elapsed >= parentTimeout {
+			t.Fatalf("request took %v, want client timeout before parent context timeout %v", elapsed, parentTimeout)
+		}
+		<-requestContextDone
+	})
+}
+
 func TestSanitizeURL(t *testing.T) {
 	t.Parallel()
 	tests := []struct {

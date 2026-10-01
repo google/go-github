@@ -2378,12 +2378,24 @@ func sleepUntilResetWithBuffer(ctx context.Context, reset time.Time) error {
 // When using roundTripWithOptionalFollowRedirect, note that it
 // is the responsibility of the caller to close the response body.
 func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, maxRedirects int, opts ...RequestOption) (*http.Response, error) {
+	if t := c.client.Timeout; t > 0 {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, t)
+		defer cancel()
+	}
+
 	req, err := c.NewRequest(ctx, "GET", u, nil, opts...)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := c.clientIgnoreRedirects.Do(req)
+	var resp *http.Response
+	// Use http.DefaultTransport if no custom Transport is configured
+	if c.client.Transport == nil {
+		resp, err = http.DefaultTransport.RoundTrip(req)
+	} else {
+		resp, err = c.client.Transport.RoundTrip(req)
+	}
 	if err != nil {
 		return nil, err
 	}
