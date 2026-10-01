@@ -113,7 +113,7 @@ func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/commits/r/status", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "2"})
-		fmt.Fprint(w, `{"state":"success", "statuses":[{"id":1}]}`)
+		fmt.Fprint(w, `{"state":"success", "statuses":[{"id":1,"required":true},{"id":2,"required":false},{"id":3}]}`)
 	})
 
 	opt := &ListOptions{Page: 2}
@@ -123,7 +123,11 @@ func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
 		t.Errorf("Repositories.GetCombinedStatus returned error: %v", err)
 	}
 
-	want := &CombinedStatus{State: new("success"), Statuses: []*RepoStatus{{ID: new(int64(1))}}}
+	want := &CombinedStatus{State: new("success"), Statuses: []*RepoStatus{
+		{ID: new(int64(1)), Required: new(true)},
+		{ID: new(int64(2)), Required: new(false)},
+		{ID: new(int64(3))}, // Required is nil when absent from the response
+	}}
 	if !cmp.Equal(status, want) {
 		t.Errorf("Repositories.GetCombinedStatus returned %+v, want %+v", status, want)
 	}
@@ -141,33 +145,4 @@ func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestRepositoriesService_GetCombinedStatus_requiredField(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/repos/o/r/commits/r/status", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		// One status has required=true, one has required=false, one omits the field (null/absent).
-		fmt.Fprint(w, `{"state":"success","statuses":[{"id":1,"required":true},{"id":2,"required":false},{"id":3}]}`)
-	})
-
-	ctx := t.Context()
-	status, _, err := client.Repositories.GetCombinedStatus(ctx, "o", "r", "r", nil)
-	if err != nil {
-		t.Errorf("Repositories.GetCombinedStatus returned error: %v", err)
-	}
-
-	want := &CombinedStatus{
-		State: new("success"),
-		Statuses: []*RepoStatus{
-			{ID: new(int64(1)), Required: new(true)},
-			{ID: new(int64(2)), Required: new(false)},
-			{ID: new(int64(3))}, // Required is nil when absent from the response
-		},
-	}
-	if !cmp.Equal(status, want) {
-		t.Errorf("Repositories.GetCombinedStatus returned %+v, want %+v", status, want)
-	}
 }
