@@ -41,6 +41,32 @@ func (s *UsersService) ListEmails(ctx context.Context, opts *ListOptions) ([]*Us
 	return emails, resp, nil
 }
 
+// ListPublicEmails lists public email addresses for the authenticated user.
+//
+// GitHub API docs: https://docs.github.com/rest/users/emails?apiVersion=2022-11-28#list-public-email-addresses-for-the-authenticated-user
+//
+//meta:operation GET /user/public_emails
+func (s *UsersService) ListPublicEmails(ctx context.Context, opts *ListOptions) ([]*UserEmail, *Response, error) {
+	u := "user/public_emails"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var emails []*UserEmail
+	resp, err := s.client.Do(req, &emails)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return emails, resp, nil
+}
+
 // AddEmails adds email addresses of the authenticated user.
 //
 // GitHub API docs: https://docs.github.com/rest/users/emails?apiVersion=2022-11-28#add-an-email-address-for-the-authenticated-user
