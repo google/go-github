@@ -699,13 +699,19 @@ parameter that `paramcheck` requires to be passed by value. An endpoint is
 therefore checked without any extra annotation, and coverage grows as pointer
 bodies are converted to by-value ones.
 
+A struct that some method returns describes an API response as well as,
+sometimes, a request body, so a field of one that no request body schema has is
+not reported: it is usually a field that the server sets and the client only
+reads. `-verbose` counts those fields, so that the exemption is visible in the
+summary without being a finding.
+
 A run ends with a summary of the state of the tree rather than of the run, so
 that a maintainer reads what there is to do rather than what happened:
 how many of the methods that take a struct request body were checked, what was
-not checked and why (bodies passed by pointer, and operations that the pinned
-revision does not document), and what the findings are, counting the ones that
-`exceptions.txt` grandfathers alongside the new ones. It also reports what
-`-fix` can do about them, including the repairs that the exceptions file is
+not checked and why (bodies passed by pointer, and operations that none of the
+descriptions the tool loads documents), and what the findings are, counting the
+ones that `exceptions.txt` grandfathers alongside the new ones. It also reports
+what `-fix` can do about them, including the repairs that the exceptions file is
 holding back, and the errors that no mechanical repair settles. A body that is
 not a struct has no fields for a schema check to apply to, so it is left out of
 those counts and named by `-verbose` instead.

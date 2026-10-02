@@ -11,43 +11,12 @@
 # Run "script/check-schema-fields.sh -fix" to repair the error-severity findings
 # that no line here grandfathers. It drops the lines that no finding needs any
 # more, so the file can only shrink.
-ActionsPermissions.SelectedActionsURL
-ActionsPermissionsEnterprise.SelectedActionsURL
-ActionsPermissionsRepository.SelectedActionsURL
-Blob.NodeID
-Blob.SHA
-Blob.Size
-Blob.URL
-CodeSecurityConfiguration.CreatedAt
 CodeSecurityConfiguration.Description
-CodeSecurityConfiguration.HTMLURL
-CodeSecurityConfiguration.ID
-CodeSecurityConfiguration.TargetType
-CodeSecurityConfiguration.URL
-CodeSecurityConfiguration.UpdatedAt
 CreateCheckSuiteOptions.HeadBranch
 CreateTeamRequest.LDAPDN
-CustomProperty.PropertyName
-CustomProperty.RequireExplicitValues
-CustomProperty.SourceType
-CustomProperty.URL
 IDPGroupList.Groups
-OIDCSubjectClaimCustomTemplate.SubClaimPrefix
 OIDCSubjectClaimCustomTemplate.UseDefault
-RepositoryRuleset.CreatedAt
-RepositoryRuleset.CurrentUserCanBypass
-RepositoryRuleset.ID
-RepositoryRuleset.Links
-RepositoryRuleset.NodeID
-RepositoryRuleset.Source
-RepositoryRuleset.SourceType
-RepositoryRuleset.UpdatedAt
 ReviewCustomDeploymentProtectionRuleRequest.Comment
 ReviewCustomDeploymentProtectionRuleRequest.State
-SCIMEnterpriseGroupAttributes.ID
-SCIMEnterpriseGroupAttributes.Meta
-SCIMEnterpriseUserAttributes.Groups
-SCIMEnterpriseUserAttributes.ID
-SCIMEnterpriseUserAttributes.Meta
 UpdateCheckRunOptions.Name
 UpdateTeamRequest.Name
