@@ -49,6 +49,43 @@ func TestUsersService_ListEmails(t *testing.T) {
 	})
 }
 
+func TestUsersService_ListPublicEmails(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/user/public_emails", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
+		fmt.Fprint(w, `[{
+			"email": "user@example.com",
+			"verified": true,
+			"primary": true,
+			"visibility": "public"
+		}]`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	ctx := t.Context()
+	emails, _, err := client.Users.ListPublicEmails(ctx, opt)
+	if err != nil {
+		t.Errorf("Users.ListPublicEmails returned error: %v", err)
+	}
+
+	want := []*UserEmail{{Email: new("user@example.com"), Verified: new(true), Primary: new(true), Visibility: new("public")}}
+	if !cmp.Equal(emails, want) {
+		t.Errorf("Users.ListPublicEmails returned %+v, want %+v", emails, want)
+	}
+
+	const methodName = "ListPublicEmails"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListPublicEmails(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestUsersService_AddEmails(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
