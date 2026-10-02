@@ -21510,6 +21510,14 @@ func (i *InstallationPermissions) GetOrganizationPreReceiveHooks() string {
 	return *i.OrganizationPreReceiveHooks
 }
 
+// GetOrganizationPrivateRegistries returns the OrganizationPrivateRegistries field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationPrivateRegistries() string {
+	if i == nil || i.OrganizationPrivateRegistries == nil {
+		return ""
+	}
+	return *i.OrganizationPrivateRegistries
+}
+
 // GetOrganizationProjects returns the OrganizationProjects field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetOrganizationProjects() string {
 	if i == nil || i.OrganizationProjects == nil {
