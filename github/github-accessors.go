@@ -5166,6 +5166,22 @@ func (c *ClusterStatusNodeServiceItem) GetStatus() string {
 	return *c.Status
 }
 
+// GetMaxCoverageDrop returns the MaxCoverageDrop field if it's non-nil, zero value otherwise.
+func (c *CodeCoverageRuleParameters) GetMaxCoverageDrop() float64 {
+	if c == nil || c.MaxCoverageDrop == nil {
+		return 0
+	}
+	return *c.MaxCoverageDrop
+}
+
+// GetMinimumCoverage returns the MinimumCoverage field if it's non-nil, zero value otherwise.
+func (c *CodeCoverageRuleParameters) GetMinimumCoverage() float64 {
+	if c == nil || c.MinimumCoverage == nil {
+		return 0
+	}
+	return *c.MinimumCoverage
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (c *CodeOfConduct) GetBody() string {
 	if c == nil || c.Body == nil {
@@ -38892,6 +38908,14 @@ func (r *RepositoryRulesetRules) GetBranchNamePattern() *PatternRuleParameters {
 		return nil
 	}
 	return r.BranchNamePattern
+}
+
+// GetCodeCoverage returns the CodeCoverage field.
+func (r *RepositoryRulesetRules) GetCodeCoverage() *CodeCoverageRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.CodeCoverage
 }
 
 // GetCodeScanning returns the CodeScanning field.
