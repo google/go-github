@@ -1952,8 +1952,9 @@ func TestRepoStatus_String(t *testing.T) {
 		Creator:     &User{},
 		CreatedAt:   &Timestamp{},
 		UpdatedAt:   &Timestamp{},
+		Required:    new(false),
 	}
-	want := `github.RepoStatus{ID:0, NodeID:"", URL:"", State:"", TargetURL:"", Description:"", Context:"", AvatarURL:"", Creator:github.User{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.RepoStatus{ID:0, NodeID:"", URL:"", State:"", TargetURL:"", Description:"", Context:"", AvatarURL:"", Creator:github.User{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Required:false}`
 	if got := v.String(); got != want {
 		t.Errorf("RepoStatus.String = %v, want %v", got, want)
 	}
