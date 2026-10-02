@@ -478,6 +478,246 @@ func (a *ActionsPermissionsRepository) GetSHAPinningRequired() bool {
 	return *a.SHAPinningRequired
 }
 
+// GetConditions returns the Conditions field.
+func (a *ActionsPolicy) GetConditions() *ActionsPolicyConditions {
+	if a == nil {
+		return nil
+	}
+	return a.Conditions
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (a *ActionsPolicy) GetCreatedAt() Timestamp {
+	if a == nil || a.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.CreatedAt
+}
+
+// GetEnforcement returns the Enforcement field.
+func (a *ActionsPolicy) GetEnforcement() *RulesetEnforcement {
+	if a == nil {
+		return nil
+	}
+	return a.Enforcement
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *ActionsPolicy) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetLinks returns the Links field.
+func (a *ActionsPolicy) GetLinks() *RepositoryRulesetLinks {
+	if a == nil {
+		return nil
+	}
+	return a.Links
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (a *ActionsPolicy) GetName() string {
+	if a == nil || a.Name == nil {
+		return ""
+	}
+	return *a.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (a *ActionsPolicy) GetNodeID() string {
+	if a == nil || a.NodeID == nil {
+		return ""
+	}
+	return *a.NodeID
+}
+
+// GetRules returns the Rules slice if it's non-nil, nil otherwise.
+func (a *ActionsPolicy) GetRules() []*ActionsPolicyRule {
+	if a == nil || a.Rules == nil {
+		return nil
+	}
+	return a.Rules
+}
+
+// GetSource returns the Source field if it's non-nil, zero value otherwise.
+func (a *ActionsPolicy) GetSource() string {
+	if a == nil || a.Source == nil {
+		return ""
+	}
+	return *a.Source
+}
+
+// GetSourceType returns the SourceType field.
+func (a *ActionsPolicy) GetSourceType() *RulesetSourceType {
+	if a == nil {
+		return nil
+	}
+	return a.SourceType
+}
+
+// GetTarget returns the Target field.
+func (a *ActionsPolicy) GetTarget() *ActionsPolicyTarget {
+	if a == nil {
+		return nil
+	}
+	return a.Target
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (a *ActionsPolicy) GetUpdatedAt() Timestamp {
+	if a == nil || a.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.UpdatedAt
+}
+
+// GetID returns the ID field.
+func (a *ActionsPolicyActor) GetID() int64 {
+	if a == nil {
+		return 0
+	}
+	return a.ID
+}
+
+// GetType returns the Type field.
+func (a *ActionsPolicyActor) GetType() ActionsPolicyActorType {
+	if a == nil {
+		return ""
+	}
+	return a.Type
+}
+
+// GetOrganizationID returns the OrganizationID field.
+func (a *ActionsPolicyConditions) GetOrganizationID() *RepositoryRulesetOrganizationIDsConditionParameters {
+	if a == nil {
+		return nil
+	}
+	return a.OrganizationID
+}
+
+// GetOrganizationName returns the OrganizationName field.
+func (a *ActionsPolicyConditions) GetOrganizationName() *RepositoryRulesetOrganizationNamesConditionParameters {
+	if a == nil {
+		return nil
+	}
+	return a.OrganizationName
+}
+
+// GetOrganizationProperty returns the OrganizationProperty field.
+func (a *ActionsPolicyConditions) GetOrganizationProperty() *RepositoryRulesetOrganizationPropertyConditionParameters {
+	if a == nil {
+		return nil
+	}
+	return a.OrganizationProperty
+}
+
+// GetRepositoryID returns the RepositoryID field.
+func (a *ActionsPolicyConditions) GetRepositoryID() *RepositoryRulesetRepositoryIDsConditionParameters {
+	if a == nil {
+		return nil
+	}
+	return a.RepositoryID
+}
+
+// GetRepositoryName returns the RepositoryName field.
+func (a *ActionsPolicyConditions) GetRepositoryName() *RepositoryRulesetRepositoryNamesConditionParameters {
+	if a == nil {
+		return nil
+	}
+	return a.RepositoryName
+}
+
+// GetRepositoryProperty returns the RepositoryProperty field.
+func (a *ActionsPolicyConditions) GetRepositoryProperty() *RepositoryRulesetRepositoryPropertyConditionParameters {
+	if a == nil {
+		return nil
+	}
+	return a.RepositoryProperty
+}
+
+// GetWorkflowPath returns the WorkflowPath field.
+func (a *ActionsPolicyConditions) GetWorkflowPath() *ActionsPolicyWorkflowPathConditionParameters {
+	if a == nil {
+		return nil
+	}
+	return a.WorkflowPath
+}
+
+// GetPolicies returns the Policies slice if it's non-nil, nil otherwise.
+func (a *ActionsPolicyList) GetPolicies() []*ActionsPolicy {
+	if a == nil || a.Policies == nil {
+		return nil
+	}
+	return a.Policies
+}
+
+// GetTotalCount returns the TotalCount field.
+func (a *ActionsPolicyList) GetTotalCount() int {
+	if a == nil {
+		return 0
+	}
+	return a.TotalCount
+}
+
+// GetHasParents returns the HasParents field if it's non-nil, zero value otherwise.
+func (a *ActionsPolicyListOptions) GetHasParents() bool {
+	if a == nil || a.HasParents == nil {
+		return false
+	}
+	return *a.HasParents
+}
+
+// GetParameters returns the Parameters field.
+func (a *ActionsPolicyRule) GetParameters() *ActionsPolicyRuleParameters {
+	if a == nil {
+		return nil
+	}
+	return a.Parameters
+}
+
+// GetType returns the Type field.
+func (a *ActionsPolicyRule) GetType() ActionsPolicyRuleType {
+	if a == nil {
+		return ""
+	}
+	return a.Type
+}
+
+// GetAllowedActors returns the AllowedActors slice if it's non-nil, nil otherwise.
+func (a *ActionsPolicyRuleParameters) GetAllowedActors() []*ActionsPolicyActor {
+	if a == nil || a.AllowedActors == nil {
+		return nil
+	}
+	return a.AllowedActors
+}
+
+// GetAllowedEvents returns the AllowedEvents slice if it's non-nil, nil otherwise.
+func (a *ActionsPolicyRuleParameters) GetAllowedEvents() []string {
+	if a == nil || a.AllowedEvents == nil {
+		return nil
+	}
+	return a.AllowedEvents
+}
+
+// GetExclude returns the Exclude slice if it's non-nil, nil otherwise.
+func (a *ActionsPolicyWorkflowPathConditionParameters) GetExclude() []string {
+	if a == nil || a.Exclude == nil {
+		return nil
+	}
+	return a.Exclude
+}
+
+// GetInclude returns the Include slice if it's non-nil, nil otherwise.
+func (a *ActionsPolicyWorkflowPathConditionParameters) GetInclude() []string {
+	if a == nil || a.Include == nil {
+		return nil
+	}
+	return a.Include
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (a *ActionsUpdateOrgVariableRequest) GetName() string {
 	if a == nil || a.Name == nil {
