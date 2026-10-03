@@ -179,7 +179,7 @@ func (s *ActionsService) downloadArtifactWithoutRateLimit(ctx context.Context, u
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %v", resp.Status)
 	}
 
-	parsedURL, err := url.Parse(resp.Header.Get("Location"))
+	parsedURL, err := resp.Location()
 	if err != nil {
 		return nil, newResponse(resp), err
 	}

@@ -333,6 +333,40 @@ func TestActionsService_DownloadArtifact(t *testing.T) {
 	}
 }
 
+func TestActionsService_DownloadArtifact_resolvesRelativeLocation(t *testing.T) {
+	t.Parallel()
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{name: "withoutRateLimits"},
+		{name: "withRateLimits", respectRateLimits: true},
+	}
+
+	for _, tc := range tcs {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, serverURL := setup(t)
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
+
+			mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, _ *http.Request) {
+				w.Header().Set("Location", "download")
+				w.WriteHeader(http.StatusFound)
+			})
+
+			got, _, err := client.Actions.DownloadArtifact(t.Context(), "o", "r", 1, 0)
+			if err != nil {
+				t.Fatalf("Actions.DownloadArtifact returned error: %v", err)
+			}
+
+			want := serverURL + baseURLPath + "/repos/o/r/actions/artifacts/1/download"
+			if got.String() != want {
+				t.Errorf("Actions.DownloadArtifact returned %q, want %q", got, want)
+			}
+		})
+	}
+}
+
 func TestActionsService_DownloadArtifact_invalidOwner(t *testing.T) {
 	t.Parallel()
 	tcs := []struct {

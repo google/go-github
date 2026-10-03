@@ -1575,7 +1575,7 @@ func (c *Client) bareDoUntilFound(req *http.Request, maxRedirects int) (*url.URL
 				if rerr.Location == nil {
 					return nil, nil, errInvalidLocation
 				}
-				newURL := c.baseURL.ResolveReference(rerr.Location)
+				newURL := req.URL.ResolveReference(rerr.Location)
 				return newURL, response, nil
 			}
 			// If permanent redirect response is returned, follow it
@@ -1583,7 +1583,7 @@ func (c *Client) bareDoUntilFound(req *http.Request, maxRedirects int) (*url.URL
 				if rerr.Location == nil {
 					return nil, nil, errInvalidLocation
 				}
-				newURL := c.baseURL.ResolveReference(rerr.Location)
+				newURL := req.URL.ResolveReference(rerr.Location)
 				// Refuse to follow a permanent redirect outside the origins
 				// this client may send credentials to: the auth transport
 				// attaches them on every hop, so a cross-host target would
@@ -1921,8 +1921,8 @@ func equalDurationPtr(a, b *time.Duration) bool {
 //	307 (Temporary Redirect)
 //	308 (Permanent Redirect)
 //
-// If there was a valid Location header included, it will be parsed to a URL. You should use
-// `BaseURL.ResolveReference()` to enrich it with the correct hostname where needed.
+// If there was a valid Location header included, it will be parsed to a URL. Relative locations
+// should be resolved against the request URL that received the response.
 type RedirectionError struct {
 	Response   *http.Response // HTTP response that caused this error
 	StatusCode int
@@ -2397,34 +2397,39 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 	// If redirect response is returned, follow it
 	if maxRedirects > 0 && resp.StatusCode == http.StatusMovedPermanently {
 		_ = resp.Body.Close()
-		u = resp.Header.Get("Location")
-		if err := c.checkRedirectHost(u); err != nil {
+		location := resp.Header.Get("Location")
+		target, err := c.resolveAndCheckRedirect(location, req.URL)
+		if err != nil {
 			return nil, err
 		}
-		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects-1, opts...)
+		return c.roundTripWithOptionalFollowRedirect(ctx, target.String(), maxRedirects-1, opts...)
 	}
 	return resp, err
 }
 
-// checkRedirectHost returns an error if the redirect target is outside the
-// origins this client may send credentials to. The auth transport attaches
-// credentials on every hop, so a cross-origin Location header would otherwise
-// carry them to a host the caller never configured, when a compromised or
-// malicious API response supplies one. An empty Location is also rejected.
-func (c *Client) checkRedirectHost(location string) error {
+// resolveAndCheckRedirect resolves a Location header against the request URL
+// and returns an error if the target is outside the origins this client may
+// send credentials to. The auth transport attaches credentials on every hop,
+// so a cross-origin Location header would otherwise carry them to a host the
+// caller never configured, when a compromised or malicious API response
+// supplies one. An empty Location is also rejected.
+func (c *Client) resolveAndCheckRedirect(location string, requestURL *url.URL) (*url.URL, error) {
 	if location == "" {
-		return errInvalidLocation
+		return nil, errInvalidLocation
+	}
+	if err := checkURLPathTraversal(location); err != nil {
+		return nil, err
 	}
 	target, err := url.Parse(location)
 	if err != nil {
-		return fmt.Errorf("invalid redirect location %q: %w", location, err)
+		return nil, fmt.Errorf("invalid redirect location %q: %w", location, err)
 	}
-	// Resolve relative locations against BaseURL so relative paths are allowed.
-	target = c.baseURL.ResolveReference(target)
+	// Resolve relative locations against the URL that returned the redirect.
+	target = requestURL.ResolveReference(target)
 	if !c.shouldAuthorizeRequest(target) {
-		return fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.baseURL.Host, target.Host)
+		return nil, fmt.Errorf("refusing to follow cross-host redirect from %q to %q", requestURL.Host, target.Host)
 	}
-	return nil
+	return target, nil
 }
 
 // Ptr is a helper routine that allocates a new T value
