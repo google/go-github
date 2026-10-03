@@ -515,3 +515,217 @@ func TestActionsService_GetCacheUsageForEnterprise_notFound(t *testing.T) {
 		t.Errorf("Actions.GetTotalCacheUsageForEnterprise return %+v, want nil", caches)
 	}
 }
+
+func TestActionsService_GetCacheRetentionLimitForOrg(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/organizations/o/actions/cache/retention-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"max_cache_retention_days":14}`)
+	})
+
+	ctx := t.Context()
+	limit, _, err := client.Actions.GetCacheRetentionLimitForOrg(ctx, "o")
+	if err != nil {
+		t.Errorf("Actions.GetCacheRetentionLimitForOrg returned error: %v", err)
+	}
+
+	want := &ActionsCacheRetentionLimit{MaxCacheRetentionDays: new(14)}
+	if !cmp.Equal(limit, want) {
+		t.Errorf("Actions.GetCacheRetentionLimitForOrg returned %+v, want %+v", limit, want)
+	}
+
+	const methodName = "GetCacheRetentionLimitForOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetCacheRetentionLimitForOrg(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetCacheRetentionLimitForOrg(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_GetCacheRetentionLimitForOrg_invalidOrganization(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, _, err := client.Actions.GetCacheRetentionLimitForOrg(ctx, "%")
+	testURLParseError(t, err)
+}
+
+func TestActionsService_GetCacheRetentionLimitForOrg_notFound(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/organizations/o/actions/cache/retention-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+
+	ctx := t.Context()
+	limit, resp, err := client.Actions.GetCacheRetentionLimitForOrg(ctx, "o")
+	if err == nil {
+		t.Error("Expected HTTP 404 response")
+	}
+	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
+		t.Errorf("Actions.GetCacheRetentionLimitForOrg return status %v, want %v", got, want)
+	}
+	if limit != nil {
+		t.Errorf("Actions.GetCacheRetentionLimitForOrg return %+v, want nil", limit)
+	}
+}
+
+func TestActionsService_SetCacheRetentionLimitForOrg(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := ActionsCacheRetentionLimit{MaxCacheRetentionDays: new(14)}
+
+	mux.HandleFunc("/organizations/o/actions/cache/retention-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Actions.SetCacheRetentionLimitForOrg(ctx, "o", input)
+	if err != nil {
+		t.Errorf("Actions.SetCacheRetentionLimitForOrg returned error: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusNoContent; got != want {
+		t.Errorf("Actions.SetCacheRetentionLimitForOrg return status %v, want %v", got, want)
+	}
+
+	const methodName = "SetCacheRetentionLimitForOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.SetCacheRetentionLimitForOrg(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.SetCacheRetentionLimitForOrg(ctx, "o", input)
+	})
+}
+
+func TestActionsService_SetCacheRetentionLimitForOrg_invalidOrganization(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, err := client.Actions.SetCacheRetentionLimitForOrg(ctx, "%", ActionsCacheRetentionLimit{})
+	testURLParseError(t, err)
+}
+
+func TestActionsService_GetCacheStorageLimitForOrg(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/organizations/o/actions/cache/storage-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"max_cache_size_gb":10}`)
+	})
+
+	ctx := t.Context()
+	limit, _, err := client.Actions.GetCacheStorageLimitForOrg(ctx, "o")
+	if err != nil {
+		t.Errorf("Actions.GetCacheStorageLimitForOrg returned error: %v", err)
+	}
+
+	want := &ActionsCacheStorageLimit{MaxCacheSizeGB: new(10)}
+	if !cmp.Equal(limit, want) {
+		t.Errorf("Actions.GetCacheStorageLimitForOrg returned %+v, want %+v", limit, want)
+	}
+
+	const methodName = "GetCacheStorageLimitForOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetCacheStorageLimitForOrg(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetCacheStorageLimitForOrg(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_GetCacheStorageLimitForOrg_invalidOrganization(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, _, err := client.Actions.GetCacheStorageLimitForOrg(ctx, "%")
+	testURLParseError(t, err)
+}
+
+func TestActionsService_GetCacheStorageLimitForOrg_notFound(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/organizations/o/actions/cache/storage-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+
+	ctx := t.Context()
+	limit, resp, err := client.Actions.GetCacheStorageLimitForOrg(ctx, "o")
+	if err == nil {
+		t.Error("Expected HTTP 404 response")
+	}
+	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
+		t.Errorf("Actions.GetCacheStorageLimitForOrg return status %v, want %v", got, want)
+	}
+	if limit != nil {
+		t.Errorf("Actions.GetCacheStorageLimitForOrg return %+v, want nil", limit)
+	}
+}
+
+func TestActionsService_SetCacheStorageLimitForOrg(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := ActionsCacheStorageLimit{MaxCacheSizeGB: new(10)}
+
+	mux.HandleFunc("/organizations/o/actions/cache/storage-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Actions.SetCacheStorageLimitForOrg(ctx, "o", input)
+	if err != nil {
+		t.Errorf("Actions.SetCacheStorageLimitForOrg returned error: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusNoContent; got != want {
+		t.Errorf("Actions.SetCacheStorageLimitForOrg return status %v, want %v", got, want)
+	}
+
+	const methodName = "SetCacheStorageLimitForOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.SetCacheStorageLimitForOrg(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.SetCacheStorageLimitForOrg(ctx, "o", input)
+	})
+}
+
+func TestActionsService_SetCacheStorageLimitForOrg_invalidOrganization(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, err := client.Actions.SetCacheStorageLimitForOrg(ctx, "%", ActionsCacheStorageLimit{})
+	testURLParseError(t, err)
+}
