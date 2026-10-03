@@ -79,6 +79,16 @@ operations:
 operation_overrides:
   - name: GET /meta
     documentation_url: https://docs.github.com/rest/meta/meta#get-github-meta-information
+  - name: GET /orgs/{org}/actions/policies
+    documentation_url: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#list-organization-actions-policies
+  - name: POST /orgs/{org}/actions/policies
+    documentation_url: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#create-an-organization-actions-policy
+  - name: DELETE /orgs/{org}/actions/policies/{policy_id}
+    documentation_url: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#delete-an-organization-actions-policy
+  - name: GET /orgs/{org}/actions/policies/{policy_id}
+    documentation_url: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#get-an-organization-actions-policy
+  - name: PUT /orgs/{org}/actions/policies/{policy_id}
+    documentation_url: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#update-an-organization-actions-policy
   - name: GET /orgs/{org}/agents/secrets
     documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#list-organization-secrets
   - name: GET /orgs/{org}/agents/secrets/public-key
@@ -127,6 +137,16 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#get-a-private-registry-for-an-organization
   - name: PATCH /orgs/{org}/private-registries/{secret_name}
     documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#update-a-private-registry-for-an-organization
+  - name: GET /repos/{owner}/{repo}/actions/policies
+    documentation_url: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#list-repository-actions-policies
+  - name: POST /repos/{owner}/{repo}/actions/policies
+    documentation_url: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#create-a-repository-actions-policy
+  - name: DELETE /repos/{owner}/{repo}/actions/policies/{policy_id}
+    documentation_url: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#delete-a-repository-actions-policy
+  - name: GET /repos/{owner}/{repo}/actions/policies/{policy_id}
+    documentation_url: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#get-a-repository-actions-policy
+  - name: PUT /repos/{owner}/{repo}/actions/policies/{policy_id}
+    documentation_url: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#update-a-repository-actions-policy
   - name: GET /repos/{owner}/{repo}/agents/organization-secrets
     documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#list-repository-organization-secrets
   - name: GET /repos/{owner}/{repo}/agents/secrets
