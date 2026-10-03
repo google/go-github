@@ -45726,6 +45726,14 @@ func (u *UpdateEnterpriseRunnerGroupRequest) GetNetworkConfigurationID() string 
 	return *u.NetworkConfigurationID
 }
 
+// GetRemoveNetworkConfiguration returns the RemoveNetworkConfiguration field.
+func (u *UpdateEnterpriseRunnerGroupRequest) GetRemoveNetworkConfiguration() bool {
+	if u == nil {
+		return false
+	}
+	return u.RemoveNetworkConfiguration
+}
+
 // GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
 func (u *UpdateEnterpriseRunnerGroupRequest) GetRestrictedToWorkflows() bool {
 	if u == nil || u.RestrictedToWorkflows == nil {
@@ -46428,6 +46436,14 @@ func (u *UpdateRunnerGroupRequest) GetNetworkConfigurationID() string {
 		return ""
 	}
 	return *u.NetworkConfigurationID
+}
+
+// GetRemoveNetworkConfiguration returns the RemoveNetworkConfiguration field.
+func (u *UpdateRunnerGroupRequest) GetRemoveNetworkConfiguration() bool {
+	if u == nil {
+		return false
+	}
+	return u.RemoveNetworkConfiguration
 }
 
 // GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
