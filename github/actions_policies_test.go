@@ -75,7 +75,7 @@ func TestActionsService_ListOrganizationPolicies(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		testFormValues(t, r, values{"page": "2", "per_page": "50", "has_parents": "false"})
-		fmt.Fprintf(w, `{"total_count":1,"policies":[%s]}`, actionsPolicyResponseJSON)
+		fmt.Fprintf(w, `{"total_count":1,"policies":[%v]}`, actionsPolicyResponseJSON)
 	})
 
 	ctx := t.Context()
@@ -96,7 +96,7 @@ func TestActionsService_ListOrganizationPolicies(t *testing.T) {
 
 	const methodName = "ListOrganizationPolicies"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListOrganizationPolicies(ctx, "\n", nil)
+		_, _, err = client.Actions.ListOrganizationPolicies(ctx, "\n", &ActionsPolicyListOptions{})
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
@@ -255,7 +255,7 @@ func TestActionsService_ListRepositoryPolicies(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		testFormValues(t, r, values{"has_parents": "true"})
-		fmt.Fprintf(w, `{"total_count":1,"policies":[%s]}`, actionsPolicyResponseJSON)
+		fmt.Fprintf(w, `{"total_count":1,"policies":[%v]}`, actionsPolicyResponseJSON)
 	})
 
 	ctx := t.Context()

@@ -349,6 +349,7 @@ linters:
             - ActionsCacheListOptions.Key
             - ActionsCacheListOptions.Ref
             - ActionsCacheListOptions.Sort
+            - ActionsPolicyListOptions.HasParents
             - ActiveCommittersListOptions.AdvancedSecurityProduct
             - AnalysesListOptions.Ref
             - AnalysesListOptions.SarifID
