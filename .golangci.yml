@@ -235,8 +235,6 @@ linters:
             - RepositoryCreateForkOptions
             - RequiredStatusChecksRequest
             - SCIMUserAttributes
-            - SecretScanningAlertUpdateOptions
-            - SecretScanningPatternConfigsUpdateOptions
             - SourceImportAuthor
             - Subscription
             - TeamAddTeamMembershipOptions
@@ -263,8 +261,6 @@ linters:
             - RepositoryAddCollaboratorOptions
             - RepositoryContentFileOptions
             - RepositoryCreateForkOptions
-            - SecretScanningAlertUpdateOptions
-            - SecretScanningPatternConfigsUpdateOptions
             - TeamAddTeamMembershipOptions
             - TeamAddTeamRepoOptions
             - TeamProjectOptions
