@@ -254,6 +254,22 @@ func (a *ActionsCacheListOptions) GetSort() string {
 	return *a.Sort
 }
 
+// GetMaxCacheRetentionDays returns the MaxCacheRetentionDays field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheRetentionLimit) GetMaxCacheRetentionDays() int {
+	if a == nil || a.MaxCacheRetentionDays == nil {
+		return 0
+	}
+	return *a.MaxCacheRetentionDays
+}
+
+// GetMaxCacheSizeGB returns the MaxCacheSizeGB field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheStorageLimit) GetMaxCacheSizeGB() int {
+	if a == nil || a.MaxCacheSizeGB == nil {
+		return 0
+	}
+	return *a.MaxCacheSizeGB
+}
+
 // GetActiveCachesCount returns the ActiveCachesCount field.
 func (a *ActionsCacheUsage) GetActiveCachesCount() int {
 	if a == nil {

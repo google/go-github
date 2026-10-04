@@ -324,6 +324,28 @@ func TestActionsCacheListOptions_GetSort(tt *testing.T) {
 	a.GetSort()
 }
 
+func TestActionsCacheRetentionLimit_GetMaxCacheRetentionDays(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &ActionsCacheRetentionLimit{MaxCacheRetentionDays: &zeroValue}
+	a.GetMaxCacheRetentionDays()
+	a = &ActionsCacheRetentionLimit{}
+	a.GetMaxCacheRetentionDays()
+	a = nil
+	a.GetMaxCacheRetentionDays()
+}
+
+func TestActionsCacheStorageLimit_GetMaxCacheSizeGB(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &ActionsCacheStorageLimit{MaxCacheSizeGB: &zeroValue}
+	a.GetMaxCacheSizeGB()
+	a = &ActionsCacheStorageLimit{}
+	a.GetMaxCacheSizeGB()
+	a = nil
+	a.GetMaxCacheSizeGB()
+}
+
 func TestActionsCacheUsage_GetActiveCachesCount(tt *testing.T) {
 	tt.Parallel()
 	a := &ActionsCacheUsage{}
