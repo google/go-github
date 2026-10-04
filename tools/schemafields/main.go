@@ -23,6 +23,11 @@
 // "body" and passed by value, so every by-value body parameter is checked against the request
 // body schema of its operation. Coverage grows as pointer bodies are converted, and a
 // contributor adding an endpoint is checked without having to do anything extra.
+//
+// A struct that some method returns describes an API response as well as, sometimes, a request
+// body, so a field of one that no request body schema has is left alone rather than reported:
+// it is usually a field the server sets. -verbose counts them, and CONTRIBUTING.md has the
+// rule.
 package main
 
 import (
@@ -415,10 +420,10 @@ func printSummary(w io.Writer, c *checker, o *options, exc *exceptions) {
 			s.usesNoJSONBody, plural(s.usesNoJSONBody, "use", "uses"))
 	}
 	if s.usesNotInPlan > 0 {
-		fmt.Fprintf(w, "  not checked: %v operation %v that the pinned revision does not document\n",
+		fmt.Fprintf(w, "  not checked: %v operation %v that the descriptions this tool loads do not document\n",
 			s.usesNotInPlan, plural(s.usesNotInPlan, "use", "uses"))
-		fmt.Fprintf(w, "    a newer openapi_commit in %v would check %v\n",
-			operationsFile, plural(s.usesNotInPlan, "it", "them"))
+		fmt.Fprint(w, "    each is documented by a plan this tool does not load, such as an older GHES release,\n"+
+			"    or by none at all; a newer openapi_commit may not help\n")
 	}
 	if s.usesUnreadable > 0 {
 		fmt.Fprintf(w, "  not checked: %v operation %v whose description could not be read\n",
@@ -428,6 +433,8 @@ func printSummary(w io.Writer, c *checker, o *options, exc *exceptions) {
 		fmt.Fprintf(w, "  resolved operation uses: %v\n", s.usesResolved)
 		fmt.Fprintf(w, "  conditionally required, and left alone: %v of the %v fields\n",
 			s.fieldsConditional, s.fieldsChecked)
+		fmt.Fprintf(w, "  in no request body schema, and left alone because a method returns the struct: %v of the %v fields\n",
+			s.fieldsResponse, s.fieldsChecked)
 	}
 
 	// A finding the exceptions file does not name is the only kind a change can be told about,

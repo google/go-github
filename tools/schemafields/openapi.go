@@ -215,16 +215,17 @@ func (d *description) flatten(s *schema, visiting map[string]bool) (*flat, error
 }
 
 // bodyReason says why an operation has, or has not, a request body schema to check the fields
-// of a request body struct against. The two ways of having none are worth keeping apart: a
-// newer pinned revision can check one of them, and nothing can check the other.
+// of a request body struct against. The two ways of having none are worth keeping apart: the
+// plans this tool loads account for one of them, and for the other they never will.
 type bodyReason int
 
 const (
 	// bodyFound: the operation's application/json request body schema is available.
 	bodyFound bodyReason = iota
-	// bodyNotInPlan: the descriptions do not document the operation at all, which is what a
-	// pinned revision older than the operation looks like. Advancing the pin in
-	// openapi_operations.yaml makes it checkable.
+	// bodyNotInPlan: none of the descriptions this tool loads documents the operation. Either
+	// a plan it does not load has the operation and the three it reads do not, which is what
+	// an endpoint of an older GHES release looks like, or no plan has it at all. Advancing the
+	// pin in openapi_operations.yaml helps only when the newer revision documents it too.
 	bodyNotInPlan
 	// bodyNoJSONBody: the operation is documented but has no application/json object request
 	// body, so it has no fields to check.
@@ -286,9 +287,9 @@ func (d *description) requestSchema(op *opRef) (*flat, bodyReason, error) {
 type descriptions struct{ files []*description }
 
 // requestSchema returns the request body schema from the first plan that documents the
-// operation, so GHEC-only and GHES-only operations resolve as well. When no plan has one, it
-// reports whether any plan documents the operation at all: an operation no plan documents is
-// the one a newer pinned revision would check.
+// operation, so GHEC-only and GHES-only operations resolve as well. When none of them has one,
+// it reports which kind of gap this is: an operation a plan documents without an
+// application/json body, or one that none of the plans this tool loads documents.
 func (ds *descriptions) requestSchema(op *opRef) (*flat, bodyReason, error) {
 	reason := bodyNotInPlan
 	for _, d := range ds.files {

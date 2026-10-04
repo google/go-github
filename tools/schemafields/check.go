@@ -102,6 +102,9 @@ type stats struct {
 	usesUnreadable    int
 	fieldsChecked     int
 	fieldsConditional int
+	// fieldsResponse is the fields that no request body schema has and that are left
+	// alone because a method returns their struct.
+	fieldsResponse int
 }
 
 type checker struct {
@@ -212,6 +215,10 @@ func (c *checker) run() {
 	})
 }
 
+// checkStruct reports the fields of si that disagree with the request body schemas of the
+// operations that send it. A field that no schema has is reported unless a method returns the
+// struct: a struct that the API answers with is a model of a response as well, so its
+// server-set fields have no place in a request body schema.
 func (c *checker) checkStruct(si *structInfo, uses []*structUse) {
 	for _, f := range si.fields {
 		c.stats.fieldsChecked++
@@ -238,6 +245,14 @@ func (c *checker) checkStruct(si *structInfo, uses []*structUse) {
 		}
 
 		if !inSchema {
+			if si.response {
+				// The struct describes an API response as well as a request body, so
+				// a field that no request body schema has is usually one the server
+				// sets, and not a mistake. The summary counts these rather than
+				// reporting them.
+				c.stats.fieldsResponse++
+				continue
+			}
 			c.add(&diagnostic{
 				sev: sevWarn, rule: ruleNotInSchema, file: f.file, line: f.line,
 				owner: si.name, field: f.goName, info: f,

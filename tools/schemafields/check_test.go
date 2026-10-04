@@ -75,7 +75,10 @@ func TestCheck(t *testing.T) {
 	}
 	assertContains(t, err.Error(), "6 schema field issue(s) found")
 	assertEqual(t, wantFindings, stdout)
-	assertContains(t, stderr, "checked 17 of 18 methods that take a struct request body (13 body structs, 22 fields)")
+	// The field of the struct that the operation returns is left alone: the request body
+	// schema does not have it, but a response may, so it is not a mistake.
+	assertNotContains(t, stdout, "CommentRequest.URL")
+	assertContains(t, stderr, "checked 18 of 19 methods that take a struct request body (14 body structs, 24 fields)")
 	assertContains(t, stderr, "not checked: 1 method whose body is passed by pointer (run paramcheck to convert it)")
 	assertContains(t, stderr, "not checked: 1 operation use with no JSON request body")
 	assertContains(t, stderr, "11 findings (5 warn, 6 error)")
@@ -98,7 +101,7 @@ func TestSummary(t *testing.T) {
 		stats: stats{
 			files: 209, methods: 7981, methodsWithOps: 1301,
 			bodyValue: 206, bodyPointer: 62,
-			structsChecked: 141, fieldsChecked: 618, fieldsConditional: 13,
+			structsChecked: 141, fieldsChecked: 618, fieldsConditional: 13, fieldsResponse: 34,
 			usesResolved: 193, usesNotInPlan: 10,
 		},
 		byRule: map[string]int{ruleNotInSchema: 1, ruleRequiredOmit: 1, ruleMissingRequiredProp: 1},
@@ -119,8 +122,9 @@ func TestSummary(t *testing.T) {
 	// The coverage lines are the same whatever the findings are.
 	const coverage = `checked 206 of 268 methods that take a struct request body (141 body structs, 618 fields)
   not checked: 62 methods whose body is passed by pointer (run paramcheck to convert them)
-  not checked: 10 operation uses that the pinned revision does not document
-    a newer openapi_commit in openapi_operations.yaml would check them
+  not checked: 10 operation uses that the descriptions this tool loads do not document
+    each is documented by a plan this tool does not load, such as an older GHES release,
+    or by none at all; a newer openapi_commit may not help
 `
 
 	var buf bytes.Buffer
@@ -147,6 +151,7 @@ func TestSummary(t *testing.T) {
 	assertContains(t, got, "scanned 209 files, 7981 methods (1301 with //meta:operation)")
 	assertContains(t, got, "resolved operation uses: 193")
 	assertContains(t, got, "conditionally required, and left alone: 13 of the 618 fields")
+	assertContains(t, got, "in no request body schema, and left alone because a method returns the struct: 34 of the 618 fields")
 	assertContains(t, got, "1  not-in-request-schema: the Go field is not in the request body schema")
 
 	// A checkout with nothing to report says so, rather than counting a baseline of nothing.
@@ -187,11 +192,14 @@ func TestCheckGithubFormat(t *testing.T) {
 func TestCheckVerbose(t *testing.T) {
 	t.Parallel()
 	_, stderr, _ := runOnFixture(t, "-verbose")
-	assertContains(t, stderr, "no //meta:operation annotation: github/issues.go:54: Untracked (UntrackedRequest)")
+	assertContains(t, stderr, "no //meta:operation annotation: github/issues.go:72: Untracked (UntrackedRequest)")
 	// -verbose is the full breakdown of the summary, which the default output leaves out.
-	assertContains(t, stderr, "scanned 4 files, 18 methods (16 with //meta:operation)")
-	assertContains(t, stderr, "resolved operation uses: 15")
-	assertContains(t, stderr, "conditionally required, and left alone: 1 of the 22 fields")
+	assertContains(t, stderr, "scanned 4 files, 19 methods (17 with //meta:operation)")
+	assertContains(t, stderr, "resolved operation uses: 16")
+	assertContains(t, stderr, "conditionally required, and left alone: 1 of the 24 fields")
+	// The field that no schema has and that the returned struct explains is counted rather
+	// than reported, so that the exemption is visible.
+	assertContains(t, stderr, "in no request body schema, and left alone because a method returns the struct: 1 of the 24 fields")
 	assertContains(t, stderr, "4  required-but-omittable: the schema REQUIRES the property, but the tag lets it be omitted")
 	// The default output leaves the breakdown out, so that it reads as a verdict.
 	if _, plain, _ := runOnFixture(t); strings.Contains(plain, "scanned 4 files") {
