@@ -327,7 +327,7 @@ func TestTeamsService_AddTeamMembershipByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamMembershipOptions{Role: "maintainer"}
+	opt := &TeamAddTeamMembershipOptions{Role: new("maintainer")}
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -365,7 +365,7 @@ func TestTeamsService_AddTeamMembershipByID_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamMembershipOptions{Role: "maintainer"}
+	opt := &TeamAddTeamMembershipOptions{Role: new("maintainer")}
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -404,7 +404,7 @@ func TestTeamsService_AddTeamMembershipBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamMembershipOptions{Role: "maintainer"}
+	opt := &TeamAddTeamMembershipOptions{Role: new("maintainer")}
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -442,7 +442,7 @@ func TestTeamsService_AddTeamMembershipBySlug_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamMembershipOptions{Role: "maintainer"}
+	opt := &TeamAddTeamMembershipOptions{Role: new("maintainer")}
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")

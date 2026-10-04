@@ -55193,7 +55193,10 @@ func TestTeamAddEvent_GetTeam(tt *testing.T) {
 
 func TestTeamAddTeamMembershipOptions_GetRole(tt *testing.T) {
 	tt.Parallel()
-	t := &TeamAddTeamMembershipOptions{}
+	var zeroValue string
+	t := &TeamAddTeamMembershipOptions{Role: &zeroValue}
+	t.GetRole()
+	t = &TeamAddTeamMembershipOptions{}
 	t.GetRole()
 	t = nil
 	t.GetRole()
@@ -55201,7 +55204,10 @@ func TestTeamAddTeamMembershipOptions_GetRole(tt *testing.T) {
 
 func TestTeamAddTeamRepoOptions_GetPermission(tt *testing.T) {
 	tt.Parallel()
-	t := &TeamAddTeamRepoOptions{}
+	var zeroValue string
+	t := &TeamAddTeamRepoOptions{Permission: &zeroValue}
+	t.GetPermission()
+	t = &TeamAddTeamRepoOptions{}
 	t.GetPermission()
 	t = nil
 	t.GetPermission()

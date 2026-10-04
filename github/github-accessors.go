@@ -44294,20 +44294,20 @@ func (t *TeamAddEvent) GetTeam() *Team {
 	return t.Team
 }
 
-// GetRole returns the Role field.
+// GetRole returns the Role field if it's non-nil, zero value otherwise.
 func (t *TeamAddTeamMembershipOptions) GetRole() string {
-	if t == nil {
+	if t == nil || t.Role == nil {
 		return ""
 	}
-	return t.Role
+	return *t.Role
 }
 
-// GetPermission returns the Permission field.
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
 func (t *TeamAddTeamRepoOptions) GetPermission() string {
-	if t == nil {
+	if t == nil || t.Permission == nil {
 		return ""
 	}
-	return t.Permission
+	return *t.Permission
 }
 
 // GetDescription returns the Description field.

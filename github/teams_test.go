@@ -737,7 +737,7 @@ func TestTeamsService_AddTeamRepoByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamRepoOptions{Permission: "admin"}
+	opt := &TeamAddTeamRepoOptions{Permission: new("admin")}
 
 	mux.HandleFunc("/organizations/1/team/1/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -766,7 +766,7 @@ func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamRepoOptions{Permission: "admin"}
+	opt := &TeamAddTeamRepoOptions{Permission: new("admin")}
 
 	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")

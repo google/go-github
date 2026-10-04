@@ -444,8 +444,6 @@ linters:
             - SearchOptions.AdvancedSearch
             - Secret.SelectedRepositoriesURL # TODO: Actions
             - Secret.Visibility # TODO: Actions
-            - TeamAddTeamMembershipOptions.Role # TODO: Teams
-            - TeamAddTeamRepoOptions.Permission # TODO: Teams
             - UpdateRuleParameters.UpdateAllowsFetchAndMerge # TODO: Rules
             - UsageReportOptions.Day
             - UsageReportOptions.Hour

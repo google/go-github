@@ -129,7 +129,7 @@ type TeamAddTeamMembershipOptions struct {
 	//                  maintainer, and edit the team’s name and description
 	//
 	// Default value is "member".
-	Role string `json:"role,omitempty"`
+	Role *string `json:"role,omitempty"`
 }
 
 // AddTeamMembershipByID adds or invites a user to a team, given a specified
