@@ -237,9 +237,6 @@ linters:
             - SCIMUserAttributes
             - SourceImportAuthor
             - Subscription
-            - TeamAddTeamMembershipOptions
-            - TeamAddTeamRepoOptions
-            - TeamProjectOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
             - UserSuspendOptions
@@ -261,9 +258,6 @@ linters:
             - RepositoryAddCollaboratorOptions
             - RepositoryContentFileOptions
             - RepositoryCreateForkOptions
-            - TeamAddTeamMembershipOptions
-            - TeamAddTeamRepoOptions
-            - TeamProjectOptions
             - UpdateCheckRunOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions

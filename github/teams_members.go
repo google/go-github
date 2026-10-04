@@ -118,9 +118,8 @@ func (s *TeamsService) GetTeamMembershipBySlug(ctx context.Context, org, slug, u
 	return t, resp, nil
 }
 
-// TeamAddTeamMembershipOptions specifies the optional
-// parameters to the TeamsService.AddTeamMembership method.
-type TeamAddTeamMembershipOptions struct {
+// AddTeamMembershipRequest represents a request to add or update a user's membership in a team.
+type AddTeamMembershipRequest struct {
 	// Role specifies the role the user should have in the team. Possible
 	// values are:
 	//     member - a normal member of the team
@@ -138,7 +137,7 @@ type TeamAddTeamMembershipOptions struct {
 // GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#add-or-update-team-membership-for-a-user
 //
 //meta:operation PUT /organizations/{organization_id}/team/{team_id}/memberships/{username}
-func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string, body *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
+func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string, body AddTeamMembershipRequest) (*Membership, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
@@ -160,7 +159,7 @@ func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID 
 // GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#add-or-update-team-membership-for-a-user
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/memberships/{username}
-func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, user string, body *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
+func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, user string, body AddTeamMembershipRequest) (*Membership, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/memberships/%v", org, slug, user)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {

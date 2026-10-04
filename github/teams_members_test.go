@@ -327,16 +327,16 @@ func TestTeamsService_AddTeamMembershipByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamMembershipOptions{Role: new("maintainer")}
+	input := AddTeamMembershipRequest{Role: new("maintainer")}
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
 
 	ctx := t.Context()
-	membership, _, err := client.Teams.AddTeamMembershipByID(ctx, 1, 2, "u", opt)
+	membership, _, err := client.Teams.AddTeamMembershipByID(ctx, 1, 2, "u", input)
 	if err != nil {
 		t.Errorf("Teams.AddTeamMembershipByID returned error: %v", err)
 	}
@@ -348,12 +348,12 @@ func TestTeamsService_AddTeamMembershipByID(t *testing.T) {
 
 	const methodName = "AddTeamMembershipByID"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Teams.AddTeamMembershipByID(ctx, -1, -2, "\n", opt)
+		_, _, err = client.Teams.AddTeamMembershipByID(ctx, -1, -2, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Teams.AddTeamMembershipByID(ctx, 1, 2, "u", opt)
+		got, resp, err := client.Teams.AddTeamMembershipByID(ctx, 1, 2, "u", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -365,16 +365,16 @@ func TestTeamsService_AddTeamMembershipByID_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamMembershipOptions{Role: new("maintainer")}
+	input := AddTeamMembershipRequest{Role: new("maintainer")}
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNotFound)
 	})
 
 	ctx := t.Context()
-	membership, resp, err := client.Teams.AddTeamMembershipByID(ctx, 1, 2, "u", opt)
+	membership, resp, err := client.Teams.AddTeamMembershipByID(ctx, 1, 2, "u", input)
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}
@@ -387,12 +387,12 @@ func TestTeamsService_AddTeamMembershipByID_notFound(t *testing.T) {
 
 	const methodName = "AddTeamMembershipByID"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Teams.AddTeamMembershipByID(ctx, 1, 2, "u", opt)
+		_, _, err = client.Teams.AddTeamMembershipByID(ctx, 1, 2, "u", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Teams.AddTeamMembershipByID(ctx, 1, 2, "u", opt)
+		got, resp, err := client.Teams.AddTeamMembershipByID(ctx, 1, 2, "u", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -404,16 +404,16 @@ func TestTeamsService_AddTeamMembershipBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamMembershipOptions{Role: new("maintainer")}
+	input := AddTeamMembershipRequest{Role: new("maintainer")}
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
 
 	ctx := t.Context()
-	membership, _, err := client.Teams.AddTeamMembershipBySlug(ctx, "o", "s", "u", opt)
+	membership, _, err := client.Teams.AddTeamMembershipBySlug(ctx, "o", "s", "u", input)
 	if err != nil {
 		t.Errorf("Teams.AddTeamMembershipBySlug returned error: %v", err)
 	}
@@ -425,12 +425,12 @@ func TestTeamsService_AddTeamMembershipBySlug(t *testing.T) {
 
 	const methodName = "AddTeamMembershipBySlug"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Teams.AddTeamMembershipBySlug(ctx, "\n", "\n", "\n", opt)
+		_, _, err = client.Teams.AddTeamMembershipBySlug(ctx, "\n", "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Teams.AddTeamMembershipBySlug(ctx, "o", "s", "u", opt)
+		got, resp, err := client.Teams.AddTeamMembershipBySlug(ctx, "o", "s", "u", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -442,16 +442,16 @@ func TestTeamsService_AddTeamMembershipBySlug_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamMembershipOptions{Role: new("maintainer")}
+	input := AddTeamMembershipRequest{Role: new("maintainer")}
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNotFound)
 	})
 
 	ctx := t.Context()
-	membership, resp, err := client.Teams.AddTeamMembershipBySlug(ctx, "o", "s", "u", opt)
+	membership, resp, err := client.Teams.AddTeamMembershipBySlug(ctx, "o", "s", "u", input)
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}
@@ -464,12 +464,12 @@ func TestTeamsService_AddTeamMembershipBySlug_notFound(t *testing.T) {
 
 	const methodName = "AddTeamMembershipBySlug"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Teams.AddTeamMembershipBySlug(ctx, "o", "s", "u", opt)
+		_, _, err = client.Teams.AddTeamMembershipBySlug(ctx, "o", "s", "u", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Teams.AddTeamMembershipBySlug(ctx, "o", "s", "u", opt)
+		got, resp, err := client.Teams.AddTeamMembershipBySlug(ctx, "o", "s", "u", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -482,7 +482,7 @@ func TestTeamsService_AddTeamMembershipBySlug_invalidOrg(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Teams.AddTeamMembershipBySlug(ctx, "%", "s", "u", nil)
+	_, _, err := client.Teams.AddTeamMembershipBySlug(ctx, "%", "s", "u", AddTeamMembershipRequest{})
 	testURLParseError(t, err)
 }
 
