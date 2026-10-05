@@ -33,12 +33,12 @@ const actionsPolicyResponseJSON = `{
 
 func testActionsPolicy() *ActionsPolicy {
 	return &ActionsPolicy{
-		ID:          new(int64(1)),
-		Name:        new("Require approved actors"),
-		Target:      new(ActionsPolicyTargetActions),
-		SourceType:  new(RulesetSourceTypeOrganization),
-		Source:      new("o"),
-		Enforcement: new(RulesetEnforcementActive),
+		ID:          1,
+		Name:        "Require approved actors",
+		Target:      ActionsPolicyTargetActions,
+		SourceType:  RulesetSourceTypeOrganization,
+		Source:      "o",
+		Enforcement: RulesetEnforcementActive,
 		Conditions: &ActionsPolicyConditions{
 			RepositoryName: &RepositoryRulesetRepositoryNamesConditionParameters{
 				Include: []string{"~ALL"},
@@ -112,9 +112,9 @@ func TestActionsService_CreateOrganizationPolicy(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := ActionsPolicy{
-		Name:        new("Require approved actors"),
-		Enforcement: new(RulesetEnforcementActive),
+	input := CreateActionsPolicyRequest{
+		Name:        "Require approved actors",
+		Enforcement: RulesetEnforcementActive,
 		Rules: []*ActionsPolicyRule{{
 			Type: ActionsPolicyRuleTypeRestrictActionsActors,
 			Parameters: &ActionsPolicyRuleParameters{
@@ -191,7 +191,7 @@ func TestActionsService_UpdateOrganizationPolicy(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := ActionsPolicy{Name: new("Updated policy"), Enforcement: new(RulesetEnforcementActive)}
+	input := UpdateActionsPolicyRequest{Name: new("Updated policy"), Enforcement: new(RulesetEnforcementActive)}
 	mux.HandleFunc("/orgs/o/actions/policies/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
@@ -286,9 +286,9 @@ func TestActionsService_CreateRepositoryPolicy(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := ActionsPolicy{
-		Name:        new("Require approved events"),
-		Enforcement: new(RulesetEnforcementActive),
+	input := CreateActionsPolicyRequest{
+		Name:        "Require approved events",
+		Enforcement: RulesetEnforcementActive,
 		Conditions: &ActionsPolicyConditions{
 			WorkflowPath: &ActionsPolicyWorkflowPathConditionParameters{
 				Include: []string{".github/workflows/*.yml"},
@@ -371,7 +371,7 @@ func TestActionsService_UpdateRepositoryPolicy(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := ActionsPolicy{Name: new("Updated repository policy"), Enforcement: new(RulesetEnforcementEvaluate)}
+	input := UpdateActionsPolicyRequest{Name: new("Updated repository policy"), Enforcement: new(RulesetEnforcementEvaluate)}
 	mux.HandleFunc("/repos/o/r/actions/policies/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)

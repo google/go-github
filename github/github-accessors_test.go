@@ -619,10 +619,7 @@ func TestActionsPolicy_GetEnforcement(tt *testing.T) {
 
 func TestActionsPolicy_GetID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	a := &ActionsPolicy{ID: &zeroValue}
-	a.GetID()
-	a = &ActionsPolicy{}
+	a := &ActionsPolicy{}
 	a.GetID()
 	a = nil
 	a.GetID()
@@ -638,10 +635,7 @@ func TestActionsPolicy_GetLinks(tt *testing.T) {
 
 func TestActionsPolicy_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &ActionsPolicy{Name: &zeroValue}
-	a.GetName()
-	a = &ActionsPolicy{}
+	a := &ActionsPolicy{}
 	a.GetName()
 	a = nil
 	a.GetName()
@@ -671,10 +665,7 @@ func TestActionsPolicy_GetRules(tt *testing.T) {
 
 func TestActionsPolicy_GetSource(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &ActionsPolicy{Source: &zeroValue}
-	a.GetSource()
-	a = &ActionsPolicy{}
+	a := &ActionsPolicy{}
 	a.GetSource()
 	a = nil
 	a.GetSource()
@@ -14929,6 +14920,41 @@ func TestCostCenters_GetCostCenters(tt *testing.T) {
 	c.GetCostCenters()
 	c = nil
 	c.GetCostCenters()
+}
+
+func TestCreateActionsPolicyRequest_GetConditions(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateActionsPolicyRequest{}
+	c.GetConditions()
+	c = nil
+	c.GetConditions()
+}
+
+func TestCreateActionsPolicyRequest_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateActionsPolicyRequest{}
+	c.GetEnforcement()
+	c = nil
+	c.GetEnforcement()
+}
+
+func TestCreateActionsPolicyRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateActionsPolicyRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateActionsPolicyRequest_GetRules(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsPolicyRule{}
+	c := &CreateActionsPolicyRequest{Rules: zeroValue}
+	c.GetRules()
+	c = &CreateActionsPolicyRequest{}
+	c.GetRules()
+	c = nil
+	c.GetRules()
 }
 
 func TestCreateAgentTaskRequest_GetBaseRef(tt *testing.T) {
@@ -56753,6 +56779,44 @@ func TestUnauthenticatedRateLimitedTransport_GetClientSecret(tt *testing.T) {
 	u.GetClientSecret()
 	u = nil
 	u.GetClientSecret()
+}
+
+func TestUpdateActionsPolicyRequest_GetConditions(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateActionsPolicyRequest{}
+	u.GetConditions()
+	u = nil
+	u.GetConditions()
+}
+
+func TestUpdateActionsPolicyRequest_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateActionsPolicyRequest{}
+	u.GetEnforcement()
+	u = nil
+	u.GetEnforcement()
+}
+
+func TestUpdateActionsPolicyRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateActionsPolicyRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateActionsPolicyRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateActionsPolicyRequest_GetRules(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsPolicyRule{}
+	u := &UpdateActionsPolicyRequest{Rules: zeroValue}
+	u.GetRules()
+	u = &UpdateActionsPolicyRequest{}
+	u.GetRules()
+	u = nil
+	u.GetRules()
 }
 
 func TestUpdateAppInstallationRepositoriesRequest_GetRepositories(tt *testing.T) {

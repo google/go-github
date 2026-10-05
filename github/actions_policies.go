@@ -44,18 +44,34 @@ const (
 //
 // GitHub API docs: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10
 type ActionsPolicy struct {
-	ID          *int64                   `json:"id,omitempty"`
-	Name        *string                  `json:"name,omitempty"`
-	Target      *ActionsPolicyTarget     `json:"target,omitempty"`
-	SourceType  *RulesetSourceType       `json:"source_type,omitempty"`
-	Source      *string                  `json:"source,omitempty"`
-	Enforcement *RulesetEnforcement      `json:"enforcement,omitempty"`
+	ID          int64                    `json:"id"`
+	Name        string                   `json:"name"`
+	Target      ActionsPolicyTarget      `json:"target"`
+	SourceType  RulesetSourceType        `json:"source_type"`
+	Source      string                   `json:"source"`
+	Enforcement RulesetEnforcement       `json:"enforcement"`
 	Conditions  *ActionsPolicyConditions `json:"conditions,omitempty"`
 	Rules       []*ActionsPolicyRule     `json:"rules,omitzero"`
 	NodeID      *string                  `json:"node_id,omitempty"`
 	Links       *RepositoryRulesetLinks  `json:"_links,omitempty"`
 	CreatedAt   *Timestamp               `json:"created_at,omitempty"`
 	UpdatedAt   *Timestamp               `json:"updated_at,omitempty"`
+}
+
+// CreateActionsPolicyRequest represents a request to create a GitHub Actions policy.
+type CreateActionsPolicyRequest struct {
+	Name        string                   `json:"name"`
+	Enforcement RulesetEnforcement       `json:"enforcement"`
+	Conditions  *ActionsPolicyConditions `json:"conditions,omitempty"`
+	Rules       []*ActionsPolicyRule     `json:"rules,omitzero"`
+}
+
+// UpdateActionsPolicyRequest represents a request to update a GitHub Actions policy.
+type UpdateActionsPolicyRequest struct {
+	Name        *string                  `json:"name,omitempty"`
+	Enforcement *RulesetEnforcement      `json:"enforcement,omitempty"`
+	Conditions  *ActionsPolicyConditions `json:"conditions,omitempty"`
+	Rules       []*ActionsPolicyRule     `json:"rules,omitzero"`
 }
 
 // ActionsPolicyConditions represents the conditions object in an Actions policy.
@@ -129,7 +145,7 @@ func (s *ActionsService) listPolicies(ctx context.Context, u string, opts *Actio
 	return policies, resp, nil
 }
 
-func (s *ActionsService) createPolicy(ctx context.Context, u string, body ActionsPolicy) (*ActionsPolicy, *Response, error) {
+func (s *ActionsService) createPolicy(ctx context.Context, u string, body CreateActionsPolicyRequest) (*ActionsPolicy, *Response, error) {
 	req, err := s.client.NewRequest(ctx, "POST", u, body, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
@@ -159,7 +175,7 @@ func (s *ActionsService) getPolicy(ctx context.Context, u string) (*ActionsPolic
 	return policy, resp, nil
 }
 
-func (s *ActionsService) updatePolicy(ctx context.Context, u string, body ActionsPolicy) (*ActionsPolicy, *Response, error) {
+func (s *ActionsService) updatePolicy(ctx context.Context, u string, body UpdateActionsPolicyRequest) (*ActionsPolicy, *Response, error) {
 	req, err := s.client.NewRequest(ctx, "PUT", u, body, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
@@ -197,7 +213,7 @@ func (s *ActionsService) ListOrganizationPolicies(ctx context.Context, org strin
 // GitHub API docs: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#create-an-organization-actions-policy
 //
 //meta:operation POST /orgs/{org}/actions/policies
-func (s *ActionsService) CreateOrganizationPolicy(ctx context.Context, org string, body ActionsPolicy) (*ActionsPolicy, *Response, error) {
+func (s *ActionsService) CreateOrganizationPolicy(ctx context.Context, org string, body CreateActionsPolicyRequest) (*ActionsPolicy, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/policies", org)
 	return s.createPolicy(ctx, u, body)
 }
@@ -217,7 +233,7 @@ func (s *ActionsService) GetOrganizationPolicy(ctx context.Context, org string, 
 // GitHub API docs: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#update-an-organization-actions-policy
 //
 //meta:operation PUT /orgs/{org}/actions/policies/{policy_id}
-func (s *ActionsService) UpdateOrganizationPolicy(ctx context.Context, org string, policyID int64, body ActionsPolicy) (*ActionsPolicy, *Response, error) {
+func (s *ActionsService) UpdateOrganizationPolicy(ctx context.Context, org string, policyID int64, body UpdateActionsPolicyRequest) (*ActionsPolicy, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/policies/%v", org, policyID)
 	return s.updatePolicy(ctx, u, body)
 }
@@ -247,7 +263,7 @@ func (s *ActionsService) ListRepositoryPolicies(ctx context.Context, owner, repo
 // GitHub API docs: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#create-a-repository-actions-policy
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/policies
-func (s *ActionsService) CreateRepositoryPolicy(ctx context.Context, owner, repo string, body ActionsPolicy) (*ActionsPolicy, *Response, error) {
+func (s *ActionsService) CreateRepositoryPolicy(ctx context.Context, owner, repo string, body CreateActionsPolicyRequest) (*ActionsPolicy, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/policies", owner, repo)
 	return s.createPolicy(ctx, u, body)
 }
@@ -267,7 +283,7 @@ func (s *ActionsService) GetRepositoryPolicy(ctx context.Context, owner, repo st
 // GitHub API docs: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#update-a-repository-actions-policy
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/policies/{policy_id}
-func (s *ActionsService) UpdateRepositoryPolicy(ctx context.Context, owner, repo string, policyID int64, body ActionsPolicy) (*ActionsPolicy, *Response, error) {
+func (s *ActionsService) UpdateRepositoryPolicy(ctx context.Context, owner, repo string, policyID int64, body UpdateActionsPolicyRequest) (*ActionsPolicy, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/policies/%v", owner, repo, policyID)
 	return s.updatePolicy(ctx, u, body)
 }

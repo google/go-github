@@ -495,19 +495,19 @@ func (a *ActionsPolicy) GetCreatedAt() Timestamp {
 }
 
 // GetEnforcement returns the Enforcement field.
-func (a *ActionsPolicy) GetEnforcement() *RulesetEnforcement {
+func (a *ActionsPolicy) GetEnforcement() RulesetEnforcement {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Enforcement
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
+// GetID returns the ID field.
 func (a *ActionsPolicy) GetID() int64 {
-	if a == nil || a.ID == nil {
+	if a == nil {
 		return 0
 	}
-	return *a.ID
+	return a.ID
 }
 
 // GetLinks returns the Links field.
@@ -518,12 +518,12 @@ func (a *ActionsPolicy) GetLinks() *RepositoryRulesetLinks {
 	return a.Links
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (a *ActionsPolicy) GetName() string {
-	if a == nil || a.Name == nil {
+	if a == nil {
 		return ""
 	}
-	return *a.Name
+	return a.Name
 }
 
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
@@ -542,26 +542,26 @@ func (a *ActionsPolicy) GetRules() []*ActionsPolicyRule {
 	return a.Rules
 }
 
-// GetSource returns the Source field if it's non-nil, zero value otherwise.
+// GetSource returns the Source field.
 func (a *ActionsPolicy) GetSource() string {
-	if a == nil || a.Source == nil {
+	if a == nil {
 		return ""
 	}
-	return *a.Source
+	return a.Source
 }
 
 // GetSourceType returns the SourceType field.
-func (a *ActionsPolicy) GetSourceType() *RulesetSourceType {
+func (a *ActionsPolicy) GetSourceType() RulesetSourceType {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.SourceType
 }
 
 // GetTarget returns the Target field.
-func (a *ActionsPolicy) GetTarget() *ActionsPolicyTarget {
+func (a *ActionsPolicy) GetTarget() ActionsPolicyTarget {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Target
 }
@@ -11868,6 +11868,38 @@ func (c *CostCenters) GetCostCenters() []*CostCenter {
 		return nil
 	}
 	return c.CostCenters
+}
+
+// GetConditions returns the Conditions field.
+func (c *CreateActionsPolicyRequest) GetConditions() *ActionsPolicyConditions {
+	if c == nil {
+		return nil
+	}
+	return c.Conditions
+}
+
+// GetEnforcement returns the Enforcement field.
+func (c *CreateActionsPolicyRequest) GetEnforcement() RulesetEnforcement {
+	if c == nil {
+		return ""
+	}
+	return c.Enforcement
+}
+
+// GetName returns the Name field.
+func (c *CreateActionsPolicyRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+// GetRules returns the Rules slice if it's non-nil, nil otherwise.
+func (c *CreateActionsPolicyRequest) GetRules() []*ActionsPolicyRule {
+	if c == nil || c.Rules == nil {
+		return nil
+	}
+	return c.Rules
 }
 
 // GetBaseRef returns the BaseRef field if it's non-nil, zero value otherwise.
@@ -45532,6 +45564,38 @@ func (u *UnauthenticatedRateLimitedTransport) GetClientSecret() string {
 		return ""
 	}
 	return u.ClientSecret
+}
+
+// GetConditions returns the Conditions field.
+func (u *UpdateActionsPolicyRequest) GetConditions() *ActionsPolicyConditions {
+	if u == nil {
+		return nil
+	}
+	return u.Conditions
+}
+
+// GetEnforcement returns the Enforcement field.
+func (u *UpdateActionsPolicyRequest) GetEnforcement() *RulesetEnforcement {
+	if u == nil {
+		return nil
+	}
+	return u.Enforcement
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateActionsPolicyRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
+}
+
+// GetRules returns the Rules slice if it's non-nil, nil otherwise.
+func (u *UpdateActionsPolicyRequest) GetRules() []*ActionsPolicyRule {
+	if u == nil || u.Rules == nil {
+		return nil
+	}
+	return u.Rules
 }
 
 // GetRepositories returns the Repositories slice if it's non-nil, nil otherwise.
