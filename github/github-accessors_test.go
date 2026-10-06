@@ -612,6 +612,276 @@ func TestActionsPermissionsRepository_GetSHAPinningRequired(tt *testing.T) {
 	a.GetSHAPinningRequired()
 }
 
+func TestActionsPolicy_GetConditions(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetConditions()
+	a = nil
+	a.GetConditions()
+}
+
+func TestActionsPolicy_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &ActionsPolicy{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
+	a = &ActionsPolicy{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestActionsPolicy_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetEnforcement()
+	a = nil
+	a.GetEnforcement()
+}
+
+func TestActionsPolicy_GetID(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestActionsPolicy_GetLinks(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetLinks()
+	a = nil
+	a.GetLinks()
+}
+
+func TestActionsPolicy_GetName(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestActionsPolicy_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ActionsPolicy{NodeID: &zeroValue}
+	a.GetNodeID()
+	a = &ActionsPolicy{}
+	a.GetNodeID()
+	a = nil
+	a.GetNodeID()
+}
+
+func TestActionsPolicy_GetRules(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsPolicyRule{}
+	a := &ActionsPolicy{Rules: zeroValue}
+	a.GetRules()
+	a = &ActionsPolicy{}
+	a.GetRules()
+	a = nil
+	a.GetRules()
+}
+
+func TestActionsPolicy_GetSource(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetSource()
+	a = nil
+	a.GetSource()
+}
+
+func TestActionsPolicy_GetSourceType(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetSourceType()
+	a = nil
+	a.GetSourceType()
+}
+
+func TestActionsPolicy_GetTarget(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetTarget()
+	a = nil
+	a.GetTarget()
+}
+
+func TestActionsPolicy_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &ActionsPolicy{UpdatedAt: &zeroValue}
+	a.GetUpdatedAt()
+	a = &ActionsPolicy{}
+	a.GetUpdatedAt()
+	a = nil
+	a.GetUpdatedAt()
+}
+
+func TestActionsPolicyActor_GetID(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyActor{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestActionsPolicyActor_GetType(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyActor{}
+	a.GetType()
+	a = nil
+	a.GetType()
+}
+
+func TestActionsPolicyConditions_GetOrganizationID(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetOrganizationID()
+	a = nil
+	a.GetOrganizationID()
+}
+
+func TestActionsPolicyConditions_GetOrganizationName(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetOrganizationName()
+	a = nil
+	a.GetOrganizationName()
+}
+
+func TestActionsPolicyConditions_GetOrganizationProperty(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetOrganizationProperty()
+	a = nil
+	a.GetOrganizationProperty()
+}
+
+func TestActionsPolicyConditions_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetRepositoryID()
+	a = nil
+	a.GetRepositoryID()
+}
+
+func TestActionsPolicyConditions_GetRepositoryName(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetRepositoryName()
+	a = nil
+	a.GetRepositoryName()
+}
+
+func TestActionsPolicyConditions_GetRepositoryProperty(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetRepositoryProperty()
+	a = nil
+	a.GetRepositoryProperty()
+}
+
+func TestActionsPolicyConditions_GetWorkflowPath(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetWorkflowPath()
+	a = nil
+	a.GetWorkflowPath()
+}
+
+func TestActionsPolicyList_GetPolicies(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsPolicy{}
+	a := &ActionsPolicyList{Policies: zeroValue}
+	a.GetPolicies()
+	a = &ActionsPolicyList{}
+	a.GetPolicies()
+	a = nil
+	a.GetPolicies()
+}
+
+func TestActionsPolicyList_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyList{}
+	a.GetTotalCount()
+	a = nil
+	a.GetTotalCount()
+}
+
+func TestActionsPolicyListOptions_GetHasParents(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	a := &ActionsPolicyListOptions{HasParents: &zeroValue}
+	a.GetHasParents()
+	a = &ActionsPolicyListOptions{}
+	a.GetHasParents()
+	a = nil
+	a.GetHasParents()
+}
+
+func TestActionsPolicyRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyRule{}
+	a.GetParameters()
+	a = nil
+	a.GetParameters()
+}
+
+func TestActionsPolicyRule_GetType(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyRule{}
+	a.GetType()
+	a = nil
+	a.GetType()
+}
+
+func TestActionsPolicyRuleParameters_GetAllowedActors(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsPolicyActor{}
+	a := &ActionsPolicyRuleParameters{AllowedActors: zeroValue}
+	a.GetAllowedActors()
+	a = &ActionsPolicyRuleParameters{}
+	a.GetAllowedActors()
+	a = nil
+	a.GetAllowedActors()
+}
+
+func TestActionsPolicyRuleParameters_GetAllowedEvents(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &ActionsPolicyRuleParameters{AllowedEvents: zeroValue}
+	a.GetAllowedEvents()
+	a = &ActionsPolicyRuleParameters{}
+	a.GetAllowedEvents()
+	a = nil
+	a.GetAllowedEvents()
+}
+
+func TestActionsPolicyWorkflowPathConditionParameters_GetExclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &ActionsPolicyWorkflowPathConditionParameters{Exclude: zeroValue}
+	a.GetExclude()
+	a = &ActionsPolicyWorkflowPathConditionParameters{}
+	a.GetExclude()
+	a = nil
+	a.GetExclude()
+}
+
+func TestActionsPolicyWorkflowPathConditionParameters_GetInclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &ActionsPolicyWorkflowPathConditionParameters{Include: zeroValue}
+	a.GetInclude()
+	a = &ActionsPolicyWorkflowPathConditionParameters{}
+	a.GetInclude()
+	a = nil
+	a.GetInclude()
+}
+
 func TestActionsUpdateOrgVariableRequest_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -14694,6 +14964,41 @@ func TestCostCenters_GetCostCenters(tt *testing.T) {
 	c.GetCostCenters()
 	c = nil
 	c.GetCostCenters()
+}
+
+func TestCreateActionsPolicyRequest_GetConditions(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateActionsPolicyRequest{}
+	c.GetConditions()
+	c = nil
+	c.GetConditions()
+}
+
+func TestCreateActionsPolicyRequest_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateActionsPolicyRequest{}
+	c.GetEnforcement()
+	c = nil
+	c.GetEnforcement()
+}
+
+func TestCreateActionsPolicyRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateActionsPolicyRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateActionsPolicyRequest_GetRules(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsPolicyRule{}
+	c := &CreateActionsPolicyRequest{Rules: zeroValue}
+	c.GetRules()
+	c = &CreateActionsPolicyRequest{}
+	c.GetRules()
+	c = nil
+	c.GetRules()
 }
 
 func TestCreateAgentTaskRequest_GetBaseRef(tt *testing.T) {
@@ -56604,6 +56909,44 @@ func TestUnauthenticatedRateLimitedTransport_GetClientSecret(tt *testing.T) {
 	u.GetClientSecret()
 	u = nil
 	u.GetClientSecret()
+}
+
+func TestUpdateActionsPolicyRequest_GetConditions(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateActionsPolicyRequest{}
+	u.GetConditions()
+	u = nil
+	u.GetConditions()
+}
+
+func TestUpdateActionsPolicyRequest_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateActionsPolicyRequest{}
+	u.GetEnforcement()
+	u = nil
+	u.GetEnforcement()
+}
+
+func TestUpdateActionsPolicyRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateActionsPolicyRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateActionsPolicyRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateActionsPolicyRequest_GetRules(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsPolicyRule{}
+	u := &UpdateActionsPolicyRequest{Rules: zeroValue}
+	u.GetRules()
+	u = &UpdateActionsPolicyRequest{}
+	u.GetRules()
+	u = nil
+	u.GetRules()
 }
 
 func TestUpdateAppInstallationRepositoriesRequest_GetRepositories(tt *testing.T) {
