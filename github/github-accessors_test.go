@@ -1213,6 +1213,39 @@ func TestAddResourcesToCostCenterResponse_GetReassignedResources(tt *testing.T) 
 	a.GetReassignedResources()
 }
 
+func TestAddTeamMembershipRequest_GetRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddTeamMembershipRequest{Role: &zeroValue}
+	a.GetRole()
+	a = &AddTeamMembershipRequest{}
+	a.GetRole()
+	a = nil
+	a.GetRole()
+}
+
+func TestAddTeamProjectRequest_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddTeamProjectRequest{Permission: &zeroValue}
+	a.GetPermission()
+	a = &AddTeamProjectRequest{}
+	a.GetPermission()
+	a = nil
+	a.GetPermission()
+}
+
+func TestAddTeamRepoRequest_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddTeamRepoRequest{Permission: &zeroValue}
+	a.GetPermission()
+	a = &AddTeamRepoRequest{}
+	a.GetPermission()
+	a = nil
+	a.GetPermission()
+}
+
 func TestAdminEnforcedChanges_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -55518,22 +55551,6 @@ func TestTeamAddEvent_GetTeam(tt *testing.T) {
 	t.GetTeam()
 }
 
-func TestTeamAddTeamMembershipOptions_GetRole(tt *testing.T) {
-	tt.Parallel()
-	t := &TeamAddTeamMembershipOptions{}
-	t.GetRole()
-	t = nil
-	t.GetRole()
-}
-
-func TestTeamAddTeamRepoOptions_GetPermission(tt *testing.T) {
-	tt.Parallel()
-	t := &TeamAddTeamRepoOptions{}
-	t.GetPermission()
-	t = nil
-	t.GetPermission()
-}
-
 func TestTeamChange_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	t := &TeamChange{}
@@ -56007,17 +56024,6 @@ func TestTeamPrivacy_GetFrom(tt *testing.T) {
 	t.GetFrom()
 	t = nil
 	t.GetFrom()
-}
-
-func TestTeamProjectOptions_GetPermission(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	t := &TeamProjectOptions{Permission: &zeroValue}
-	t.GetPermission()
-	t = &TeamProjectOptions{}
-	t.GetPermission()
-	t = nil
-	t.GetPermission()
 }
 
 func TestTeamRepository_GetPermissions(tt *testing.T) {

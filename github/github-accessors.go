@@ -990,6 +990,30 @@ func (a *AddResourcesToCostCenterResponse) GetReassignedResources() []*Reassigne
 	return a.ReassignedResources
 }
 
+// GetRole returns the Role field if it's non-nil, zero value otherwise.
+func (a *AddTeamMembershipRequest) GetRole() string {
+	if a == nil || a.Role == nil {
+		return ""
+	}
+	return *a.Role
+}
+
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (a *AddTeamProjectRequest) GetPermission() string {
+	if a == nil || a.Permission == nil {
+		return ""
+	}
+	return *a.Permission
+}
+
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (a *AddTeamRepoRequest) GetPermission() string {
+	if a == nil || a.Permission == nil {
+		return ""
+	}
+	return *a.Permission
+}
+
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
 func (a *AdminEnforcedChanges) GetFrom() bool {
 	if a == nil || a.From == nil {
@@ -44582,22 +44606,6 @@ func (t *TeamAddEvent) GetTeam() *Team {
 	return t.Team
 }
 
-// GetRole returns the Role field.
-func (t *TeamAddTeamMembershipOptions) GetRole() string {
-	if t == nil {
-		return ""
-	}
-	return t.Role
-}
-
-// GetPermission returns the Permission field.
-func (t *TeamAddTeamRepoOptions) GetPermission() string {
-	if t == nil {
-		return ""
-	}
-	return t.Permission
-}
-
 // GetDescription returns the Description field.
 func (t *TeamChange) GetDescription() *TeamDescription {
 	if t == nil {
@@ -44972,14 +44980,6 @@ func (t *TeamPrivacy) GetFrom() string {
 		return ""
 	}
 	return *t.From
-}
-
-// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
-func (t *TeamProjectOptions) GetPermission() string {
-	if t == nil || t.Permission == nil {
-		return ""
-	}
-	return *t.Permission
 }
 
 // GetPermissions returns the Permissions field.

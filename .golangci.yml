@@ -237,9 +237,6 @@ linters:
             - SCIMUserAttributes
             - SourceImportAuthor
             - Subscription
-            - TeamAddTeamMembershipOptions
-            - TeamAddTeamRepoOptions
-            - TeamProjectOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
             - UserSuspendOptions
@@ -261,9 +258,6 @@ linters:
             - RepositoryAddCollaboratorOptions
             - RepositoryContentFileOptions
             - RepositoryCreateForkOptions
-            - TeamAddTeamMembershipOptions
-            - TeamAddTeamRepoOptions
-            - TeamProjectOptions
             - UpdateCheckRunOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
@@ -445,8 +439,6 @@ linters:
             - SearchOptions.AdvancedSearch
             - Secret.SelectedRepositoriesURL # TODO: Actions
             - Secret.Visibility # TODO: Actions
-            - TeamAddTeamMembershipOptions.Role # TODO: Teams
-            - TeamAddTeamRepoOptions.Permission # TODO: Teams
             - UpdateRuleParameters.UpdateAllowsFetchAndMerge # TODO: Rules
             - UsageReportOptions.Day
             - UsageReportOptions.Hour
