@@ -664,3 +664,68 @@ func TestWebHookType(t *testing.T) {
 		t.Errorf("WebHookType = %q, want %q", got, want)
 	}
 }
+
+func TestParseWebHook_ReleaseEvent_Edited(t *testing.T) {
+	t.Parallel()
+	rawJSON := []byte(`{
+		"action": "edited",
+		"changes": {
+			"body": {
+				"from": "Old body"
+			},
+			"name": {
+				"from": "Old name"
+			},
+			"tag_name": {
+				"from": "v1.0.0-rc1"
+			},
+			"make_latest": {
+				"to": true
+			}
+		},
+		"release": {
+			"id": 12345,
+			"tag_name": "v1.0.0",
+			"name": "Release 1.0.0",
+			"body": "New body"
+		},
+		"enterprise": {
+			"id": 1,
+			"slug": "octocat-enterprise"
+		}
+	}`)
+
+	got, err := ParseWebHook("release", rawJSON)
+	if err != nil {
+		t.Fatalf("ParseWebHook failed: %v", err)
+	}
+
+	event, ok := got.(*ReleaseEvent)
+	if !ok {
+		t.Fatalf("ParseWebHook returned %v, want *ReleaseEvent", got)
+	}
+
+	want := &ReleaseEvent{
+		Action: new("edited"),
+		Changes: &ReleaseChanges{
+			Body:       &ReleaseChangeFrom{From: "Old body"},
+			Name:       &ReleaseChangeFrom{From: "Old name"},
+			TagName:    &ReleaseChangeFrom{From: "v1.0.0-rc1"},
+			MakeLatest: &ReleaseChangeToBool{To: true},
+		},
+		Release: &RepositoryRelease{
+			ID:      12345,
+			TagName: "v1.0.0",
+			Name:    new("Release 1.0.0"),
+			Body:    new("New body"),
+		},
+		Enterprise: &Enterprise{
+			ID:   new(1),
+			Slug: new("octocat-enterprise"),
+		},
+	}
+
+	if !cmp.Equal(event, want) {
+		t.Errorf("ParseWebHook() diff (-got +want):\n%v", cmp.Diff(event, want))
+	}
+}

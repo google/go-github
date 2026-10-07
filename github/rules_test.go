@@ -7,10 +7,98 @@ package github
 
 import (
 	"encoding/json"
+	"math"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
+
+func TestCodeCoverageRuleRoundTrip(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name   string
+		params CodeCoverageRuleParameters
+		json   string
+	}{
+		{
+			"fractional_thresholds",
+			CodeCoverageRuleParameters{MaxCoverageDrop: new(2.5), MinimumCoverage: new(80.5)},
+			`{"max_coverage_drop":2.5,"minimum_coverage":80.5}`,
+		},
+		{
+			"minimum_only",
+			CodeCoverageRuleParameters{MinimumCoverage: new(80.5)},
+			`{"minimum_coverage":80.5}`,
+		},
+		{
+			"no_coverage_drop",
+			CodeCoverageRuleParameters{MaxCoverageDrop: new(0.0)},
+			`{"max_coverage_drop":0}`,
+		},
+		{
+			"zero_thresholds",
+			CodeCoverageRuleParameters{MaxCoverageDrop: new(0.0), MinimumCoverage: new(0.0)},
+			`{"max_coverage_drop":0,"minimum_coverage":0}`,
+		},
+		{
+			"empty_parameters",
+			CodeCoverageRuleParameters{},
+			`{}`,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			ruleJSON := `{"type":"code_coverage","parameters":` + tt.json + `}`
+			testJSONMarshal(t, &RepositoryRule{
+				Type:       RulesetRuleTypeCodeCoverage,
+				Parameters: &tt.params,
+			}, ruleJSON)
+			testJSONMarshal(t, &RepositoryRulesetRules{CodeCoverage: &tt.params}, `[`+ruleJSON+`]`)
+		})
+	}
+
+	t.Run("missing_parameters", func(t *testing.T) {
+		t.Parallel()
+		testJSONUnmarshalOnly(t, &RepositoryRule{
+			Type:       RulesetRuleTypeCodeCoverage,
+			Parameters: &CodeCoverageRuleParameters{},
+		}, `{"type":"code_coverage"}`)
+		testJSONUnmarshalOnly(t, &RepositoryRulesetRules{
+			CodeCoverage: &CodeCoverageRuleParameters{},
+		}, `[{"type":"code_coverage"}]`)
+	})
+}
+
+func TestCodeCoverageRuleInvalidParameters(t *testing.T) {
+	t.Parallel()
+	for _, params := range []string{
+		`{"max_coverage_drop":"invalid"}`,
+		`{"minimum_coverage":"invalid"}`,
+		`"not_an_object"`,
+	} {
+		t.Run(params, func(t *testing.T) {
+			t.Parallel()
+			data := `{"type":"code_coverage","parameters":` + params + `}`
+			if err := json.Unmarshal([]byte(data), &RepositoryRule{}); err == nil {
+				t.Errorf("Expected error unmarshaling %q, got nil", data)
+			}
+			if err := json.Unmarshal([]byte(`[`+data+`]`), &RepositoryRulesetRules{}); err == nil {
+				t.Errorf("Expected error unmarshaling [%v], got nil", data)
+			}
+		})
+	}
+}
+
+func TestRepositoryRulesetRules_CodeCoverageMarshalError(t *testing.T) {
+	t.Parallel()
+	rules := &RepositoryRulesetRules{
+		CodeCoverage: &CodeCoverageRuleParameters{MinimumCoverage: new(math.NaN())},
+	}
+	if _, err := json.Marshal(rules); err == nil {
+		t.Error("Expected error marshaling a NaN coverage threshold, got nil")
+	}
+}
 
 func TestRepositoryRulesetRules(t *testing.T) {
 	t.Parallel()
@@ -835,6 +923,42 @@ func TestRepositoryRule(t *testing.T) {
 				},
 			},
 			`{"type":"pull_request","parameters":{"allowed_merge_methods":["merge","squash","rebase"],"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":0,"required_reviewers":[{"minimum_approvals":1,"file_patterns":["*"],"reviewer":{"id":123456,"type":"Team"}}],"required_review_thread_resolution":false}}`,
+		},
+		{
+			"pull_request_with_dismissal_restriction",
+			&RepositoryRule{
+				Type: RulesetRuleTypePullRequest,
+				Parameters: &PullRequestRuleParameters{
+					DismissalRestriction: &DismissalRestriction{
+						AllowedActors: []*DismissalRestrictionActor{
+							{ID: 123456, Type: DismissalRestrictionActorTypeTeam},
+							{ID: 5, Type: DismissalRestrictionActorTypeRepositoryRole},
+						},
+						Enabled: true,
+					},
+					DismissStaleReviewsOnPush:      false,
+					RequireCodeOwnerReview:         false,
+					RequireLastPushApproval:        false,
+					RequiredApprovingReviewCount:   1,
+					RequiredReviewThreadResolution: false,
+				},
+			},
+			`{"type":"pull_request","parameters":{"dismissal_restriction":{"allowed_actors":[{"id":123456,"type":"Team"},{"id":5,"type":"RepositoryRole"}],"enabled":true},"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":1,"required_review_thread_resolution":false}}`,
+		},
+		{
+			"pull_request_with_dismissal_restricted_to_nobody",
+			&RepositoryRule{
+				Type: RulesetRuleTypePullRequest,
+				Parameters: &PullRequestRuleParameters{
+					DismissalRestriction:           &DismissalRestriction{Enabled: true},
+					DismissStaleReviewsOnPush:      false,
+					RequireCodeOwnerReview:         false,
+					RequireLastPushApproval:        false,
+					RequiredApprovingReviewCount:   1,
+					RequiredReviewThreadResolution: false,
+				},
+			},
+			`{"type":"pull_request","parameters":{"dismissal_restriction":{"enabled":true},"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":1,"required_review_thread_resolution":false}}`,
 		},
 		{
 			"pull_request_string_id",

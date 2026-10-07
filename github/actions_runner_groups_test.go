@@ -187,7 +187,7 @@ func TestActionsService_CreateOrganizationRunnerGroup(t *testing.T) {
 
 	ctx := t.Context()
 	req := CreateRunnerGroupRequest{
-		Name:                     new("octo-runner-group"),
+		Name:                     "octo-runner-group",
 		Visibility:               new("selected"),
 		AllowsPublicRepositories: new(true),
 		RestrictedToWorkflows:    new(false),
@@ -244,7 +244,7 @@ func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
 
 	ctx := t.Context()
 	req := UpdateRunnerGroupRequest{
-		Name:                     new("octo-runner-group"),
+		Name:                     "octo-runner-group",
 		Visibility:               new("selected"),
 		AllowsPublicRepositories: new(true),
 		RestrictedToWorkflows:    new(false),
@@ -299,40 +299,47 @@ func TestActionsService_UpdateOrganizationRunnerGroup_NetworkConfiguration(t *te
 		want string
 	}{
 		{
-			name: "omitted",
+			name: "zero value",
 			body: UpdateRunnerGroupRequest{},
-			want: `{}`,
+			want: `{"name":""}`,
+		},
+		{
+			name: "omitted",
+			body: UpdateRunnerGroupRequest{Name: "runner-group"},
+			want: `{"name":"runner-group"}`,
 		},
 		{
 			name: "set",
-			body: UpdateRunnerGroupRequest{NetworkConfigurationID: new("network-id")},
-			want: `{"network_configuration_id":"network-id"}`,
+			body: UpdateRunnerGroupRequest{Name: "runner-group", NetworkConfigurationID: new("network-id")},
+			want: `{"name":"runner-group","network_configuration_id":"network-id"}`,
 		},
 		{
 			name: "empty ID without removal",
 			body: UpdateRunnerGroupRequest{
+				Name:                       "runner-group",
 				NetworkConfigurationID:     new(""),
 				RemoveNetworkConfiguration: false,
 			},
-			want: `{"network_configuration_id":""}`,
+			want: `{"name":"runner-group","network_configuration_id":""}`,
 		},
 		{
 			name: "remove",
-			body: UpdateRunnerGroupRequest{RemoveNetworkConfiguration: true},
-			want: `{"network_configuration_id":null}`,
+			body: UpdateRunnerGroupRequest{Name: "runner-group", RemoveNetworkConfiguration: true},
+			want: `{"name":"runner-group","network_configuration_id":null}`,
 		},
 		{
 			name: "remove takes precedence",
 			body: UpdateRunnerGroupRequest{
+				Name:                       "runner-group",
 				NetworkConfigurationID:     new("network-id"),
 				RemoveNetworkConfiguration: true,
 			},
-			want: `{"network_configuration_id":null}`,
+			want: `{"name":"runner-group","network_configuration_id":null}`,
 		},
 		{
 			name: "remove preserves other fields",
 			body: UpdateRunnerGroupRequest{
-				Name:                       new("renamed"),
+				Name:                       "renamed",
 				Visibility:                 new("selected"),
 				AllowsPublicRepositories:   new(false),
 				RestrictedToWorkflows:      new(true),
@@ -343,7 +350,7 @@ func TestActionsService_UpdateOrganizationRunnerGroup_NetworkConfiguration(t *te
 		},
 		{
 			name: "rename only",
-			body: UpdateRunnerGroupRequest{Name: new("renamed")},
+			body: UpdateRunnerGroupRequest{Name: "renamed"},
 			want: `{"name":"renamed"}`,
 		},
 	}

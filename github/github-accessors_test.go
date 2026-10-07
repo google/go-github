@@ -324,6 +324,28 @@ func TestActionsCacheListOptions_GetSort(tt *testing.T) {
 	a.GetSort()
 }
 
+func TestActionsCacheRetentionLimit_GetMaxCacheRetentionDays(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &ActionsCacheRetentionLimit{MaxCacheRetentionDays: &zeroValue}
+	a.GetMaxCacheRetentionDays()
+	a = &ActionsCacheRetentionLimit{}
+	a.GetMaxCacheRetentionDays()
+	a = nil
+	a.GetMaxCacheRetentionDays()
+}
+
+func TestActionsCacheStorageLimit_GetMaxCacheSizeGB(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &ActionsCacheStorageLimit{MaxCacheSizeGB: &zeroValue}
+	a.GetMaxCacheSizeGB()
+	a = &ActionsCacheStorageLimit{}
+	a.GetMaxCacheSizeGB()
+	a = nil
+	a.GetMaxCacheSizeGB()
+}
+
 func TestActionsCacheUsage_GetActiveCachesCount(tt *testing.T) {
 	tt.Parallel()
 	a := &ActionsCacheUsage{}
@@ -491,10 +513,7 @@ func TestActionsPermissions_GetAllowedActions(tt *testing.T) {
 
 func TestActionsPermissions_GetEnabledRepositories(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &ActionsPermissions{EnabledRepositories: &zeroValue}
-	a.GetEnabledRepositories()
-	a = &ActionsPermissions{}
+	a := &ActionsPermissions{}
 	a.GetEnabledRepositories()
 	a = nil
 	a.GetEnabledRepositories()
@@ -535,10 +554,7 @@ func TestActionsPermissionsEnterprise_GetAllowedActions(tt *testing.T) {
 
 func TestActionsPermissionsEnterprise_GetEnabledOrganizations(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &ActionsPermissionsEnterprise{EnabledOrganizations: &zeroValue}
-	a.GetEnabledOrganizations()
-	a = &ActionsPermissionsEnterprise{}
+	a := &ActionsPermissionsEnterprise{}
 	a.GetEnabledOrganizations()
 	a = nil
 	a.GetEnabledOrganizations()
@@ -568,10 +584,7 @@ func TestActionsPermissionsRepository_GetAllowedActions(tt *testing.T) {
 
 func TestActionsPermissionsRepository_GetEnabled(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	a := &ActionsPermissionsRepository{Enabled: &zeroValue}
-	a.GetEnabled()
-	a = &ActionsPermissionsRepository{}
+	a := &ActionsPermissionsRepository{}
 	a.GetEnabled()
 	a = nil
 	a.GetEnabled()
@@ -597,6 +610,276 @@ func TestActionsPermissionsRepository_GetSHAPinningRequired(tt *testing.T) {
 	a.GetSHAPinningRequired()
 	a = nil
 	a.GetSHAPinningRequired()
+}
+
+func TestActionsPolicy_GetConditions(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetConditions()
+	a = nil
+	a.GetConditions()
+}
+
+func TestActionsPolicy_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &ActionsPolicy{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
+	a = &ActionsPolicy{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestActionsPolicy_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetEnforcement()
+	a = nil
+	a.GetEnforcement()
+}
+
+func TestActionsPolicy_GetID(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestActionsPolicy_GetLinks(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetLinks()
+	a = nil
+	a.GetLinks()
+}
+
+func TestActionsPolicy_GetName(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestActionsPolicy_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ActionsPolicy{NodeID: &zeroValue}
+	a.GetNodeID()
+	a = &ActionsPolicy{}
+	a.GetNodeID()
+	a = nil
+	a.GetNodeID()
+}
+
+func TestActionsPolicy_GetRules(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsPolicyRule{}
+	a := &ActionsPolicy{Rules: zeroValue}
+	a.GetRules()
+	a = &ActionsPolicy{}
+	a.GetRules()
+	a = nil
+	a.GetRules()
+}
+
+func TestActionsPolicy_GetSource(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetSource()
+	a = nil
+	a.GetSource()
+}
+
+func TestActionsPolicy_GetSourceType(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetSourceType()
+	a = nil
+	a.GetSourceType()
+}
+
+func TestActionsPolicy_GetTarget(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicy{}
+	a.GetTarget()
+	a = nil
+	a.GetTarget()
+}
+
+func TestActionsPolicy_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &ActionsPolicy{UpdatedAt: &zeroValue}
+	a.GetUpdatedAt()
+	a = &ActionsPolicy{}
+	a.GetUpdatedAt()
+	a = nil
+	a.GetUpdatedAt()
+}
+
+func TestActionsPolicyActor_GetID(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyActor{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestActionsPolicyActor_GetType(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyActor{}
+	a.GetType()
+	a = nil
+	a.GetType()
+}
+
+func TestActionsPolicyConditions_GetOrganizationID(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetOrganizationID()
+	a = nil
+	a.GetOrganizationID()
+}
+
+func TestActionsPolicyConditions_GetOrganizationName(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetOrganizationName()
+	a = nil
+	a.GetOrganizationName()
+}
+
+func TestActionsPolicyConditions_GetOrganizationProperty(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetOrganizationProperty()
+	a = nil
+	a.GetOrganizationProperty()
+}
+
+func TestActionsPolicyConditions_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetRepositoryID()
+	a = nil
+	a.GetRepositoryID()
+}
+
+func TestActionsPolicyConditions_GetRepositoryName(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetRepositoryName()
+	a = nil
+	a.GetRepositoryName()
+}
+
+func TestActionsPolicyConditions_GetRepositoryProperty(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetRepositoryProperty()
+	a = nil
+	a.GetRepositoryProperty()
+}
+
+func TestActionsPolicyConditions_GetWorkflowPath(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyConditions{}
+	a.GetWorkflowPath()
+	a = nil
+	a.GetWorkflowPath()
+}
+
+func TestActionsPolicyList_GetPolicies(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsPolicy{}
+	a := &ActionsPolicyList{Policies: zeroValue}
+	a.GetPolicies()
+	a = &ActionsPolicyList{}
+	a.GetPolicies()
+	a = nil
+	a.GetPolicies()
+}
+
+func TestActionsPolicyList_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyList{}
+	a.GetTotalCount()
+	a = nil
+	a.GetTotalCount()
+}
+
+func TestActionsPolicyListOptions_GetHasParents(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	a := &ActionsPolicyListOptions{HasParents: &zeroValue}
+	a.GetHasParents()
+	a = &ActionsPolicyListOptions{}
+	a.GetHasParents()
+	a = nil
+	a.GetHasParents()
+}
+
+func TestActionsPolicyRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyRule{}
+	a.GetParameters()
+	a = nil
+	a.GetParameters()
+}
+
+func TestActionsPolicyRule_GetType(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsPolicyRule{}
+	a.GetType()
+	a = nil
+	a.GetType()
+}
+
+func TestActionsPolicyRuleParameters_GetAllowedActors(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsPolicyActor{}
+	a := &ActionsPolicyRuleParameters{AllowedActors: zeroValue}
+	a.GetAllowedActors()
+	a = &ActionsPolicyRuleParameters{}
+	a.GetAllowedActors()
+	a = nil
+	a.GetAllowedActors()
+}
+
+func TestActionsPolicyRuleParameters_GetAllowedEvents(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &ActionsPolicyRuleParameters{AllowedEvents: zeroValue}
+	a.GetAllowedEvents()
+	a = &ActionsPolicyRuleParameters{}
+	a.GetAllowedEvents()
+	a = nil
+	a.GetAllowedEvents()
+}
+
+func TestActionsPolicyWorkflowPathConditionParameters_GetExclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &ActionsPolicyWorkflowPathConditionParameters{Exclude: zeroValue}
+	a.GetExclude()
+	a = &ActionsPolicyWorkflowPathConditionParameters{}
+	a.GetExclude()
+	a = nil
+	a.GetExclude()
+}
+
+func TestActionsPolicyWorkflowPathConditionParameters_GetInclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &ActionsPolicyWorkflowPathConditionParameters{Include: zeroValue}
+	a.GetInclude()
+	a = &ActionsPolicyWorkflowPathConditionParameters{}
+	a.GetInclude()
+	a = nil
+	a.GetInclude()
 }
 
 func TestActionsUpdateOrgVariableRequest_GetName(tt *testing.T) {
@@ -928,6 +1211,39 @@ func TestAddResourcesToCostCenterResponse_GetReassignedResources(tt *testing.T) 
 	a.GetReassignedResources()
 	a = nil
 	a.GetReassignedResources()
+}
+
+func TestAddTeamMembershipRequest_GetRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddTeamMembershipRequest{Role: &zeroValue}
+	a.GetRole()
+	a = &AddTeamMembershipRequest{}
+	a.GetRole()
+	a = nil
+	a.GetRole()
+}
+
+func TestAddTeamProjectRequest_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddTeamProjectRequest{Permission: &zeroValue}
+	a.GetPermission()
+	a = &AddTeamProjectRequest{}
+	a.GetPermission()
+	a = nil
+	a.GetPermission()
+}
+
+func TestAddTeamRepoRequest_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddTeamRepoRequest{Permission: &zeroValue}
+	a.GetPermission()
+	a = &AddTeamRepoRequest{}
+	a.GetPermission()
+	a = nil
+	a.GetPermission()
 }
 
 func TestAdminEnforcedChanges_GetFrom(tt *testing.T) {
@@ -3105,10 +3421,7 @@ func TestArtifactPeriod_GetMaximumAllowedDays(tt *testing.T) {
 
 func TestArtifactPeriodOpt_GetDays(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	a := &ArtifactPeriodOpt{Days: &zeroValue}
-	a.GetDays()
-	a = &ArtifactPeriodOpt{}
+	a := &ArtifactPeriodOpt{}
 	a.GetDays()
 	a = nil
 	a.GetDays()
@@ -4300,10 +4613,7 @@ func TestBillingCostCenter_GetName(tt *testing.T) {
 
 func TestBlob_GetContent(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	b := &Blob{Content: &zeroValue}
-	b.GetContent()
-	b = &Blob{}
+	b := &Blob{}
 	b.GetContent()
 	b = nil
 	b.GetContent()
@@ -6565,6 +6875,28 @@ func TestClusterStatusNodeServiceItem_GetStatus(tt *testing.T) {
 	c.GetStatus()
 }
 
+func TestCodeCoverageRuleParameters_GetMaxCoverageDrop(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue float64
+	c := &CodeCoverageRuleParameters{MaxCoverageDrop: &zeroValue}
+	c.GetMaxCoverageDrop()
+	c = &CodeCoverageRuleParameters{}
+	c.GetMaxCoverageDrop()
+	c = nil
+	c.GetMaxCoverageDrop()
+}
+
+func TestCodeCoverageRuleParameters_GetMinimumCoverage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue float64
+	c := &CodeCoverageRuleParameters{MinimumCoverage: &zeroValue}
+	c.GetMinimumCoverage()
+	c = &CodeCoverageRuleParameters{}
+	c.GetMinimumCoverage()
+	c = nil
+	c.GetMinimumCoverage()
+}
+
 func TestCodeOfConduct_GetBody(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8018,143 +8350,6 @@ func TestCodespace_GetWebURL(tt *testing.T) {
 	c.GetWebURL()
 	c = nil
 	c.GetWebURL()
-}
-
-func TestCodespaceCreateForUserOptions_GetClientIP(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{ClientIP: &zeroValue}
-	c.GetClientIP()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetClientIP()
-	c = nil
-	c.GetClientIP()
-}
-
-func TestCodespaceCreateForUserOptions_GetDevcontainerPath(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{DevcontainerPath: &zeroValue}
-	c.GetDevcontainerPath()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetDevcontainerPath()
-	c = nil
-	c.GetDevcontainerPath()
-}
-
-func TestCodespaceCreateForUserOptions_GetDisplayName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{DisplayName: &zeroValue}
-	c.GetDisplayName()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetDisplayName()
-	c = nil
-	c.GetDisplayName()
-}
-
-func TestCodespaceCreateForUserOptions_GetGeo(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{Geo: &zeroValue}
-	c.GetGeo()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetGeo()
-	c = nil
-	c.GetGeo()
-}
-
-func TestCodespaceCreateForUserOptions_GetIdleTimeoutMinutes(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	c := &CodespaceCreateForUserOptions{IdleTimeoutMinutes: &zeroValue}
-	c.GetIdleTimeoutMinutes()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetIdleTimeoutMinutes()
-	c = nil
-	c.GetIdleTimeoutMinutes()
-}
-
-func TestCodespaceCreateForUserOptions_GetLocation(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{Location: &zeroValue}
-	c.GetLocation()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetLocation()
-	c = nil
-	c.GetLocation()
-}
-
-func TestCodespaceCreateForUserOptions_GetMachine(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{Machine: &zeroValue}
-	c.GetMachine()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetMachine()
-	c = nil
-	c.GetMachine()
-}
-
-func TestCodespaceCreateForUserOptions_GetMultiRepoPermissionsOptOut(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	c := &CodespaceCreateForUserOptions{MultiRepoPermissionsOptOut: &zeroValue}
-	c.GetMultiRepoPermissionsOptOut()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetMultiRepoPermissionsOptOut()
-	c = nil
-	c.GetMultiRepoPermissionsOptOut()
-}
-
-func TestCodespaceCreateForUserOptions_GetPullRequest(tt *testing.T) {
-	tt.Parallel()
-	c := &CodespaceCreateForUserOptions{}
-	c.GetPullRequest()
-	c = nil
-	c.GetPullRequest()
-}
-
-func TestCodespaceCreateForUserOptions_GetRef(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{Ref: &zeroValue}
-	c.GetRef()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetRef()
-	c = nil
-	c.GetRef()
-}
-
-func TestCodespaceCreateForUserOptions_GetRepositoryID(tt *testing.T) {
-	tt.Parallel()
-	c := &CodespaceCreateForUserOptions{}
-	c.GetRepositoryID()
-	c = nil
-	c.GetRepositoryID()
-}
-
-func TestCodespaceCreateForUserOptions_GetRetentionPeriodMinutes(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	c := &CodespaceCreateForUserOptions{RetentionPeriodMinutes: &zeroValue}
-	c.GetRetentionPeriodMinutes()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetRetentionPeriodMinutes()
-	c = nil
-	c.GetRetentionPeriodMinutes()
-}
-
-func TestCodespaceCreateForUserOptions_GetWorkingDirectory(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{WorkingDirectory: &zeroValue}
-	c.GetWorkingDirectory()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetWorkingDirectory()
-	c = nil
-	c.GetWorkingDirectory()
 }
 
 func TestCodespaceDefaultAttributes_GetBillableOwner(tt *testing.T) {
@@ -13607,6 +13802,303 @@ func TestCopilotSeatDetails_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
+func TestCopilotSpace_GetAPIURL(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetAPIURL()
+	c = nil
+	c.GetAPIURL()
+}
+
+func TestCopilotSpace_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetBaseRole()
+	c = nil
+	c.GetBaseRole()
+}
+
+func TestCopilotSpace_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
+func TestCopilotSpace_GetCreator(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetCreator()
+	c = nil
+	c.GetCreator()
+}
+
+func TestCopilotSpace_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpace{Description: &zeroValue}
+	c.GetDescription()
+	c = &CopilotSpace{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCopilotSpace_GetGeneralInstructions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpace{GeneralInstructions: &zeroValue}
+	c.GetGeneralInstructions()
+	c = &CopilotSpace{}
+	c.GetGeneralInstructions()
+	c = nil
+	c.GetGeneralInstructions()
+}
+
+func TestCopilotSpace_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetHTMLURL()
+	c = nil
+	c.GetHTMLURL()
+}
+
+func TestCopilotSpace_GetID(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCopilotSpace_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotSpace_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetNumber()
+	c = nil
+	c.GetNumber()
+}
+
+func TestCopilotSpace_GetOwner(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetOwner()
+	c = nil
+	c.GetOwner()
+}
+
+func TestCopilotSpace_GetResourcesAttributes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotSpaceResource{}
+	c := &CopilotSpace{ResourcesAttributes: zeroValue}
+	c.GetResourcesAttributes()
+	c = &CopilotSpace{}
+	c.GetResourcesAttributes()
+	c = nil
+	c.GetResourcesAttributes()
+}
+
+func TestCopilotSpace_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
+}
+
+func TestCopilotSpaceMetadata_GetCopilotChatAttachmentID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CopilotSpaceMetadata{CopilotChatAttachmentID: &zeroValue}
+	c.GetCopilotChatAttachmentID()
+	c = &CopilotSpaceMetadata{}
+	c.GetCopilotChatAttachmentID()
+	c = nil
+	c.GetCopilotChatAttachmentID()
+}
+
+func TestCopilotSpaceMetadata_GetFilePath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{FilePath: &zeroValue}
+	c.GetFilePath()
+	c = &CopilotSpaceMetadata{}
+	c.GetFilePath()
+	c = nil
+	c.GetFilePath()
+}
+
+func TestCopilotSpaceMetadata_GetHeight(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotSpaceMetadata{Height: &zeroValue}
+	c.GetHeight()
+	c = &CopilotSpaceMetadata{}
+	c.GetHeight()
+	c = nil
+	c.GetHeight()
+}
+
+func TestCopilotSpaceMetadata_GetMediaType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{MediaType: &zeroValue}
+	c.GetMediaType()
+	c = &CopilotSpaceMetadata{}
+	c.GetMediaType()
+	c = nil
+	c.GetMediaType()
+}
+
+func TestCopilotSpaceMetadata_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{Name: &zeroValue}
+	c.GetName()
+	c = &CopilotSpaceMetadata{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotSpaceMetadata_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotSpaceMetadata{Number: &zeroValue}
+	c.GetNumber()
+	c = &CopilotSpaceMetadata{}
+	c.GetNumber()
+	c = nil
+	c.GetNumber()
+}
+
+func TestCopilotSpaceMetadata_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CopilotSpaceMetadata{RepositoryID: &zeroValue}
+	c.GetRepositoryID()
+	c = &CopilotSpaceMetadata{}
+	c.GetRepositoryID()
+	c = nil
+	c.GetRepositoryID()
+}
+
+func TestCopilotSpaceMetadata_GetText(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{Text: &zeroValue}
+	c.GetText()
+	c = &CopilotSpaceMetadata{}
+	c.GetText()
+	c = nil
+	c.GetText()
+}
+
+func TestCopilotSpaceMetadata_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{URL: &zeroValue}
+	c.GetURL()
+	c = &CopilotSpaceMetadata{}
+	c.GetURL()
+	c = nil
+	c.GetURL()
+}
+
+func TestCopilotSpaceMetadata_GetWidth(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotSpaceMetadata{Width: &zeroValue}
+	c.GetWidth()
+	c = &CopilotSpaceMetadata{}
+	c.GetWidth()
+	c = nil
+	c.GetWidth()
+}
+
+func TestCopilotSpaceResource_GetCopilotChatAttachmentID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CopilotSpaceResource{CopilotChatAttachmentID: &zeroValue}
+	c.GetCopilotChatAttachmentID()
+	c = &CopilotSpaceResource{}
+	c.GetCopilotChatAttachmentID()
+	c = nil
+	c.GetCopilotChatAttachmentID()
+}
+
+func TestCopilotSpaceResource_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	c := &CopilotSpaceResource{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CopilotSpaceResource{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
+func TestCopilotSpaceResource_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CopilotSpaceResource{ID: &zeroValue}
+	c.GetID()
+	c = &CopilotSpaceResource{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCopilotSpaceResource_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpaceResource{}
+	c.GetMetadata()
+	c = nil
+	c.GetMetadata()
+}
+
+func TestCopilotSpaceResource_GetResourceType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceResource{ResourceType: &zeroValue}
+	c.GetResourceType()
+	c = &CopilotSpaceResource{}
+	c.GetResourceType()
+	c = nil
+	c.GetResourceType()
+}
+
+func TestCopilotSpaceResource_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	c := &CopilotSpaceResource{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CopilotSpaceResource{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
+}
+
+func TestCopilotSpacesList_GetSpaces(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotSpace{}
+	c := &CopilotSpacesList{Spaces: zeroValue}
+	c.GetSpaces()
+	c = &CopilotSpacesList{}
+	c.GetSpaces()
+	c = nil
+	c.GetSpaces()
+}
+
 func TestCopilotUserDailyMetrics_GetAIAdoptionPhase(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserDailyMetrics{}
@@ -14328,6 +14820,68 @@ func TestCopilotUserPeriodicMetrics_GetUserLogin(tt *testing.T) {
 	c.GetUserLogin()
 }
 
+func TestCopilotUserTeamsDailyMetrics_GetDay(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetDay()
+	c = nil
+	c.GetDay()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetEnterpriseID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotUserTeamsDailyMetrics{EnterpriseID: &zeroValue}
+	c.GetEnterpriseID()
+	c = &CopilotUserTeamsDailyMetrics{}
+	c.GetEnterpriseID()
+	c = nil
+	c.GetEnterpriseID()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetOrganizationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotUserTeamsDailyMetrics{OrganizationID: &zeroValue}
+	c.GetOrganizationID()
+	c = &CopilotUserTeamsDailyMetrics{}
+	c.GetOrganizationID()
+	c = nil
+	c.GetOrganizationID()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetSlug(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetSlug()
+	c = nil
+	c.GetSlug()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetTeamID(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetTeamID()
+	c = nil
+	c.GetTeamID()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetUserID(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetUserID()
+	c = nil
+	c.GetUserID()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetUserLogin(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetUserLogin()
+	c = nil
+	c.GetUserLogin()
+}
+
 func TestCostCenter_GetAzureSubscription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -14443,6 +14997,41 @@ func TestCostCenters_GetCostCenters(tt *testing.T) {
 	c.GetCostCenters()
 	c = nil
 	c.GetCostCenters()
+}
+
+func TestCreateActionsPolicyRequest_GetConditions(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateActionsPolicyRequest{}
+	c.GetConditions()
+	c = nil
+	c.GetConditions()
+}
+
+func TestCreateActionsPolicyRequest_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateActionsPolicyRequest{}
+	c.GetEnforcement()
+	c = nil
+	c.GetEnforcement()
+}
+
+func TestCreateActionsPolicyRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateActionsPolicyRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateActionsPolicyRequest_GetRules(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsPolicyRule{}
+	c := &CreateActionsPolicyRequest{Rules: zeroValue}
+	c.GetRules()
+	c = &CreateActionsPolicyRequest{}
+	c.GetRules()
+	c = nil
+	c.GetRules()
 }
 
 func TestCreateAgentTaskRequest_GetBaseRef(tt *testing.T) {
@@ -14840,122 +15429,262 @@ func TestCreateCheckSuiteOptions_GetHeadSHA(tt *testing.T) {
 	c.GetHeadSHA()
 }
 
-func TestCreateCodespaceOptions_GetClientIP(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetClientIP(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{ClientIP: &zeroValue}
+	c := &CreateCodespaceForUserRequest{ClientIP: &zeroValue}
 	c.GetClientIP()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetClientIP()
 	c = nil
 	c.GetClientIP()
 }
 
-func TestCreateCodespaceOptions_GetDevcontainerPath(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetDevcontainerPath(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{DevcontainerPath: &zeroValue}
+	c := &CreateCodespaceForUserRequest{DevcontainerPath: &zeroValue}
 	c.GetDevcontainerPath()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetDevcontainerPath()
 	c = nil
 	c.GetDevcontainerPath()
 }
 
-func TestCreateCodespaceOptions_GetDisplayName(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetDisplayName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{DisplayName: &zeroValue}
+	c := &CreateCodespaceForUserRequest{DisplayName: &zeroValue}
 	c.GetDisplayName()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetDisplayName()
 	c = nil
 	c.GetDisplayName()
 }
 
-func TestCreateCodespaceOptions_GetGeo(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetGeo(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{Geo: &zeroValue}
+	c := &CreateCodespaceForUserRequest{Geo: &zeroValue}
 	c.GetGeo()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetGeo()
 	c = nil
 	c.GetGeo()
 }
 
-func TestCreateCodespaceOptions_GetIdleTimeoutMinutes(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetIdleTimeoutMinutes(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
-	c := &CreateCodespaceOptions{IdleTimeoutMinutes: &zeroValue}
+	c := &CreateCodespaceForUserRequest{IdleTimeoutMinutes: &zeroValue}
 	c.GetIdleTimeoutMinutes()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetIdleTimeoutMinutes()
 	c = nil
 	c.GetIdleTimeoutMinutes()
 }
 
-func TestCreateCodespaceOptions_GetLocation(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetLocation(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{Location: &zeroValue}
+	c := &CreateCodespaceForUserRequest{Location: &zeroValue}
 	c.GetLocation()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetLocation()
 	c = nil
 	c.GetLocation()
 }
 
-func TestCreateCodespaceOptions_GetMachine(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetMachine(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{Machine: &zeroValue}
+	c := &CreateCodespaceForUserRequest{Machine: &zeroValue}
 	c.GetMachine()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetMachine()
 	c = nil
 	c.GetMachine()
 }
 
-func TestCreateCodespaceOptions_GetMultiRepoPermissionsOptOut(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetMultiRepoPermissionsOptOut(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	c := &CreateCodespaceOptions{MultiRepoPermissionsOptOut: &zeroValue}
+	c := &CreateCodespaceForUserRequest{MultiRepoPermissionsOptOut: &zeroValue}
 	c.GetMultiRepoPermissionsOptOut()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetMultiRepoPermissionsOptOut()
 	c = nil
 	c.GetMultiRepoPermissionsOptOut()
 }
 
-func TestCreateCodespaceOptions_GetRef(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetPullRequest(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCodespaceForUserRequest{}
+	c.GetPullRequest()
+	c = nil
+	c.GetPullRequest()
+}
+
+func TestCreateCodespaceForUserRequest_GetRef(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{Ref: &zeroValue}
+	c := &CreateCodespaceForUserRequest{Ref: &zeroValue}
 	c.GetRef()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetRef()
 	c = nil
 	c.GetRef()
 }
 
-func TestCreateCodespaceOptions_GetRetentionPeriodMinutes(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CreateCodespaceForUserRequest{RepositoryID: &zeroValue}
+	c.GetRepositoryID()
+	c = &CreateCodespaceForUserRequest{}
+	c.GetRepositoryID()
+	c = nil
+	c.GetRepositoryID()
+}
+
+func TestCreateCodespaceForUserRequest_GetRetentionPeriodMinutes(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
-	c := &CreateCodespaceOptions{RetentionPeriodMinutes: &zeroValue}
+	c := &CreateCodespaceForUserRequest{RetentionPeriodMinutes: &zeroValue}
 	c.GetRetentionPeriodMinutes()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetRetentionPeriodMinutes()
 	c = nil
 	c.GetRetentionPeriodMinutes()
 }
 
-func TestCreateCodespaceOptions_GetWorkingDirectory(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetWorkingDirectory(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{WorkingDirectory: &zeroValue}
+	c := &CreateCodespaceForUserRequest{WorkingDirectory: &zeroValue}
 	c.GetWorkingDirectory()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
+	c.GetWorkingDirectory()
+	c = nil
+	c.GetWorkingDirectory()
+}
+
+func TestCreateCodespaceRequest_GetClientIP(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{ClientIP: &zeroValue}
+	c.GetClientIP()
+	c = &CreateCodespaceRequest{}
+	c.GetClientIP()
+	c = nil
+	c.GetClientIP()
+}
+
+func TestCreateCodespaceRequest_GetDevcontainerPath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{DevcontainerPath: &zeroValue}
+	c.GetDevcontainerPath()
+	c = &CreateCodespaceRequest{}
+	c.GetDevcontainerPath()
+	c = nil
+	c.GetDevcontainerPath()
+}
+
+func TestCreateCodespaceRequest_GetDisplayName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{DisplayName: &zeroValue}
+	c.GetDisplayName()
+	c = &CreateCodespaceRequest{}
+	c.GetDisplayName()
+	c = nil
+	c.GetDisplayName()
+}
+
+func TestCreateCodespaceRequest_GetGeo(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{Geo: &zeroValue}
+	c.GetGeo()
+	c = &CreateCodespaceRequest{}
+	c.GetGeo()
+	c = nil
+	c.GetGeo()
+}
+
+func TestCreateCodespaceRequest_GetIdleTimeoutMinutes(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreateCodespaceRequest{IdleTimeoutMinutes: &zeroValue}
+	c.GetIdleTimeoutMinutes()
+	c = &CreateCodespaceRequest{}
+	c.GetIdleTimeoutMinutes()
+	c = nil
+	c.GetIdleTimeoutMinutes()
+}
+
+func TestCreateCodespaceRequest_GetLocation(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{Location: &zeroValue}
+	c.GetLocation()
+	c = &CreateCodespaceRequest{}
+	c.GetLocation()
+	c = nil
+	c.GetLocation()
+}
+
+func TestCreateCodespaceRequest_GetMachine(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{Machine: &zeroValue}
+	c.GetMachine()
+	c = &CreateCodespaceRequest{}
+	c.GetMachine()
+	c = nil
+	c.GetMachine()
+}
+
+func TestCreateCodespaceRequest_GetMultiRepoPermissionsOptOut(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateCodespaceRequest{MultiRepoPermissionsOptOut: &zeroValue}
+	c.GetMultiRepoPermissionsOptOut()
+	c = &CreateCodespaceRequest{}
+	c.GetMultiRepoPermissionsOptOut()
+	c = nil
+	c.GetMultiRepoPermissionsOptOut()
+}
+
+func TestCreateCodespaceRequest_GetRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{Ref: &zeroValue}
+	c.GetRef()
+	c = &CreateCodespaceRequest{}
+	c.GetRef()
+	c = nil
+	c.GetRef()
+}
+
+func TestCreateCodespaceRequest_GetRetentionPeriodMinutes(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreateCodespaceRequest{RetentionPeriodMinutes: &zeroValue}
+	c.GetRetentionPeriodMinutes()
+	c = &CreateCodespaceRequest{}
+	c.GetRetentionPeriodMinutes()
+	c = nil
+	c.GetRetentionPeriodMinutes()
+}
+
+func TestCreateCodespaceRequest_GetWorkingDirectory(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{WorkingDirectory: &zeroValue}
+	c.GetWorkingDirectory()
+	c = &CreateCodespaceRequest{}
 	c.GetWorkingDirectory()
 	c = nil
 	c.GetWorkingDirectory()
@@ -15008,6 +15737,25 @@ func TestCreateCommitOptions_GetSigner(tt *testing.T) {
 	c.GetSigner()
 	c = nil
 	c.GetSigner()
+}
+
+func TestCreateCopilotSpaceResourceAttributes_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCopilotSpaceResourceAttributes{}
+	c.GetMetadata()
+	c = nil
+	c.GetMetadata()
+}
+
+func TestCreateCopilotSpaceResourceAttributes_GetResourceType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCopilotSpaceResourceAttributes{ResourceType: &zeroValue}
+	c.GetResourceType()
+	c = &CreateCopilotSpaceResourceAttributes{}
+	c.GetResourceType()
+	c = nil
+	c.GetResourceType()
 }
 
 func TestCreateCustomOrgRoleRequest_GetBaseRole(tt *testing.T) {
@@ -15210,10 +15958,7 @@ func TestCreateEnterpriseRunnerGroupRequest_GetAllowsPublicRepositories(tt *test
 
 func TestCreateEnterpriseRunnerGroupRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CreateEnterpriseRunnerGroupRequest{Name: &zeroValue}
-	c.GetName()
-	c = &CreateEnterpriseRunnerGroupRequest{}
+	c := &CreateEnterpriseRunnerGroupRequest{}
 	c.GetName()
 	c = nil
 	c.GetName()
@@ -15669,6 +16414,58 @@ func TestCreateMilestoneRequest_GetTitle(tt *testing.T) {
 	c.GetTitle()
 }
 
+func TestCreateOrganizationCopilotSpaceRequest_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationCopilotSpaceRequest{BaseRole: &zeroValue}
+	c.GetBaseRole()
+	c = &CreateOrganizationCopilotSpaceRequest{}
+	c.GetBaseRole()
+	c = nil
+	c.GetBaseRole()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationCopilotSpaceRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateOrganizationCopilotSpaceRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetGeneralInstructions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationCopilotSpaceRequest{GeneralInstructions: &zeroValue}
+	c.GetGeneralInstructions()
+	c = &CreateOrganizationCopilotSpaceRequest{}
+	c.GetGeneralInstructions()
+	c = nil
+	c.GetGeneralInstructions()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateOrganizationCopilotSpaceRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetResourcesAttributes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CreateCopilotSpaceResourceAttributes{}
+	c := &CreateOrganizationCopilotSpaceRequest{ResourcesAttributes: zeroValue}
+	c.GetResourcesAttributes()
+	c = &CreateOrganizationCopilotSpaceRequest{}
+	c.GetResourcesAttributes()
+	c = nil
+	c.GetResourcesAttributes()
+}
+
 func TestCreateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -15869,48 +16666,48 @@ func TestCreateOrganizationPrivateRegistry_GetVisibility(tt *testing.T) {
 	c.GetVisibility()
 }
 
-func TestCreateOrgInvitationOptions_GetEmail(tt *testing.T) {
+func TestCreateOrgInvitationRequest_GetEmail(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateOrgInvitationOptions{Email: &zeroValue}
+	c := &CreateOrgInvitationRequest{Email: &zeroValue}
 	c.GetEmail()
-	c = &CreateOrgInvitationOptions{}
+	c = &CreateOrgInvitationRequest{}
 	c.GetEmail()
 	c = nil
 	c.GetEmail()
 }
 
-func TestCreateOrgInvitationOptions_GetInviteeID(tt *testing.T) {
+func TestCreateOrgInvitationRequest_GetInviteeID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
-	c := &CreateOrgInvitationOptions{InviteeID: &zeroValue}
+	c := &CreateOrgInvitationRequest{InviteeID: &zeroValue}
 	c.GetInviteeID()
-	c = &CreateOrgInvitationOptions{}
+	c = &CreateOrgInvitationRequest{}
 	c.GetInviteeID()
 	c = nil
 	c.GetInviteeID()
 }
 
-func TestCreateOrgInvitationOptions_GetRole(tt *testing.T) {
+func TestCreateOrgInvitationRequest_GetRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateOrgInvitationOptions{Role: &zeroValue}
+	c := &CreateOrgInvitationRequest{Role: &zeroValue}
 	c.GetRole()
-	c = &CreateOrgInvitationOptions{}
+	c = &CreateOrgInvitationRequest{}
 	c.GetRole()
 	c = nil
 	c.GetRole()
 }
 
-func TestCreateOrgInvitationOptions_GetTeamID(tt *testing.T) {
+func TestCreateOrgInvitationRequest_GetTeamIDs(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []int64{}
-	c := &CreateOrgInvitationOptions{TeamID: zeroValue}
-	c.GetTeamID()
-	c = &CreateOrgInvitationOptions{}
-	c.GetTeamID()
+	c := &CreateOrgInvitationRequest{TeamIDs: zeroValue}
+	c.GetTeamIDs()
+	c = &CreateOrgInvitationRequest{}
+	c.GetTeamIDs()
 	c = nil
-	c.GetTeamID()
+	c.GetTeamIDs()
 }
 
 func TestCreateOrUpdateIssueTypesOptions_GetColor(tt *testing.T) {
@@ -16338,10 +17135,7 @@ func TestCreateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
 
 func TestCreateRunnerGroupRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CreateRunnerGroupRequest{Name: &zeroValue}
-	c.GetName()
-	c = &CreateRunnerGroupRequest{}
+	c := &CreateRunnerGroupRequest{}
 	c.GetName()
 	c = nil
 	c.GetName()
@@ -16481,6 +17275,17 @@ func TestCreateTeamRequest_GetDescription(tt *testing.T) {
 	c.GetDescription()
 	c = nil
 	c.GetDescription()
+}
+
+func TestCreateTeamRequest_GetLDAPDN(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{LDAPDN: &zeroValue}
+	c.GetLDAPDN()
+	c = &CreateTeamRequest{}
+	c.GetLDAPDN()
+	c = nil
+	c.GetLDAPDN()
 }
 
 func TestCreateTeamRequest_GetMaintainers(tt *testing.T) {
@@ -17155,6 +17960,17 @@ func TestCustomProperty_GetRequired(tt *testing.T) {
 	c.GetRequired()
 	c = nil
 	c.GetRequired()
+}
+
+func TestCustomProperty_GetRequireExplicitValues(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CustomProperty{RequireExplicitValues: &zeroValue}
+	c.GetRequireExplicitValues()
+	c = &CustomProperty{}
+	c.GetRequireExplicitValues()
+	c = nil
+	c.GetRequireExplicitValues()
 }
 
 func TestCustomProperty_GetSourceType(tt *testing.T) {
@@ -19918,6 +20734,41 @@ func TestDiscussionListOptions_GetDirection(tt *testing.T) {
 	d.GetDirection()
 }
 
+func TestDismissalRestriction_GetAllowedActors(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*DismissalRestrictionActor{}
+	d := &DismissalRestriction{AllowedActors: zeroValue}
+	d.GetAllowedActors()
+	d = &DismissalRestriction{}
+	d.GetAllowedActors()
+	d = nil
+	d.GetAllowedActors()
+}
+
+func TestDismissalRestriction_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	d := &DismissalRestriction{}
+	d.GetEnabled()
+	d = nil
+	d.GetEnabled()
+}
+
+func TestDismissalRestrictionActor_GetID(tt *testing.T) {
+	tt.Parallel()
+	d := &DismissalRestrictionActor{}
+	d.GetID()
+	d = nil
+	d.GetID()
+}
+
+func TestDismissalRestrictionActor_GetType(tt *testing.T) {
+	tt.Parallel()
+	d := &DismissalRestrictionActor{}
+	d.GetType()
+	d = nil
+	d.GetType()
+}
+
 func TestDismissalRestrictions_GetApps(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*App{}
@@ -20927,15 +21778,15 @@ func TestEnterpriseCustomPropertySchema_GetProperties(tt *testing.T) {
 	e.GetProperties()
 }
 
-func TestEnterpriseCustomPropertyValuesRequest_GetOrganizationLogin(tt *testing.T) {
+func TestEnterpriseCustomPropertyValuesRequest_GetOrganizationLogins(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
-	e := &EnterpriseCustomPropertyValuesRequest{OrganizationLogin: zeroValue}
-	e.GetOrganizationLogin()
+	e := &EnterpriseCustomPropertyValuesRequest{OrganizationLogins: zeroValue}
+	e.GetOrganizationLogins()
 	e = &EnterpriseCustomPropertyValuesRequest{}
-	e.GetOrganizationLogin()
+	e.GetOrganizationLogins()
 	e = nil
-	e.GetOrganizationLogin()
+	e.GetOrganizationLogins()
 }
 
 func TestEnterpriseCustomPropertyValuesRequest_GetProperties(tt *testing.T) {
@@ -24607,6 +25458,17 @@ func TestHostedRunner_GetImageDetails(tt *testing.T) {
 	h.GetImageDetails()
 }
 
+func TestHostedRunner_GetImageGen(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	h := &HostedRunner{ImageGen: &zeroValue}
+	h.GetImageGen()
+	h = &HostedRunner{}
+	h.GetImageGen()
+	h = nil
+	h.GetImageGen()
+}
+
 func TestHostedRunner_GetLastActiveOn(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -25180,10 +26042,7 @@ func TestIDPGroupList_GetGroups(tt *testing.T) {
 
 func TestImmutableReleasePolicy_GetEnforcedRepositories(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &ImmutableReleasePolicy{EnforcedRepositories: &zeroValue}
-	i.GetEnforcedRepositories()
-	i = &ImmutableReleasePolicy{}
+	i := &ImmutableReleasePolicy{}
 	i.GetEnforcedRepositories()
 	i = nil
 	i.GetEnforcedRepositories()
@@ -26539,6 +27398,17 @@ func TestInstallationPermissions_GetOrganizationPreReceiveHooks(tt *testing.T) {
 	i.GetOrganizationPreReceiveHooks()
 	i = nil
 	i.GetOrganizationPreReceiveHooks()
+}
+
+func TestInstallationPermissions_GetOrganizationPrivateRegistries(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationPrivateRegistries: &zeroValue}
+	i.GetOrganizationPrivateRegistries()
+	i = &InstallationPermissions{}
+	i.GetOrganizationPrivateRegistries()
+	i = nil
+	i.GetOrganizationPrivateRegistries()
 }
 
 func TestInstallationPermissions_GetOrganizationProjects(tt *testing.T) {
@@ -39836,6 +40706,28 @@ func TestPublicIPUsage_GetMaximum(tt *testing.T) {
 	p.GetMaximum()
 }
 
+func TestPublicKey_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PublicKey{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &PublicKey{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestPublicKey_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &PublicKey{ID: &zeroValue}
+	p.GetID()
+	p = &PublicKey{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
 func TestPublicKey_GetKey(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -39858,23 +40750,45 @@ func TestPublicKey_GetKeyID(tt *testing.T) {
 	p.GetKeyID()
 }
 
-func TestPublishCodespaceOptions_GetName(tt *testing.T) {
+func TestPublicKey_GetTitle(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	p := &PublishCodespaceOptions{Name: &zeroValue}
+	p := &PublicKey{Title: &zeroValue}
+	p.GetTitle()
+	p = &PublicKey{}
+	p.GetTitle()
+	p = nil
+	p.GetTitle()
+}
+
+func TestPublicKey_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PublicKey{URL: &zeroValue}
+	p.GetURL()
+	p = &PublicKey{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
+}
+
+func TestPublishCodespaceRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PublishCodespaceRequest{Name: &zeroValue}
 	p.GetName()
-	p = &PublishCodespaceOptions{}
+	p = &PublishCodespaceRequest{}
 	p.GetName()
 	p = nil
 	p.GetName()
 }
 
-func TestPublishCodespaceOptions_GetPrivate(tt *testing.T) {
+func TestPublishCodespaceRequest_GetPrivate(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	p := &PublishCodespaceOptions{Private: &zeroValue}
+	p := &PublishCodespaceRequest{Private: &zeroValue}
 	p.GetPrivate()
-	p = &PublishCodespaceOptions{}
+	p = &PublishCodespaceRequest{}
 	p.GetPrivate()
 	p = nil
 	p.GetPrivate()
@@ -41558,6 +42472,14 @@ func TestPullRequestReviewEvent_GetAction(tt *testing.T) {
 	p.GetAction()
 }
 
+func TestPullRequestReviewEvent_GetChanges(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestReviewEvent{}
+	p.GetChanges()
+	p = nil
+	p.GetChanges()
+}
+
 func TestPullRequestReviewEvent_GetInstallation(tt *testing.T) {
 	tt.Parallel()
 	p := &PullRequestReviewEvent{}
@@ -41896,6 +42818,14 @@ func TestPullRequestRuleParameters_GetAllowedMergeMethods(tt *testing.T) {
 	p.GetAllowedMergeMethods()
 	p = nil
 	p.GetAllowedMergeMethods()
+}
+
+func TestPullRequestRuleParameters_GetDismissalRestriction(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestRuleParameters{}
+	p.GetDismissalRestriction()
+	p = nil
+	p.GetDismissalRestriction()
 }
 
 func TestPullRequestRuleParameters_GetDismissStaleReviewsOnPush(tt *testing.T) {
@@ -43977,6 +44907,54 @@ func TestReleaseAsset_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestReleaseChangeFrom_GetFrom(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChangeFrom{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
+}
+
+func TestReleaseChanges_GetBody(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChanges{}
+	r.GetBody()
+	r = nil
+	r.GetBody()
+}
+
+func TestReleaseChanges_GetMakeLatest(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChanges{}
+	r.GetMakeLatest()
+	r = nil
+	r.GetMakeLatest()
+}
+
+func TestReleaseChanges_GetName(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChanges{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestReleaseChanges_GetTagName(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChanges{}
+	r.GetTagName()
+	r = nil
+	r.GetTagName()
+}
+
+func TestReleaseChangeToBool_GetTo(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChangeToBool{}
+	r.GetTo()
+	r = nil
+	r.GetTo()
+}
+
 func TestReleaseEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -43986,6 +44964,22 @@ func TestReleaseEvent_GetAction(tt *testing.T) {
 	r.GetAction()
 	r = nil
 	r.GetAction()
+}
+
+func TestReleaseEvent_GetChanges(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseEvent{}
+	r.GetChanges()
+	r = nil
+	r.GetChanges()
+}
+
+func TestReleaseEvent_GetEnterprise(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseEvent{}
+	r.GetEnterprise()
+	r = nil
+	r.GetEnterprise()
 }
 
 func TestReleaseEvent_GetInstallation(tt *testing.T) {
@@ -45610,10 +46604,7 @@ func TestRepository_GetWebCommitSignoffRequired(tt *testing.T) {
 
 func TestRepositoryActionsAccessLevel_GetAccessLevel(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryActionsAccessLevel{AccessLevel: &zeroValue}
-	r.GetAccessLevel()
-	r = &RepositoryActionsAccessLevel{}
+	r := &RepositoryActionsAccessLevel{}
 	r.GetAccessLevel()
 	r = nil
 	r.GetAccessLevel()
@@ -47983,6 +48974,14 @@ func TestRepositoryRulesetRules_GetBranchNamePattern(tt *testing.T) {
 	r.GetBranchNamePattern()
 }
 
+func TestRepositoryRulesetRules_GetCodeCoverage(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetCodeCoverage()
+	r = nil
+	r.GetCodeCoverage()
+}
+
 func TestRepositoryRulesetRules_GetCodeScanning(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryRulesetRules{}
@@ -48638,6 +49637,17 @@ func TestRepoStatus_GetNodeID(tt *testing.T) {
 	r.GetNodeID()
 	r = nil
 	r.GetNodeID()
+}
+
+func TestRepoStatus_GetRequired(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepoStatus{Required: &zeroValue}
+	r.GetRequired()
+	r = &RepoStatus{}
+	r.GetRequired()
+	r = nil
+	r.GetRequired()
 }
 
 func TestRepoStatus_GetState(tt *testing.T) {
@@ -49852,6 +50862,17 @@ func TestSBOM_GetSBOM(tt *testing.T) {
 	s.GetSBOM()
 }
 
+func TestSBOMGeneration_GetSBOMURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SBOMGeneration{SBOMURL: &zeroValue}
+	s.GetSBOMURL()
+	s = &SBOMGeneration{}
+	s.GetSBOMURL()
+	s = nil
+	s.GetSBOMURL()
+}
+
 func TestSBOMInfo_GetCreationInfo(tt *testing.T) {
 	tt.Parallel()
 	s := &SBOMInfo{}
@@ -50215,10 +51236,7 @@ func TestSCIMEnterpriseDisplayReference_GetValue(tt *testing.T) {
 
 func TestSCIMEnterpriseGroupAttributes_GetDisplayName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SCIMEnterpriseGroupAttributes{DisplayName: &zeroValue}
-	s.GetDisplayName()
-	s = &SCIMEnterpriseGroupAttributes{}
+	s := &SCIMEnterpriseGroupAttributes{}
 	s.GetDisplayName()
 	s = nil
 	s.GetDisplayName()
@@ -50226,10 +51244,7 @@ func TestSCIMEnterpriseGroupAttributes_GetDisplayName(tt *testing.T) {
 
 func TestSCIMEnterpriseGroupAttributes_GetExternalID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SCIMEnterpriseGroupAttributes{ExternalID: &zeroValue}
-	s.GetExternalID()
-	s = &SCIMEnterpriseGroupAttributes{}
+	s := &SCIMEnterpriseGroupAttributes{}
 	s.GetExternalID()
 	s = nil
 	s.GetExternalID()
@@ -51122,6 +52137,44 @@ func TestSecretScanning_GetStatus(tt *testing.T) {
 	s.GetStatus()
 }
 
+func TestSecretScanningAlert_GetAssignedTo(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlert{}
+	s.GetAssignedTo()
+	s = nil
+	s.GetAssignedTo()
+}
+
+func TestSecretScanningAlert_GetClosureRequestComment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{ClosureRequestComment: &zeroValue}
+	s.GetClosureRequestComment()
+	s = &SecretScanningAlert{}
+	s.GetClosureRequestComment()
+	s = nil
+	s.GetClosureRequestComment()
+}
+
+func TestSecretScanningAlert_GetClosureRequestReviewer(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlert{}
+	s.GetClosureRequestReviewer()
+	s = nil
+	s.GetClosureRequestReviewer()
+}
+
+func TestSecretScanningAlert_GetClosureRequestReviewerComment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{ClosureRequestReviewerComment: &zeroValue}
+	s.GetClosureRequestReviewerComment()
+	s = &SecretScanningAlert{}
+	s.GetClosureRequestReviewerComment()
+	s = nil
+	s.GetClosureRequestReviewerComment()
+}
+
 func TestSecretScanningAlert_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -51185,6 +52238,17 @@ func TestSecretScanningAlert_GetLocationsURL(tt *testing.T) {
 	s.GetLocationsURL()
 }
 
+func TestSecretScanningAlert_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningAlertMetadata{}
+	s := &SecretScanningAlert{Metadata: zeroValue}
+	s.GetMetadata()
+	s = &SecretScanningAlert{}
+	s.GetMetadata()
+	s = nil
+	s.GetMetadata()
+}
+
 func TestSecretScanningAlert_GetMultiRepo(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -51205,6 +52269,28 @@ func TestSecretScanningAlert_GetNumber(tt *testing.T) {
 	s.GetNumber()
 	s = nil
 	s.GetNumber()
+}
+
+func TestSecretScanningAlert_GetProvider(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{Provider: &zeroValue}
+	s.GetProvider()
+	s = &SecretScanningAlert{}
+	s.GetProvider()
+	s = nil
+	s.GetProvider()
+}
+
+func TestSecretScanningAlert_GetProviderSlug(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{ProviderSlug: &zeroValue}
+	s.GetProviderSlug()
+	s = &SecretScanningAlert{}
+	s.GetProviderSlug()
+	s = nil
+	s.GetProviderSlug()
 }
 
 func TestSecretScanningAlert_GetPubliclyLeaked(tt *testing.T) {
@@ -51726,34 +52812,20 @@ func TestSecretScanningAlertLocationEvent_GetSender(tt *testing.T) {
 	s.GetSender()
 }
 
-func TestSecretScanningAlertUpdateOptions_GetResolution(tt *testing.T) {
+func TestSecretScanningAlertMetadata_GetKey(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SecretScanningAlertUpdateOptions{Resolution: &zeroValue}
-	s.GetResolution()
-	s = &SecretScanningAlertUpdateOptions{}
-	s.GetResolution()
+	s := &SecretScanningAlertMetadata{}
+	s.GetKey()
 	s = nil
-	s.GetResolution()
+	s.GetKey()
 }
 
-func TestSecretScanningAlertUpdateOptions_GetResolutionComment(tt *testing.T) {
+func TestSecretScanningAlertMetadata_GetValue(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SecretScanningAlertUpdateOptions{ResolutionComment: &zeroValue}
-	s.GetResolutionComment()
-	s = &SecretScanningAlertUpdateOptions{}
-	s.GetResolutionComment()
+	s := &SecretScanningAlertMetadata{}
+	s.GetValue()
 	s = nil
-	s.GetResolutionComment()
-}
-
-func TestSecretScanningAlertUpdateOptions_GetState(tt *testing.T) {
-	tt.Parallel()
-	s := &SecretScanningAlertUpdateOptions{}
-	s.GetState()
-	s = nil
-	s.GetState()
+	s.GetValue()
 }
 
 func TestSecretScanningCreateCustomPatternsRequest_GetPatterns(tt *testing.T) {
@@ -52116,39 +53188,6 @@ func TestSecretScanningPatternConfigsUpdate_GetPatternConfigVersion(tt *testing.
 	s.GetPatternConfigVersion()
 	s = nil
 	s.GetPatternConfigVersion()
-}
-
-func TestSecretScanningPatternConfigsUpdateOptions_GetCustomPatternSettings(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []*SecretScanningCustomPatternSetting{}
-	s := &SecretScanningPatternConfigsUpdateOptions{CustomPatternSettings: zeroValue}
-	s.GetCustomPatternSettings()
-	s = &SecretScanningPatternConfigsUpdateOptions{}
-	s.GetCustomPatternSettings()
-	s = nil
-	s.GetCustomPatternSettings()
-}
-
-func TestSecretScanningPatternConfigsUpdateOptions_GetPatternConfigVersion(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	s := &SecretScanningPatternConfigsUpdateOptions{PatternConfigVersion: &zeroValue}
-	s.GetPatternConfigVersion()
-	s = &SecretScanningPatternConfigsUpdateOptions{}
-	s.GetPatternConfigVersion()
-	s = nil
-	s.GetPatternConfigVersion()
-}
-
-func TestSecretScanningPatternConfigsUpdateOptions_GetProviderPatternSettings(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []*SecretScanningProviderPatternSetting{}
-	s := &SecretScanningPatternConfigsUpdateOptions{ProviderPatternSettings: zeroValue}
-	s.GetProviderPatternSettings()
-	s = &SecretScanningPatternConfigsUpdateOptions{}
-	s.GetProviderPatternSettings()
-	s = nil
-	s.GetProviderPatternSettings()
 }
 
 func TestSecretScanningPatternOverride_GetAlertTotal(tt *testing.T) {
@@ -53006,10 +54045,7 @@ func TestSelfHostedRunnersSettingsOrganization_GetSelectedRepositoriesURL(tt *te
 
 func TestSelfHostedRunnersSettingsOrganizationOpt_GetEnabledRepositories(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SelfHostedRunnersSettingsOrganizationOpt{EnabledRepositories: &zeroValue}
-	s.GetEnabledRepositories()
-	s = &SelfHostedRunnersSettingsOrganizationOpt{}
+	s := &SelfHostedRunnersSettingsOrganizationOpt{}
 	s.GetEnabledRepositories()
 	s = nil
 	s.GetEnabledRepositories()
@@ -53017,10 +54053,7 @@ func TestSelfHostedRunnersSettingsOrganizationOpt_GetEnabledRepositories(tt *tes
 
 func TestSelfHostRunnerPermissionsEnterprise_GetDisableSelfHostedRunnersForAllOrgs(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	s := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: &zeroValue}
-	s.GetDisableSelfHostedRunnersForAllOrgs()
-	s = &SelfHostRunnerPermissionsEnterprise{}
+	s := &SelfHostRunnerPermissionsEnterprise{}
 	s.GetDisableSelfHostedRunnersForAllOrgs()
 	s = nil
 	s.GetDisableSelfHostedRunnersForAllOrgs()
@@ -54518,22 +55551,6 @@ func TestTeamAddEvent_GetTeam(tt *testing.T) {
 	t.GetTeam()
 }
 
-func TestTeamAddTeamMembershipOptions_GetRole(tt *testing.T) {
-	tt.Parallel()
-	t := &TeamAddTeamMembershipOptions{}
-	t.GetRole()
-	t = nil
-	t.GetRole()
-}
-
-func TestTeamAddTeamRepoOptions_GetPermission(tt *testing.T) {
-	tt.Parallel()
-	t := &TeamAddTeamRepoOptions{}
-	t.GetPermission()
-	t = nil
-	t.GetPermission()
-}
-
 func TestTeamChange_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	t := &TeamChange{}
@@ -55007,17 +56024,6 @@ func TestTeamPrivacy_GetFrom(tt *testing.T) {
 	t.GetFrom()
 	t = nil
 	t.GetFrom()
-}
-
-func TestTeamProjectOptions_GetPermission(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	t := &TeamProjectOptions{Permission: &zeroValue}
-	t.GetPermission()
-	t = &TeamProjectOptions{}
-	t.GetPermission()
-	t = nil
-	t.GetPermission()
 }
 
 func TestTeamRepository_GetPermissions(tt *testing.T) {
@@ -55911,6 +56917,44 @@ func TestUnauthenticatedRateLimitedTransport_GetClientSecret(tt *testing.T) {
 	u.GetClientSecret()
 }
 
+func TestUpdateActionsPolicyRequest_GetConditions(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateActionsPolicyRequest{}
+	u.GetConditions()
+	u = nil
+	u.GetConditions()
+}
+
+func TestUpdateActionsPolicyRequest_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateActionsPolicyRequest{}
+	u.GetEnforcement()
+	u = nil
+	u.GetEnforcement()
+}
+
+func TestUpdateActionsPolicyRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateActionsPolicyRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateActionsPolicyRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateActionsPolicyRequest_GetRules(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsPolicyRule{}
+	u := &UpdateActionsPolicyRequest{Rules: zeroValue}
+	u.GetRules()
+	u = &UpdateActionsPolicyRequest{}
+	u.GetRules()
+	u = nil
+	u.GetRules()
+}
+
 func TestUpdateAppInstallationRepositoriesRequest_GetRepositories(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
@@ -55924,10 +56968,7 @@ func TestUpdateAppInstallationRepositoriesRequest_GetRepositories(tt *testing.T)
 
 func TestUpdateAppInstallationRepositoriesRequest_GetRepositorySelection(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	u := &UpdateAppInstallationRepositoriesRequest{RepositorySelection: &zeroValue}
-	u.GetRepositorySelection()
-	u = &UpdateAppInstallationRepositoriesRequest{}
+	u := &UpdateAppInstallationRepositoriesRequest{}
 	u.GetRepositorySelection()
 	u = nil
 	u.GetRepositorySelection()
@@ -56072,23 +57113,34 @@ func TestUpdateCheckRunOptions_GetStatus(tt *testing.T) {
 	u.GetStatus()
 }
 
-func TestUpdateCodespaceOptions_GetMachine(tt *testing.T) {
+func TestUpdateCodespaceRequest_GetDisplayName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	u := &UpdateCodespaceOptions{Machine: &zeroValue}
+	u := &UpdateCodespaceRequest{DisplayName: &zeroValue}
+	u.GetDisplayName()
+	u = &UpdateCodespaceRequest{}
+	u.GetDisplayName()
+	u = nil
+	u.GetDisplayName()
+}
+
+func TestUpdateCodespaceRequest_GetMachine(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCodespaceRequest{Machine: &zeroValue}
 	u.GetMachine()
-	u = &UpdateCodespaceOptions{}
+	u = &UpdateCodespaceRequest{}
 	u.GetMachine()
 	u = nil
 	u.GetMachine()
 }
 
-func TestUpdateCodespaceOptions_GetRecentFolders(tt *testing.T) {
+func TestUpdateCodespaceRequest_GetRecentFolders(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
-	u := &UpdateCodespaceOptions{RecentFolders: zeroValue}
+	u := &UpdateCodespaceRequest{RecentFolders: zeroValue}
 	u.GetRecentFolders()
-	u = &UpdateCodespaceOptions{}
+	u = &UpdateCodespaceRequest{}
 	u.GetRecentFolders()
 	u = nil
 	u.GetRecentFolders()
@@ -56108,6 +57160,47 @@ func TestUpdateConnectedExternalGroupRequest_GetGroupID(tt *testing.T) {
 	u.GetGroupID()
 	u = nil
 	u.GetGroupID()
+}
+
+func TestUpdateCopilotSpaceResourceAttributes_GetDestroy(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateCopilotSpaceResourceAttributes{Destroy: &zeroValue}
+	u.GetDestroy()
+	u = &UpdateCopilotSpaceResourceAttributes{}
+	u.GetDestroy()
+	u = nil
+	u.GetDestroy()
+}
+
+func TestUpdateCopilotSpaceResourceAttributes_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	u := &UpdateCopilotSpaceResourceAttributes{ID: &zeroValue}
+	u.GetID()
+	u = &UpdateCopilotSpaceResourceAttributes{}
+	u.GetID()
+	u = nil
+	u.GetID()
+}
+
+func TestUpdateCopilotSpaceResourceAttributes_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateCopilotSpaceResourceAttributes{}
+	u.GetMetadata()
+	u = nil
+	u.GetMetadata()
+}
+
+func TestUpdateCopilotSpaceResourceAttributes_GetResourceType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCopilotSpaceResourceAttributes{ResourceType: &zeroValue}
+	u.GetResourceType()
+	u = &UpdateCopilotSpaceResourceAttributes{}
+	u.GetResourceType()
+	u = nil
+	u.GetResourceType()
 }
 
 func TestUpdateCustomOrgRoleRequest_GetBaseRole(tt *testing.T) {
@@ -56384,6 +57477,17 @@ func TestUpdateHostedRunnerRequest_GetEnableStaticIP(tt *testing.T) {
 	u.GetEnableStaticIP()
 }
 
+func TestUpdateHostedRunnerRequest_GetImageGen(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateHostedRunnerRequest{ImageGen: &zeroValue}
+	u.GetImageGen()
+	u = &UpdateHostedRunnerRequest{}
+	u.GetImageGen()
+	u = nil
+	u.GetImageGen()
+}
+
 func TestUpdateHostedRunnerRequest_GetImageID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -56646,6 +57750,61 @@ func TestUpdateMilestoneRequest_GetTitle(tt *testing.T) {
 	u.GetTitle()
 	u = nil
 	u.GetTitle()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationCopilotSpaceRequest{BaseRole: &zeroValue}
+	u.GetBaseRole()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetBaseRole()
+	u = nil
+	u.GetBaseRole()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationCopilotSpaceRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetGeneralInstructions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationCopilotSpaceRequest{GeneralInstructions: &zeroValue}
+	u.GetGeneralInstructions()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetGeneralInstructions()
+	u = nil
+	u.GetGeneralInstructions()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationCopilotSpaceRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetResourcesAttributes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*UpdateCopilotSpaceResourceAttributes{}
+	u := &UpdateOrganizationCopilotSpaceRequest{ResourcesAttributes: zeroValue}
+	u.GetResourcesAttributes()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetResourcesAttributes()
+	u = nil
+	u.GetResourcesAttributes()
 }
 
 func TestUpdateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {
@@ -57151,10 +58310,7 @@ func TestUpdateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
 
 func TestUpdateRunnerGroupRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	u := &UpdateRunnerGroupRequest{Name: &zeroValue}
-	u.GetName()
-	u = &UpdateRunnerGroupRequest{}
+	u := &UpdateRunnerGroupRequest{}
 	u.GetName()
 	u = nil
 	u.GetName()
@@ -57210,6 +58366,94 @@ func TestUpdateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 	u = nil
 	u.GetVisibility()
+}
+
+func TestUpdateSecretScanningAlertRequest_GetAssignee(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateSecretScanningAlertRequest{Assignee: &zeroValue}
+	u.GetAssignee()
+	u = &UpdateSecretScanningAlertRequest{}
+	u.GetAssignee()
+	u = nil
+	u.GetAssignee()
+}
+
+func TestUpdateSecretScanningAlertRequest_GetResolution(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateSecretScanningAlertRequest{Resolution: &zeroValue}
+	u.GetResolution()
+	u = &UpdateSecretScanningAlertRequest{}
+	u.GetResolution()
+	u = nil
+	u.GetResolution()
+}
+
+func TestUpdateSecretScanningAlertRequest_GetResolutionComment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateSecretScanningAlertRequest{ResolutionComment: &zeroValue}
+	u.GetResolutionComment()
+	u = &UpdateSecretScanningAlertRequest{}
+	u.GetResolutionComment()
+	u = nil
+	u.GetResolutionComment()
+}
+
+func TestUpdateSecretScanningAlertRequest_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateSecretScanningAlertRequest{State: &zeroValue}
+	u.GetState()
+	u = &UpdateSecretScanningAlertRequest{}
+	u.GetState()
+	u = nil
+	u.GetState()
+}
+
+func TestUpdateSecretScanningAlertRequest_GetValidity(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateSecretScanningAlertRequest{Validity: &zeroValue}
+	u.GetValidity()
+	u = &UpdateSecretScanningAlertRequest{}
+	u.GetValidity()
+	u = nil
+	u.GetValidity()
+}
+
+func TestUpdateSecretScanningPatternConfigsRequest_GetCustomPatternSettings(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningCustomPatternSetting{}
+	u := &UpdateSecretScanningPatternConfigsRequest{CustomPatternSettings: zeroValue}
+	u.GetCustomPatternSettings()
+	u = &UpdateSecretScanningPatternConfigsRequest{}
+	u.GetCustomPatternSettings()
+	u = nil
+	u.GetCustomPatternSettings()
+}
+
+func TestUpdateSecretScanningPatternConfigsRequest_GetPatternConfigVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateSecretScanningPatternConfigsRequest{PatternConfigVersion: &zeroValue}
+	u.GetPatternConfigVersion()
+	u = &UpdateSecretScanningPatternConfigsRequest{}
+	u.GetPatternConfigVersion()
+	u = nil
+	u.GetPatternConfigVersion()
+}
+
+func TestUpdateSecretScanningPatternConfigsRequest_GetProviderPatternSettings(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningProviderPatternSetting{}
+	u := &UpdateSecretScanningPatternConfigsRequest{ProviderPatternSettings: zeroValue}
+	u.GetProviderPatternSettings()
+	u = &UpdateSecretScanningPatternConfigsRequest{}
+	u.GetProviderPatternSettings()
+	u = nil
+	u.GetProviderPatternSettings()
 }
 
 func TestUpdateTeamLDAPMappingRequest_GetLDAPDN(tt *testing.T) {

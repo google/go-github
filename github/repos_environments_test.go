@@ -180,6 +180,40 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_GetEnvironment_EscapeName(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		name        string
+		escapedName string
+	}{
+		{name: "staging", escapedName: "staging"},
+		{name: "team/staging", escapedName: "team%2Fstaging"},
+		{name: "staging%25", escapedName: "staging%2525"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+
+			mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				if got, want := r.URL.EscapedPath(), "/repos/o/repo/environments/"+tt.escapedName; got != want {
+					t.Errorf("Request path = %q, want %q", got, want)
+				}
+				if got, want := r.URL.Path, "/repos/o/repo/environments/"+tt.name; got != want {
+					t.Errorf("Decoded request path = %q, want %q", got, want)
+				}
+				fmt.Fprint(w, `{}`)
+			})
+
+			ctx := t.Context()
+			_, _, err := client.Repositories.GetEnvironment(ctx, "o", "repo", tt.name)
+			if err != nil {
+				t.Fatalf("Repositories.GetEnvironment returned error: %v", err)
+			}
+		})
+	}
+}
+
 func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -234,8 +268,9 @@ func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			callCount++
 		} else {
-			want := &CreateUpdateEnvironment{}
-			testJSONBody(t, r, want)
+			// The retry sends a createUpdateEnvironmentNoEnterprise, whose only
+			// field is deployment_branch_policy, null here because input is empty.
+			testJSONBodyRaw(t, r, `{"deployment_branch_policy":null}`)
 			fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": []}`)
 		}
 	})
@@ -265,7 +300,9 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testJSONBody(t, r, input)
+		// The no-enterprise path sends only deployment_branch_policy: none of
+		// can_admins_bypass, reviewers or wait_timer.
+		testJSONBodyRaw(t, r, `{"deployment_branch_policy":{"protected_branches":true,"custom_branch_policies":false}}`)
 		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "node_id": "id", "type": "branch_policy"}], "deployment_branch_policy": {"protected_branches": true, "custom_branch_policies": false}}`)
 	})
 

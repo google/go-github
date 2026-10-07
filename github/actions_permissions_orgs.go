@@ -14,7 +14,7 @@ import (
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28
 type ActionsPermissions struct {
-	EnabledRepositories *string `json:"enabled_repositories,omitempty"`
+	EnabledRepositories string  `json:"enabled_repositories"`
 	AllowedActions      *string `json:"allowed_actions,omitempty"`
 	SelectedActionsURL  *string `json:"selected_actions_url,omitempty"`
 	SHAPinningRequired  *bool   `json:"sha_pinning_required,omitempty"`
@@ -66,7 +66,7 @@ func (s SelfHostedRunnersSettingsOrganization) String() string {
 
 // SelfHostedRunnersSettingsOrganizationOpt specifies the self-hosted runners permissions settings for repositories in an organization.
 type SelfHostedRunnersSettingsOrganizationOpt struct {
-	EnabledRepositories *string `json:"enabled_repositories,omitempty"`
+	EnabledRepositories string `json:"enabled_repositories"`
 }
 
 // GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in an organization.

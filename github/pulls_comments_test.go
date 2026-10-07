@@ -194,11 +194,10 @@ func TestPullRequestsService_CreateCommentInReplyTo(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &PullRequestComment{Body: new("b")}
-
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, input)
+		// The method builds its own body from the body string and the comment ID.
+		testJSONBodyRaw(t, r, `{"body":"b","in_reply_to":2}`)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 

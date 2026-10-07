@@ -46,5 +46,8 @@ jobs:
     - name: Check OpenAPI
       run: ./script/metadata.sh update-openapi --validate
       env:
-        CHECK_GITHUB_OPENAPI: 1
         GITHUB_TOKEN: ${{ github.token }}
+    - name: Check openapi_operations.yaml for entries that no longer do anything
+      run: ./script/metadata.sh check
+    - name: Check request body fields against the OpenAPI schemas
+      run: ./script/check-schema-fields.sh -format github

@@ -13,7 +13,7 @@ import (
 
 // Blob represents a blob object.
 type Blob struct {
-	Content  *string `json:"content,omitempty"`
+	Content  string  `json:"content"`
 	Encoding *string `json:"encoding,omitempty"`
 	SHA      *string `json:"sha,omitempty"`
 	Size     *int    `json:"size,omitempty"`

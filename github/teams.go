@@ -200,6 +200,10 @@ type CreateTeamRequest struct {
 	// The slug of a team to set as the parent team.
 	// Ignored when ParentTeamID is also provided.
 	ParentTeamSlug *string `json:"parent_team_slug,omitempty"`
+
+	// Set the distinguished name (DN) of the LDAP entry to map to a team. This is
+	// only supported by GitHub Enterprise Server.
+	LDAPDN *string `json:"ldap_dn,omitempty"`
 }
 
 func (r CreateTeamRequest) String() string {
@@ -512,9 +516,8 @@ func (s *TeamsService) IsTeamRepoBySlug(ctx context.Context, org, slug, owner, r
 	return repository, resp, nil
 }
 
-// TeamAddTeamRepoOptions specifies the optional parameters to the
-// TeamsService.AddTeamRepoByID and TeamsService.AddTeamRepoBySlug methods.
-type TeamAddTeamRepoOptions struct {
+// AddTeamRepoRequest represents a request to add or update a team's permissions on a repository.
+type AddTeamRepoRequest struct {
 	// Permission specifies the permission to grant the team on this repository.
 	// Possible values are:
 	//     pull - team members can pull, but not push to or administer this repository
@@ -524,7 +527,7 @@ type TeamAddTeamRepoOptions struct {
 	//     triage - team members can proactively manage issues and pull requests without write access.
 	//
 	// If not specified, the team's permission attribute will be used.
-	Permission string `json:"permission,omitempty"`
+	Permission *string `json:"permission,omitempty"`
 }
 
 // AddTeamRepoByID adds a repository to be managed by the specified team given the team ID.
@@ -534,7 +537,7 @@ type TeamAddTeamRepoOptions struct {
 // GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#add-or-update-team-repository-permissions
 //
 //meta:operation PUT /organizations/{organization_id}/team/{team_id}/repos/{owner}/{repo}
-func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string, body *TeamAddTeamRepoOptions) (*Response, error) {
+func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string, body AddTeamRepoRequest) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
@@ -551,7 +554,7 @@ func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64,
 // GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#add-or-update-team-repository-permissions
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
-func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string, body *TeamAddTeamRepoOptions) (*Response, error) {
+func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string, body AddTeamRepoRequest) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos/%v/%v", org, slug, owner, repo)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
@@ -725,9 +728,8 @@ func (s *TeamsService) ReviewTeamProjectsBySlug(ctx context.Context, org, slug s
 	return projects, resp, nil
 }
 
-// TeamProjectOptions specifies the optional parameters to the
-// TeamsService.AddTeamProject method.
-type TeamProjectOptions struct {
+// AddTeamProjectRequest represents a request to add or update a team's permissions on a project.
+type AddTeamProjectRequest struct {
 	// Permission specifies the permission to grant to the team for this project.
 	// Possible values are:
 	//     "read" - team members can read, but not write to or administer this project.
@@ -746,7 +748,7 @@ type TeamProjectOptions struct {
 // GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#add-or-update-team-project-permissions
 //
 //meta:operation PUT /organizations/{organization_id}/team/{team_id}/projects/{project_id}
-func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64, body *TeamProjectOptions) (*Response, error) {
+func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64, body AddTeamProjectRequest) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
@@ -767,7 +769,7 @@ func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, pr
 // GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#add-or-update-team-project-permissions
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}
-func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64, body *TeamProjectOptions) (*Response, error) {
+func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64, body AddTeamProjectRequest) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/projects/%v", org, slug, projectID)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {

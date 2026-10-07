@@ -77,9 +77,9 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 				LastModified: &Timestamp{referenceTime},
 				Location:     new("https://api.github.com/scim/v2/enterprises/ee/Groups/914a"),
 			},
-			DisplayName: new("gn1"),
+			DisplayName: "gn1",
 			Schemas:     []string{SCIMSchemasURINamespacesGroups},
-			ExternalID:  new("de88"),
+			ExternalID:  "de88",
 			Members: []*SCIMEnterpriseDisplayReference{{
 				Value:   "e7f9",
 				Ref:     new("https://api.github.com/scim/v2/enterprises/ee/Users/e7f9"),
@@ -221,8 +221,8 @@ func TestEnterpriseService_SetProvisionedSCIMGroup(t *testing.T) {
 
 	input := SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ExternalID:  new("8aa1"),
-		DisplayName: new("dn"),
+		ExternalID:  "8aa1",
+		DisplayName: "dn",
 	}
 
 	mux.HandleFunc("/scim/v2/enterprises/ee/Groups/abcd", func(w http.ResponseWriter, r *http.Request) {
@@ -246,8 +246,8 @@ func TestEnterpriseService_SetProvisionedSCIMGroup(t *testing.T) {
 	want := &SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
 		ID:          new("abcd"),
-		ExternalID:  new("8aa1"),
-		DisplayName: new("dn"),
+		ExternalID:  "8aa1",
+		DisplayName: "dn",
 		Meta: &SCIMEnterpriseMeta{
 			ResourceType: "Group",
 			Created:      &Timestamp{referenceTime},
@@ -405,8 +405,8 @@ func TestEnterpriseService_UpdateSCIMGroupAttribute(t *testing.T) {
 	want := &SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
 		ID:          new("abcd"),
-		ExternalID:  new("8aa1"),
-		DisplayName: new("Employees"),
+		ExternalID:  "8aa1",
+		DisplayName: "Employees",
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "879d",
 			Ref:     new("https://api.github.localhost/scim/v2/enterprises/ee/Users/879d"),
@@ -556,8 +556,8 @@ func TestEnterpriseService_ProvisionSCIMGroup(t *testing.T) {
 
 	input := SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ExternalID:  new("8aa1"),
-		DisplayName: new("dn"),
+		ExternalID:  "8aa1",
+		DisplayName: "dn",
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "879d",
 			Display: new("d1"),
@@ -600,8 +600,8 @@ func TestEnterpriseService_ProvisionSCIMGroup(t *testing.T) {
 	want := &SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
 		ID:          new("abcd"),
-		ExternalID:  new("8aa1"),
-		DisplayName: new("dn"),
+		ExternalID:  "8aa1",
+		DisplayName: "dn",
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "879d",
 			Ref:     new("https://api.github.localhost/scim/v2/enterprises/ee/Users/879d"),
@@ -799,9 +799,9 @@ func TestEnterpriseService_GetProvisionedSCIMGroup(t *testing.T) {
 			LastModified: &Timestamp{referenceTime},
 			Location:     new("https://api.github.com/scim/v2/enterprises/ee/Groups/914a"),
 		},
-		DisplayName: new("gn1"),
+		DisplayName: "gn1",
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ExternalID:  new("de88"),
+		ExternalID:  "de88",
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "e7f9",
 			Ref:     new("https://api.github.com/scim/v2/enterprises/ee/Users/e7f9"),

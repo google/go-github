@@ -1,7 +1,8 @@
 #!/bin/sh
-#/ [ CHECK_GITHUB_OPENAPI=1 ] script/lint.sh runs linters and validates generated files.
-#/ When CHECK_GITHUB is set, it validates that openapi_operations.yaml is consistent with the
-#/ descriptions from github.com/github/rest-api-description.
+#/ script/lint.sh runs linters, checks request body fields against GitHub's OpenAPI
+#/ schemas, checks openapi_operations.yaml for entries that no longer do anything,
+#/ and validates generated files. The validation of the operations against the OpenAPI
+#/ descriptions, which needs a GITHUB_TOKEN, is left to the `linter` workflow.
 
 set -e
 
@@ -88,21 +89,27 @@ done
 
 wait_pids
 
-if [ -n "$CHECK_GITHUB_OPENAPI" ]; then
-  print_header "Validating openapi_operations.yaml"
-  if script/metadata.sh update-openapi --validate; then
-    printf "${GREEN}✔ openapi_operations.yaml is valid${NC}\n"
-  else
-    printf "${RED}✘ openapi_operations.yaml validation failed${NC}\n"
-    fail
-  fi
+print_header "Checking request body fields against the OpenAPI schemas"
+if script/check-schema-fields.sh; then
+  printf "${GREEN}✔ request body fields match the OpenAPI schemas${NC}\n"
+else
+  printf "${RED}✘ request body fields disagree with the OpenAPI schemas${NC}\n"
+  fail
 fi
 
-print_header "Validating generated files"
-if script/generate.sh --check; then
-  printf "${GREEN}✔ Generated files are up to date${NC}\n"
+print_header "Checking openapi_operations.yaml for entries that no longer do anything"
+if script/metadata.sh check; then
+  printf "${GREEN}✔ openapi_operations.yaml has no stale entries${NC}\n"
 else
-  printf "${RED}✘ Generated files out of sync${NC}\n"
+  printf "${RED}✘ openapi_operations.yaml has stale entries${NC}\n"
+  fail
+fi
+
+print_header "Validating generated files and linter exceptions"
+if script/generate.sh --check; then
+  printf "${GREEN}✔ Generated files and linter exceptions are up to date${NC}\n"
+else
+  printf "${RED}✘ Generated files or linter exceptions are out of date${NC}\n"
   fail
 fi
 

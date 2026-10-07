@@ -61,7 +61,7 @@ func TestOrganizationsService_UpdateImmutableReleasesSettings(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := ImmutableReleasePolicy{
-		EnforcedRepositories: new("selected"),
+		EnforcedRepositories: "selected",
 	}
 
 	mux.HandleFunc("/orgs/o/settings/immutable-releases", func(w http.ResponseWriter, r *http.Request) {

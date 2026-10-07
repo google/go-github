@@ -735,6 +735,78 @@ func TestActionsService_ListOrgVariablesIter(t *testing.T) {
 	}
 }
 
+func TestActionsService_ListOrganizationPoliciesIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `{"policies": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"policies": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"policies": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"policies": [{},{}]}`)
+		}
+	})
+
+	iter := client.Actions.ListOrganizationPoliciesIter(t.Context(), "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Actions.ListOrganizationPoliciesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ActionsPolicyListOptions{}
+	iter = client.Actions.ListOrganizationPoliciesIter(t.Context(), "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Actions.ListOrganizationPoliciesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Actions.ListOrganizationPoliciesIter(t.Context(), "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Actions.ListOrganizationPoliciesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Actions.ListOrganizationPoliciesIter(t.Context(), "", nil)
+	gotItems = 0
+	iter(func(item *ActionsPolicy, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Actions.ListOrganizationPoliciesIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
 func TestActionsService_ListOrganizationRunnerGroupsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -1308,6 +1380,78 @@ func TestActionsService_ListRepositoryAccessRunnerGroupIter(t *testing.T) {
 	})
 	if gotItems != 1 {
 		t.Errorf("client.Actions.ListRepositoryAccessRunnerGroupIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestActionsService_ListRepositoryPoliciesIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `{"policies": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"policies": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"policies": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"policies": [{},{}]}`)
+		}
+	})
+
+	iter := client.Actions.ListRepositoryPoliciesIter(t.Context(), "", "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Actions.ListRepositoryPoliciesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ActionsPolicyListOptions{}
+	iter = client.Actions.ListRepositoryPoliciesIter(t.Context(), "", "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Actions.ListRepositoryPoliciesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Actions.ListRepositoryPoliciesIter(t.Context(), "", "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Actions.ListRepositoryPoliciesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Actions.ListRepositoryPoliciesIter(t.Context(), "", "", nil)
+	gotItems = 0
+	iter(func(item *ActionsPolicy, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Actions.ListRepositoryPoliciesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
@@ -3324,6 +3468,582 @@ func TestAgentTasksService_ListByRepoIter(t *testing.T) {
 	})
 	if gotItems != 1 {
 		t.Errorf("client.AgentTasks.ListByRepoIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestAgentsService_ListOrgSecretsIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `{"secrets": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"secrets": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"secrets": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"secrets": [{},{}]}`)
+		}
+	})
+
+	iter := client.Agents.ListOrgSecretsIter(t.Context(), "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Agents.ListOrgSecretsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListOptions{}
+	iter = client.Agents.ListOrgSecretsIter(t.Context(), "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Agents.ListOrgSecretsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Agents.ListOrgSecretsIter(t.Context(), "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListOrgSecretsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Agents.ListOrgSecretsIter(t.Context(), "", nil)
+	gotItems = 0
+	iter(func(item *Secret, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListOrgSecretsIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestAgentsService_ListOrgVariablesIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `{"variables": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"variables": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"variables": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"variables": [{},{}]}`)
+		}
+	})
+
+	iter := client.Agents.ListOrgVariablesIter(t.Context(), "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Agents.ListOrgVariablesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListOptions{}
+	iter = client.Agents.ListOrgVariablesIter(t.Context(), "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Agents.ListOrgVariablesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Agents.ListOrgVariablesIter(t.Context(), "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListOrgVariablesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Agents.ListOrgVariablesIter(t.Context(), "", nil)
+	gotItems = 0
+	iter(func(item *ActionsVariable, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListOrgVariablesIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestAgentsService_ListRepoOrgSecretsIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `{"secrets": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"secrets": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"secrets": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"secrets": [{},{}]}`)
+		}
+	})
+
+	iter := client.Agents.ListRepoOrgSecretsIter(t.Context(), "", "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Agents.ListRepoOrgSecretsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListOptions{}
+	iter = client.Agents.ListRepoOrgSecretsIter(t.Context(), "", "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Agents.ListRepoOrgSecretsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Agents.ListRepoOrgSecretsIter(t.Context(), "", "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListRepoOrgSecretsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Agents.ListRepoOrgSecretsIter(t.Context(), "", "", nil)
+	gotItems = 0
+	iter(func(item *Secret, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListRepoOrgSecretsIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestAgentsService_ListRepoOrgVariablesIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `{"variables": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"variables": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"variables": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"variables": [{},{}]}`)
+		}
+	})
+
+	iter := client.Agents.ListRepoOrgVariablesIter(t.Context(), "", "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Agents.ListRepoOrgVariablesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListOptions{}
+	iter = client.Agents.ListRepoOrgVariablesIter(t.Context(), "", "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Agents.ListRepoOrgVariablesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Agents.ListRepoOrgVariablesIter(t.Context(), "", "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListRepoOrgVariablesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Agents.ListRepoOrgVariablesIter(t.Context(), "", "", nil)
+	gotItems = 0
+	iter(func(item *ActionsVariable, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListRepoOrgVariablesIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestAgentsService_ListRepoSecretsIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `{"secrets": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"secrets": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"secrets": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"secrets": [{},{}]}`)
+		}
+	})
+
+	iter := client.Agents.ListRepoSecretsIter(t.Context(), "", "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Agents.ListRepoSecretsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListOptions{}
+	iter = client.Agents.ListRepoSecretsIter(t.Context(), "", "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Agents.ListRepoSecretsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Agents.ListRepoSecretsIter(t.Context(), "", "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListRepoSecretsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Agents.ListRepoSecretsIter(t.Context(), "", "", nil)
+	gotItems = 0
+	iter(func(item *Secret, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListRepoSecretsIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestAgentsService_ListRepoVariablesIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `{"variables": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"variables": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"variables": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"variables": [{},{}]}`)
+		}
+	})
+
+	iter := client.Agents.ListRepoVariablesIter(t.Context(), "", "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Agents.ListRepoVariablesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListOptions{}
+	iter = client.Agents.ListRepoVariablesIter(t.Context(), "", "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Agents.ListRepoVariablesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Agents.ListRepoVariablesIter(t.Context(), "", "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListRepoVariablesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Agents.ListRepoVariablesIter(t.Context(), "", "", nil)
+	gotItems = 0
+	iter(func(item *ActionsVariable, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListRepoVariablesIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestAgentsService_ListSelectedReposForOrgSecretIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `{"repositories": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"repositories": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"repositories": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"repositories": [{},{}]}`)
+		}
+	})
+
+	iter := client.Agents.ListSelectedReposForOrgSecretIter(t.Context(), "", "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Agents.ListSelectedReposForOrgSecretIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListOptions{}
+	iter = client.Agents.ListSelectedReposForOrgSecretIter(t.Context(), "", "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Agents.ListSelectedReposForOrgSecretIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Agents.ListSelectedReposForOrgSecretIter(t.Context(), "", "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListSelectedReposForOrgSecretIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Agents.ListSelectedReposForOrgSecretIter(t.Context(), "", "", nil)
+	gotItems = 0
+	iter(func(item *Repository, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListSelectedReposForOrgSecretIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestAgentsService_ListSelectedReposForOrgVariableIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `{"repositories": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"repositories": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"repositories": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"repositories": [{},{}]}`)
+		}
+	})
+
+	iter := client.Agents.ListSelectedReposForOrgVariableIter(t.Context(), "", "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Agents.ListSelectedReposForOrgVariableIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListOptions{}
+	iter = client.Agents.ListSelectedReposForOrgVariableIter(t.Context(), "", "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Agents.ListSelectedReposForOrgVariableIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Agents.ListSelectedReposForOrgVariableIter(t.Context(), "", "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListSelectedReposForOrgVariableIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Agents.ListSelectedReposForOrgVariableIter(t.Context(), "", "", nil)
+	gotItems = 0
+	iter(func(item *Repository, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Agents.ListSelectedReposForOrgVariableIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
@@ -5556,6 +6276,78 @@ func TestCopilotService_ListOrganizationCodingAgentRepositoriesIter(t *testing.T
 	})
 	if gotItems != 1 {
 		t.Errorf("client.Copilot.ListOrganizationCodingAgentRepositoriesIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestCopilotService_ListOrganizationCopilotSpacesIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
+			fmt.Fprint(w, `{"spaces": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"spaces": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"spaces": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"spaces": [{},{}]}`)
+		}
+	})
+
+	iter := client.Copilot.ListOrganizationCopilotSpacesIter(t.Context(), "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Copilot.ListOrganizationCopilotSpacesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListCursorOptions{}
+	iter = client.Copilot.ListOrganizationCopilotSpacesIter(t.Context(), "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Copilot.ListOrganizationCopilotSpacesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Copilot.ListOrganizationCopilotSpacesIter(t.Context(), "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Copilot.ListOrganizationCopilotSpacesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Copilot.ListOrganizationCopilotSpacesIter(t.Context(), "", nil)
+	gotItems = 0
+	iter(func(item *CopilotSpace, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Copilot.ListOrganizationCopilotSpacesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
@@ -17796,6 +18588,78 @@ func TestUsersService_ListPackagesIter(t *testing.T) {
 	})
 	if gotItems != 1 {
 		t.Errorf("client.Users.ListPackagesIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestUsersService_ListPublicEmailsIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`)
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`)
+		case 3:
+			fmt.Fprint(w, `[{},{}]`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `[{},{}]`)
+		}
+	})
+
+	iter := client.Users.ListPublicEmailsIter(t.Context(), nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Users.ListPublicEmailsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListOptions{}
+	iter = client.Users.ListPublicEmailsIter(t.Context(), opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Users.ListPublicEmailsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Users.ListPublicEmailsIter(t.Context(), nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListPublicEmailsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Users.ListPublicEmailsIter(t.Context(), nil)
+	gotItems = 0
+	iter(func(item *UserEmail, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListPublicEmailsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 

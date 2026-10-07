@@ -1,0 +1,27 @@
+{
+  "paths": {
+    "/enterprises/{enterprise}/runner-groups": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/create-enterprise-runner-group"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "create-enterprise-runner-group": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {"type": "string"},
+          "selected_workflows": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  }
+}

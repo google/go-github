@@ -598,6 +598,39 @@ func TestActionsService_ListEnvVariables(t *testing.T) {
 	})
 }
 
+func TestActionsService_ListEnvVariables_EscapeEnv(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		env        string
+		escapedEnv string
+	}{
+		{env: "staging", escapedEnv: "staging"},
+		{env: "team/staging", escapedEnv: "team%2Fstaging"},
+	} {
+		t.Run(tt.env, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+
+			mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				if got, want := r.URL.EscapedPath(), "/repos/o/repo/environments/"+tt.escapedEnv+"/variables"; got != want {
+					t.Errorf("Request path = %q, want %q", got, want)
+				}
+				if got, want := r.URL.Path, "/repos/o/repo/environments/"+tt.env+"/variables"; got != want {
+					t.Errorf("Decoded request path = %q, want %q", got, want)
+				}
+				fmt.Fprint(w, `{"total_count":0,"variables":[]}`)
+			})
+
+			ctx := t.Context()
+			_, _, err := client.Actions.ListEnvVariables(ctx, "o", "repo", tt.env, nil)
+			if err != nil {
+				t.Fatalf("Actions.ListEnvVariables returned error: %v", err)
+			}
+		})
+	}
+}
+
 func TestActionsService_GetEnvVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
