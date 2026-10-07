@@ -263,7 +263,7 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &RepositoryAddCollaboratorOptions{Permission: "admin"}
+	opt := &RepositoryAddCollaboratorOptions{Permission: new("admin")}
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testJSONBody(t, r, opt)

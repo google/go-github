@@ -71,7 +71,7 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
+	opt := &RepositoryCreateForkOptions{Organization: new("o"), Name: new("n"), DefaultBranchOnly: new(true)}
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -109,7 +109,7 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
+	opt := &RepositoryCreateForkOptions{Organization: new("o"), Name: new("n"), DefaultBranchOnly: new(true)}
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -135,7 +135,7 @@ func TestRepositoriesService_CreateFork_deferred_badBody(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
+	opt := &RepositoryCreateForkOptions{Organization: new("o"), Name: new("n"), DefaultBranchOnly: new(true)}
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

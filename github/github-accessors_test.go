@@ -46915,7 +46915,10 @@ func TestRepositoryActor_GetUserViewType(tt *testing.T) {
 
 func TestRepositoryAddCollaboratorOptions_GetPermission(tt *testing.T) {
 	tt.Parallel()
-	r := &RepositoryAddCollaboratorOptions{}
+	var zeroValue string
+	r := &RepositoryAddCollaboratorOptions{Permission: &zeroValue}
+	r.GetPermission()
+	r = &RepositoryAddCollaboratorOptions{}
 	r.GetPermission()
 	r = nil
 	r.GetPermission()
@@ -47426,7 +47429,10 @@ func TestRepositoryContentResponse_GetContent(tt *testing.T) {
 
 func TestRepositoryCreateForkOptions_GetDefaultBranchOnly(tt *testing.T) {
 	tt.Parallel()
-	r := &RepositoryCreateForkOptions{}
+	var zeroValue bool
+	r := &RepositoryCreateForkOptions{DefaultBranchOnly: &zeroValue}
+	r.GetDefaultBranchOnly()
+	r = &RepositoryCreateForkOptions{}
 	r.GetDefaultBranchOnly()
 	r = nil
 	r.GetDefaultBranchOnly()
@@ -47434,7 +47440,10 @@ func TestRepositoryCreateForkOptions_GetDefaultBranchOnly(tt *testing.T) {
 
 func TestRepositoryCreateForkOptions_GetName(tt *testing.T) {
 	tt.Parallel()
-	r := &RepositoryCreateForkOptions{}
+	var zeroValue string
+	r := &RepositoryCreateForkOptions{Name: &zeroValue}
+	r.GetName()
+	r = &RepositoryCreateForkOptions{}
 	r.GetName()
 	r = nil
 	r.GetName()
@@ -47442,7 +47451,10 @@ func TestRepositoryCreateForkOptions_GetName(tt *testing.T) {
 
 func TestRepositoryCreateForkOptions_GetOrganization(tt *testing.T) {
 	tt.Parallel()
-	r := &RepositoryCreateForkOptions{}
+	var zeroValue string
+	r := &RepositoryCreateForkOptions{Organization: &zeroValue}
+	r.GetOrganization()
+	r = &RepositoryCreateForkOptions{}
 	r.GetOrganization()
 	r = nil
 	r.GetOrganization()

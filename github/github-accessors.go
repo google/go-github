@@ -37534,12 +37534,12 @@ func (r *RepositoryActor) GetUserViewType() string {
 	return *r.UserViewType
 }
 
-// GetPermission returns the Permission field.
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
 func (r *RepositoryAddCollaboratorOptions) GetPermission() string {
-	if r == nil {
+	if r == nil || r.Permission == nil {
 		return ""
 	}
-	return r.Permission
+	return *r.Permission
 }
 
 // GetRepository returns the Repository field.
@@ -37934,28 +37934,28 @@ func (r *RepositoryContentResponse) GetContent() *RepositoryContent {
 	return r.Content
 }
 
-// GetDefaultBranchOnly returns the DefaultBranchOnly field.
+// GetDefaultBranchOnly returns the DefaultBranchOnly field if it's non-nil, zero value otherwise.
 func (r *RepositoryCreateForkOptions) GetDefaultBranchOnly() bool {
-	if r == nil {
+	if r == nil || r.DefaultBranchOnly == nil {
 		return false
 	}
-	return r.DefaultBranchOnly
+	return *r.DefaultBranchOnly
 }
 
-// GetName returns the Name field.
+// GetName returns the Name field if it's non-nil, zero value otherwise.
 func (r *RepositoryCreateForkOptions) GetName() string {
-	if r == nil {
+	if r == nil || r.Name == nil {
 		return ""
 	}
-	return r.Name
+	return *r.Name
 }
 
-// GetOrganization returns the Organization field.
+// GetOrganization returns the Organization field if it's non-nil, zero value otherwise.
 func (r *RepositoryCreateForkOptions) GetOrganization() string {
-	if r == nil {
+	if r == nil || r.Organization == nil {
 		return ""
 	}
-	return r.Organization
+	return *r.Organization
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
