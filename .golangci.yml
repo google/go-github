@@ -230,9 +230,7 @@ linters:
             - PullRequestReviewRequest
             - PullRequestReviewsEnforcementUpdate
             - Repository
-            - RepositoryAddCollaboratorOptions
             - RepositoryContentFileOptions
-            - RepositoryCreateForkOptions
             - RequiredStatusChecksRequest
             - SCIMUserAttributes
             - SourceImportAuthor
@@ -255,9 +253,7 @@ linters:
             - LockIssueOptions
             - MaintenanceOptions
             - PullRequestBranchUpdateOptions
-            - RepositoryAddCollaboratorOptions
             - RepositoryContentFileOptions
-            - RepositoryCreateForkOptions
             - UpdateCheckRunOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions

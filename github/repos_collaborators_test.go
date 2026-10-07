@@ -263,15 +263,15 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &RepositoryAddCollaboratorOptions{Permission: new("admin")}
+	body := AddCollaboratorRequest{Permission: new("admin")}
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, body)
 		w.WriteHeader(http.StatusOK)
 		assertWrite(t, w, []byte(`{"permissions": "write","url": "https://api.github.com/user/repository_invitations/1296269","html_url": "https://github.com/octocat/Hello-World/invitations","id":1,"permissions":"write","repository":{"url":"s","name":"r","id":1},"invitee":{"login":"u"},"inviter":{"login":"o"}}`))
 	})
 	ctx := t.Context()
-	collaboratorInvitation, _, err := client.Repositories.AddCollaborator(ctx, "o", "r", "u", opt)
+	collaboratorInvitation, _, err := client.Repositories.AddCollaborator(ctx, "o", "r", "u", body)
 	if err != nil {
 		t.Errorf("Repositories.AddCollaborator returned error: %v", err)
 	}
@@ -299,12 +299,12 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 
 	const methodName = "AddCollaborator"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.AddCollaborator(ctx, "\n", "\n", "\n", opt)
+		_, _, err = client.Repositories.AddCollaborator(ctx, "\n", "\n", "\n", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.AddCollaborator(ctx, "o", "r", "u", opt)
+		got, resp, err := client.Repositories.AddCollaborator(ctx, "o", "r", "u", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -317,7 +317,7 @@ func TestRepositoriesService_AddCollaborator_invalidUser(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Repositories.AddCollaborator(ctx, "%", "%", "%", nil)
+	_, _, err := client.Repositories.AddCollaborator(ctx, "%", "%", "%", AddCollaboratorRequest{})
 	testURLParseError(t, err)
 }
 

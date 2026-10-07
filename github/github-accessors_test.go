@@ -1120,6 +1120,17 @@ func TestActorLocation_GetCountryCode(tt *testing.T) {
 	a.GetCountryCode()
 }
 
+func TestAddCollaboratorRequest_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddCollaboratorRequest{Permission: &zeroValue}
+	a.GetPermission()
+	a = &AddCollaboratorRequest{}
+	a.GetPermission()
+	a = nil
+	a.GetPermission()
+}
+
 func TestAddProjectItemOptions_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -16115,6 +16126,39 @@ func TestCreateEvent_GetSender(tt *testing.T) {
 	c.GetSender()
 	c = nil
 	c.GetSender()
+}
+
+func TestCreateForkRequest_GetDefaultBranchOnly(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateForkRequest{DefaultBranchOnly: &zeroValue}
+	c.GetDefaultBranchOnly()
+	c = &CreateForkRequest{}
+	c.GetDefaultBranchOnly()
+	c = nil
+	c.GetDefaultBranchOnly()
+}
+
+func TestCreateForkRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateForkRequest{Name: &zeroValue}
+	c.GetName()
+	c = &CreateForkRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateForkRequest_GetOrganization(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateForkRequest{Organization: &zeroValue}
+	c.GetOrganization()
+	c = &CreateForkRequest{}
+	c.GetOrganization()
+	c = nil
+	c.GetOrganization()
 }
 
 func TestCreateGistCommentRequest_GetBody(tt *testing.T) {
@@ -46913,17 +46957,6 @@ func TestRepositoryActor_GetUserViewType(tt *testing.T) {
 	r.GetUserViewType()
 }
 
-func TestRepositoryAddCollaboratorOptions_GetPermission(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryAddCollaboratorOptions{Permission: &zeroValue}
-	r.GetPermission()
-	r = &RepositoryAddCollaboratorOptions{}
-	r.GetPermission()
-	r = nil
-	r.GetPermission()
-}
-
 func TestRepositoryAttachment_GetRepository(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryAttachment{}
@@ -47425,39 +47458,6 @@ func TestRepositoryContentResponse_GetContent(tt *testing.T) {
 	r.GetContent()
 	r = nil
 	r.GetContent()
-}
-
-func TestRepositoryCreateForkOptions_GetDefaultBranchOnly(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	r := &RepositoryCreateForkOptions{DefaultBranchOnly: &zeroValue}
-	r.GetDefaultBranchOnly()
-	r = &RepositoryCreateForkOptions{}
-	r.GetDefaultBranchOnly()
-	r = nil
-	r.GetDefaultBranchOnly()
-}
-
-func TestRepositoryCreateForkOptions_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryCreateForkOptions{Name: &zeroValue}
-	r.GetName()
-	r = &RepositoryCreateForkOptions{}
-	r.GetName()
-	r = nil
-	r.GetName()
-}
-
-func TestRepositoryCreateForkOptions_GetOrganization(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryCreateForkOptions{Organization: &zeroValue}
-	r.GetOrganization()
-	r = &RepositoryCreateForkOptions{}
-	r.GetOrganization()
-	r = nil
-	r.GetOrganization()
 }
 
 func TestRepositoryDispatchEvent_GetAction(tt *testing.T) {
