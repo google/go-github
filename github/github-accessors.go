@@ -918,6 +918,14 @@ func (a *ActorLocation) GetCountryCode() string {
 	return *a.CountryCode
 }
 
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (a *AddCollaboratorRequest) GetPermission() string {
+	if a == nil || a.Permission == nil {
+		return ""
+	}
+	return *a.Permission
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (a *AddProjectItemOptions) GetID() int64 {
 	if a == nil || a.ID == nil {
@@ -12820,6 +12828,30 @@ func (c *CreateEvent) GetSender() *User {
 		return nil
 	}
 	return c.Sender
+}
+
+// GetDefaultBranchOnly returns the DefaultBranchOnly field if it's non-nil, zero value otherwise.
+func (c *CreateForkRequest) GetDefaultBranchOnly() bool {
+	if c == nil || c.DefaultBranchOnly == nil {
+		return false
+	}
+	return *c.DefaultBranchOnly
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CreateForkRequest) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetOrganization returns the Organization field if it's non-nil, zero value otherwise.
+func (c *CreateForkRequest) GetOrganization() string {
+	if c == nil || c.Organization == nil {
+		return ""
+	}
+	return *c.Organization
 }
 
 // GetBody returns the Body field.
@@ -37534,14 +37566,6 @@ func (r *RepositoryActor) GetUserViewType() string {
 	return *r.UserViewType
 }
 
-// GetPermission returns the Permission field.
-func (r *RepositoryAddCollaboratorOptions) GetPermission() string {
-	if r == nil {
-		return ""
-	}
-	return r.Permission
-}
-
 // GetRepository returns the Repository field.
 func (r *RepositoryAttachment) GetRepository() *Repository {
 	if r == nil {
@@ -37932,30 +37956,6 @@ func (r *RepositoryContentResponse) GetContent() *RepositoryContent {
 		return nil
 	}
 	return r.Content
-}
-
-// GetDefaultBranchOnly returns the DefaultBranchOnly field.
-func (r *RepositoryCreateForkOptions) GetDefaultBranchOnly() bool {
-	if r == nil {
-		return false
-	}
-	return r.DefaultBranchOnly
-}
-
-// GetName returns the Name field.
-func (r *RepositoryCreateForkOptions) GetName() string {
-	if r == nil {
-		return ""
-	}
-	return r.Name
-}
-
-// GetOrganization returns the Organization field.
-func (r *RepositoryCreateForkOptions) GetOrganization() string {
-	if r == nil {
-		return ""
-	}
-	return r.Organization
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
