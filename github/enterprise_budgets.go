@@ -226,6 +226,27 @@ func (s *EnterpriseService) GetBudget(ctx context.Context, enterprise, budgetID 
 	return budget, resp, nil
 }
 
+// GetBudgetByID fetches a budget, given a specified budget ID, by ID.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets?apiVersion=2022-11-28#get-a-budget-by-id
+//
+//meta:operation GET /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
+func (s *EnterpriseService) GetBudgetByID(ctx context.Context, enterprise, budgetID string) (*EnterpriseBudget, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var budget *EnterpriseBudget
+	resp, err := s.client.Do(req, &budget)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return budget, resp, nil
+}
+
 // UpdateBudget updates an existing budget for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets?apiVersion=2022-11-28#update-a-budget
