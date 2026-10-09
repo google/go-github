@@ -599,16 +599,16 @@ func TestProjectsService_AddOrganizationProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &AddProjectItemOptions{Type: new(ProjectV2ItemContentType("Issue")), ID: new(int64(99))}
+	body := AddProjectItemRequest{Type: ProjectV2ItemContentTypeIssue, ID: new(int64(99))}
 
 	mux.HandleFunc("/orgs/o/projectsV2/1/items", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"id":99,"node_id":"PVTI_new"}`)
 	})
 
 	ctx := t.Context()
-	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, input)
+	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, body)
 	if err != nil {
 		t.Fatalf("Projects.AddOrganizationProjectItem returned error: %v", err)
 	}
@@ -621,7 +621,7 @@ func TestProjectsService_AddOrganizationProjectItem_ByNumber(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &AddProjectItemOptions{Type: new(ProjectV2ItemContentType("Issue")), Owner: new("octocat"), Repo: new("hello-world"), Number: new(42)}
+	body := AddProjectItemRequest{Type: ProjectV2ItemContentTypeIssue, Owner: new("octocat"), Repo: new("hello-world"), Number: new(42)}
 
 	mux.HandleFunc("/orgs/o/projectsV2/1/items", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -630,7 +630,7 @@ func TestProjectsService_AddOrganizationProjectItem_ByNumber(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, input)
+	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, body)
 	if err != nil {
 		t.Fatalf("Projects.AddOrganizationProjectItem returned error: %v", err)
 	}
@@ -650,7 +650,7 @@ func TestProjectsService_AddProjectItemForOrg_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "AddOrganizationProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: new(ProjectV2ItemContentType("Issue")), ID: new(int64(1))})
+		got, resp, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, AddProjectItemRequest{Type: ProjectV2ItemContentTypeIssue, ID: new(int64(1))})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -739,14 +739,14 @@ func TestProjectsService_GetOrganizationProjectItem_WithFieldsOption(t *testing.
 func TestProjectsService_UpdateOrganizationProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	input := &UpdateProjectItemOptions{Fields: []*UpdateProjectV2Field{{ID: 1, Value: "Done"}}}
+	body := UpdateProjectItemRequest{Fields: []*UpdateProjectV2Field{{ID: 1, Value: "Done"}}}
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"id":17}`)
 	})
 	ctx := t.Context()
-	item, _, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, input)
+	item, _, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, body)
 	if err != nil {
 		t.Fatalf("UpdateOrganizationProjectItem error: %v", err)
 	}
@@ -758,16 +758,16 @@ func TestProjectsService_UpdateOrganizationProjectItem(t *testing.T) {
 func TestProjectsService_UpdateOrganizationProjectItem_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	input := &UpdateProjectItemOptions{Fields: []*UpdateProjectV2Field{{ID: 1, Value: "Done"}}}
+	body := UpdateProjectItemRequest{Fields: []*UpdateProjectV2Field{{ID: 1, Value: "Done"}}}
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"id":17}`)
 	})
 	ctx := t.Context()
 	const methodName = "UpdateProjectItemForOrg"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, input)
+		got, resp, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -778,7 +778,7 @@ func TestProjectsService_UpdateOrganizationProjectItem_error(t *testing.T) {
 func TestProjectsService_UpdateOrganizationProjectItem_WithFieldUpdates(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	input := &UpdateProjectItemOptions{
+	body := UpdateProjectItemRequest{
 		Fields: []*UpdateProjectV2Field{
 			{ID: 123, Value: "Updated text value"},
 			{ID: 456, Value: "Done"},
@@ -786,12 +786,12 @@ func TestProjectsService_UpdateOrganizationProjectItem_WithFieldUpdates(t *testi
 	}
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"id":17,"node_id":"PVTI_node_updated"}`)
 	})
 
 	ctx := t.Context()
-	item, _, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, input)
+	item, _, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, body)
 	if err != nil {
 		t.Fatalf("UpdateOrganizationProjectItem error: %v", err)
 	}
@@ -801,11 +801,11 @@ func TestProjectsService_UpdateOrganizationProjectItem_WithFieldUpdates(t *testi
 
 	const methodName = "UpdateOrganizationProjectItemWithFields"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.UpdateOrganizationProjectItem(ctx, "\n", 1, 17, input)
+		_, _, err = client.Projects.UpdateOrganizationProjectItem(ctx, "\n", 1, 17, body)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, input)
+		got, resp, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -883,14 +883,14 @@ func TestProjectsService_ListUserProjectItems_error(t *testing.T) {
 func TestProjectsService_AddUserProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	input := &AddProjectItemOptions{Type: new(ProjectV2ItemContentType("PullRequest")), ID: new(int64(123))}
+	body := AddProjectItemRequest{Type: ProjectV2ItemContentTypePullRequest, ID: new(int64(123))}
 	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"id":123,"node_id":"PVTI_new_user"}`)
 	})
 	ctx := t.Context()
-	item, _, err := client.Projects.AddUserProjectItem(ctx, "u", 2, input)
+	item, _, err := client.Projects.AddUserProjectItem(ctx, "u", 2, body)
 	if err != nil {
 		t.Fatalf("AddUserProjectItem error: %v", err)
 	}
@@ -909,7 +909,7 @@ func TestProjectsService_AddUserProjectItem_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "AddUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: new(ProjectV2ItemContentType("Issue")), ID: new(int64(5))})
+		got, resp, err := client.Projects.AddUserProjectItem(ctx, "u", 2, AddProjectItemRequest{Type: ProjectV2ItemContentTypeIssue, ID: new(int64(5))})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -998,14 +998,14 @@ func TestProjectsService_GetUserProjectItem_WithFieldsOption(t *testing.T) {
 func TestProjectsService_UpdateUserProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	input := &UpdateProjectItemOptions{Fields: []*UpdateProjectV2Field{{ID: 2, Value: "Todo"}}}
+	body := UpdateProjectItemRequest{Fields: []*UpdateProjectV2Field{{ID: 2, Value: "Todo"}}}
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"id":55}`)
 	})
 	ctx := t.Context()
-	item, _, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, input)
+	item, _, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, body)
 	if err != nil {
 		t.Fatalf("UpdateUserProjectItem error: %v", err)
 	}
@@ -1024,7 +1024,7 @@ func TestProjectsService_UpdateUserProjectItem_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "UpdateUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Fields: []*UpdateProjectV2Field{{ID: 2, Value: "Todo"}}})
+		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, UpdateProjectItemRequest{Fields: []*UpdateProjectV2Field{{ID: 2, Value: "Todo"}}})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1035,7 +1035,7 @@ func TestProjectsService_UpdateUserProjectItem_error(t *testing.T) {
 func TestProjectsService_UpdateUserProjectItem_WithFieldUpdates(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	opts := &UpdateProjectItemOptions{
+	body := UpdateProjectItemRequest{
 		Fields: []*UpdateProjectV2Field{
 			{ID: 100, Value: "In Progress"},
 			{ID: 200, Value: float64(5)}, // number field
@@ -1043,12 +1043,12 @@ func TestProjectsService_UpdateUserProjectItem_WithFieldUpdates(t *testing.T) {
 	}
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, opts)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"id":55,"node_id":"PVTI_user_updated"}`)
 	})
 
 	ctx := t.Context()
-	item, _, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, opts)
+	item, _, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, body)
 	if err != nil {
 		t.Fatalf("UpdateUserProjectItem error: %v", err)
 	}
@@ -1058,11 +1058,11 @@ func TestProjectsService_UpdateUserProjectItem_WithFieldUpdates(t *testing.T) {
 
 	const methodName = "UpdateUserProjectItemWithFields"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.UpdateUserProjectItem(ctx, "\n", 2, 55, opts)
+		_, _, err = client.Projects.UpdateUserProjectItem(ctx, "\n", 2, 55, body)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, opts)
+		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

@@ -927,7 +927,7 @@ func (a *AddCollaboratorRequest) GetPermission() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (a *AddProjectItemOptions) GetID() int64 {
+func (a *AddProjectItemRequest) GetID() int64 {
 	if a == nil || a.ID == nil {
 		return 0
 	}
@@ -935,7 +935,7 @@ func (a *AddProjectItemOptions) GetID() int64 {
 }
 
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
-func (a *AddProjectItemOptions) GetNumber() int {
+func (a *AddProjectItemRequest) GetNumber() int {
 	if a == nil || a.Number == nil {
 		return 0
 	}
@@ -943,7 +943,7 @@ func (a *AddProjectItemOptions) GetNumber() int {
 }
 
 // GetOwner returns the Owner field if it's non-nil, zero value otherwise.
-func (a *AddProjectItemOptions) GetOwner() string {
+func (a *AddProjectItemRequest) GetOwner() string {
 	if a == nil || a.Owner == nil {
 		return ""
 	}
@@ -951,7 +951,7 @@ func (a *AddProjectItemOptions) GetOwner() string {
 }
 
 // GetRepo returns the Repo field if it's non-nil, zero value otherwise.
-func (a *AddProjectItemOptions) GetRepo() string {
+func (a *AddProjectItemRequest) GetRepo() string {
 	if a == nil || a.Repo == nil {
 		return ""
 	}
@@ -959,9 +959,9 @@ func (a *AddProjectItemOptions) GetRepo() string {
 }
 
 // GetType returns the Type field.
-func (a *AddProjectItemOptions) GetType() *ProjectV2ItemContentType {
+func (a *AddProjectItemRequest) GetType() ProjectV2ItemContentType {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Type
 }
@@ -46543,7 +46543,7 @@ func (u *UpdatePreReceiveHookRequest) GetEnforcement() string {
 }
 
 // GetFields returns the Fields slice if it's non-nil, nil otherwise.
-func (u *UpdateProjectItemOptions) GetFields() []*UpdateProjectV2Field {
+func (u *UpdateProjectItemRequest) GetFields() []*UpdateProjectV2Field {
 	if u == nil || u.Fields == nil {
 		return nil
 	}
