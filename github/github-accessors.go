@@ -46542,14 +46542,6 @@ func (u *UpdatePreReceiveHookRequest) GetEnforcement() string {
 	return *u.Enforcement
 }
 
-// GetArchived returns the Archived field if it's non-nil, zero value otherwise.
-func (u *UpdateProjectItemOptions) GetArchived() bool {
-	if u == nil || u.Archived == nil {
-		return false
-	}
-	return *u.Archived
-}
-
 // GetFields returns the Fields slice if it's non-nil, nil otherwise.
 func (u *UpdateProjectItemOptions) GetFields() []*UpdateProjectV2Field {
 	if u == nil || u.Fields == nil {

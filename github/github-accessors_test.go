@@ -58066,17 +58066,6 @@ func TestUpdatePreReceiveHookRequest_GetEnforcement(tt *testing.T) {
 	u.GetEnforcement()
 }
 
-func TestUpdateProjectItemOptions_GetArchived(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	u := &UpdateProjectItemOptions{Archived: &zeroValue}
-	u.GetArchived()
-	u = &UpdateProjectItemOptions{}
-	u.GetArchived()
-	u = nil
-	u.GetArchived()
-}
-
 func TestUpdateProjectItemOptions_GetFields(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*UpdateProjectV2Field{}

@@ -739,7 +739,7 @@ func TestProjectsService_GetOrganizationProjectItem_WithFieldsOption(t *testing.
 func TestProjectsService_UpdateOrganizationProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	input := &UpdateProjectItemOptions{Archived: new(true)}
+	input := &UpdateProjectItemOptions{Fields: []*UpdateProjectV2Field{{ID: 1, Value: "Done"}}}
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testJSONBody(t, r, input)
@@ -758,7 +758,7 @@ func TestProjectsService_UpdateOrganizationProjectItem(t *testing.T) {
 func TestProjectsService_UpdateOrganizationProjectItem_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	input := &UpdateProjectItemOptions{Archived: new(true)}
+	input := &UpdateProjectItemOptions{Fields: []*UpdateProjectV2Field{{ID: 1, Value: "Done"}}}
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testJSONBody(t, r, input)
@@ -998,7 +998,7 @@ func TestProjectsService_GetUserProjectItem_WithFieldsOption(t *testing.T) {
 func TestProjectsService_UpdateUserProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	input := &UpdateProjectItemOptions{Archived: new(false)}
+	input := &UpdateProjectItemOptions{Fields: []*UpdateProjectV2Field{{ID: 2, Value: "Todo"}}}
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testJSONBody(t, r, input)
@@ -1024,7 +1024,7 @@ func TestProjectsService_UpdateUserProjectItem_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "UpdateUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: new(false)})
+		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Fields: []*UpdateProjectV2Field{{ID: 2, Value: "Todo"}}})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

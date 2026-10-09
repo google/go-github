@@ -506,14 +506,10 @@ type UpdateProjectV2Field struct {
 }
 
 // UpdateProjectItemOptions represents fields that can be modified for a project item.
-// The GitHub API expects either archived status updates or field value updates.
 type UpdateProjectItemOptions struct {
-	// Archived indicates whether the item should be archived (true) or unarchived (false).
-	// This is used for archive/unarchive operations.
-	Archived *bool `json:"archived,omitempty"`
 	// Fields contains field updates to apply to the project item.
 	// Each entry specifies a field ID and its new value.
-	Fields []*UpdateProjectV2Field `json:"fields,omitempty"`
+	Fields []*UpdateProjectV2Field `json:"fields"`
 }
 
 // ListOrganizationProjectItems lists items for an organization owned project.
