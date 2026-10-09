@@ -3826,6 +3826,40 @@ func TestBareDoUntilFound_MissingRedirectLocation(t *testing.T) {
 	}
 }
 
+func TestBareDoUntilFound_ResolvesRelative301AgainstRequestURL(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	const requestPath = "/repos/owner/repo/actions/artifacts/123/zip"
+	const redirectPath = "/repos/owner/repo/actions/artifacts/123/download"
+	var followed atomic.Bool
+
+	mux.HandleFunc(requestPath, func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Location", "download")
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+	mux.HandleFunc(redirectPath, func(w http.ResponseWriter, _ *http.Request) {
+		followed.Store(true)
+		w.WriteHeader(http.StatusOK)
+	})
+
+	req, err := client.NewRequest(t.Context(), "GET", strings.TrimPrefix(requestPath, "/"), nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+	_, resp, err := client.bareDoUntilFound(req, 1)
+	if err != nil {
+		t.Fatalf("bareDoUntilFound returned error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("bareDoUntilFound returned status %v, want %v", resp.StatusCode, http.StatusOK)
+	}
+	if !followed.Load() {
+		t.Error("Expected relative redirect to be resolved against the request URL.")
+	}
+}
+
 // TestRoundTripWithOptionalFollowRedirect_RejectsCrossHostRedirect verifies
 // that roundTripWithOptionalFollowRedirect refuses to follow a 301 redirect to
 // a different host, preventing Authorization-header leakage to attacker-
@@ -3894,6 +3928,53 @@ func TestRoundTripWithOptionalFollowRedirect_AllowsSameHostRedirect(t *testing.T
 	}
 	if !followed.Load() {
 		t.Error("Expected same-host redirect to be followed.")
+	}
+}
+
+func TestRoundTripWithOptionalFollowRedirect_ResolvesRelativeLocationAgainstRequestURL(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	const requestPath = "/repos/owner/repo/actions/artifacts/123/zip"
+	const redirectPath = "/repos/owner/repo/actions/artifacts/123/download"
+	var followed atomic.Bool
+
+	mux.HandleFunc(requestPath, func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Location", "download")
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+	mux.HandleFunc(redirectPath, func(w http.ResponseWriter, _ *http.Request) {
+		followed.Store(true)
+		w.WriteHeader(http.StatusOK)
+	})
+
+	resp, err := client.roundTripWithOptionalFollowRedirect(t.Context(), strings.TrimPrefix(requestPath, "/"), 1)
+	if err != nil {
+		t.Fatalf("Unexpected error following relative redirect: %v", err)
+	}
+	if resp != nil && resp.Body != nil {
+		defer resp.Body.Close()
+	}
+	if resp == nil || resp.StatusCode != http.StatusOK {
+		t.Fatalf("Expected redirect target to return %v, got %#v", http.StatusOK, resp)
+	}
+	if !followed.Load() {
+		t.Error("Expected relative redirect to be resolved against the request URL.")
+	}
+}
+
+func TestRoundTripWithOptionalFollowRedirect_RejectsPathTraversalInLocation(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/owner/repo/archive", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Location", "../download")
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+
+	_, err := client.roundTripWithOptionalFollowRedirect(t.Context(), "repos/owner/repo/archive", 1)
+	if !errors.Is(err, ErrPathForbidden) {
+		t.Fatalf("Expected ErrPathForbidden, got %v", err)
 	}
 }
 
