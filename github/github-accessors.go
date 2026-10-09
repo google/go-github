@@ -934,6 +934,30 @@ func (a *AddProjectItemOptions) GetID() int64 {
 	return *a.ID
 }
 
+// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+func (a *AddProjectItemOptions) GetNumber() int {
+	if a == nil || a.Number == nil {
+		return 0
+	}
+	return *a.Number
+}
+
+// GetOwner returns the Owner field if it's non-nil, zero value otherwise.
+func (a *AddProjectItemOptions) GetOwner() string {
+	if a == nil || a.Owner == nil {
+		return ""
+	}
+	return *a.Owner
+}
+
+// GetRepo returns the Repo field if it's non-nil, zero value otherwise.
+func (a *AddProjectItemOptions) GetRepo() string {
+	if a == nil || a.Repo == nil {
+		return ""
+	}
+	return *a.Repo
+}
+
 // GetType returns the Type field.
 func (a *AddProjectItemOptions) GetType() *ProjectV2ItemContentType {
 	if a == nil {

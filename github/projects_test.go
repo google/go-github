@@ -617,6 +617,28 @@ func TestProjectsService_AddOrganizationProjectItem(t *testing.T) {
 	}
 }
 
+func TestProjectsService_AddOrganizationProjectItem_ByNumber(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &AddProjectItemOptions{Type: new(ProjectV2ItemContentType("Issue")), Owner: new("octocat"), Repo: new("hello-world"), Number: new(42)}
+
+	mux.HandleFunc("/orgs/o/projectsV2/1/items", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBodyRaw(t, r, `{"type":"Issue","owner":"octocat","repo":"hello-world","number":42}`)
+		fmt.Fprint(w, `{"id":100,"node_id":"PVTI_new"}`)
+	})
+
+	ctx := t.Context()
+	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, input)
+	if err != nil {
+		t.Fatalf("Projects.AddOrganizationProjectItem returned error: %v", err)
+	}
+	if item.GetID() != 100 {
+		t.Fatalf("unexpected item: %+v", item)
+	}
+}
+
 func TestProjectsService_AddProjectItemForOrg_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

@@ -1142,6 +1142,39 @@ func TestAddProjectItemOptions_GetID(tt *testing.T) {
 	a.GetID()
 }
 
+func TestAddProjectItemOptions_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &AddProjectItemOptions{Number: &zeroValue}
+	a.GetNumber()
+	a = &AddProjectItemOptions{}
+	a.GetNumber()
+	a = nil
+	a.GetNumber()
+}
+
+func TestAddProjectItemOptions_GetOwner(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddProjectItemOptions{Owner: &zeroValue}
+	a.GetOwner()
+	a = &AddProjectItemOptions{}
+	a.GetOwner()
+	a = nil
+	a.GetOwner()
+}
+
+func TestAddProjectItemOptions_GetRepo(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddProjectItemOptions{Repo: &zeroValue}
+	a.GetRepo()
+	a = &AddProjectItemOptions{}
+	a.GetRepo()
+	a = nil
+	a.GetRepo()
+}
+
 func TestAddProjectItemOptions_GetType(tt *testing.T) {
 	tt.Parallel()
 	a := &AddProjectItemOptions{}

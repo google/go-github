@@ -478,11 +478,15 @@ type GetProjectItemOptions struct {
 }
 
 // AddProjectItemOptions represents the payload to add an item (issue or pull request)
-// to a project. The Type must be either "Issue" or "PullRequest" (as per API docs) and
-// ID is the numerical ID of that issue or pull request.
+// to a project. The Type must be either "Issue" or "PullRequest" (as per API docs).
+// The item is identified either by ID, the numerical ID of that issue or pull request,
+// or by Owner, Repo, and Number.
 type AddProjectItemOptions struct {
-	Type *ProjectV2ItemContentType `json:"type,omitempty"`
-	ID   *int64                    `json:"id,omitempty"`
+	Type   *ProjectV2ItemContentType `json:"type,omitempty"`
+	ID     *int64                    `json:"id,omitempty"`
+	Owner  *string                   `json:"owner,omitempty"`
+	Repo   *string                   `json:"repo,omitempty"`
+	Number *int                      `json:"number,omitempty"`
 }
 
 // UpdateProjectV2Field represents a field update for a project item.
