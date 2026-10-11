@@ -54,6 +54,86 @@ func TestActivityService_ListStargazers(t *testing.T) {
 	})
 }
 
+func TestActivityService_GetStargazerCount(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/stargazers/count", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"count":42}`)
+	})
+
+	ctx := t.Context()
+	count, _, err := client.Activity.GetStargazerCount(ctx, "o", "r")
+	if err != nil {
+		t.Errorf("Activity.GetStargazerCount returned error: %v", err)
+	}
+
+	want := &StargazerCount{Count: 42}
+	if !cmp.Equal(count, want) {
+		t.Errorf("Activity.GetStargazerCount returned %+v, want %+v", count, want)
+	}
+
+	const methodName = "GetStargazerCount"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.GetStargazerCount(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.GetStargazerCount(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActivityService_ListStargazerHistory(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/stargazers/history", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page":     "2",
+			"per_page": "30",
+		})
+
+		fmt.Fprint(w, `[{"week":`+referenceUnixTimeStr+`,"total":19,"days":[0,12,7,0,0,0,0]}]`)
+	})
+
+	ctx := t.Context()
+	opts := &ListOptions{Page: 2, PerPage: 30}
+	history, _, err := client.Activity.ListStargazerHistory(ctx, "o", "r", opts)
+	if err != nil {
+		t.Errorf("Activity.ListStargazerHistory returned error: %v", err)
+	}
+
+	want := []*StargazerHistory{{
+		Days:  []int{0, 12, 7, 0, 0, 0, 0},
+		Total: 19,
+		Week:  referenceTimestamp,
+	}}
+	if !cmp.Equal(history, want) {
+		t.Errorf("Activity.ListStargazerHistory returned %+v, want %+v", history, want)
+	}
+
+	const methodName = "ListStargazerHistory"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListStargazerHistory(ctx, "\n", "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListStargazerHistory(ctx, "o", "r", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -282,4 +362,33 @@ func TestActivityService_Unstar_invalidID(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Activity.Unstar(ctx, "%", "%")
 	testURLParseError(t, err)
+}
+
+func TestStargazerCount_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &StargazerCount{}, `{"count":0}`)
+
+	u := &StargazerCount{Count: 42}
+
+	want := `{"count":42}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestStargazerHistory_Marshal(t *testing.T) {
+	t.Parallel()
+
+	u := &StargazerHistory{
+		Days:  []int{0, 12, 7, 0, 0, 0, 0},
+		Total: 19,
+		Week:  referenceTimestamp,
+	}
+
+	want := `{
+		"days": [0, 12, 7, 0, 0, 0, 0],
+		"total": 19,
+		"week": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
 }

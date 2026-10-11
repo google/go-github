@@ -51,6 +51,65 @@ func (s *ActivityService) ListStargazers(ctx context.Context, owner, repo string
 	return stargazers, resp, nil
 }
 
+// StargazerCount represents the number of users who have starred a repository.
+type StargazerCount struct {
+	Count int `json:"count"`
+}
+
+// GetStargazerCount gets the number of people who have starred the specified repo.
+//
+// GitHub API docs: https://docs.github.com/rest/activity/starring?apiVersion=2022-11-28#get-stargazer-count
+//
+//meta:operation GET /repos/{owner}/{repo}/stargazers/count
+func (s *ActivityService) GetStargazerCount(ctx context.Context, owner, repo string) (*StargazerCount, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/stargazers/count", owner, repo)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var count *StargazerCount
+	resp, err := s.client.Do(req, &count)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return count, resp, nil
+}
+
+// StargazerHistory represents the stars a repository received during one week.
+type StargazerHistory struct {
+	Days  []int     `json:"days"`
+	Total int       `json:"total"`
+	Week  Timestamp `json:"week"`
+}
+
+// ListStargazerHistory lists the stars of the specified repo grouped by week.
+//
+// GitHub API docs: https://docs.github.com/rest/activity/starring?apiVersion=2022-11-28#get-repository-star-history
+//
+//meta:operation GET /repos/{owner}/{repo}/stargazers/history
+func (s *ActivityService) ListStargazerHistory(ctx context.Context, owner, repo string, opts *ListOptions) ([]*StargazerHistory, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/stargazers/history", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var history []*StargazerHistory
+	resp, err := s.client.Do(req, &history)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return history, resp, nil
+}
+
 // ActivityListStarredOptions specifies the optional parameters to the
 // ActivityService.ListStarred method.
 type ActivityListStarredOptions struct {
