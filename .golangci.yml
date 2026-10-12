@@ -219,13 +219,11 @@ linters:
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
             - IssueImportRequest
-            - LockIssueOptions
             - MaintenanceOptions
             - Organization
             - PagesUpdate
             - PagesUpdateWithoutCNAME
             - ProtectionRequest
-            - PullRequestBranchUpdateOptions
             - PullRequestReviewRequest
             - PullRequestReviewsEnforcementUpdate
             - Repository
@@ -235,7 +233,6 @@ linters:
             - SourceImportAuthor
             - Subscription
             - UpdateDefaultSetupConfigurationOptions
-            - UserSuspendOptions
             - WorkflowsPermissionsOpt
           # Body type names exempt from the "Options" suffix rule.
           # TODO: fix and remove these exceptions.
@@ -247,13 +244,10 @@ linters:
             - CreateOrUpdateIssueTypesOptions
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
-            - LockIssueOptions
             - MaintenanceOptions
-            - PullRequestBranchUpdateOptions
             - RepositoryContentFileOptions
             - UpdateCheckRunOptions
             - UpdateDefaultSetupConfigurationOptions
-            - UserSuspendOptions
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.

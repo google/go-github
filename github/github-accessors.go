@@ -25695,7 +25695,7 @@ func (l *LockBranch) GetEnabled() bool {
 }
 
 // GetLockReason returns the LockReason field if it's non-nil, zero value otherwise.
-func (l *LockIssueOptions) GetLockReason() string {
+func (l *LockIssueRequest) GetLockReason() string {
 	if l == nil || l.LockReason == nil {
 		return ""
 	}
@@ -33140,14 +33140,6 @@ func (p *PullRequestBranchRule) GetParameters() PullRequestRuleParameters {
 		return PullRequestRuleParameters{}
 	}
 	return p.Parameters
-}
-
-// GetExpectedHeadSHA returns the ExpectedHeadSHA field if it's non-nil, zero value otherwise.
-func (p *PullRequestBranchUpdateOptions) GetExpectedHeadSHA() string {
-	if p == nil || p.ExpectedHeadSHA == nil {
-		return ""
-	}
-	return *p.ExpectedHeadSHA
 }
 
 // GetMessage returns the Message field if it's non-nil, zero value otherwise.
@@ -44238,6 +44230,14 @@ func (s *Subscription) GetURL() string {
 	return *s.URL
 }
 
+// GetReason returns the Reason field if it's non-nil, zero value otherwise.
+func (s *SuspendUserRequest) GetReason() string {
+	if s == nil || s.Reason == nil {
+		return ""
+	}
+	return *s.Reason
+}
+
 // GetNodes returns the Nodes slice if it's non-nil, nil otherwise.
 func (s *SystemRequirements) GetNodes() []*SystemRequirementsNode {
 	if s == nil || s.Nodes == nil {
@@ -46630,6 +46630,14 @@ func (u *UpdateProvisionedOrgMembershipRequest) GetUserName() string {
 	return u.UserName
 }
 
+// GetExpectedHeadSHA returns the ExpectedHeadSHA field if it's non-nil, zero value otherwise.
+func (u *UpdatePullRequestBranchRequest) GetExpectedHeadSHA() string {
+	if u == nil || u.ExpectedHeadSHA == nil {
+		return ""
+	}
+	return *u.ExpectedHeadSHA
+}
+
 // GetBody returns the Body field.
 func (u *UpdatePullRequestCommentRequest) GetBody() string {
 	if u == nil {
@@ -48196,14 +48204,6 @@ func (u *UserStats) GetTotalUsers() int {
 		return 0
 	}
 	return *u.TotalUsers
-}
-
-// GetReason returns the Reason field if it's non-nil, zero value otherwise.
-func (u *UserSuspendOptions) GetReason() string {
-	if u == nil || u.Reason == nil {
-		return ""
-	}
-	return *u.Reason
 }
 
 // GetBio returns the Bio field if it's non-nil, zero value otherwise.

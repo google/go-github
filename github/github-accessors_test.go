@@ -32076,12 +32076,12 @@ func TestLockBranch_GetEnabled(tt *testing.T) {
 	l.GetEnabled()
 }
 
-func TestLockIssueOptions_GetLockReason(tt *testing.T) {
+func TestLockIssueRequest_GetLockReason(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	l := &LockIssueOptions{LockReason: &zeroValue}
+	l := &LockIssueRequest{LockReason: &zeroValue}
 	l.GetLockReason()
-	l = &LockIssueOptions{}
+	l = &LockIssueRequest{}
 	l.GetLockReason()
 	l = nil
 	l.GetLockReason()
@@ -41493,17 +41493,6 @@ func TestPullRequestBranchRule_GetParameters(tt *testing.T) {
 	p.GetParameters()
 	p = nil
 	p.GetParameters()
-}
-
-func TestPullRequestBranchUpdateOptions_GetExpectedHeadSHA(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &PullRequestBranchUpdateOptions{ExpectedHeadSHA: &zeroValue}
-	p.GetExpectedHeadSHA()
-	p = &PullRequestBranchUpdateOptions{}
-	p.GetExpectedHeadSHA()
-	p = nil
-	p.GetExpectedHeadSHA()
 }
 
 func TestPullRequestBranchUpdateResponse_GetMessage(tt *testing.T) {
@@ -55090,6 +55079,17 @@ func TestSubscription_GetURL(tt *testing.T) {
 	s.GetURL()
 }
 
+func TestSuspendUserRequest_GetReason(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SuspendUserRequest{Reason: &zeroValue}
+	s.GetReason()
+	s = &SuspendUserRequest{}
+	s.GetReason()
+	s = nil
+	s.GetReason()
+}
+
 func TestSystemRequirements_GetNodes(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*SystemRequirementsNode{}
@@ -58178,6 +58178,17 @@ func TestUpdateProvisionedOrgMembershipRequest_GetUserName(tt *testing.T) {
 	u.GetUserName()
 }
 
+func TestUpdatePullRequestBranchRequest_GetExpectedHeadSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdatePullRequestBranchRequest{ExpectedHeadSHA: &zeroValue}
+	u.GetExpectedHeadSHA()
+	u = &UpdatePullRequestBranchRequest{}
+	u.GetExpectedHeadSHA()
+	u = nil
+	u.GetExpectedHeadSHA()
+}
+
 func TestUpdatePullRequestCommentRequest_GetBody(tt *testing.T) {
 	tt.Parallel()
 	u := &UpdatePullRequestCommentRequest{}
@@ -60182,17 +60193,6 @@ func TestUserStats_GetTotalUsers(tt *testing.T) {
 	u.GetTotalUsers()
 	u = nil
 	u.GetTotalUsers()
-}
-
-func TestUserSuspendOptions_GetReason(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	u := &UserSuspendOptions{Reason: &zeroValue}
-	u.GetReason()
-	u = &UserSuspendOptions{}
-	u.GetReason()
-	u = nil
-	u.GetReason()
 }
 
 func TestUserUpdateRequest_GetBio(tt *testing.T) {
