@@ -45702,6 +45702,14 @@ func (u *UnauthenticatedRateLimitedTransport) GetClientSecret() string {
 	return u.ClientSecret
 }
 
+// GetReason returns the Reason field if it's non-nil, zero value otherwise.
+func (u *UnsuspendUserRequest) GetReason() string {
+	if u == nil || u.Reason == nil {
+		return ""
+	}
+	return *u.Reason
+}
+
 // GetConditions returns the Conditions field.
 func (u *UpdateActionsPolicyRequest) GetConditions() *ActionsPolicyConditions {
 	if u == nil {
