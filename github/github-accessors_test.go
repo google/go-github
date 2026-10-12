@@ -1131,20 +1131,53 @@ func TestAddCollaboratorRequest_GetPermission(tt *testing.T) {
 	a.GetPermission()
 }
 
-func TestAddProjectItemOptions_GetID(tt *testing.T) {
+func TestAddProjectItemRequest_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
-	a := &AddProjectItemOptions{ID: &zeroValue}
+	a := &AddProjectItemRequest{ID: &zeroValue}
 	a.GetID()
-	a = &AddProjectItemOptions{}
+	a = &AddProjectItemRequest{}
 	a.GetID()
 	a = nil
 	a.GetID()
 }
 
-func TestAddProjectItemOptions_GetType(tt *testing.T) {
+func TestAddProjectItemRequest_GetNumber(tt *testing.T) {
 	tt.Parallel()
-	a := &AddProjectItemOptions{}
+	var zeroValue int
+	a := &AddProjectItemRequest{Number: &zeroValue}
+	a.GetNumber()
+	a = &AddProjectItemRequest{}
+	a.GetNumber()
+	a = nil
+	a.GetNumber()
+}
+
+func TestAddProjectItemRequest_GetOwner(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddProjectItemRequest{Owner: &zeroValue}
+	a.GetOwner()
+	a = &AddProjectItemRequest{}
+	a.GetOwner()
+	a = nil
+	a.GetOwner()
+}
+
+func TestAddProjectItemRequest_GetRepo(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddProjectItemRequest{Repo: &zeroValue}
+	a.GetRepo()
+	a = &AddProjectItemRequest{}
+	a.GetRepo()
+	a = nil
+	a.GetRepo()
+}
+
+func TestAddProjectItemRequest_GetType(tt *testing.T) {
+	tt.Parallel()
+	a := &AddProjectItemRequest{}
 	a.GetType()
 	a = nil
 	a.GetType()
@@ -58033,23 +58066,12 @@ func TestUpdatePreReceiveHookRequest_GetEnforcement(tt *testing.T) {
 	u.GetEnforcement()
 }
 
-func TestUpdateProjectItemOptions_GetArchived(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	u := &UpdateProjectItemOptions{Archived: &zeroValue}
-	u.GetArchived()
-	u = &UpdateProjectItemOptions{}
-	u.GetArchived()
-	u = nil
-	u.GetArchived()
-}
-
-func TestUpdateProjectItemOptions_GetFields(tt *testing.T) {
+func TestUpdateProjectItemRequest_GetFields(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*UpdateProjectV2Field{}
-	u := &UpdateProjectItemOptions{Fields: zeroValue}
+	u := &UpdateProjectItemRequest{Fields: zeroValue}
 	u.GetFields()
-	u = &UpdateProjectItemOptions{}
+	u = &UpdateProjectItemRequest{}
 	u.GetFields()
 	u = nil
 	u.GetFields()

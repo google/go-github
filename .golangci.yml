@@ -202,7 +202,6 @@ linters:
           # Body type names exempt from the "pass by value, not by pointer" rule.
           # TODO: fix and remove these exceptions.
           body-allowed-pointer-types:
-            - AddProjectItemOptions
             - AuthorizationRequest
             - CodeScanningAlertState
             - ConfigApplyOptions
@@ -236,13 +235,11 @@ linters:
             - SourceImportAuthor
             - Subscription
             - UpdateDefaultSetupConfigurationOptions
-            - UpdateProjectItemOptions
             - UserSuspendOptions
             - WorkflowsPermissionsOpt
           # Body type names exempt from the "Options" suffix rule.
           # TODO: fix and remove these exceptions.
           body-allowed-wrong-names:
-            - AddProjectItemOptions
             - CheckSuitePreferenceOptions
             - ConfigApplyOptions
             - CreateCheckRunOptions
@@ -256,7 +253,6 @@ linters:
             - RepositoryContentFileOptions
             - UpdateCheckRunOptions
             - UpdateDefaultSetupConfigurationOptions
-            - UpdateProjectItemOptions
             - UserSuspendOptions
       sliceofpointers:
         type: module
