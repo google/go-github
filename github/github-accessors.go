@@ -25694,12 +25694,12 @@ func (l *LockBranch) GetEnabled() bool {
 	return *l.Enabled
 }
 
-// GetLockReason returns the LockReason field.
+// GetLockReason returns the LockReason field if it's non-nil, zero value otherwise.
 func (l *LockIssueOptions) GetLockReason() string {
-	if l == nil {
+	if l == nil || l.LockReason == nil {
 		return ""
 	}
-	return l.LockReason
+	return *l.LockReason
 }
 
 // GetHostname returns the Hostname field if it's non-nil, zero value otherwise.

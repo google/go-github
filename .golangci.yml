@@ -404,7 +404,6 @@ linters:
             - ListSCIMProvisionedIdentitiesOptions.Filter
             - ListSCIMProvisionedIdentitiesOptions.StartIndex
             - ListUserIssuesOptions.Since
-            - LockIssueOptions.LockReason # TODO: Issues
             - MarketplacePlan.Bullets # TODO: Marketplaces
             - NodeQueryOptions.ClusterRoles
             - NodeQueryOptions.UUID

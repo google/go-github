@@ -507,7 +507,7 @@ func TestIssuesService_LockWithReason(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	opt := &LockIssueOptions{LockReason: "off-topic"}
+	opt := &LockIssueOptions{LockReason: new("off-topic")}
 
 	ctx := t.Context()
 	if _, err := client.Issues.Lock(ctx, "o", "r", 1, opt); err != nil {

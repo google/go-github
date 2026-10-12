@@ -32078,7 +32078,10 @@ func TestLockBranch_GetEnabled(tt *testing.T) {
 
 func TestLockIssueOptions_GetLockReason(tt *testing.T) {
 	tt.Parallel()
-	l := &LockIssueOptions{}
+	var zeroValue string
+	l := &LockIssueOptions{LockReason: &zeroValue}
+	l.GetLockReason()
+	l = &LockIssueOptions{}
 	l.GetLockReason()
 	l = nil
 	l.GetLockReason()
