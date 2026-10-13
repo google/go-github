@@ -90,12 +90,11 @@ func TestOrganizationsService_CreateIssueType(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &CreateOrUpdateIssueTypesOptions{
+	input := CreateIssueTypeRequest{
 		Name:        "Epic",
 		Description: new("An issue type for a multi-week tracking of work"),
 		IsEnabled:   true,
 		Color:       new("green"),
-		IsPrivate:   new(true),
 	}
 
 	mux.HandleFunc("/orgs/o/issue-types", func(w http.ResponseWriter, r *http.Request) {
@@ -150,12 +149,11 @@ func TestOrganizationsService_UpdateIssueType(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &CreateOrUpdateIssueTypesOptions{
+	input := UpdateIssueTypeRequest{
 		Name:        "Epic",
 		Description: new("An issue type for a multi-week tracking of work"),
 		IsEnabled:   true,
 		Color:       new("green"),
-		IsPrivate:   new(true),
 	}
 
 	mux.HandleFunc("/orgs/o/issue-types/410", func(w http.ResponseWriter, r *http.Request) {
