@@ -2105,6 +2105,17 @@ func TestAgentTaskSessionError_GetMessage(tt *testing.T) {
 	a.GetMessage()
 }
 
+func TestAlert_GetAssignees(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	a := &Alert{Assignees: zeroValue}
+	a.GetAssignees()
+	a = &Alert{}
+	a.GetAssignees()
+	a = nil
+	a.GetAssignees()
+}
+
 func TestAlert_GetClosedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -2133,6 +2144,14 @@ func TestAlert_GetCreatedAt(tt *testing.T) {
 	a.GetCreatedAt()
 	a = nil
 	a.GetCreatedAt()
+}
+
+func TestAlert_GetDismissalApprovedBy(tt *testing.T) {
+	tt.Parallel()
+	a := &Alert{}
+	a.GetDismissalApprovedBy()
+	a = nil
+	a.GetDismissalApprovedBy()
 }
 
 func TestAlert_GetDismissedAt(tt *testing.T) {
@@ -2218,6 +2237,17 @@ func TestAlert_GetInstancesURL(tt *testing.T) {
 	a.GetInstancesURL()
 	a = nil
 	a.GetInstancesURL()
+}
+
+func TestAlert_GetLinkedPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PullRequest{}
+	a := &Alert{LinkedPullRequests: zeroValue}
+	a.GetLinkedPullRequests()
+	a = &Alert{}
+	a.GetLinkedPullRequests()
+	a = nil
+	a.GetLinkedPullRequests()
 }
 
 func TestAlert_GetMostRecentInstance(tt *testing.T) {
@@ -18569,6 +18599,17 @@ func TestDeleteEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 }
 
+func TestDependabotAlert_GetAssignees(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	d := &DependabotAlert{Assignees: zeroValue}
+	d.GetAssignees()
+	d = &DependabotAlert{}
+	d.GetAssignees()
+	d = nil
+	d.GetAssignees()
+}
+
 func TestDependabotAlert_GetAutoDismissedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -18597,6 +18638,14 @@ func TestDependabotAlert_GetDependency(tt *testing.T) {
 	d.GetDependency()
 	d = nil
 	d.GetDependency()
+}
+
+func TestDependabotAlert_GetDismissalRequest(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotAlert{}
+	d.GetDismissalRequest()
+	d = nil
+	d.GetDismissalRequest()
 }
 
 func TestDependabotAlert_GetDismissedAt(tt *testing.T) {
@@ -18725,6 +18774,58 @@ func TestDependabotAlert_GetURL(tt *testing.T) {
 	d := &DependabotAlert{URL: &zeroValue}
 	d.GetURL()
 	d = &DependabotAlert{}
+	d.GetURL()
+	d = nil
+	d.GetURL()
+}
+
+func TestDependabotAlertDismissalRequest_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	d := &DependabotAlertDismissalRequest{CreatedAt: &zeroValue}
+	d.GetCreatedAt()
+	d = &DependabotAlertDismissalRequest{}
+	d.GetCreatedAt()
+	d = nil
+	d.GetCreatedAt()
+}
+
+func TestDependabotAlertDismissalRequest_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	d := &DependabotAlertDismissalRequest{ID: &zeroValue}
+	d.GetID()
+	d = &DependabotAlertDismissalRequest{}
+	d.GetID()
+	d = nil
+	d.GetID()
+}
+
+func TestDependabotAlertDismissalRequest_GetRequester(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotAlertDismissalRequest{}
+	d.GetRequester()
+	d = nil
+	d.GetRequester()
+}
+
+func TestDependabotAlertDismissalRequest_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	d := &DependabotAlertDismissalRequest{Status: &zeroValue}
+	d.GetStatus()
+	d = &DependabotAlertDismissalRequest{}
+	d.GetStatus()
+	d = nil
+	d.GetStatus()
+}
+
+func TestDependabotAlertDismissalRequest_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	d := &DependabotAlertDismissalRequest{URL: &zeroValue}
+	d.GetURL()
+	d = &DependabotAlertDismissalRequest{}
 	d.GetURL()
 	d = nil
 	d.GetURL()

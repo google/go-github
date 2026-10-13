@@ -71,28 +71,31 @@ type Tool struct {
 //
 // GitHub API docs: https://docs.github.com/rest/code-scanning?apiVersion=2022-11-28
 type Alert struct {
-	Number             *int                  `json:"number,omitempty"`
-	Repository         *Repository           `json:"repository,omitempty"`
-	RuleID             *string               `json:"rule_id,omitempty"`
-	RuleSeverity       *string               `json:"rule_severity,omitempty"`
-	RuleDescription    *string               `json:"rule_description,omitempty"`
-	Rule               *Rule                 `json:"rule,omitempty"`
-	Tool               *Tool                 `json:"tool,omitempty"`
-	CreatedAt          *Timestamp            `json:"created_at,omitempty"`
-	UpdatedAt          *Timestamp            `json:"updated_at,omitempty"`
-	FixedAt            *Timestamp            `json:"fixed_at,omitempty"`
-	State              *string               `json:"state,omitempty"`
-	ClosedBy           *User                 `json:"closed_by,omitempty"`
-	ClosedAt           *Timestamp            `json:"closed_at,omitempty"`
-	URL                *string               `json:"url,omitempty"`
-	HTMLURL            *string               `json:"html_url,omitempty"`
-	MostRecentInstance *MostRecentInstance   `json:"most_recent_instance,omitempty"`
-	Instances          []*MostRecentInstance `json:"instances,omitempty"`
-	DismissedBy        *User                 `json:"dismissed_by,omitempty"`
-	DismissedAt        *Timestamp            `json:"dismissed_at,omitempty"`
-	DismissedReason    *string               `json:"dismissed_reason,omitempty"`
-	DismissedComment   *string               `json:"dismissed_comment,omitempty"`
-	InstancesURL       *string               `json:"instances_url,omitempty"`
+	Number              *int                  `json:"number,omitempty"`
+	Repository          *Repository           `json:"repository,omitempty"`
+	RuleID              *string               `json:"rule_id,omitempty"`
+	RuleSeverity        *string               `json:"rule_severity,omitempty"`
+	RuleDescription     *string               `json:"rule_description,omitempty"`
+	Rule                *Rule                 `json:"rule,omitempty"`
+	Tool                *Tool                 `json:"tool,omitempty"`
+	CreatedAt           *Timestamp            `json:"created_at,omitempty"`
+	UpdatedAt           *Timestamp            `json:"updated_at,omitempty"`
+	FixedAt             *Timestamp            `json:"fixed_at,omitempty"`
+	State               *string               `json:"state,omitempty"`
+	ClosedBy            *User                 `json:"closed_by,omitempty"`
+	ClosedAt            *Timestamp            `json:"closed_at,omitempty"`
+	URL                 *string               `json:"url,omitempty"`
+	HTMLURL             *string               `json:"html_url,omitempty"`
+	MostRecentInstance  *MostRecentInstance   `json:"most_recent_instance,omitempty"`
+	Instances           []*MostRecentInstance `json:"instances,omitempty"`
+	DismissedBy         *User                 `json:"dismissed_by,omitempty"`
+	DismissedAt         *Timestamp            `json:"dismissed_at,omitempty"`
+	DismissedReason     *string               `json:"dismissed_reason,omitempty"`
+	DismissedComment    *string               `json:"dismissed_comment,omitempty"`
+	DismissalApprovedBy *User                 `json:"dismissal_approved_by,omitempty"`
+	InstancesURL        *string               `json:"instances_url,omitempty"`
+	Assignees           []*User               `json:"assignees,omitempty"`
+	LinkedPullRequests  []*PullRequest        `json:"linked_pull_requests,omitempty"`
 }
 
 // ID returns the ID associated with an alert. It is the number at the end of the security alert's URL.

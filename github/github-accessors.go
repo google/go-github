@@ -1726,6 +1726,14 @@ func (a *AgentTaskSessionError) GetMessage() string {
 	return *a.Message
 }
 
+// GetAssignees returns the Assignees slice if it's non-nil, nil otherwise.
+func (a *Alert) GetAssignees() []*User {
+	if a == nil || a.Assignees == nil {
+		return nil
+	}
+	return a.Assignees
+}
+
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
 func (a *Alert) GetClosedAt() Timestamp {
 	if a == nil || a.ClosedAt == nil {
@@ -1748,6 +1756,14 @@ func (a *Alert) GetCreatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *a.CreatedAt
+}
+
+// GetDismissalApprovedBy returns the DismissalApprovedBy field.
+func (a *Alert) GetDismissalApprovedBy() *User {
+	if a == nil {
+		return nil
+	}
+	return a.DismissalApprovedBy
 }
 
 // GetDismissedAt returns the DismissedAt field if it's non-nil, zero value otherwise.
@@ -1812,6 +1828,14 @@ func (a *Alert) GetInstancesURL() string {
 		return ""
 	}
 	return *a.InstancesURL
+}
+
+// GetLinkedPullRequests returns the LinkedPullRequests slice if it's non-nil, nil otherwise.
+func (a *Alert) GetLinkedPullRequests() []*PullRequest {
+	if a == nil || a.LinkedPullRequests == nil {
+		return nil
+	}
+	return a.LinkedPullRequests
 }
 
 // GetMostRecentInstance returns the MostRecentInstance field.
@@ -14758,6 +14782,14 @@ func (d *DeleteEvent) GetSender() *User {
 	return d.Sender
 }
 
+// GetAssignees returns the Assignees slice if it's non-nil, nil otherwise.
+func (d *DependabotAlert) GetAssignees() []*User {
+	if d == nil || d.Assignees == nil {
+		return nil
+	}
+	return d.Assignees
+}
+
 // GetAutoDismissedAt returns the AutoDismissedAt field if it's non-nil, zero value otherwise.
 func (d *DependabotAlert) GetAutoDismissedAt() Timestamp {
 	if d == nil || d.AutoDismissedAt == nil {
@@ -14780,6 +14812,14 @@ func (d *DependabotAlert) GetDependency() *Dependency {
 		return nil
 	}
 	return d.Dependency
+}
+
+// GetDismissalRequest returns the DismissalRequest field.
+func (d *DependabotAlert) GetDismissalRequest() *DependabotAlertDismissalRequest {
+	if d == nil {
+		return nil
+	}
+	return d.DismissalRequest
 }
 
 // GetDismissedAt returns the DismissedAt field if it's non-nil, zero value otherwise.
@@ -14880,6 +14920,46 @@ func (d *DependabotAlert) GetUpdatedAt() Timestamp {
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (d *DependabotAlert) GetURL() string {
+	if d == nil || d.URL == nil {
+		return ""
+	}
+	return *d.URL
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertDismissalRequest) GetCreatedAt() Timestamp {
+	if d == nil || d.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *d.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertDismissalRequest) GetID() int64 {
+	if d == nil || d.ID == nil {
+		return 0
+	}
+	return *d.ID
+}
+
+// GetRequester returns the Requester field.
+func (d *DependabotAlertDismissalRequest) GetRequester() *User {
+	if d == nil {
+		return nil
+	}
+	return d.Requester
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertDismissalRequest) GetStatus() string {
+	if d == nil || d.Status == nil {
+		return ""
+	}
+	return *d.Status
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertDismissalRequest) GetURL() string {
 	if d == nil || d.URL == nil {
 		return ""
 	}

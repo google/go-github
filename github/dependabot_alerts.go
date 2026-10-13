@@ -67,23 +67,34 @@ type DependabotSecurityAdvisory struct {
 
 // DependabotAlert represents a Dependabot alert.
 type DependabotAlert struct {
-	Number                *int                        `json:"number,omitempty"`
-	State                 *string                     `json:"state,omitempty"`
-	Dependency            *Dependency                 `json:"dependency,omitempty"`
-	SecurityAdvisory      *DependabotSecurityAdvisory `json:"security_advisory,omitempty"`
-	SecurityVulnerability *AdvisoryVulnerability      `json:"security_vulnerability,omitempty"`
-	URL                   *string                     `json:"url,omitempty"`
-	HTMLURL               *string                     `json:"html_url,omitempty"`
-	CreatedAt             *Timestamp                  `json:"created_at,omitempty"`
-	UpdatedAt             *Timestamp                  `json:"updated_at,omitempty"`
-	DismissedAt           *Timestamp                  `json:"dismissed_at,omitempty"`
-	DismissedBy           *User                       `json:"dismissed_by,omitempty"`
-	DismissedReason       *string                     `json:"dismissed_reason,omitempty"`
-	DismissedComment      *string                     `json:"dismissed_comment,omitempty"`
-	FixedAt               *Timestamp                  `json:"fixed_at,omitempty"`
-	AutoDismissedAt       *Timestamp                  `json:"auto_dismissed_at,omitempty"`
+	Number                *int                             `json:"number,omitempty"`
+	State                 *string                          `json:"state,omitempty"`
+	Dependency            *Dependency                      `json:"dependency,omitempty"`
+	SecurityAdvisory      *DependabotSecurityAdvisory      `json:"security_advisory,omitempty"`
+	SecurityVulnerability *AdvisoryVulnerability           `json:"security_vulnerability,omitempty"`
+	URL                   *string                          `json:"url,omitempty"`
+	HTMLURL               *string                          `json:"html_url,omitempty"`
+	CreatedAt             *Timestamp                       `json:"created_at,omitempty"`
+	UpdatedAt             *Timestamp                       `json:"updated_at,omitempty"`
+	DismissedAt           *Timestamp                       `json:"dismissed_at,omitempty"`
+	DismissedBy           *User                            `json:"dismissed_by,omitempty"`
+	DismissedReason       *string                          `json:"dismissed_reason,omitempty"`
+	DismissedComment      *string                          `json:"dismissed_comment,omitempty"`
+	FixedAt               *Timestamp                       `json:"fixed_at,omitempty"`
+	AutoDismissedAt       *Timestamp                       `json:"auto_dismissed_at,omitempty"`
+	Assignees             []*User                          `json:"assignees,omitempty"`
+	DismissalRequest      *DependabotAlertDismissalRequest `json:"dismissal_request,omitempty"`
 	// The repository is always empty for events
 	Repository *Repository `json:"repository,omitempty"`
+}
+
+// DependabotAlertDismissalRequest represents a request to dismiss a Dependabot alert.
+type DependabotAlertDismissalRequest struct {
+	ID        *int64     `json:"id,omitempty"`
+	Status    *string    `json:"status,omitempty"`
+	Requester *User      `json:"requester,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	URL       *string    `json:"url,omitempty"`
 }
 
 // DependabotAlertState represents the state of a Dependabot alert to update.
