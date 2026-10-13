@@ -97,8 +97,8 @@ type DependabotAlertDismissalRequest struct {
 	URL       *string    `json:"url,omitempty"`
 }
 
-// DependabotAlertState represents the state of a Dependabot alert to update.
-type DependabotAlertState struct {
+// UpdateDependabotAlertRequest represents a request to update a Dependabot alert.
+type UpdateDependabotAlertRequest struct {
 	// The state of the Dependabot alert. A dismissed_reason must be provided when setting the state to dismissed.
 	// Either State or Assignees must be provided.
 	State *string `json:"state,omitempty"`
@@ -202,7 +202,7 @@ func (s *DependabotService) GetRepoAlert(ctx context.Context, owner, repo string
 // GitHub API docs: https://docs.github.com/rest/dependabot/alerts?apiVersion=2022-11-28#update-a-dependabot-alert
 //
 //meta:operation PATCH /repos/{owner}/{repo}/dependabot/alerts/{alert_number}
-func (s *DependabotService) UpdateAlert(ctx context.Context, owner, repo string, number int, body *DependabotAlertState) (*DependabotAlert, *Response, error) {
+func (s *DependabotService) UpdateAlert(ctx context.Context, owner, repo string, number int, body UpdateDependabotAlertRequest) (*DependabotAlert, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependabot/alerts/%v", owner, repo, number)
 	req, err := s.client.NewRequest(ctx, "PATCH", url, body)
 	if err != nil {

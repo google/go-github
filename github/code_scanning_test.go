@@ -709,8 +709,8 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 	dismissedComment := new("This alert is not actually correct as sanitizer is used")
 	dismissedReason := new("false positive")
 	state := new("dismissed")
-	stateInfo := &CodeScanningAlertState{State: state, DismissedReason: dismissedReason, DismissedComment: dismissedComment}
-	alert, _, err := client.CodeScanning.UpdateAlert(ctx, "o", "r", 88, stateInfo)
+	body := UpdateCodeScanningAlertRequest{State: state, DismissedReason: dismissedReason, DismissedComment: dismissedComment}
+	alert, _, err := client.CodeScanning.UpdateAlert(ctx, "o", "r", 88, body)
 	if err != nil {
 		t.Errorf("CodeScanning.UpdateAlert returned error: %v", err)
 	}
@@ -759,12 +759,12 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 
 	const methodName = "UpdateAlert"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.CodeScanning.UpdateAlert(ctx, "\n", "\n", -88, stateInfo)
+		_, _, err = client.CodeScanning.UpdateAlert(ctx, "\n", "\n", -88, body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.CodeScanning.UpdateAlert(ctx, "o", "r", 88, stateInfo)
+		got, resp, err := client.CodeScanning.UpdateAlert(ctx, "o", "r", 88, body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -772,22 +772,22 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 	})
 }
 
-func TestCodeScanningAlertState_Marshal(t *testing.T) {
+func TestUpdateCodeScanningAlertRequest_Marshal(t *testing.T) {
 	t.Parallel()
 
-	dismissInput := CodeScanningAlertState{
+	dismissInput := UpdateCodeScanningAlertRequest{
 		State:           new("dismissed"),
 		DismissedReason: new("false positive"),
 		CreateRequest:   new(true),
 	}
 	testJSONMarshal(t, dismissInput, `{"state":"dismissed","dismissed_reason":"false positive","create_request":true}`)
 
-	assignInput := CodeScanningAlertState{
+	assignInput := UpdateCodeScanningAlertRequest{
 		Assignees: []string{"octocat"},
 	}
 	testJSONMarshal(t, assignInput, `{"assignees":["octocat"]}`)
 
-	unassignInput := CodeScanningAlertState{
+	unassignInput := UpdateCodeScanningAlertRequest{
 		Assignees: []string{},
 	}
 	testJSONMarshal(t, unassignInput, `{"assignees":[]}`)

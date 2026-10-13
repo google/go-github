@@ -221,10 +221,10 @@ type SarifAnalysis struct {
 	Validate    *bool      `json:"validate,omitempty"`
 }
 
-// CodeScanningAlertState specifies the state of a code scanning alert.
+// UpdateCodeScanningAlertRequest represents a request to update a code scanning alert.
 //
 // GitHub API docs: https://docs.github.com/rest/code-scanning?apiVersion=2022-11-28
-type CodeScanningAlertState struct {
+type UpdateCodeScanningAlertRequest struct {
 	// State sets the state of the code scanning alert.
 	// Either State or Assignees must be provided.
 	// You must also provide DismissedReason when you set the state to "dismissed".
@@ -347,7 +347,7 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 // GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning?apiVersion=2022-11-28#update-a-code-scanning-alert
 //
 //meta:operation PATCH /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}
-func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo string, id int64, body *CodeScanningAlertState) (*Alert, *Response, error) {
+func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo string, id int64, body UpdateCodeScanningAlertRequest) (*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
 
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
