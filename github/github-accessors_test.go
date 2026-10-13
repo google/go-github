@@ -17199,6 +17199,300 @@ func TestCreateReleaseRequest_GetTargetCommitish(tt *testing.T) {
 	c.GetTargetCommitish()
 }
 
+func TestCreateRepositoryRequest_GetAllowAutoMerge(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{AllowAutoMerge: &zeroValue}
+	c.GetAllowAutoMerge()
+	c = &CreateRepositoryRequest{}
+	c.GetAllowAutoMerge()
+	c = nil
+	c.GetAllowAutoMerge()
+}
+
+func TestCreateRepositoryRequest_GetAllowForking(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{AllowForking: &zeroValue}
+	c.GetAllowForking()
+	c = &CreateRepositoryRequest{}
+	c.GetAllowForking()
+	c = nil
+	c.GetAllowForking()
+}
+
+func TestCreateRepositoryRequest_GetAllowMergeCommit(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{AllowMergeCommit: &zeroValue}
+	c.GetAllowMergeCommit()
+	c = &CreateRepositoryRequest{}
+	c.GetAllowMergeCommit()
+	c = nil
+	c.GetAllowMergeCommit()
+}
+
+func TestCreateRepositoryRequest_GetAllowRebaseMerge(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{AllowRebaseMerge: &zeroValue}
+	c.GetAllowRebaseMerge()
+	c = &CreateRepositoryRequest{}
+	c.GetAllowRebaseMerge()
+	c = nil
+	c.GetAllowRebaseMerge()
+}
+
+func TestCreateRepositoryRequest_GetAllowSquashMerge(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{AllowSquashMerge: &zeroValue}
+	c.GetAllowSquashMerge()
+	c = &CreateRepositoryRequest{}
+	c.GetAllowSquashMerge()
+	c = nil
+	c.GetAllowSquashMerge()
+}
+
+func TestCreateRepositoryRequest_GetAllowUpdateBranch(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{AllowUpdateBranch: &zeroValue}
+	c.GetAllowUpdateBranch()
+	c = &CreateRepositoryRequest{}
+	c.GetAllowUpdateBranch()
+	c = nil
+	c.GetAllowUpdateBranch()
+}
+
+func TestCreateRepositoryRequest_GetAutoInit(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{AutoInit: &zeroValue}
+	c.GetAutoInit()
+	c = &CreateRepositoryRequest{}
+	c.GetAutoInit()
+	c = nil
+	c.GetAutoInit()
+}
+
+func TestCreateRepositoryRequest_GetCustomProperties(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	c := &CreateRepositoryRequest{CustomProperties: zeroValue}
+	c.GetCustomProperties()
+	c = &CreateRepositoryRequest{}
+	c.GetCustomProperties()
+	c = nil
+	c.GetCustomProperties()
+}
+
+func TestCreateRepositoryRequest_GetDeleteBranchOnMerge(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{DeleteBranchOnMerge: &zeroValue}
+	c.GetDeleteBranchOnMerge()
+	c = &CreateRepositoryRequest{}
+	c.GetDeleteBranchOnMerge()
+	c = nil
+	c.GetDeleteBranchOnMerge()
+}
+
+func TestCreateRepositoryRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateRepositoryRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateRepositoryRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateRepositoryRequest_GetGitignoreTemplate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateRepositoryRequest{GitignoreTemplate: &zeroValue}
+	c.GetGitignoreTemplate()
+	c = &CreateRepositoryRequest{}
+	c.GetGitignoreTemplate()
+	c = nil
+	c.GetGitignoreTemplate()
+}
+
+func TestCreateRepositoryRequest_GetHasDiscussions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{HasDiscussions: &zeroValue}
+	c.GetHasDiscussions()
+	c = &CreateRepositoryRequest{}
+	c.GetHasDiscussions()
+	c = nil
+	c.GetHasDiscussions()
+}
+
+func TestCreateRepositoryRequest_GetHasIssues(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{HasIssues: &zeroValue}
+	c.GetHasIssues()
+	c = &CreateRepositoryRequest{}
+	c.GetHasIssues()
+	c = nil
+	c.GetHasIssues()
+}
+
+func TestCreateRepositoryRequest_GetHasProjects(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{HasProjects: &zeroValue}
+	c.GetHasProjects()
+	c = &CreateRepositoryRequest{}
+	c.GetHasProjects()
+	c = nil
+	c.GetHasProjects()
+}
+
+func TestCreateRepositoryRequest_GetHasWiki(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{HasWiki: &zeroValue}
+	c.GetHasWiki()
+	c = &CreateRepositoryRequest{}
+	c.GetHasWiki()
+	c = nil
+	c.GetHasWiki()
+}
+
+func TestCreateRepositoryRequest_GetHomepage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateRepositoryRequest{Homepage: &zeroValue}
+	c.GetHomepage()
+	c = &CreateRepositoryRequest{}
+	c.GetHomepage()
+	c = nil
+	c.GetHomepage()
+}
+
+func TestCreateRepositoryRequest_GetIsTemplate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{IsTemplate: &zeroValue}
+	c.GetIsTemplate()
+	c = &CreateRepositoryRequest{}
+	c.GetIsTemplate()
+	c = nil
+	c.GetIsTemplate()
+}
+
+func TestCreateRepositoryRequest_GetLicenseTemplate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateRepositoryRequest{LicenseTemplate: &zeroValue}
+	c.GetLicenseTemplate()
+	c = &CreateRepositoryRequest{}
+	c.GetLicenseTemplate()
+	c = nil
+	c.GetLicenseTemplate()
+}
+
+func TestCreateRepositoryRequest_GetMergeCommitMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateRepositoryRequest{MergeCommitMessage: &zeroValue}
+	c.GetMergeCommitMessage()
+	c = &CreateRepositoryRequest{}
+	c.GetMergeCommitMessage()
+	c = nil
+	c.GetMergeCommitMessage()
+}
+
+func TestCreateRepositoryRequest_GetMergeCommitTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateRepositoryRequest{MergeCommitTitle: &zeroValue}
+	c.GetMergeCommitTitle()
+	c = &CreateRepositoryRequest{}
+	c.GetMergeCommitTitle()
+	c = nil
+	c.GetMergeCommitTitle()
+}
+
+func TestCreateRepositoryRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateRepositoryRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateRepositoryRequest_GetPrivate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{Private: &zeroValue}
+	c.GetPrivate()
+	c = &CreateRepositoryRequest{}
+	c.GetPrivate()
+	c = nil
+	c.GetPrivate()
+}
+
+func TestCreateRepositoryRequest_GetSquashMergeCommitMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateRepositoryRequest{SquashMergeCommitMessage: &zeroValue}
+	c.GetSquashMergeCommitMessage()
+	c = &CreateRepositoryRequest{}
+	c.GetSquashMergeCommitMessage()
+	c = nil
+	c.GetSquashMergeCommitMessage()
+}
+
+func TestCreateRepositoryRequest_GetSquashMergeCommitTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateRepositoryRequest{SquashMergeCommitTitle: &zeroValue}
+	c.GetSquashMergeCommitTitle()
+	c = &CreateRepositoryRequest{}
+	c.GetSquashMergeCommitTitle()
+	c = nil
+	c.GetSquashMergeCommitTitle()
+}
+
+func TestCreateRepositoryRequest_GetTeamID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CreateRepositoryRequest{TeamID: &zeroValue}
+	c.GetTeamID()
+	c = &CreateRepositoryRequest{}
+	c.GetTeamID()
+	c = nil
+	c.GetTeamID()
+}
+
+func TestCreateRepositoryRequest_GetUseSquashPRTitleAsDefault(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateRepositoryRequest{UseSquashPRTitleAsDefault: &zeroValue}
+	c.GetUseSquashPRTitleAsDefault()
+	c = &CreateRepositoryRequest{}
+	c.GetUseSquashPRTitleAsDefault()
+	c = nil
+	c.GetUseSquashPRTitleAsDefault()
+}
+
+func TestCreateRepositoryRequest_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateRepositoryRequest{Visibility: &zeroValue}
+	c.GetVisibility()
+	c = &CreateRepositoryRequest{}
+	c.GetVisibility()
+	c = nil
+	c.GetVisibility()
+}
+
 func TestCreateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
