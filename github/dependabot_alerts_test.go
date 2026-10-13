@@ -139,7 +139,7 @@ func TestDependabotService_UpdateAlert(t *testing.T) {
 	dismissedReason := new("no_bandwidth")
 	dismissedComment := new("no time to fix this")
 
-	alertState := &DependabotAlertState{State: *state, DismissedReason: dismissedReason, DismissedComment: dismissedComment}
+	alertState := &DependabotAlertState{State: state, DismissedReason: dismissedReason, DismissedComment: dismissedComment}
 
 	mux.HandleFunc("/repos/o/r/dependabot/alerts/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -175,4 +175,28 @@ func TestDependabotService_UpdateAlert(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestDependabotAlertState_Marshal(t *testing.T) {
+	t.Parallel()
+
+	dismissInput := DependabotAlertState{
+		State:           new("dismissed"),
+		DismissedReason: new("no_bandwidth"),
+	}
+	testJSONMarshal(t, dismissInput, `{"state":"dismissed","dismissed_reason":"no_bandwidth"}`)
+
+	assignInput := DependabotAlertState{
+		Assignees: []string{"copilot-swe-agent[bot]"},
+		AgentAssignment: &DependabotAlertAgentAssignment{
+			CustomInstructions: new("Upgrade the dependency"),
+			Model:              new("m"),
+		},
+	}
+	testJSONMarshal(t, assignInput, `{"assignees":["copilot-swe-agent[bot]"],"agent_assignment":{"custom_instructions":"Upgrade the dependency","model":"m"}}`)
+
+	unassignInput := DependabotAlertState{
+		Assignees: []string{},
+	}
+	testJSONMarshal(t, unassignInput, `{"assignees":[]}`)
 }

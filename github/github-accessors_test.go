@@ -7627,6 +7627,28 @@ func TestCodeScanningAlertEvent_GetSender(tt *testing.T) {
 	c.GetSender()
 }
 
+func TestCodeScanningAlertState_GetAssignees(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CodeScanningAlertState{Assignees: zeroValue}
+	c.GetAssignees()
+	c = &CodeScanningAlertState{}
+	c.GetAssignees()
+	c = nil
+	c.GetAssignees()
+}
+
+func TestCodeScanningAlertState_GetCreateRequest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CodeScanningAlertState{CreateRequest: &zeroValue}
+	c.GetCreateRequest()
+	c = &CodeScanningAlertState{}
+	c.GetCreateRequest()
+	c = nil
+	c.GetCreateRequest()
+}
+
 func TestCodeScanningAlertState_GetDismissedComment(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -7651,7 +7673,10 @@ func TestCodeScanningAlertState_GetDismissedReason(tt *testing.T) {
 
 func TestCodeScanningAlertState_GetState(tt *testing.T) {
 	tt.Parallel()
-	c := &CodeScanningAlertState{}
+	var zeroValue string
+	c := &CodeScanningAlertState{State: &zeroValue}
+	c.GetState()
+	c = &CodeScanningAlertState{}
 	c.GetState()
 	c = nil
 	c.GetState()
@@ -18779,6 +18804,39 @@ func TestDependabotAlert_GetURL(tt *testing.T) {
 	d.GetURL()
 }
 
+func TestDependabotAlertAgentAssignment_GetCustomAgent(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	d := &DependabotAlertAgentAssignment{CustomAgent: &zeroValue}
+	d.GetCustomAgent()
+	d = &DependabotAlertAgentAssignment{}
+	d.GetCustomAgent()
+	d = nil
+	d.GetCustomAgent()
+}
+
+func TestDependabotAlertAgentAssignment_GetCustomInstructions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	d := &DependabotAlertAgentAssignment{CustomInstructions: &zeroValue}
+	d.GetCustomInstructions()
+	d = &DependabotAlertAgentAssignment{}
+	d.GetCustomInstructions()
+	d = nil
+	d.GetCustomInstructions()
+}
+
+func TestDependabotAlertAgentAssignment_GetModel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	d := &DependabotAlertAgentAssignment{Model: &zeroValue}
+	d.GetModel()
+	d = &DependabotAlertAgentAssignment{}
+	d.GetModel()
+	d = nil
+	d.GetModel()
+}
+
 func TestDependabotAlertDismissalRequest_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -18890,6 +18948,25 @@ func TestDependabotAlertEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 }
 
+func TestDependabotAlertState_GetAgentAssignment(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotAlertState{}
+	d.GetAgentAssignment()
+	d = nil
+	d.GetAgentAssignment()
+}
+
+func TestDependabotAlertState_GetAssignees(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	d := &DependabotAlertState{Assignees: zeroValue}
+	d.GetAssignees()
+	d = &DependabotAlertState{}
+	d.GetAssignees()
+	d = nil
+	d.GetAssignees()
+}
+
 func TestDependabotAlertState_GetDismissedComment(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -18914,7 +18991,10 @@ func TestDependabotAlertState_GetDismissedReason(tt *testing.T) {
 
 func TestDependabotAlertState_GetState(tt *testing.T) {
 	tt.Parallel()
-	d := &DependabotAlertState{}
+	var zeroValue string
+	d := &DependabotAlertState{State: &zeroValue}
+	d.GetState()
+	d = &DependabotAlertState{}
 	d.GetState()
 	d = nil
 	d.GetState()

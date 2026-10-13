@@ -225,16 +225,22 @@ type SarifAnalysis struct {
 //
 // GitHub API docs: https://docs.github.com/rest/code-scanning?apiVersion=2022-11-28
 type CodeScanningAlertState struct {
-	// State sets the state of the code scanning alert and is a required field.
+	// State sets the state of the code scanning alert.
+	// Either State or Assignees must be provided.
 	// You must also provide DismissedReason when you set the state to "dismissed".
 	// State can be one of: "open", "dismissed".
-	State string `json:"state"`
+	State *string `json:"state,omitempty"`
 	// DismissedReason represents the reason for dismissing or closing the alert.
 	// It is required when the state is "dismissed".
 	// It can be one of: "false positive", "won't fix", "used in tests".
 	DismissedReason *string `json:"dismissed_reason,omitempty"`
 	// DismissedComment is associated with the dismissal of the alert.
 	DismissedComment *string `json:"dismissed_comment,omitempty"`
+	// CreateRequest, if true, attempts to create an alert dismissal request.
+	CreateRequest *bool `json:"create_request,omitempty"`
+	// Assignees replaces the users assigned to the alert.
+	// Either State or Assignees must be provided. An empty slice removes all assignees.
+	Assignees []string `json:"assignees,omitzero"`
 }
 
 // SarifID identifies a sarif analysis upload.

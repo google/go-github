@@ -100,12 +100,25 @@ type DependabotAlertDismissalRequest struct {
 // DependabotAlertState represents the state of a Dependabot alert to update.
 type DependabotAlertState struct {
 	// The state of the Dependabot alert. A dismissed_reason must be provided when setting the state to dismissed.
-	State string `json:"state"`
+	// Either State or Assignees must be provided.
+	State *string `json:"state,omitempty"`
 	// Required when state is dismissed. A reason for dismissing the alert.
 	// Can be one of: fix_started, inaccurate, no_bandwidth, not_used, tolerable_risk
 	DismissedReason *string `json:"dismissed_reason,omitempty"`
 	// An optional comment associated with dismissing the alert.
 	DismissedComment *string `json:"dismissed_comment,omitempty"`
+	// Usernames to assign to the alert, replacing the current assignees.
+	// Either State or Assignees must be provided. An empty slice removes all assignees.
+	Assignees []string `json:"assignees,omitzero"`
+	// Parameters for AI agent assignment. Only used when an agent bot login is included in Assignees.
+	AgentAssignment *DependabotAlertAgentAssignment `json:"agent_assignment,omitempty"`
+}
+
+// DependabotAlertAgentAssignment represents the parameters for assigning an AI agent to a Dependabot alert.
+type DependabotAlertAgentAssignment struct {
+	CustomInstructions *string `json:"custom_instructions,omitempty"`
+	CustomAgent        *string `json:"custom_agent,omitempty"`
+	Model              *string `json:"model,omitempty"`
 }
 
 // ListAlertsOptions specifies the optional parameters to the DependabotService.ListRepoAlerts

@@ -709,7 +709,7 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 	dismissedComment := new("This alert is not actually correct as sanitizer is used")
 	dismissedReason := new("false positive")
 	state := new("dismissed")
-	stateInfo := &CodeScanningAlertState{State: *state, DismissedReason: dismissedReason, DismissedComment: dismissedComment}
+	stateInfo := &CodeScanningAlertState{State: state, DismissedReason: dismissedReason, DismissedComment: dismissedComment}
 	alert, _, err := client.CodeScanning.UpdateAlert(ctx, "o", "r", 88, stateInfo)
 	if err != nil {
 		t.Errorf("CodeScanning.UpdateAlert returned error: %v", err)
@@ -770,6 +770,27 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestCodeScanningAlertState_Marshal(t *testing.T) {
+	t.Parallel()
+
+	dismissInput := CodeScanningAlertState{
+		State:           new("dismissed"),
+		DismissedReason: new("false positive"),
+		CreateRequest:   new(true),
+	}
+	testJSONMarshal(t, dismissInput, `{"state":"dismissed","dismissed_reason":"false positive","create_request":true}`)
+
+	assignInput := CodeScanningAlertState{
+		Assignees: []string{"octocat"},
+	}
+	testJSONMarshal(t, assignInput, `{"assignees":["octocat"]}`)
+
+	unassignInput := CodeScanningAlertState{
+		Assignees: []string{},
+	}
+	testJSONMarshal(t, unassignInput, `{"assignees":[]}`)
 }
 
 func TestCodeScanningService_ListAlertInstances(t *testing.T) {

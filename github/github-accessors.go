@@ -6054,6 +6054,22 @@ func (c *CodeScanningAlertEvent) GetSender() *User {
 	return c.Sender
 }
 
+// GetAssignees returns the Assignees slice if it's non-nil, nil otherwise.
+func (c *CodeScanningAlertState) GetAssignees() []string {
+	if c == nil || c.Assignees == nil {
+		return nil
+	}
+	return c.Assignees
+}
+
+// GetCreateRequest returns the CreateRequest field if it's non-nil, zero value otherwise.
+func (c *CodeScanningAlertState) GetCreateRequest() bool {
+	if c == nil || c.CreateRequest == nil {
+		return false
+	}
+	return *c.CreateRequest
+}
+
 // GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
 func (c *CodeScanningAlertState) GetDismissedComment() string {
 	if c == nil || c.DismissedComment == nil {
@@ -6070,12 +6086,12 @@ func (c *CodeScanningAlertState) GetDismissedReason() string {
 	return *c.DismissedReason
 }
 
-// GetState returns the State field.
+// GetState returns the State field if it's non-nil, zero value otherwise.
 func (c *CodeScanningAlertState) GetState() string {
-	if c == nil {
+	if c == nil || c.State == nil {
 		return ""
 	}
-	return c.State
+	return *c.State
 }
 
 // GetParameters returns the Parameters field.
@@ -14926,6 +14942,30 @@ func (d *DependabotAlert) GetURL() string {
 	return *d.URL
 }
 
+// GetCustomAgent returns the CustomAgent field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertAgentAssignment) GetCustomAgent() string {
+	if d == nil || d.CustomAgent == nil {
+		return ""
+	}
+	return *d.CustomAgent
+}
+
+// GetCustomInstructions returns the CustomInstructions field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertAgentAssignment) GetCustomInstructions() string {
+	if d == nil || d.CustomInstructions == nil {
+		return ""
+	}
+	return *d.CustomInstructions
+}
+
+// GetModel returns the Model field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertAgentAssignment) GetModel() string {
+	if d == nil || d.Model == nil {
+		return ""
+	}
+	return *d.Model
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (d *DependabotAlertDismissalRequest) GetCreatedAt() Timestamp {
 	if d == nil || d.CreatedAt == nil {
@@ -15022,6 +15062,22 @@ func (d *DependabotAlertEvent) GetSender() *User {
 	return d.Sender
 }
 
+// GetAgentAssignment returns the AgentAssignment field.
+func (d *DependabotAlertState) GetAgentAssignment() *DependabotAlertAgentAssignment {
+	if d == nil {
+		return nil
+	}
+	return d.AgentAssignment
+}
+
+// GetAssignees returns the Assignees slice if it's non-nil, nil otherwise.
+func (d *DependabotAlertState) GetAssignees() []string {
+	if d == nil || d.Assignees == nil {
+		return nil
+	}
+	return d.Assignees
+}
+
 // GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
 func (d *DependabotAlertState) GetDismissedComment() string {
 	if d == nil || d.DismissedComment == nil {
@@ -15038,12 +15094,12 @@ func (d *DependabotAlertState) GetDismissedReason() string {
 	return *d.DismissedReason
 }
 
-// GetState returns the State field.
+// GetState returns the State field if it's non-nil, zero value otherwise.
 func (d *DependabotAlertState) GetState() string {
-	if d == nil {
+	if d == nil || d.State == nil {
 		return ""
 	}
-	return d.State
+	return *d.State
 }
 
 // GetClassification returns the Classification field if it's non-nil, zero value otherwise.
