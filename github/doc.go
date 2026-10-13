@@ -169,9 +169,9 @@ https://docs.github.com/rest/using-the-rest-api/best-practices-for-using-the-res
 
 # Creating and Updating Resources
 
-When creating a repository, the required name is a value and optional fields
-use pointers. This allows distinguishing between unset optional fields and
-those set to a zero-value.
+Many resource and request structs use pointers for optional scalar fields. This
+allows distinguishing between unset fields and those set to a zero-value.
+Required fields such as [CreateRepositoryRequest.Name] use value types.
 Use the new builtin to easily create these pointers for string,
 bool, and int values. For example:
 
