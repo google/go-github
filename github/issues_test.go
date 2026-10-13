@@ -483,18 +483,18 @@ func TestIssuesService_Lock(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	if _, err := client.Issues.Lock(ctx, "o", "r", 1, nil); err != nil {
+	if _, err := client.Issues.Lock(ctx, "o", "r", 1, LockIssueRequest{}); err != nil {
 		t.Errorf("Issues.Lock returned error: %v", err)
 	}
 
 	const methodName = "Lock"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Issues.Lock(ctx, "\n", "\n", -1, nil)
+		_, err = client.Issues.Lock(ctx, "\n", "\n", -1, LockIssueRequest{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Issues.Lock(ctx, "o", "r", 1, nil)
+		return client.Issues.Lock(ctx, "o", "r", 1, LockIssueRequest{})
 	})
 }
 
@@ -502,15 +502,16 @@ func TestIssuesService_LockWithReason(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	body := LockIssueRequest{LockReason: new("off-topic")}
+
 	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
+		testJSONBody(t, r, body)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	opt := &LockIssueOptions{LockReason: "off-topic"}
-
 	ctx := t.Context()
-	if _, err := client.Issues.Lock(ctx, "o", "r", 1, opt); err != nil {
+	if _, err := client.Issues.Lock(ctx, "o", "r", 1, body); err != nil {
 		t.Errorf("Issues.Lock returned error: %v", err)
 	}
 }
