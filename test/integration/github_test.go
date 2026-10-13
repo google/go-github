@@ -79,8 +79,8 @@ func createRandomTestRepository(t *testing.T, owner string, autoinit bool) *gith
 	repo, _, err := client.Repositories.Create(
 		t.Context(),
 		owner,
-		&github.Repository{
-			Name:     &repoName,
+		github.CreateRepositoryRequest{
+			Name:     repoName,
 			AutoInit: &autoinit,
 		},
 	)

@@ -169,14 +169,15 @@ https://docs.github.com/rest/using-the-rest-api/best-practices-for-using-the-res
 
 # Creating and Updating Resources
 
-All structs for GitHub resources use pointer values for all non-repeated fields.
-This allows distinguishing between unset fields and those set to a zero-value.
+Many resource and request structs use pointers for optional scalar fields. This
+allows distinguishing between unset fields and those set to a zero-value.
+Required fields such as [CreateRepositoryRequest.Name] use value types.
 Use the new builtin to easily create these pointers for string,
 bool, and int values. For example:
 
 	// create a new private repository named "foo"
-	repo := &github.Repository{
-		Name:    new("foo"),
+	repo := github.CreateRepositoryRequest{
+		Name:    "foo",
 		Private: new(true),
 	}
 	client.Repositories.Create(ctx, "", repo)

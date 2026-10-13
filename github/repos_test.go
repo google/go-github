@@ -221,17 +221,13 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Repository{
-		Name:     new("n"),
-		Archived: new(true), // not passed along.
-	}
+	input := CreateRepositoryRequest{Name: "n"}
 
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		want := &createRepoRequest{Name: new("n")}
-		testJSONBody(t, r, want)
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -248,10 +244,6 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 	}
 
 	const methodName = "Create"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.Create(ctx, "", nil)
-		return err
-	})
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Repositories.Create(ctx, "\n", input)
 		return err
@@ -270,17 +262,13 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Repository{
-		Name:     new("n"),
-		Archived: new(true), // not passed along.
-	}
+	input := CreateRepositoryRequest{Name: "n"}
 
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		want := &createRepoRequest{Name: new("n")}
-		testJSONBody(t, r, want)
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -300,8 +288,8 @@ func TestRepositoriesService_Create_withCustomProperties(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Repository{
-		Name: new("n"),
+	input := CreateRepositoryRequest{
+		Name: "n",
 		CustomProperties: map[string]any{
 			"environment": "production",
 			"team":        "backend",
@@ -313,15 +301,7 @@ func TestRepositoriesService_Create_withCustomProperties(t *testing.T) {
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		want := &createRepoRequest{
-			Name: new("n"),
-			CustomProperties: map[string]any{
-				"environment": "production",
-				"team":        "backend",
-				"priority":    float64(1), // JSON unmarshals numbers as float64
-			},
-		}
-		testJSONBody(t, r, want)
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -334,6 +314,56 @@ func TestRepositoriesService_Create_withCustomProperties(t *testing.T) {
 	want := &Repository{ID: new(int64(1))}
 	if !cmp.Equal(repo, want) {
 		t.Errorf("Repositories.Create returned %+v, want %+v", repo, want)
+	}
+}
+
+func TestRepositoriesService_Create_jsonFields(t *testing.T) {
+	t.Parallel()
+
+	for _, endpoint := range []struct {
+		name string
+		org  string
+		path string
+	}{
+		{name: "user", path: "/user/repos"},
+		{name: "org", org: "o", path: "/orgs/o/repos"},
+	} {
+		t.Run(endpoint.name, func(t *testing.T) {
+			t.Parallel()
+			for _, tt := range []struct {
+				name  string
+				input CreateRepositoryRequest
+				want  string
+			}{
+				{
+					name: "unset optional fields",
+					want: `{"name":""}`,
+				},
+				{
+					name: "explicit optional zero values",
+					input: CreateRepositoryRequest{
+						Description: new(""),
+						Private:     new(false),
+						HasIssues:   new(false),
+					},
+					want: `{"name":"","description":"","private":false,"has_issues":false}`,
+				},
+			} {
+				t.Run(tt.name, func(t *testing.T) {
+					t.Parallel()
+					client, mux, _ := setup(t)
+					mux.HandleFunc(endpoint.path, func(w http.ResponseWriter, r *http.Request) {
+						testMethod(t, r, "POST")
+						testJSONBodyRaw(t, r, tt.want)
+						fmt.Fprint(w, `{"id":1}`)
+					})
+
+					if _, _, err := client.Repositories.Create(t.Context(), endpoint.org, tt.input); err != nil {
+						t.Errorf("Repositories.Create returned error: %v", err)
+					}
+				})
+			}
+		})
 	}
 }
 

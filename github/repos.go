@@ -502,14 +502,9 @@ func (s *RepositoriesService) ListAll(ctx context.Context, opts *RepositoryListA
 	return repos, resp, nil
 }
 
-// createRepoRequest is a subset of Repository and is used internally
-// by Create to pass only the known fields for the endpoint.
-//
-// See https://github.com/google/go-github/issues/1014 for more
-// information.
-type createRepoRequest struct {
-	// Name is required when creating a repo.
-	Name        *string `json:"name,omitempty"`
+// CreateRepositoryRequest specifies the repository to create.
+type CreateRepositoryRequest struct {
+	Name        string  `json:"name"`
 	Description *string `json:"description,omitempty"`
 	Homepage    *string `json:"homepage,omitempty"`
 
@@ -521,7 +516,7 @@ type createRepoRequest struct {
 	HasDiscussions *bool   `json:"has_discussions,omitempty"`
 	IsTemplate     *bool   `json:"is_template,omitempty"`
 
-	// Creating an organization repository. Required for non-owners.
+	// TeamID is used when creating an organization repository.
 	TeamID *int64 `json:"team_id,omitempty"`
 
 	AutoInit                  *bool          `json:"auto_init,omitempty"`
@@ -542,12 +537,11 @@ type createRepoRequest struct {
 	CustomProperties          map[string]any `json:"custom_properties,omitempty"`
 }
 
+func (r CreateRepositoryRequest) String() string { return Stringify(r) }
+
 // Create a new repository. If an organization is specified, the new
 // repository will be created under that org. If the empty string is
 // specified, it will be created for the authenticated user.
-//
-// Note that only a subset of the repo fields are used and repo must
-// not be nil.
 //
 // Also note that this method will return the response without actually
 // waiting for GitHub to finish creating the repository and letting the
@@ -560,11 +554,7 @@ type createRepoRequest struct {
 //
 //meta:operation POST /orgs/{org}/repos
 //meta:operation POST /user/repos
-func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repository) (*Repository, *Response, error) {
-	if repo == nil {
-		return nil, nil, errors.New("repository must be provided")
-	}
-
+func (s *RepositoriesService) Create(ctx context.Context, org string, body CreateRepositoryRequest) (*Repository, *Response, error) {
 	var u string
 	if org != "" {
 		u = fmt.Sprintf("orgs/%v/repos", org)
@@ -572,37 +562,7 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		u = "user/repos"
 	}
 
-	repoReq := &createRepoRequest{
-		Name:                      repo.Name,
-		Description:               repo.Description,
-		Homepage:                  repo.Homepage,
-		Private:                   repo.Private,
-		Visibility:                repo.Visibility,
-		HasIssues:                 repo.HasIssues,
-		HasProjects:               repo.HasProjects,
-		HasWiki:                   repo.HasWiki,
-		HasDiscussions:            repo.HasDiscussions,
-		IsTemplate:                repo.IsTemplate,
-		TeamID:                    repo.TeamID,
-		AutoInit:                  repo.AutoInit,
-		GitignoreTemplate:         repo.GitignoreTemplate,
-		LicenseTemplate:           repo.LicenseTemplate,
-		AllowSquashMerge:          repo.AllowSquashMerge,
-		AllowMergeCommit:          repo.AllowMergeCommit,
-		AllowRebaseMerge:          repo.AllowRebaseMerge,
-		AllowUpdateBranch:         repo.AllowUpdateBranch,
-		AllowAutoMerge:            repo.AllowAutoMerge,
-		AllowForking:              repo.AllowForking,
-		DeleteBranchOnMerge:       repo.DeleteBranchOnMerge,
-		UseSquashPRTitleAsDefault: repo.UseSquashPRTitleAsDefault,
-		SquashMergeCommitTitle:    repo.SquashMergeCommitTitle,
-		SquashMergeCommitMessage:  repo.SquashMergeCommitMessage,
-		MergeCommitTitle:          repo.MergeCommitTitle,
-		MergeCommitMessage:        repo.MergeCommitMessage,
-		CustomProperties:          repo.CustomProperties,
-	}
-
-	req, err := s.client.NewRequest(ctx, "POST", u, repoReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
