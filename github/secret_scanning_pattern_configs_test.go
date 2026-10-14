@@ -220,17 +220,7 @@ func TestSecretScanningService_UpdatePatternConfigsForEnterprise(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/e/secret-scanning/pattern-configurations", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-
-		fmt.Fprint(w, `{
-			"pattern_config_version": "0ujsswThIGTUYm2K8FjOOfXtY1K"
-		}`)
-	})
-
-	ctx := t.Context()
-
-	opts := &SecretScanningPatternConfigsUpdateOptions{
+	input := UpdateSecretScanningPatternConfigsRequest{
 		PatternConfigVersion: new("0ujsswThIGTUYm2K8FjOOfXtY1K"),
 		ProviderPatternSettings: []*SecretScanningProviderPatternSetting{
 			{
@@ -247,7 +237,18 @@ func TestSecretScanningService_UpdatePatternConfigsForEnterprise(t *testing.T) {
 		},
 	}
 
-	configsUpdate, _, err := client.SecretScanning.UpdatePatternConfigsForEnterprise(ctx, "e", opts)
+	mux.HandleFunc("/enterprises/e/secret-scanning/pattern-configurations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testJSONBody(t, r, input)
+
+		fmt.Fprint(w, `{
+			"pattern_config_version": "0ujsswThIGTUYm2K8FjOOfXtY1K"
+		}`)
+	})
+
+	ctx := t.Context()
+
+	configsUpdate, _, err := client.SecretScanning.UpdatePatternConfigsForEnterprise(ctx, "e", input)
 	if err != nil {
 		t.Errorf("SecretScanning.UpdatePatternConfigsForEnterprise returned error: %v", err)
 	}
@@ -263,12 +264,12 @@ func TestSecretScanningService_UpdatePatternConfigsForEnterprise(t *testing.T) {
 	const methodName = "UpdatePatternConfigsForEnterprise"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.SecretScanning.UpdatePatternConfigsForEnterprise(ctx, "\n", opts)
+		_, _, err = client.SecretScanning.UpdatePatternConfigsForEnterprise(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		_, resp, err := client.SecretScanning.UpdatePatternConfigsForEnterprise(ctx, "o", opts)
+		_, resp, err := client.SecretScanning.UpdatePatternConfigsForEnterprise(ctx, "o", input)
 		return resp, err
 	})
 }
@@ -277,17 +278,7 @@ func TestSecretScanningService_UpdatePatternConfigsForOrg(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/secret-scanning/pattern-configurations", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-
-		fmt.Fprint(w, `{
-			"pattern_config_version": "0ujsswThIGTUYm2K8FjOOfXtY1K"
-		}`)
-	})
-
-	ctx := t.Context()
-
-	opts := &SecretScanningPatternConfigsUpdateOptions{
+	input := UpdateSecretScanningPatternConfigsRequest{
 		PatternConfigVersion: new("0ujsswThIGTUYm2K8FjOOfXtY1K"),
 		ProviderPatternSettings: []*SecretScanningProviderPatternSetting{
 			{
@@ -304,7 +295,18 @@ func TestSecretScanningService_UpdatePatternConfigsForOrg(t *testing.T) {
 		},
 	}
 
-	configsUpdate, _, err := client.SecretScanning.UpdatePatternConfigsForOrg(ctx, "o", opts)
+	mux.HandleFunc("/orgs/o/secret-scanning/pattern-configurations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testJSONBody(t, r, input)
+
+		fmt.Fprint(w, `{
+			"pattern_config_version": "0ujsswThIGTUYm2K8FjOOfXtY1K"
+		}`)
+	})
+
+	ctx := t.Context()
+
+	configsUpdate, _, err := client.SecretScanning.UpdatePatternConfigsForOrg(ctx, "o", input)
 	if err != nil {
 		t.Errorf("SecretScanning.UpdatePatternConfigsForOrg returned err: %v", err)
 	}
@@ -320,12 +322,12 @@ func TestSecretScanningService_UpdatePatternConfigsForOrg(t *testing.T) {
 	const methodName = "UpdatePatternConfigsForOrg"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.SecretScanning.UpdatePatternConfigsForOrg(ctx, "\n", opts)
+		_, _, err = client.SecretScanning.UpdatePatternConfigsForOrg(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		_, resp, err := client.SecretScanning.UpdatePatternConfigsForOrg(ctx, "o", opts)
+		_, resp, err := client.SecretScanning.UpdatePatternConfigsForOrg(ctx, "o", input)
 		return resp, err
 	})
 }

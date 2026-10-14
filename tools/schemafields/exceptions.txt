@@ -11,8 +11,14 @@
 # Run "script/check-schema-fields.sh -fix" to repair the error-severity findings
 # that no line here grandfathers. It drops the lines that no finding needs any
 # more, so the file can only shrink.
+#
+# CreateRepositoryRequest.AllowForking and CreateRepositoryRequest.AllowUpdateBranch
+# preserve fields previously available through the Repository request body,
+# although they are absent from the pinned repository creation request schemas.
 CodeSecurityConfiguration.Description
 CreateCheckSuiteOptions.HeadBranch
+CreateRepositoryRequest.AllowForking
+CreateRepositoryRequest.AllowUpdateBranch
 CreateTeamRequest.LDAPDN
 IDPGroupList.Groups
 OIDCSubjectClaimCustomTemplate.UseDefault

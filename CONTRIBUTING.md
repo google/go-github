@@ -415,8 +415,8 @@ type RepositoryRuleset struct {
 }
 ```
 
-For optional boolean fields where you need to distinguish between `false`
-and "not set", use `*bool` with `omitzero`.
+If you need to differentiate between an unset pointer to a basic type and a `nil` value you can add an un-marshaled struct field to control this behaviour and provide a custom `MarshalJSON` implementation for the struct (see `UpdateTeamRequest.RemoveParentTeam` in
+`github/teams.go`).
 
 Whether a request body property is required is documented by GitHub in their
 OpenAPI descriptions, not in this repository, so these rules are checked by

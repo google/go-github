@@ -735,6 +735,78 @@ func TestActionsService_ListOrgVariablesIter(t *testing.T) {
 	}
 }
 
+func TestActionsService_ListOrganizationPoliciesIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `{"policies": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"policies": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"policies": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"policies": [{},{}]}`)
+		}
+	})
+
+	iter := client.Actions.ListOrganizationPoliciesIter(t.Context(), "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Actions.ListOrganizationPoliciesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ActionsPolicyListOptions{}
+	iter = client.Actions.ListOrganizationPoliciesIter(t.Context(), "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Actions.ListOrganizationPoliciesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Actions.ListOrganizationPoliciesIter(t.Context(), "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Actions.ListOrganizationPoliciesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Actions.ListOrganizationPoliciesIter(t.Context(), "", nil)
+	gotItems = 0
+	iter(func(item *ActionsPolicy, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Actions.ListOrganizationPoliciesIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
 func TestActionsService_ListOrganizationRunnerGroupsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -1308,6 +1380,78 @@ func TestActionsService_ListRepositoryAccessRunnerGroupIter(t *testing.T) {
 	})
 	if gotItems != 1 {
 		t.Errorf("client.Actions.ListRepositoryAccessRunnerGroupIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestActionsService_ListRepositoryPoliciesIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `{"policies": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"policies": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"policies": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"policies": [{},{}]}`)
+		}
+	})
+
+	iter := client.Actions.ListRepositoryPoliciesIter(t.Context(), "", "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Actions.ListRepositoryPoliciesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ActionsPolicyListOptions{}
+	iter = client.Actions.ListRepositoryPoliciesIter(t.Context(), "", "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Actions.ListRepositoryPoliciesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Actions.ListRepositoryPoliciesIter(t.Context(), "", "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Actions.ListRepositoryPoliciesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Actions.ListRepositoryPoliciesIter(t.Context(), "", "", nil)
+	gotItems = 0
+	iter(func(item *ActionsPolicy, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Actions.ListRepositoryPoliciesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 

@@ -104,10 +104,11 @@ func main() {
 
 	for pkgName, pkg := range pkgs {
 		t := &templateData{
-			filename: pkgName + fileSuffix,
-			Year:     2017,
-			Package:  pkgName,
-			Imports:  map[string]string{},
+			filename:        pkgName + fileSuffix,
+			Year:            2017,
+			Package:         pkgName,
+			Imports:         map[string]string{},
+			NamedZeroValues: packageNamedZeroValues(pkg),
 		}
 		for filename, f := range pkg.Files {
 			if *verbose && processOnly != nil && !processOnly[filename] {
@@ -124,6 +125,31 @@ func main() {
 		}
 	}
 	logf("Done.")
+}
+func packageNamedZeroValues(pkg *ast.Package) map[string]string {
+	values := make(map[string]string)
+	for _, f := range pkg.Files {
+		for _, decl := range f.Decls {
+			gd, ok := decl.(*ast.GenDecl)
+			if !ok {
+				continue
+			}
+			for _, spec := range gd.Specs {
+				ts, ok := spec.(*ast.TypeSpec)
+				if !ok {
+					continue
+				}
+				underlying, ok := ts.Type.(*ast.Ident)
+				if !ok {
+					continue
+				}
+				if zero := zeroValueOfIdent(underlying); zero != "nil" {
+					values[ts.Name.Name] = zero
+				}
+			}
+		}
+	}
+	return values
 }
 
 func (t *templateData) processAST(f *ast.File) error {
@@ -317,7 +343,9 @@ func (t *templateData) addSimpleValueIdent(x *ast.Ident, receiverType, fieldName
 	getter.IsSimpleValue = true
 	logf("addSimpleValueIdent: Processing %q - fieldName=%q, getter.ZeroValue=%q, x.Obj=%#v", x.String(), fieldName, getter.ZeroValue, x.Obj)
 	if getter.ZeroValue == "nil" {
-		if x.Obj == nil {
+		if zero, ok := t.NamedZeroValues[x.String()]; ok {
+			getter.ZeroValue = zero
+		} else if x.Obj == nil {
 			switch x.String() {
 			case "any": // NOOP - leave as `nil`
 			default:
@@ -445,11 +473,12 @@ func (t *templateData) genSelectorExprGetter(x *ast.SelectorExpr, receiverType, 
 }
 
 type templateData struct {
-	filename string
-	Year     int
-	Package  string
-	Imports  map[string]string
-	Getters  []*getter
+	filename        string
+	Year            int
+	Package         string
+	Imports         map[string]string
+	NamedZeroValues map[string]string
+	Getters         []*getter
 }
 
 type getter struct {

@@ -6,6 +6,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -287,6 +288,103 @@ func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestActionsService_UpdateOrganizationRunnerGroup_NetworkConfiguration(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		body UpdateRunnerGroupRequest
+		want string
+	}{
+		{
+			name: "zero value",
+			body: UpdateRunnerGroupRequest{},
+			want: `{"name":""}`,
+		},
+		{
+			name: "omitted",
+			body: UpdateRunnerGroupRequest{Name: "runner-group"},
+			want: `{"name":"runner-group"}`,
+		},
+		{
+			name: "set",
+			body: UpdateRunnerGroupRequest{Name: "runner-group", NetworkConfigurationID: new("network-id")},
+			want: `{"name":"runner-group","network_configuration_id":"network-id"}`,
+		},
+		{
+			name: "empty ID without removal",
+			body: UpdateRunnerGroupRequest{
+				Name:                       "runner-group",
+				NetworkConfigurationID:     new(""),
+				RemoveNetworkConfiguration: false,
+			},
+			want: `{"name":"runner-group","network_configuration_id":""}`,
+		},
+		{
+			name: "remove",
+			body: UpdateRunnerGroupRequest{Name: "runner-group", RemoveNetworkConfiguration: true},
+			want: `{"name":"runner-group","network_configuration_id":null}`,
+		},
+		{
+			name: "remove takes precedence",
+			body: UpdateRunnerGroupRequest{
+				Name:                       "runner-group",
+				NetworkConfigurationID:     new("network-id"),
+				RemoveNetworkConfiguration: true,
+			},
+			want: `{"name":"runner-group","network_configuration_id":null}`,
+		},
+		{
+			name: "remove preserves other fields",
+			body: UpdateRunnerGroupRequest{
+				Name:                       "renamed",
+				Visibility:                 new("selected"),
+				AllowsPublicRepositories:   new(false),
+				RestrictedToWorkflows:      new(true),
+				SelectedWorkflows:          []string{"o/r/.github/workflows/build.yml@refs/heads/main"},
+				RemoveNetworkConfiguration: true,
+			},
+			want: `{"name":"renamed","visibility":"selected","allows_public_repositories":false,"restricted_to_workflows":true,"selected_workflows":["o/r/.github/workflows/build.yml@refs/heads/main"],"network_configuration_id":null}`,
+		},
+		{
+			name: "rename only",
+			body: UpdateRunnerGroupRequest{Name: "renamed"},
+			want: `{"name":"renamed"}`,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			before := Stringify(tt.body)
+			testJSONMarshalOnly(t, tt.body, tt.want)
+			testJSONMarshalOnly(t, &tt.body, tt.want)
+			if got := Stringify(tt.body); got != before {
+				t.Errorf("json.Marshal changed request to %v, want %v", got, before)
+			}
+
+			var want map[string]json.RawMessage
+			if err := json.Unmarshal([]byte(tt.want), &want); err != nil {
+				t.Fatalf("json.Unmarshal returned error: %v", err)
+			}
+
+			client, mux, _ := setup(t)
+			mux.HandleFunc("/orgs/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "PATCH")
+				testJSONBody(t, r, want)
+				fmt.Fprint(w, `{"id":2}`)
+			})
+
+			if _, _, err := client.Actions.UpdateOrganizationRunnerGroup(t.Context(), "o", 2, tt.body); err != nil {
+				t.Fatalf("Actions.UpdateOrganizationRunnerGroup returned error: %v", err)
+			}
+			if got := Stringify(tt.body); got != before {
+				t.Errorf("Actions.UpdateOrganizationRunnerGroup changed request to %v, want %v", got, before)
+			}
+		})
+	}
 }
 
 func TestActionsService_ListRepositoryAccessRunnerGroup(t *testing.T) {

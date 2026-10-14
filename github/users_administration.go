@@ -42,8 +42,8 @@ func (s *UsersService) DemoteSiteAdmin(ctx context.Context, user string) (*Respo
 	return s.client.Do(req, nil)
 }
 
-// UserSuspendOptions represents the reason to suspend a user.
-type UserSuspendOptions struct {
+// SuspendUserRequest represents a request to suspend a user.
+type SuspendUserRequest struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
@@ -52,7 +52,7 @@ type UserSuspendOptions struct {
 // GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/users#suspend-a-user
 //
 //meta:operation PUT /users/{username}/suspended
-func (s *UsersService) Suspend(ctx context.Context, user string, body *UserSuspendOptions) (*Response, error) {
+func (s *UsersService) Suspend(ctx context.Context, user string, body SuspendUserRequest) (*Response, error) {
 	u := fmt.Sprintf("users/%v/suspended", user)
 
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)

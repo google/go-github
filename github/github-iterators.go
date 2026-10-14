@@ -364,6 +364,41 @@ func (s *ActionsService) ListOrgVariablesIter(ctx context.Context, org string, o
 	}
 }
 
+// ListOrganizationPoliciesIter returns an iterator that paginates through all results of ListOrganizationPolicies.
+func (s *ActionsService) ListOrganizationPoliciesIter(ctx context.Context, org string, opts *ActionsPolicyListOptions) iter.Seq2[*ActionsPolicy, error] {
+	return func(yield func(*ActionsPolicy, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ActionsPolicyListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListOrganizationPolicies(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*ActionsPolicy
+			if results != nil {
+				iterItems = results.Policies
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListOrganizationRunnerGroupsIter returns an iterator that paginates through all results of ListOrganizationRunnerGroups.
 func (s *ActionsService) ListOrganizationRunnerGroupsIter(ctx context.Context, org string, opts *ListOrgRunnerGroupOptions) iter.Seq2[*RunnerGroup, error] {
 	return func(yield func(*RunnerGroup, error) bool) {
@@ -640,6 +675,41 @@ func (s *ActionsService) ListRepositoryAccessRunnerGroupIter(ctx context.Context
 				break
 			}
 			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListRepositoryPoliciesIter returns an iterator that paginates through all results of ListRepositoryPolicies.
+func (s *ActionsService) ListRepositoryPoliciesIter(ctx context.Context, owner string, repo string, opts *ActionsPolicyListOptions) iter.Seq2[*ActionsPolicy, error] {
+	return func(yield func(*ActionsPolicy, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ActionsPolicyListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListRepositoryPolicies(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*ActionsPolicy
+			if results != nil {
+				iterItems = results.Policies
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
 		}
 	}
 }

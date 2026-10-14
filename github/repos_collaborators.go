@@ -124,9 +124,8 @@ func (s *RepositoriesService) GetPermissionLevel(ctx context.Context, owner, rep
 	return rpl, resp, nil
 }
 
-// RepositoryAddCollaboratorOptions specifies the optional parameters to the
-// RepositoriesService.AddCollaborator method.
-type RepositoryAddCollaboratorOptions struct {
+// AddCollaboratorRequest represents a request to add a collaborator to a repository.
+type AddCollaboratorRequest struct {
 	// Permission specifies the permission to grant the user on this repository.
 	// Possible values are:
 	//     pull - team members can pull, but not push to or administer this repository
@@ -136,7 +135,7 @@ type RepositoryAddCollaboratorOptions struct {
 	//     triage - team members can proactively manage issues and pull requests without write access.
 	//
 	// Default value is "push". This option is only valid for organization-owned repositories.
-	Permission string `json:"permission,omitempty"`
+	Permission *string `json:"permission,omitempty"`
 }
 
 // AddCollaborator sends an invitation to the specified GitHub user
@@ -145,7 +144,7 @@ type RepositoryAddCollaboratorOptions struct {
 // GitHub API docs: https://docs.github.com/rest/collaborators/collaborators?apiVersion=2022-11-28#add-a-repository-collaborator
 //
 //meta:operation PUT /repos/{owner}/{repo}/collaborators/{username}
-func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, body *RepositoryAddCollaboratorOptions) (*CollaboratorInvitation, *Response, error) {
+func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, body AddCollaboratorRequest) (*CollaboratorInvitation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {

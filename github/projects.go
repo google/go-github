@@ -477,12 +477,16 @@ type GetProjectItemOptions struct {
 	Fields []int64 `url:"fields,omitempty,comma"`
 }
 
-// AddProjectItemOptions represents the payload to add an item (issue or pull request)
-// to a project. The Type must be either "Issue" or "PullRequest" (as per API docs) and
-// ID is the numerical ID of that issue or pull request.
-type AddProjectItemOptions struct {
-	Type *ProjectV2ItemContentType `json:"type,omitempty"`
-	ID   *int64                    `json:"id,omitempty"`
+// AddProjectItemRequest represents the payload to add an item (issue or pull request)
+// to a project. The Type must be either "Issue" or "PullRequest" (as per API docs).
+// The item is identified either by ID, the numerical ID of that issue or pull request,
+// or by Owner, Repo, and Number.
+type AddProjectItemRequest struct {
+	Type   ProjectV2ItemContentType `json:"type"`
+	ID     *int64                   `json:"id,omitempty"`
+	Owner  *string                  `json:"owner,omitempty"`
+	Repo   *string                  `json:"repo,omitempty"`
+	Number *int                     `json:"number,omitempty"`
 }
 
 // UpdateProjectV2Field represents a field update for a project item.
@@ -501,15 +505,11 @@ type UpdateProjectV2Field struct {
 	Value any `json:"value"`
 }
 
-// UpdateProjectItemOptions represents fields that can be modified for a project item.
-// The GitHub API expects either archived status updates or field value updates.
-type UpdateProjectItemOptions struct {
-	// Archived indicates whether the item should be archived (true) or unarchived (false).
-	// This is used for archive/unarchive operations.
-	Archived *bool `json:"archived,omitempty"`
+// UpdateProjectItemRequest represents fields that can be modified for a project item.
+type UpdateProjectItemRequest struct {
 	// Fields contains field updates to apply to the project item.
 	// Each entry specifies a field ID and its new value.
-	Fields []*UpdateProjectV2Field `json:"fields,omitempty"`
+	Fields []*UpdateProjectV2Field `json:"fields"`
 }
 
 // ListOrganizationProjectItems lists items for an organization owned project.
@@ -543,7 +543,7 @@ func (s *ProjectsService) ListOrganizationProjectItems(ctx context.Context, org 
 // GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#add-item-to-organization-owned-project
 //
 //meta:operation POST /orgs/{org}/projectsV2/{project_number}/items
-func (s *ProjectsService) AddOrganizationProjectItem(ctx context.Context, org string, projectNumber int, body *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) AddOrganizationProjectItem(ctx context.Context, org string, projectNumber int, body AddProjectItemRequest) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items", org, projectNumber)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
@@ -590,7 +590,7 @@ func (s *ProjectsService) GetOrganizationProjectItem(ctx context.Context, org st
 // GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#update-project-item-for-organization
 //
 //meta:operation PATCH /orgs/{org}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) UpdateOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, body *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) UpdateOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, body UpdateProjectItemRequest) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items/%v", org, projectNumber, itemID)
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
@@ -652,7 +652,7 @@ func (s *ProjectsService) ListUserProjectItems(ctx context.Context, username str
 // GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#add-item-to-user-owned-project
 //
 //meta:operation POST /users/{username}/projectsV2/{project_number}/items
-func (s *ProjectsService) AddUserProjectItem(ctx context.Context, username string, projectNumber int, body *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) AddUserProjectItem(ctx context.Context, username string, projectNumber int, body AddProjectItemRequest) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items", username, projectNumber)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
@@ -699,7 +699,7 @@ func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username strin
 // GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#update-project-item-for-user
 //
 //meta:operation PATCH /users/{username}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) UpdateUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, body *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) UpdateUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, body UpdateProjectItemRequest) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items/%v", username, projectNumber, itemID)
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {

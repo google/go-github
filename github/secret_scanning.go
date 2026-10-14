@@ -44,6 +44,19 @@ type SecretScanningAlert struct {
 	PushProtectionBypassRequestReviewer        *User                               `json:"push_protection_bypass_request_reviewer,omitempty"`
 	PushProtectionBypassRequestReviewerComment *string                             `json:"push_protection_bypass_request_reviewer_comment,omitempty"`
 	Validity                                   *string                             `json:"validity,omitempty"`
+	AssignedTo                                 *User                               `json:"assigned_to,omitempty"`
+	ClosureRequestComment                      *string                             `json:"closure_request_comment,omitempty"`
+	ClosureRequestReviewer                     *User                               `json:"closure_request_reviewer,omitempty"`
+	ClosureRequestReviewerComment              *string                             `json:"closure_request_reviewer_comment,omitempty"`
+	Provider                                   *string                             `json:"provider,omitempty"`
+	ProviderSlug                               *string                             `json:"provider_slug,omitempty"`
+	Metadata                                   []*SecretScanningAlertMetadata      `json:"metadata,omitempty"`
+}
+
+// SecretScanningAlertMetadata represents a metadata key/value pair associated with a secret scanning alert.
+type SecretScanningAlertMetadata struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 // SecretScanningAlertLocation represents the location for a secret scanning alert.
@@ -105,12 +118,11 @@ type SecretScanningAlertListOptions struct {
 	ListOptions
 }
 
-// SecretScanningAlertUpdateOptions specifies optional parameters to the SecretScanningService.UpdateAlert method.
-type SecretScanningAlertUpdateOptions struct {
-	// State is required and sets the state of the secret scanning alert.
-	// Can be either "open" or "resolved".
+// UpdateSecretScanningAlertRequest represents a request to update a secret scanning alert.
+type UpdateSecretScanningAlertRequest struct {
+	// State sets the state of the secret scanning alert. Can be either "open" or "resolved".
 	// You must provide resolution when you set the state to "resolved".
-	State string `json:"state"`
+	State *string `json:"state,omitempty"`
 
 	// Required when the state is "resolved" and represents the reason for resolving the alert.
 	// Can be one of: "false_positive", "wont_fix", "revoked", or "used_in_tests".
@@ -118,6 +130,12 @@ type SecretScanningAlertUpdateOptions struct {
 
 	// An optional comment when closing an alert.
 	ResolutionComment *string `json:"resolution_comment,omitempty"`
+
+	// Assignee is the username of the user to assign to the alert.
+	Assignee *string `json:"assignee,omitempty"`
+
+	// Validity sets the validity of the secret scanning alert. Can be either "active" or "inactive".
+	Validity *string `json:"validity,omitempty"`
 }
 
 // PushProtectionBypassRequest represents the parameters for CreatePushProtectionBypass.
@@ -287,7 +305,7 @@ func (s *SecretScanningService) GetAlert(ctx context.Context, owner, repo string
 // GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning?apiVersion=2022-11-28#update-a-secret-scanning-alert
 //
 //meta:operation PATCH /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}
-func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo string, number int64, body *SecretScanningAlertUpdateOptions) (*SecretScanningAlert, *Response, error) {
+func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo string, number int64, body UpdateSecretScanningAlertRequest) (*SecretScanningAlert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts/%v", owner, repo, number)
 
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
