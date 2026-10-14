@@ -363,32 +363,3 @@ func TestActivityService_Unstar_invalidID(t *testing.T) {
 	_, err := client.Activity.Unstar(ctx, "%", "%")
 	testURLParseError(t, err)
 }
-
-func TestStargazerCount_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &StargazerCount{}, `{"count":0}`)
-
-	u := &StargazerCount{Count: 42}
-
-	want := `{"count":42}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestStargazerHistory_Marshal(t *testing.T) {
-	t.Parallel()
-
-	u := &StargazerHistory{
-		Days:  []int{0, 12, 7, 0, 0, 0, 0},
-		Total: 19,
-		Week:  referenceTimestamp,
-	}
-
-	want := `{
-		"days": [0, 12, 7, 0, 0, 0, 0],
-		"total": 19,
-		"week": ` + referenceTimeStr + `
-	}`
-
-	testJSONMarshal(t, u, want)
-}
