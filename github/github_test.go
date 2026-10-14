@@ -3978,6 +3978,24 @@ func TestRoundTripWithOptionalFollowRedirect_RejectsPathTraversalInLocation(t *t
 	}
 }
 
+func TestRoundTripWithOptionalFollowRedirect_RejectsMalformedLocation(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/owner/repo/archive", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Location", "%")
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+
+	_, err := client.roundTripWithOptionalFollowRedirect(t.Context(), "repos/owner/repo/archive", 1)
+	if err == nil {
+		t.Fatal("Expected malformed Location to be rejected, got nil error.")
+	}
+	if !strings.Contains(err.Error(), "invalid redirect location") {
+		t.Fatalf("Expected invalid redirect location error, got %v", err)
+	}
+}
+
 func TestSanitizeURL(t *testing.T) {
 	t.Parallel()
 	tests := []struct {

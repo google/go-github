@@ -1097,6 +1097,10 @@ func checkURLPathTraversal(urlStr string) error {
 	if err != nil {
 		return err
 	}
+	return checkURLPathTraversalURL(u)
+}
+
+func checkURLPathTraversalURL(u *url.URL) error {
 	if slices.Contains(strings.Split(u.Path, "/"), "..") {
 		return ErrPathForbidden
 	}
@@ -2417,12 +2421,12 @@ func (c *Client) resolveAndCheckRedirect(location string, requestURL *url.URL) (
 	if location == "" {
 		return nil, errInvalidLocation
 	}
-	if err := checkURLPathTraversal(location); err != nil {
-		return nil, err
-	}
 	target, err := url.Parse(location)
 	if err != nil {
 		return nil, fmt.Errorf("invalid redirect location %q: %w", location, err)
+	}
+	if err := checkURLPathTraversalURL(target); err != nil {
+		return nil, err
 	}
 	// Resolve relative locations against the URL that returned the redirect.
 	target = requestURL.ResolveReference(target)
