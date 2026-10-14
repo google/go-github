@@ -65,6 +65,9 @@ func (s *UsersService) Suspend(ctx context.Context, user string, body *UserSuspe
 
 // UnsuspendUserRequest represents a request to unsuspend a user.
 type UnsuspendUserRequest struct {
+	// Reason is the reason the user is being unsuspended, which is logged in the audit log.
+	// If it is not provided, it defaults to "Unsuspended via API by SITE_ADMINISTRATOR",
+	// where SITE_ADMINISTRATOR is the person who performed the action.
 	Reason *string `json:"reason,omitempty"`
 }
 
