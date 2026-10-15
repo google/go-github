@@ -57259,6 +57259,17 @@ func TestUnauthenticatedRateLimitedTransport_GetClientSecret(tt *testing.T) {
 	u.GetClientSecret()
 }
 
+func TestUnsuspendUserRequest_GetReason(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UnsuspendUserRequest{Reason: &zeroValue}
+	u.GetReason()
+	u = &UnsuspendUserRequest{}
+	u.GetReason()
+	u = nil
+	u.GetReason()
+}
+
 func TestUpdateActionsPolicyRequest_GetConditions(tt *testing.T) {
 	tt.Parallel()
 	u := &UpdateActionsPolicyRequest{}

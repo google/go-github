@@ -63,15 +63,23 @@ func (s *UsersService) Suspend(ctx context.Context, user string, body SuspendUse
 	return s.client.Do(req, nil)
 }
 
+// UnsuspendUserRequest represents a request to unsuspend a user.
+type UnsuspendUserRequest struct {
+	// Reason is the reason the user is being unsuspended, which is logged in the audit log.
+	// If it is not provided, it defaults to "Unsuspended via API by SITE_ADMINISTRATOR",
+	// where SITE_ADMINISTRATOR is the person who performed the action.
+	Reason *string `json:"reason,omitempty"`
+}
+
 // Unsuspend a user on a GitHub Enterprise instance.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/users#unsuspend-a-user
 //
 //meta:operation DELETE /users/{username}/suspended
-func (s *UsersService) Unsuspend(ctx context.Context, user string) (*Response, error) {
+func (s *UsersService) Unsuspend(ctx context.Context, user string, body UnsuspendUserRequest) (*Response, error) {
 	u := fmt.Sprintf("users/%v/suspended", user)
 
-	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, body)
 	if err != nil {
 		return nil, err
 	}
