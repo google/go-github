@@ -55029,6 +55029,41 @@ func TestStargazer_GetUser(tt *testing.T) {
 	s.GetUser()
 }
 
+func TestStargazerCount_GetCount(tt *testing.T) {
+	tt.Parallel()
+	s := &StargazerCount{}
+	s.GetCount()
+	s = nil
+	s.GetCount()
+}
+
+func TestStargazerHistory_GetDays(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int{}
+	s := &StargazerHistory{Days: zeroValue}
+	s.GetDays()
+	s = &StargazerHistory{}
+	s.GetDays()
+	s = nil
+	s.GetDays()
+}
+
+func TestStargazerHistory_GetTotal(tt *testing.T) {
+	tt.Parallel()
+	s := &StargazerHistory{}
+	s.GetTotal()
+	s = nil
+	s.GetTotal()
+}
+
+func TestStargazerHistory_GetWeek(tt *testing.T) {
+	tt.Parallel()
+	s := &StargazerHistory{}
+	s.GetWeek()
+	s = nil
+	s.GetWeek()
+}
+
 func TestStarredRepository_GetRepository(tt *testing.T) {
 	tt.Parallel()
 	s := &StarredRepository{}
