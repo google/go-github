@@ -118,14 +118,9 @@ func setup(t *testing.T) (client *Client, mux *http.ServeMux, serverURL string) 
 		IdleConnTimeout: 20 * time.Second,
 	}
 
-	// Create HTTP client with the isolated transport
-	httpClient := &http.Client{
-		Transport: transport,
-		Timeout:   30 * time.Second,
-	}
 	// client is the GitHub client being tested and is
 	// configured to use test server.
-	client = mustNewClient(t, WithHTTPClient(httpClient))
+	client = mustNewClient(t, WithTransport(transport), WithTimeout(30*time.Second))
 
 	url, _ := url.Parse(server.URL + baseURLPath + "/")
 	client.baseURL = url
@@ -448,43 +443,6 @@ func assertWrite(t *testing.T, w io.Writer, data []byte) {
 	t.Helper()
 	_, err := w.Write(data)
 	assertNilError(t, err)
-}
-
-func TestWithHTTPClient(t *testing.T) {
-	t.Parallel()
-
-	t.Run("nil_client", func(t *testing.T) {
-		t.Parallel()
-
-		opts := clientOptions{}
-		err := WithHTTPClient(nil)(&opts)
-		if err == nil || err.Error() != "http client must not be nil" {
-			t.Errorf("WithHTTPClient errored: %v", err)
-		}
-	})
-
-	t.Run("non_nil_client", func(t *testing.T) {
-		t.Parallel()
-
-		customClient := &http.Client{Timeout: 10 * time.Second}
-		opts := clientOptions{}
-		err := WithHTTPClient(customClient)(&opts)
-		if err != nil {
-			t.Fatalf("WithHTTPClient errored: %v", err)
-		}
-
-		if opts.httpClient == nil {
-			t.Fatal("httpClient is nil")
-		}
-
-		if opts.httpClient == customClient {
-			t.Error("httpClient should be a shallow copy of the provided client, but is the same instance")
-		}
-
-		if opts.httpClient.Timeout != customClient.Timeout {
-			t.Errorf("httpClient Timeout = %v, want %v", opts.httpClient.Timeout, customClient.Timeout)
-		}
-	})
 }
 
 func TestWithTransport(t *testing.T) {
@@ -991,7 +949,7 @@ func TestNewClient(t *testing.T) {
 		{
 			name: "with_options",
 			opts: []ClientOptionsFunc{
-				WithHTTPClient(&http.Client{Timeout: 10 * time.Second}),
+				WithTimeout(10 * time.Second),
 			},
 			wantErr: "",
 		},
@@ -1043,13 +1001,6 @@ func Test_newClient(t *testing.T) {
 			wantErr: "",
 		},
 		{
-			name: "with_http_client",
-			opts: clientOptions{
-				httpClient: &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
-			},
-			wantErr: "",
-		},
-		{
 			name: "with_transport",
 			opts: clientOptions{
 				transport: &http.Transport{IdleConnTimeout: 10 * time.Second},
@@ -1059,7 +1010,6 @@ func Test_newClient(t *testing.T) {
 		{
 			name: "with_all_options",
 			opts: clientOptions{
-				httpClient:                              &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
 				transport:                               &http.Transport{IdleConnTimeout: 10 * time.Second},
 				timeout:                                 new(15 * time.Second),
 				apiVersionMin:                           new(api20221128),
@@ -1119,9 +1069,6 @@ func Test_newClient(t *testing.T) {
 
 			if c.client == nil {
 				t.Error("newClient http.Client is not initialized")
-			}
-			if tt.opts.httpClient != nil && c.client != tt.opts.httpClient {
-				t.Error("newClient http.Client should be the same instance as the provided httpClient option")
 			}
 			if tt.opts.transport != nil && !tt.opts.envProxy && tt.opts.tokenSource == nil && c.client.Transport != tt.opts.transport {
 				t.Error("newClient http.Client.Transport should be the same instance as the provided transport option")
@@ -1326,6 +1273,7 @@ func TestClient_Clone(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
+		c.baseTransport = &http.Transport{IdleConnTimeout: 10 * time.Second}
 		c.apiVersionMin = api20221128
 		c.apiVersionMax = api20221128
 		c.userAgent = "CustomUserAgent/1.0"
@@ -1335,7 +1283,7 @@ func TestClient_Clone(t *testing.T) {
 		c.rateLimitRedirectionalEndpoints = true
 		c.maxSecondaryRateLimitRetryAfterDuration = 2 * time.Minute
 		c.Marketplace.Stubbed = true
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.Transport = c.baseTransport
 		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
 		c.client.Timeout = 15 * time.Second
 		c.rateLimits[CoreCategory].Remaining = 100
@@ -1351,12 +1299,6 @@ func TestClient_Clone(t *testing.T) {
 		}
 		if cloned.client.Transport != c.client.Transport {
 			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != c.client.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
 		}
 		if cloned.client.Timeout != c.client.Timeout {
 			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, c.client.Timeout)
@@ -1394,12 +1336,13 @@ func TestClient_Clone(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
+		c.baseTransport = &http.Transport{IdleConnTimeout: 10 * time.Second}
 		c.userAgent = "CustomUserAgent/1.0"
 		c.baseURL.Path = "/custom/"
 		c.uploadURL.Path = "/custom-upload/"
 		c.disableRateLimitCheck = true
 		c.Marketplace.Stubbed = true
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.Transport = c.baseTransport
 		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
 		c.client.Timeout = 15 * time.Second
 		c.rateLimits[CoreCategory].Remaining = 100
@@ -1415,12 +1358,6 @@ func TestClient_Clone(t *testing.T) {
 		}
 		if cloned.client.Transport != c.client.Transport {
 			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != c.client.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
 		}
 		if cloned.client.Timeout != c.client.Timeout {
 			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, c.client.Timeout)
@@ -1442,47 +1379,12 @@ func TestClient_Clone(t *testing.T) {
 		}
 	})
 
-	t.Run("initialized_client_with_http_client", func(t *testing.T) {
-		t.Parallel()
-
-		c := mustNewClient(t)
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
-		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
-		c.client.Timeout = 15 * time.Second
-
-		h := &http.Client{
-			Transport:     &http.Transport{IdleConnTimeout: 20 * time.Second},
-			CheckRedirect: func(_ *http.Request, _ []*http.Request) error { return http.ErrUseLastResponse },
-			Timeout:       25 * time.Second,
-		}
-
-		cloned, err := c.Clone(WithHTTPClient(h))
-		if err != nil {
-			t.Fatalf("Client.Clone returned error: %v", err)
-		}
-
-		if cloned.client == h {
-			t.Error("Cloned Client has same http.Client instance as provided in WithHTTPClient, but should be a different instance")
-		}
-		if cloned.client.Transport != h.Transport {
-			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", h.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != h.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
-		}
-		if cloned.client.Timeout != h.Timeout {
-			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, h.Timeout)
-		}
-	})
-
 	t.Run("initialized_client_with_transport", func(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.baseTransport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.Transport = c.baseTransport
 		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
 		c.client.Timeout = 15 * time.Second
 
@@ -1499,12 +1401,6 @@ func TestClient_Clone(t *testing.T) {
 		if cloned.client.Transport != tr {
 			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
 		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != c.client.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
-		}
 		if cloned.client.Timeout != c.client.Timeout {
 			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, c.client.Timeout)
 		}
@@ -1514,7 +1410,8 @@ func TestClient_Clone(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.baseTransport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.Transport = c.baseTransport
 		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
 		c.client.Timeout = 15 * time.Second
 
@@ -1530,52 +1427,6 @@ func TestClient_Clone(t *testing.T) {
 		}
 		if cloned.client.Transport != c.client.Transport {
 			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != c.client.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
-		}
-		if cloned.client.Timeout != timeout {
-			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, timeout)
-		}
-	})
-
-	t.Run("initialized_client_with_http_client_transport_timeout", func(t *testing.T) {
-		t.Parallel()
-
-		c := mustNewClient(t)
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
-		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
-		c.client.Timeout = 15 * time.Second
-
-		h := &http.Client{
-			Transport:     &http.Transport{IdleConnTimeout: 20 * time.Second},
-			CheckRedirect: func(_ *http.Request, _ []*http.Request) error { return http.ErrUseLastResponse },
-			Timeout:       25 * time.Second,
-		}
-
-		tr := &http.Transport{IdleConnTimeout: 30 * time.Second}
-
-		timeout := 45 * time.Second
-
-		cloned, err := c.Clone(WithHTTPClient(h), WithTransport(tr), WithTimeout(timeout))
-		if err != nil {
-			t.Fatalf("Client.Clone returned error: %v", err)
-		}
-
-		if cloned.client == h {
-			t.Error("Cloned Client has same http.Client instance as provided in WithHTTPClient, but should be a different instance")
-		}
-		if cloned.client.Transport != tr {
-			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", h.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != h.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
 		}
 		if cloned.client.Timeout != timeout {
 			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, timeout)

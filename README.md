@@ -101,9 +101,9 @@ For more sample code snippets, head over to the
 
 ### Authentication ###
 
-Use the `github.WithAuthToken` options method to configure your client to authenticate using an
-OAuth token (for example, a [personal access token][]). This is what is needed
-for a majority of use cases aside from GitHub Apps.
+Use the `github.WithAuthToken` options method to configure your client to authenticate
+using an OAuth token (for example, a [personal access token][]).
+This is what is needed for a majority of use cases aside from GitHub Apps.
 
 ```go
 client, err := github.NewClient(github.WithAuthToken("... your access token ..."))
@@ -112,18 +112,15 @@ if err != nil {
 }
 ```
 
-To support more advanced use cases; you can use the `github.WithTransport` option to provide a
-custom `http.RoundTripper` that handles authentication for you, or the `github.WithHTTPClient`
-option to provide a custom `http.Client`. As an example; you can use the `oauth2.Transport`
-from the [golang.org/x/oauth2](https://pkg.go.dev/golang.org/x/oauth2) package to handle OAuth
-token refreshing for you.
+To support more advanced use cases; you can use the `github.WithTokenSource` option to provide a
+`oauth2.TokenSource` that handles authentication for you.
 
 Note that when using an authenticated Client, all calls made by the client will
 include the specified OAuth token. Therefore, authenticated clients should
 almost never be shared between different users.
 
 For API methods that require HTTP Basic Authentication, use the
-`WithBasicAuth` option.
+`github.WithBasicAuth` option.
 
 #### As a GitHub App ####
 
@@ -290,7 +287,7 @@ import (
 	_ "github.com/bartventer/httpcache/store/memcache" // Register the in-memory backend
 )
 
-client, err := github.NewClient(github.WithHTTPClient(httpcache.NewClient("memcache://")), github.WithAuthToken(os.Getenv("GITHUB_TOKEN")))
+client, err := github.NewClient(github.WithTransport(httpcache.NewTransport("memcache://")), github.WithAuthToken(os.Getenv("GITHUB_TOKEN")))
 if err != nil {
 	// Handle error.
 }

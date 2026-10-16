@@ -385,7 +385,6 @@ var errUninitialized = errors.New("client is not initialized")
 
 // clientOptions holds the configuration options for a Client.
 type clientOptions struct {
-	httpClient                              *http.Client
 	transport                               http.RoundTripper
 	timeout                                 *time.Duration
 	apiVersionMin                           *string
@@ -405,23 +404,8 @@ type clientOptions struct {
 // to a Client.
 type ClientOptionsFunc func(*clientOptions) error
 
-// WithHTTPClient returns a ClientOptionsFunc that sets the http.Client
-// for a Client. If not set, a default http.Client will be used.
-func WithHTTPClient(httpClient *http.Client) ClientOptionsFunc {
-	return func(o *clientOptions) error {
-		if httpClient == nil {
-			return errors.New("http client must not be nil")
-		}
-
-		httpClient := *httpClient
-		o.httpClient = &httpClient
-		return nil
-	}
-}
-
 // WithTransport returns a ClientOptionsFunc that sets the http.RoundTripper
-// for a Client. This overrides the transport set by [WithHTTPClient]. If not
-// set and no HTTP client is provided, the default http.RoundTripper will be used.
+// for a Client. If not set, the default http.RoundTripper will be used.
 // Do not use this to authenticate requests; use [WithTokenSource],
 // [WithBasicAuth] or [WithAuthToken] instead.
 func WithTransport(transport http.RoundTripper) ClientOptionsFunc {
@@ -436,8 +420,7 @@ func WithTransport(transport http.RoundTripper) ClientOptionsFunc {
 }
 
 // WithTimeout returns a ClientOptionsFunc that sets the timeout for a Client.
-// This overrides the timeout set by [WithHTTPClient]. If not set and no HTTP
-// client is provided, the default http.Client with no timeout will be used.
+// If not set, the default http.Client with no timeout will be used.
 // It is recommended to provide a timeout for production environments.
 func WithTimeout(timeout time.Duration) ClientOptionsFunc {
 	return func(o *clientOptions) error {
@@ -615,8 +598,7 @@ func WithMaxSecondaryRateLimitRetryAfterDuration(duration time.Duration) ClientO
 // [WithTokenSource] to provide a token source.
 //
 // For production usage it is recommended to provide a timeout using
-// [WithTimeout] or by providing a custom [http.Client] with an appropriate
-// timeout using [WithHTTPClient].
+// [WithTimeout].
 func NewClient(opts ...ClientOptionsFunc) (*Client, error) {
 	o := clientOptions{}
 	for _, opt := range opts {
@@ -635,12 +617,7 @@ func newClient(opts clientOptions) (*Client, error) {
 		apiVersionDefault: api20221128,
 		apiVersionMin:     api20221128,
 		apiVersionMax:     api20260310,
-	}
-
-	if opts.httpClient != nil {
-		c.client = opts.httpClient
-	} else {
-		c.client = &http.Client{}
+		client:            &http.Client{},
 	}
 
 	if opts.transport != nil {
@@ -938,6 +915,8 @@ func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 	}
 
 	o := clientOptions{
+		transport:                               c.baseTransport,
+		timeout:                                 &c.client.Timeout,
 		apiVersionMin:                           &c.apiVersionMin,
 		apiVersionMax:                           &c.apiVersionMax,
 		userAgent:                               &c.userAgent,
@@ -956,19 +935,6 @@ func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 	for _, opt := range opts {
 		if err := opt(&o); err != nil {
 			return nil, err
-		}
-	}
-
-	if o.httpClient == nil {
-		// A clone that carries a token installs the credential against its own
-		// origins, so it starts from the unwrapped transport: reusing the
-		// wrapped one would stack a second check that still enforces the
-		// original client's origins.
-		o.httpClient = &http.Client{
-			Transport:     c.baseTransport,
-			CheckRedirect: c.client.CheckRedirect,
-			Jar:           c.client.Jar,
-			Timeout:       c.client.Timeout,
 		}
 	}
 

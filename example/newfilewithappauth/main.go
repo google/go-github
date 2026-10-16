@@ -18,7 +18,6 @@ import (
 
 	"github.com/google/go-github/v93/github"
 	"github.com/jferrl/go-githubauth"
-	"golang.org/x/term"
 )
 
 func main() {
@@ -28,8 +27,12 @@ func main() {
 	fmt.Print("GitHub App Client ID: ")
 	clientID, _ := r.ReadString('\n')
 
-	fmt.Print("GitHub App Private Key: ")
-	privateKey, _ := term.ReadPassword(int(os.Stdin.Fd()))
+	fmt.Print("Path to GitHub App Private Key (.pem): ")
+	pemPath, _ := r.ReadString('\n')
+	privateKey, err := os.ReadFile(strings.TrimSpace(pemPath))
+	if err != nil {
+		log.Fatalf("failed to read private key: %v", err)
+	}
 
 	appTokenSource, err := githubauth.NewApplicationTokenSource(strings.TrimSpace(clientID), privateKey)
 	if err != nil {
