@@ -13054,6 +13054,38 @@ func (c *CreateIssueRequest) GetType() string {
 	return *c.Type
 }
 
+// GetColor returns the Color field if it's non-nil, zero value otherwise.
+func (c *CreateIssueTypeRequest) GetColor() string {
+	if c == nil || c.Color == nil {
+		return ""
+	}
+	return *c.Color
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateIssueTypeRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetIsEnabled returns the IsEnabled field.
+func (c *CreateIssueTypeRequest) GetIsEnabled() bool {
+	if c == nil {
+		return false
+	}
+	return c.IsEnabled
+}
+
+// GetName returns the Name field.
+func (c *CreateIssueTypeRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
 // GetLabels returns the Labels slice if it's non-nil, nil otherwise.
 func (c *CreateJITConfigRequest) GetLabels() []string {
 	if c == nil || c.Labels == nil {
@@ -13340,46 +13372,6 @@ func (c *CreateOrgInvitationRequest) GetTeamIDs() []int64 {
 		return nil
 	}
 	return c.TeamIDs
-}
-
-// GetColor returns the Color field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateIssueTypesOptions) GetColor() string {
-	if c == nil || c.Color == nil {
-		return ""
-	}
-	return *c.Color
-}
-
-// GetDescription returns the Description field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateIssueTypesOptions) GetDescription() string {
-	if c == nil || c.Description == nil {
-		return ""
-	}
-	return *c.Description
-}
-
-// GetIsEnabled returns the IsEnabled field.
-func (c *CreateOrUpdateIssueTypesOptions) GetIsEnabled() bool {
-	if c == nil {
-		return false
-	}
-	return c.IsEnabled
-}
-
-// GetIsPrivate returns the IsPrivate field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateIssueTypesOptions) GetIsPrivate() bool {
-	if c == nil || c.IsPrivate == nil {
-		return false
-	}
-	return *c.IsPrivate
-}
-
-// GetName returns the Name field.
-func (c *CreateOrUpdateIssueTypesOptions) GetName() string {
-	if c == nil {
-		return ""
-	}
-	return c.Name
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
@@ -46564,6 +46556,38 @@ func (u *UpdateIssueRequest) GetType() string {
 		return ""
 	}
 	return *u.Type
+}
+
+// GetColor returns the Color field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueTypeRequest) GetColor() string {
+	if u == nil || u.Color == nil {
+		return ""
+	}
+	return *u.Color
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueTypeRequest) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
+}
+
+// GetIsEnabled returns the IsEnabled field.
+func (u *UpdateIssueTypeRequest) GetIsEnabled() bool {
+	if u == nil {
+		return false
+	}
+	return u.IsEnabled
+}
+
+// GetName returns the Name field.
+func (u *UpdateIssueTypeRequest) GetName() string {
+	if u == nil {
+		return ""
+	}
+	return u.Name
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
