@@ -605,6 +605,49 @@ func TestWithAuthToken(t *testing.T) {
 	})
 }
 
+func TestWithBasicAuth(t *testing.T) {
+	t.Parallel()
+
+	t.Run("empty_username", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithBasicAuth("", "bar")(&opts)
+		if err == nil || err.Error() != "username and password must not be empty" {
+			t.Error("expected error for empty username, got nil")
+		}
+	})
+
+	t.Run("empty_password", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithBasicAuth("foo", "")(&opts)
+		if err == nil || err.Error() != "username and password must not be empty" {
+			t.Error("expected error for empty password, got nil")
+		}
+	})
+
+	t.Run("valid_credentials", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithBasicAuth("foo", "bar")(&opts)
+		if err != nil {
+			t.Fatalf("WithBasicAuth errored: %v", err)
+		}
+
+		if opts.tokenSource == nil {
+			t.Fatal("tokenSource is nil, want non-nil")
+		}
+
+		_, err = opts.tokenSource.Token()
+		if err != nil {
+			t.Fatalf("TokenSource errored: %v", err)
+		}
+	})
+}
+
 func TestWithTokenSource(t *testing.T) {
 	t.Parallel()
 
