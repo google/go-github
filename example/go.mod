@@ -1,4 +1,4 @@
-module github.com/google/go-github/v92/example
+module github.com/google/go-github/v93/example
 
 go 1.26.0
 
@@ -7,11 +7,11 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.19.0
 	github.com/gofri/go-github-pagination v1.0.1
 	github.com/gofri/go-github-ratelimit/v2 v2.0.2
-	github.com/google/go-github/otel/v92 v92.0.0
-	github.com/google/go-github/v92 v92.0.0
+	github.com/google/go-github/otel/v93 v93.0.0
+	github.com/google/go-github/v93 v93.0.0
 	github.com/sigstore/sigstore-go v1.2.2
-	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.46.0
-	go.opentelemetry.io/otel/sdk v1.46.0
+	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.47.0
+	go.opentelemetry.io/otel/sdk v1.47.0
 	golang.org/x/crypto v0.57.0
 	golang.org/x/term v0.46.0
 )
@@ -74,9 +74,10 @@ require (
 	github.com/transparency-dev/merkle v0.0.2 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
-	go.opentelemetry.io/otel v1.46.0 // indirect
-	go.opentelemetry.io/otel/metric v1.46.0 // indirect
-	go.opentelemetry.io/otel/trace v1.46.0 // indirect
+	go.opentelemetry.io/otel v1.47.0 // indirect
+	go.opentelemetry.io/otel/log v1.47.0 // indirect
+	go.opentelemetry.io/otel/metric v1.47.0 // indirect
+	go.opentelemetry.io/otel/trace v1.47.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/mod v0.41.0 // indirect
 	golang.org/x/net v0.58.0 // indirect
@@ -91,6 +92,6 @@ require (
 )
 
 // Use version at HEAD, not the latest published.
-replace github.com/google/go-github/v92 => ../
+replace github.com/google/go-github/v93 => ../
 
-replace github.com/google/go-github/otel/v92 => ../otel
+replace github.com/google/go-github/otel/v93 => ../otel

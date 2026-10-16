@@ -44174,6 +44174,38 @@ func (s *Stargazer) GetUser() *User {
 	return s.User
 }
 
+// GetCount returns the Count field.
+func (s *StargazerCount) GetCount() int {
+	if s == nil {
+		return 0
+	}
+	return s.Count
+}
+
+// GetDays returns the Days slice if it's non-nil, nil otherwise.
+func (s *StargazerHistory) GetDays() []int {
+	if s == nil || s.Days == nil {
+		return nil
+	}
+	return s.Days
+}
+
+// GetTotal returns the Total field.
+func (s *StargazerHistory) GetTotal() int {
+	if s == nil {
+		return 0
+	}
+	return s.Total
+}
+
+// GetWeek returns the Week field.
+func (s *StargazerHistory) GetWeek() Timestamp {
+	if s == nil {
+		return Timestamp{}
+	}
+	return s.Week
+}
+
 // GetRepository returns the Repository field.
 func (s *StarredRepository) GetRepository() *Repository {
 	if s == nil {

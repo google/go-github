@@ -176,23 +176,7 @@ func (s *DependabotService) CreateOrUpdateRepoSecret(ctx context.Context, owner,
 func (s *DependabotService) CreateOrUpdateOrgSecret(ctx context.Context, org, name string, body SecretOrgRequest) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/dependabot/secrets/%v", org, name)
 
-	var bodyOverride any = body
-	if len(body.SelectedRepositoryIDs) > 0 {
-		repoIDs := make([]string, len(body.SelectedRepositoryIDs))
-		for i, id := range body.SelectedRepositoryIDs {
-			repoIDs[i] = fmt.Sprintf("%v", id)
-		}
-
-		bodyOverride = struct {
-			SecretOrgRequest
-			SelectedRepositoryIDs []string `json:"selected_repository_ids,omitzero"`
-		}{
-			SecretOrgRequest:      body,
-			SelectedRepositoryIDs: repoIDs,
-		}
-	}
-
-	req, err := s.client.NewRequest(ctx, "PUT", u, bodyOverride)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}

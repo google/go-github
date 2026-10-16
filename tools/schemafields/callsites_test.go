@@ -44,12 +44,12 @@ func TestParseStructLitErr(t *testing.T) {
 		},
 		{
 			name:    "the package header of a failed build is ignored",
-			line:    "# github.com/google/go-github/v92/github",
+			line:    "# github.com/google/go-github/v93/github",
 			wantNil: true,
 		},
 		{
 			name:    "the FAIL line is ignored",
-			line:    "FAIL\tgithub.com/google/go-github/v92/github [build failed]",
+			line:    "FAIL\tgithub.com/google/go-github/v93/github [build failed]",
 			wantNil: true,
 		},
 		{
@@ -103,10 +103,10 @@ func TestParseCompilerOutput(t *testing.T) {
 	// The shape of a real run: the headers, a struct-literal error, an error that -fix does not
 	// repair, the failure line of the package that reported them, and the failure line of a
 	// package that reported no error of its own.
-	output := "# github.com/google/go-github/v92/github\n" +
+	output := "# github.com/google/go-github/v93/github\n" +
 		`callers.go:3:17: cannot use new("a") (value of type *string) as string value in struct literal` + "\n" +
 		"callers.go:5:2: undefined: Q\n" +
-		"FAIL\tgithub.com/google/go-github/v92/github [build failed]\n" +
+		"FAIL\tgithub.com/google/go-github/v93/github [build failed]\n" +
 		"# example.com/other\n" +
 		"FAIL\texample.com/other [setup failed]\n" +
 		"FAIL\n"
