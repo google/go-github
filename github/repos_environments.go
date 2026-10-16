@@ -112,7 +112,7 @@ func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 	default:
 		r.Type = nil
 		r.Reviewer = nil
-		return fmt.Errorf("reviewer.Type is %T, not a string of 'User', 'Team' or 'BusinessTeam', unable to unmarshal", reviewer.Type)
+		return fmt.Errorf("reviewer.Type is %q, not a string of 'User', 'Team' or 'BusinessTeam', unable to unmarshal", *reviewer.Type)
 	}
 
 	return nil
