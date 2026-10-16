@@ -27,6 +27,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
+	"golang.org/x/oauth2"
 )
 
 const (
@@ -632,14 +633,62 @@ func TestWithAuthToken(t *testing.T) {
 			t.Fatalf("WithAuthToken errored: %v", err)
 		}
 
-		if opts.token == nil || *opts.token != validToken {
-			t.Errorf("token = %v, want %v", opts.token, validToken)
+		if opts.tokenSource == nil {
+			t.Fatal("tokenSource is nil, want non-nil")
+		}
+
+		gotToken, err := opts.tokenSource.Token()
+		if err != nil {
+			t.Fatalf("TokenSource errored: %v", err)
+		}
+		if gotToken.AccessToken != validToken {
+			t.Fatalf("got token %v, want %v", gotToken.AccessToken, validToken)
+		}
+	})
+}
+
+func TestWithTokenSource(t *testing.T) {
+	t.Parallel()
+
+	t.Run("nil_token_source", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithTokenSource(nil)(&opts)
+		if err == nil || err.Error() != "tokenSource must not be nil" {
+			t.Error("expected error for nil token source, got nil")
+		}
+	})
+
+	t.Run("valid_token_source", func(t *testing.T) {
+		t.Parallel()
+
+		validToken := "ghp_exampletoken1234567890"
+		source := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: validToken})
+
+		opts := clientOptions{}
+		err := WithTokenSource(source)(&opts)
+		if err != nil {
+			t.Fatalf("WithTokenSource errored: %v", err)
+		}
+
+		if opts.tokenSource == nil {
+			t.Fatal("tokenSource is nil, want non-nil")
+		}
+
+		gotToken, err := opts.tokenSource.Token()
+		if err != nil {
+			t.Fatalf("TokenSource errored: %v", err)
+		}
+		if gotToken.AccessToken != validToken {
+			t.Fatalf("got token %v, want %v", gotToken.AccessToken, validToken)
 		}
 	})
 }
 
 func TestWithURLs(t *testing.T) {
 	t.Parallel()
+
 	for _, tt := range []struct {
 		name          string
 		baseURL       *string
@@ -729,6 +778,7 @@ func TestWithURLs(t *testing.T) {
 
 func TestWithEnterpriseURLs(t *testing.T) {
 	t.Parallel()
+
 	for _, tt := range []struct {
 		name          string
 		baseURL       string
@@ -1073,27 +1123,11 @@ func Test_newClient(t *testing.T) {
 			if tt.opts.httpClient != nil && c.client != tt.opts.httpClient {
 				t.Error("newClient http.Client should be the same instance as the provided httpClient option")
 			}
-			if tt.opts.transport != nil && !tt.opts.envProxy && tt.opts.token == nil && c.client.Transport != tt.opts.transport {
+			if tt.opts.transport != nil && !tt.opts.envProxy && tt.opts.tokenSource == nil && c.client.Transport != tt.opts.transport {
 				t.Error("newClient http.Client.Transport should be the same instance as the provided transport option")
 			}
 			if tt.opts.timeout != nil && c.client.Timeout != *tt.opts.timeout {
 				t.Errorf("newClient http.Client.Timeout is %v, want %v", c.client.Timeout, *tt.opts.timeout)
-			}
-
-			if c.clientIgnoreRedirects == nil {
-				t.Error("newClient http.Client used for redirects is not initialized")
-			}
-			if c.clientIgnoreRedirects.Transport != c.client.Transport {
-				t.Error("newClient http.Client and http.Client used for redirects should share the same Transport instance")
-			}
-			if c.clientIgnoreRedirects.Timeout != c.client.Timeout {
-				t.Errorf("newClient http.Client and http.Client used for redirects should have the same Timeout, got %v and %v", c.client.Timeout, c.clientIgnoreRedirects.Timeout)
-			}
-			if c.clientIgnoreRedirects.Jar != c.client.Jar {
-				t.Error("newClient http.Client and http.Client used for redirects should share the same Jar instance")
-			}
-			if c.clientIgnoreRedirects.CheckRedirect == nil {
-				t.Error("newClient http.Client used for redirects should have a CheckRedirect function")
 			}
 
 			if tt.opts.apiVersionMin != nil && c.apiVersionMin != *tt.opts.apiVersionMin {
@@ -2602,15 +2636,7 @@ func TestDo_AcceptedError_LargeBodyTruncated(t *testing.T) {
 func TestDo_sanitizeURL(t *testing.T) {
 	t.Parallel()
 	baseURL := &url.URL{Scheme: "http", Host: "127.0.0.1:0", Path: "/"} // Use port 0 on purpose to trigger a dial TCP error, expect to get "dial tcp 127.0.0.1:0: connect: can't assign requested address".
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:     "id",
-		ClientSecret: "secret",
-		// Scope the transport to the origin below so that the credentials really are
-		// attached to this request; otherwise the test would pass vacuously, with the
-		// secret never sent in the first place.
-		AllowedOrigins: []*url.URL{baseURL},
-	}
-	unauthedClient := mustNewClient(t, WithHTTPClient(tp.Client()))
+	unauthedClient := mustNewClient(t, WithBasicAuth("id", "secret"))
 	unauthedClient.baseURL = baseURL
 	req, err := unauthedClient.NewRequest(t.Context(), "GET", ".", nil)
 	if err != nil {
@@ -4677,230 +4703,6 @@ func TestError_Error(t *testing.T) {
 	}
 }
 
-func TestSetCredentialsAsHeaders(t *testing.T) {
-	t.Parallel()
-	req := new(http.Request)
-	id, secret := "id", "secret"
-	modifiedRequest := setCredentialsAsHeaders(req, id, secret)
-
-	actualID, actualSecret, ok := modifiedRequest.BasicAuth()
-	if !ok {
-		t.Error("request does not contain basic credentials")
-	}
-
-	if actualID != id {
-		t.Errorf("id is %v, want %v", actualID, id)
-	}
-
-	if actualSecret != secret {
-		t.Errorf("secret is %v, want %v", actualSecret, secret)
-	}
-}
-
-func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	clientID, clientSecret := "id", "secret"
-	mux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		id, secret, ok := r.BasicAuth()
-		if !ok {
-			t.Error("request does not contain basic auth credentials")
-		}
-		if id != clientID {
-			t.Errorf("request contained basic auth username %q, want %q", id, clientID)
-		}
-		if secret != clientSecret {
-			t.Errorf("request contained basic auth password %q, want %q", secret, clientSecret)
-		}
-	})
-
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:       clientID,
-		ClientSecret:   clientSecret,
-		AllowedOrigins: []*url.URL{client.baseURL},
-	}
-	unauthedClient := mustNewClient(t, WithHTTPClient(tp.Client()))
-	unauthedClient.baseURL = client.baseURL
-	req, _ := unauthedClient.NewRequest(t.Context(), "GET", ".", nil)
-	_, err := unauthedClient.Do(req, nil)
-	assertNilError(t, err)
-}
-
-func TestUnauthenticatedRateLimitedTransport_originScope(t *testing.T) {
-	t.Parallel()
-	clientID, clientSecret := "id", "secret"
-
-	// The origin the transport is scoped to receives the credentials...
-	allowed, allowedMux, _ := setup(t)
-	allowedMux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		if _, _, ok := r.BasicAuth(); !ok {
-			t.Error("request to an allowed origin does not contain basic auth credentials")
-		}
-	})
-
-	// ...and any other origin does not, even when the same transport is used.
-	foreign, foreignMux, _ := setup(t)
-	foreignMux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		if id, secret, ok := r.BasicAuth(); ok {
-			t.Errorf("request to an unrelated origin contained basic auth credentials %q/%q", id, secret)
-		}
-	})
-
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:       clientID,
-		ClientSecret:   clientSecret,
-		AllowedOrigins: []*url.URL{allowed.baseURL},
-	}
-
-	for _, test := range []struct {
-		name string
-		base *url.URL
-	}{
-		{name: "allowed origin", base: allowed.baseURL},
-		{name: "foreign origin", base: foreign.baseURL},
-	} {
-		t.Run(test.name, func(t *testing.T) {
-			t.Parallel()
-			c := mustNewClient(t, WithHTTPClient(tp.Client()))
-			c.baseURL = test.base
-			req, _ := c.NewRequest(t.Context(), "GET", ".", nil)
-			_, err := c.Do(req, nil)
-			assertNilError(t, err)
-		})
-	}
-}
-
-func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
-	t.Parallel()
-	// missing ClientID
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientSecret: "secret",
-	}
-	_, err := tp.RoundTrip(nil)
-	if err == nil {
-		t.Error("Expected error to be returned")
-	}
-
-	// missing ClientSecret
-	tp = &UnauthenticatedRateLimitedTransport{
-		ClientID: "id",
-	}
-	_, err = tp.RoundTrip(nil)
-	if err == nil {
-		t.Error("Expected error to be returned")
-	}
-}
-
-func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
-	t.Parallel()
-	// default transport
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:     "id",
-		ClientSecret: "secret",
-	}
-	if tp.transport() != http.DefaultTransport {
-		t.Error("Expected http.DefaultTransport to be used.")
-	}
-
-	// custom transport
-	tp = &UnauthenticatedRateLimitedTransport{
-		ClientID:     "id",
-		ClientSecret: "secret",
-		Transport:    &http.Transport{},
-	}
-	if tp.transport() == http.DefaultTransport {
-		t.Error("Expected custom transport to be used.")
-	}
-}
-
-func TestBasicAuthTransport(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	username, password, otp := "u", "p", "123456"
-
-	mux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		u, p, ok := r.BasicAuth()
-		if !ok {
-			t.Error("request does not contain basic auth credentials")
-		}
-		if u != username {
-			t.Errorf("request contained basic auth username %q, want %q", u, username)
-		}
-		if p != password {
-			t.Errorf("request contained basic auth password %q, want %q", p, password)
-		}
-		if got, want := r.Header.Get(headerOTP), otp; got != want {
-			t.Errorf("request contained OTP %q, want %q", got, want)
-		}
-	})
-
-	tp := &BasicAuthTransport{
-		Username:       username,
-		Password:       password,
-		OTP:            otp,
-		AllowedOrigins: []*url.URL{client.baseURL},
-	}
-	basicAuthClient := mustNewClient(t, WithHTTPClient(tp.Client()))
-	basicAuthClient.baseURL = client.baseURL
-	req, _ := basicAuthClient.NewRequest(t.Context(), "GET", ".", nil)
-	_, err := basicAuthClient.Do(req, nil)
-	assertNilError(t, err)
-}
-
-func TestBasicAuthTransport_originScope(t *testing.T) {
-	t.Parallel()
-	username, password, otp := "u", "p", "123456"
-
-	// The origin the transport is scoped to receives both credentials and the OTP...
-	allowed, allowedMux, _ := setup(t)
-	allowedMux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		if u, p, ok := r.BasicAuth(); !ok || u != username || p != password {
-			t.Error("request to an allowed origin does not contain the expected basic auth credentials")
-		}
-		if got := r.Header.Get(headerOTP); got != otp {
-			t.Errorf("request to an allowed origin contained OTP %q, want %q", got, otp)
-		}
-	})
-
-	// ...and any other origin receives neither. The OTP is a second factor, so a
-	// foreign origin must not see it even though it is not itself a "credential".
-	foreign, foreignMux, _ := setup(t)
-	foreignMux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		if u, p, ok := r.BasicAuth(); ok {
-			t.Errorf("request to an unrelated origin contained basic auth credentials %q/%q", u, p)
-		}
-		if got := r.Header.Get(headerOTP); got != "" {
-			t.Errorf("request to an unrelated origin contained OTP %q, want none", got)
-		}
-	})
-
-	tp := &BasicAuthTransport{
-		Username:       username,
-		Password:       password,
-		OTP:            otp,
-		AllowedOrigins: []*url.URL{allowed.baseURL},
-	}
-
-	for _, test := range []struct {
-		name string
-		base *url.URL
-	}{
-		{name: "allowed origin", base: allowed.baseURL},
-		{name: "foreign origin", base: foreign.baseURL},
-	} {
-		t.Run(test.name, func(t *testing.T) {
-			t.Parallel()
-			c := mustNewClient(t, WithHTTPClient(tp.Client()))
-			c.baseURL = test.base
-			req, _ := c.NewRequest(t.Context(), "GET", ".", nil)
-			_, err := c.Do(req, nil)
-			assertNilError(t, err)
-		})
-	}
-}
-
 // authRecorderServer returns a server that reports the Authorization header of
 // each request it serves on the returned channel. The channel is buffered and
 // keeps only the first value, so a test cannot block the server, and a test that
@@ -5148,23 +4950,6 @@ func TestClient_CloneReScopesToken(t *testing.T) {
 		t.Fatalf("Do returned error: %v", err)
 	}
 	assertRecordedAuthHeader(t, firstAuth, "")
-}
-
-func TestBasicAuthTransport_transport(t *testing.T) {
-	t.Parallel()
-	// default transport
-	tp := &BasicAuthTransport{}
-	if tp.transport() != http.DefaultTransport {
-		t.Error("Expected http.DefaultTransport to be used.")
-	}
-
-	// custom transport
-	tp = &BasicAuthTransport{
-		Transport: &http.Transport{},
-	}
-	if tp.transport() == http.DefaultTransport {
-		t.Error("Expected custom transport to be used.")
-	}
 }
 
 func TestFormatRateReset(t *testing.T) {

@@ -59,52 +59,43 @@ include the specified OAuth token. Therefore, authenticated clients should
 almost never be shared between different users.
 
 For API methods that require HTTP Basic Authentication, use the
-[BasicAuthTransport].
+[WithBasicAuth] option.
 
 GitHub Apps authentication can be provided by the
-https://github.com/bradleyfalzon/ghinstallation package.
-It supports both authentication as an installation, using an installation access token,
-and as an app, using a JWT. Use the [WithTransport] option to configure your client to use the appropriate transport.
+[github.com/jferrl/go-githubauth](https://github.com/jferrl/go-githubauth) package.
+Most endpoints (for example, `GET /rate_limit`) require access token
+authentication, while a few others (for example, `GET /app/hook/deliveries`)
+require [JWT authentication](https://docs.github.com/en/developers/apps/building-github-apps/authenticating-with-github-apps#authenticating-as-a-github-app).
 
-To authenticate as an installation:
+`go-githubauth` provides functions that create `oauth2.TokenSource`
+implementations. Configure one for the client with [WithTokenSource].
+`NewApplicationTokenSource` accepts either the App's client ID (a `string`,
+which GitHub now recommends) or its legacy app ID (an `int64`).
 
-	import "github.com/bradleyfalzon/ghinstallation"
+For example, create an application token source and then an installation token
+source to authenticate a client for an installation:
 
-	func main() {
-		// Wrap the shared transport for use with the integration ID 1 authenticating with installation ID 99.
-		itr, err := ghinstallation.NewKeyFromFile(http.DefaultTransport, 1, 99, "2016-10-19.private-key.pem")
-		if err != nil {
-			// Handle error.
-		}
-
-		// Use installation transport with client
-		client, err := github.NewClient(github.WithTransport(itr))
-		if err != nil {
-			// Handle error.
-		}
-
-		// Use client...
+	privateKey := []byte(os.Getenv("GITHUB_APP_PRIVATE_KEY"))
+	clientID := os.Getenv("GITHUB_APP_CLIENT_ID")
+	installationID, err := strconv.ParseInt(os.Getenv("GITHUB_APP_INSTALLATION_ID"), 10, 64)
+	if err != nil {
+		// Handle error.
 	}
 
-To authenticate as an app, using a JWT:
-
-	import "github.com/bradleyfalzon/ghinstallation"
-
-	func main() {
-		// Wrap the shared transport for use with the application ID 1.
-		atr, err := ghinstallation.NewAppsTransportKeyFromFile(http.DefaultTransport, 1, "2016-10-19.private-key.pem")
-		if err != nil {
-			// Handle error.
-		}
-
-		// Use app transport with client
-		client, err := github.NewClient(github.WithTransport(atr))
-		if err != nil {
-			// Handle error.
-		}
-
-		// Use client...
+	appTokenSource, err := githubauth.NewApplicationTokenSource(clientID, privateKey)
+	if err != nil {
+		// Handle error.
 	}
+
+	installationTokenSource := githubauth.NewInstallationTokenSource(installationID, appTokenSource)
+	client, err := github.NewClient(github.WithTokenSource(installationTokenSource))
+	if err != nil {
+		// Handle error.
+	}
+
+Some APIs, such as writing a file to a repository, require an installation
+token. Use the GitHub App's installation ID to generate one, then authenticate
+with the OAuth token source as shown above.
 
 # Rate Limiting
 
@@ -113,8 +104,7 @@ limited to 60 requests per hour, while authenticated clients can make up to
 5,000 requests per hour. The Search API has a custom rate limit. Unauthenticated
 clients are limited to 10 requests per minute, while authenticated clients
 can make up to 30 requests per minute. To receive the higher rate limit when
-making calls that are not issued on behalf of a user,
-use [UnauthenticatedRateLimitedTransport].
+making calls that are not issued on behalf of a user, use [github.WithBasicAuth].
 
 The returned [Response].[Rate] value contains the rate limit information
 from the most recent API call. If a recent enough response isn't

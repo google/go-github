@@ -123,12 +123,11 @@ include the specified OAuth token. Therefore, authenticated clients should
 almost never be shared between different users.
 
 For API methods that require HTTP Basic Authentication, use the
-[`BasicAuthTransport`](https://pkg.go.dev/github.com/google/go-github/v93/github#BasicAuthTransport).
+`WithBasicAuth` option.
 
 #### As a GitHub App ####
 
-GitHub Apps authentication can be provided by different pkgs like [bradleyfalzon/ghinstallation](https://github.com/bradleyfalzon/ghinstallation)
-or [jferrl/go-githubauth](https://github.com/jferrl/go-githubauth).
+GitHub Apps authentication can be provided by [jferrl/go-githubauth](https://github.com/jferrl/go-githubauth).
 
 > **Note**: Most endpoints (ex. [`GET /rate_limit`]) require access token authentication
 > while a few others (ex. [`GET /app/hook/deliveries`]) require [JWT] authentication.
@@ -137,40 +136,8 @@ or [jferrl/go-githubauth](https://github.com/jferrl/go-githubauth).
 [`GET /app/hook/deliveries`]: https://docs.github.com/en/rest/apps/webhooks#list-deliveries-for-an-app-webhook
 [JWT]: https://docs.github.com/en/developers/apps/building-github-apps/authenticating-with-github-apps#authenticating-as-a-github-app
 
-`ghinstallation` provides `Transport`, which implements `http.RoundTripper` to provide authentication as an installation for GitHub Apps.
-
-Here is an example of how to authenticate as a GitHub App using the `ghinstallation` package:
-
-```go
-import (
-	"net/http"
-
-	"github.com/bradleyfalzon/ghinstallation/v2"
-	"github.com/google/go-github/v93/github"
-)
-
-func main() {
-	// Wrap the shared transport for use with the integration ID 1 authenticating with installation ID 99.
-	itr, err := ghinstallation.NewKeyFromFile(http.DefaultTransport, 1, 99, "2016-10-19.private-key.pem")
-
-	// Or for endpoints that require JWT authentication
-	// itr, err := ghinstallation.NewAppsTransportKeyFromFile(http.DefaultTransport, 1, "2016-10-19.private-key.pem")
-
-	if err != nil {
-		// Handle error.
-	}
-
-	// Use installation transport with client.
-	client, err := github.NewClient(github.WithTransport(itr))
-	if err != nil {
-		// Handle error.
-	}
-
-	// Use client...
-}
-```
-
-`go-githubauth` implements a set of `oauth2.TokenSource` to be used with `oauth2.Client`. An `oauth2.Client` can be injected into the `github.Client` to authenticate requests.
+`go-githubauth` implements a set of functions that can create `oauth2.TokenSource` implementations.
+The `oauth2.TokenSource` can be configured for the `github.Client` using the `github.WithTokenSource` option.
 
 `NewApplicationTokenSource` accepts either the App's client ID (a `string`, which GitHub now recommends) or its legacy app ID (an `int64`).
 
@@ -208,12 +175,7 @@ func main() {
 
 	installationTokenSource := githubauth.NewInstallationTokenSource(installationID, appTokenSource)
 
-	// oauth2.NewClient uses oauth2.ReuseTokenSource to reuse the token until it expires.
-	// The token will be automatically refreshed when it expires.
-	// InstallationTokenSource has the mechanism to refresh the token when it expires.
-	httpClient := oauth2.NewClient(context.Background(), installationTokenSource)
-
-	client, err := github.NewClient(github.WithHTTPClient(httpClient))
+	client, err := github.NewClient(github.WithTokenSource(installationTokenSource))
 	if err != nil {
 		// Handle error.
 	}
@@ -290,8 +252,8 @@ set the client `DisableRateLimitCheck` to `true` so the client doesn't track the
 
 If the client is an [OAuth app](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#primary-rate-limit-for-oauth-apps)
 you can use the apps higher rate limit to request public data by using the
-`UnauthenticatedRateLimitedTransport` to make calls as the app instead of as
-the user.
+`github.WithBasicAuth` option to configure the client to make calls as the
+app instead of as the user.
 
 ### Accepted Status ###
 

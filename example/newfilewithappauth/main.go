@@ -9,35 +9,35 @@
 package main
 
 import (
+	"bufio"
 	"context"
+	"fmt"
 	"log"
-	"net/http"
 	"os"
-	"time"
+	"strings"
 
-	"github.com/bradleyfalzon/ghinstallation/v2"
 	"github.com/google/go-github/v93/github"
+	"github.com/jferrl/go-githubauth"
+	"golang.org/x/term"
 )
 
 func main() {
-	const gitHost = "https://git.api.com"
+	gitHost := "https://git.api.com"
 
-	privatePem, err := os.ReadFile("path/to/pem")
-	if err != nil {
-		log.Fatalf("failed to read pem: %v", err)
-	}
+	r := bufio.NewReader(os.Stdin)
+	fmt.Print("GitHub App Client ID: ")
+	clientID, _ := r.ReadString('\n')
 
-	itr, err := ghinstallation.NewAppsTransport(http.DefaultTransport, 10, privatePem)
+	fmt.Print("GitHub App Private Key: ")
+	privateKey, _ := term.ReadPassword(int(os.Stdin.Fd()))
+
+	appTokenSource, err := githubauth.NewApplicationTokenSource(strings.TrimSpace(clientID), privateKey)
 	if err != nil {
-		log.Fatalf("failed to create app transport: %v", err)
+		log.Fatalf("failed to create app token source: %v", err)
 	}
-	itr.BaseURL = gitHost
 
 	// create git client with app transport
-	client, err := github.NewClient(github.WithHTTPClient(&http.Client{
-		Transport: itr,
-		Timeout:   time.Second * 30,
-	}), github.WithEnterpriseURLs(gitHost, gitHost))
+	client, err := github.NewClient(github.WithTokenSource(appTokenSource), github.WithURLs(&gitHost, &gitHost))
 	if err != nil {
 		log.Fatalf("failed to create git client for app: %v", err)
 	}
@@ -52,18 +52,16 @@ func main() {
 	var installID int64
 	for _, val := range installations {
 		installID = val.GetID()
+		break
 	}
 
-	token, _, err := client.Apps.CreateInstallationToken(
-		context.Background(),
-		installID,
-		&github.InstallationTokenOptions{},
-	)
-	if err != nil {
-		log.Fatalf("failed to create installation token: %v", err)
+	if installID == 0 {
+		log.Fatal("no installation found")
 	}
 
-	apiClient, err := github.NewClient(github.WithAuthToken(token.GetToken()), github.WithEnterpriseURLs(gitHost, gitHost))
+	installationTokenSource := githubauth.NewInstallationTokenSource(installID, appTokenSource, githubauth.WithBaseURL(gitHost))
+
+	apiClient, err := github.NewClient(github.WithTokenSource(installationTokenSource), github.WithURLs(&gitHost, &gitHost))
 	if err != nil {
 		log.Fatalf("failed to create new git client with token: %v", err)
 	}
