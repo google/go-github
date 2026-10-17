@@ -4615,30 +4615,6 @@ func TestAzureHubConfig_GetName(tt *testing.T) {
 	a.GetName()
 }
 
-func TestBasicAuthTransport_GetOTP(tt *testing.T) {
-	tt.Parallel()
-	b := &BasicAuthTransport{}
-	b.GetOTP()
-	b = nil
-	b.GetOTP()
-}
-
-func TestBasicAuthTransport_GetPassword(tt *testing.T) {
-	tt.Parallel()
-	b := &BasicAuthTransport{}
-	b.GetPassword()
-	b = nil
-	b.GetPassword()
-}
-
-func TestBasicAuthTransport_GetUsername(tt *testing.T) {
-	tt.Parallel()
-	b := &BasicAuthTransport{}
-	b.GetUsername()
-	b = nil
-	b.GetUsername()
-}
-
 func TestBillingCostCenter_GetID(tt *testing.T) {
 	tt.Parallel()
 	b := &BillingCostCenter{}
@@ -57276,22 +57252,6 @@ func TestTreeEntry_GetURL(tt *testing.T) {
 	t.GetURL()
 	t = nil
 	t.GetURL()
-}
-
-func TestUnauthenticatedRateLimitedTransport_GetClientID(tt *testing.T) {
-	tt.Parallel()
-	u := &UnauthenticatedRateLimitedTransport{}
-	u.GetClientID()
-	u = nil
-	u.GetClientID()
-}
-
-func TestUnauthenticatedRateLimitedTransport_GetClientSecret(tt *testing.T) {
-	tt.Parallel()
-	u := &UnauthenticatedRateLimitedTransport{}
-	u.GetClientSecret()
-	u = nil
-	u.GetClientSecret()
 }
 
 func TestUnsuspendUserRequest_GetReason(tt *testing.T) {

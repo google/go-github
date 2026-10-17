@@ -37,9 +37,7 @@ func BenchmarkDo(b *testing.B) {
 			if err != nil {
 				b.Fatalf("json.Marshal returned error: %v", err)
 			}
-			client, err := NewClient(WithHTTPClient(&http.Client{
-				Transport: &fixedResponseTransport{payload: payload},
-			}))
+			client, err := NewClient(WithTransport(&fixedResponseTransport{payload: payload}))
 			if err != nil {
 				b.Fatalf("NewClient returned error: %v", err)
 			}

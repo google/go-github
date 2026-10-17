@@ -9,7 +9,6 @@ package integration
 
 import (
 	"os"
-	"strings"
 	"testing"
 	"time"
 
@@ -137,12 +136,7 @@ func getOAuthAppClient(t *testing.T) *github.Client {
 		t.Skipf(msgEnvMissing, envKeyClientSecret)
 	}
 
-	tp := github.BasicAuthTransport{
-		Username: strings.TrimSpace(username),
-		Password: strings.TrimSpace(password),
-	}
-
-	c, err := github.NewClient(github.WithHTTPClient(tp.Client()))
+	c, err := github.NewClient(github.WithBasicAuth(username, password))
 	if err != nil {
 		t.Fatal(err)
 	}

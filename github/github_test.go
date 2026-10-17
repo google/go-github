@@ -27,6 +27,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
+	"golang.org/x/oauth2"
 )
 
 const (
@@ -117,14 +118,9 @@ func setup(t *testing.T) (client *Client, mux *http.ServeMux, serverURL string) 
 		IdleConnTimeout: 20 * time.Second,
 	}
 
-	// Create HTTP client with the isolated transport
-	httpClient := &http.Client{
-		Transport: transport,
-		Timeout:   30 * time.Second,
-	}
 	// client is the GitHub client being tested and is
 	// configured to use test server.
-	client = mustNewClient(t, WithHTTPClient(httpClient))
+	client = mustNewClient(t, WithTransport(transport), WithTimeout(30*time.Second))
 
 	url, _ := url.Parse(server.URL + baseURLPath + "/")
 	client.baseURL = url
@@ -449,43 +445,6 @@ func assertWrite(t *testing.T, w io.Writer, data []byte) {
 	assertNilError(t, err)
 }
 
-func TestWithHTTPClient(t *testing.T) {
-	t.Parallel()
-
-	t.Run("nil_client", func(t *testing.T) {
-		t.Parallel()
-
-		opts := clientOptions{}
-		err := WithHTTPClient(nil)(&opts)
-		if err == nil || err.Error() != "http client must not be nil" {
-			t.Errorf("WithHTTPClient errored: %v", err)
-		}
-	})
-
-	t.Run("non_nil_client", func(t *testing.T) {
-		t.Parallel()
-
-		customClient := &http.Client{Timeout: 10 * time.Second}
-		opts := clientOptions{}
-		err := WithHTTPClient(customClient)(&opts)
-		if err != nil {
-			t.Fatalf("WithHTTPClient errored: %v", err)
-		}
-
-		if opts.httpClient == nil {
-			t.Fatal("httpClient is nil")
-		}
-
-		if opts.httpClient == customClient {
-			t.Error("httpClient should be a shallow copy of the provided client, but is the same instance")
-		}
-
-		if opts.httpClient.Timeout != customClient.Timeout {
-			t.Errorf("httpClient Timeout = %v, want %v", opts.httpClient.Timeout, customClient.Timeout)
-		}
-	})
-}
-
 func TestWithTransport(t *testing.T) {
 	t.Parallel()
 
@@ -632,14 +591,105 @@ func TestWithAuthToken(t *testing.T) {
 			t.Fatalf("WithAuthToken errored: %v", err)
 		}
 
-		if opts.token == nil || *opts.token != validToken {
-			t.Errorf("token = %v, want %v", opts.token, validToken)
+		if opts.tokenSource == nil {
+			t.Fatal("tokenSource is nil, want non-nil")
+		}
+
+		gotToken, err := opts.tokenSource.Token()
+		if err != nil {
+			t.Fatalf("TokenSource errored: %v", err)
+		}
+		if gotToken.AccessToken != validToken {
+			t.Fatalf("got token %v, want %v", gotToken.AccessToken, validToken)
+		}
+	})
+}
+
+func TestWithBasicAuth(t *testing.T) {
+	t.Parallel()
+
+	t.Run("empty_username", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithBasicAuth("", "bar")(&opts)
+		if err == nil || err.Error() != "username and password must not be empty" {
+			t.Error("expected error for empty username, got nil")
+		}
+	})
+
+	t.Run("empty_password", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithBasicAuth("foo", "")(&opts)
+		if err == nil || err.Error() != "username and password must not be empty" {
+			t.Error("expected error for empty password, got nil")
+		}
+	})
+
+	t.Run("valid_credentials", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithBasicAuth("foo", "bar")(&opts)
+		if err != nil {
+			t.Fatalf("WithBasicAuth errored: %v", err)
+		}
+
+		if opts.tokenSource == nil {
+			t.Fatal("tokenSource is nil, want non-nil")
+		}
+
+		_, err = opts.tokenSource.Token()
+		if err != nil {
+			t.Fatalf("TokenSource errored: %v", err)
+		}
+	})
+}
+
+func TestWithTokenSource(t *testing.T) {
+	t.Parallel()
+
+	t.Run("nil_token_source", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithTokenSource(nil)(&opts)
+		if err == nil || err.Error() != "tokenSource must not be nil" {
+			t.Error("expected error for nil token source, got nil")
+		}
+	})
+
+	t.Run("valid_token_source", func(t *testing.T) {
+		t.Parallel()
+
+		validToken := "ghp_exampletoken1234567890"
+		source := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: validToken})
+
+		opts := clientOptions{}
+		err := WithTokenSource(source)(&opts)
+		if err != nil {
+			t.Fatalf("WithTokenSource errored: %v", err)
+		}
+
+		if opts.tokenSource == nil {
+			t.Fatal("tokenSource is nil, want non-nil")
+		}
+
+		gotToken, err := opts.tokenSource.Token()
+		if err != nil {
+			t.Fatalf("TokenSource errored: %v", err)
+		}
+		if gotToken.AccessToken != validToken {
+			t.Fatalf("got token %v, want %v", gotToken.AccessToken, validToken)
 		}
 	})
 }
 
 func TestWithURLs(t *testing.T) {
 	t.Parallel()
+
 	for _, tt := range []struct {
 		name          string
 		baseURL       *string
@@ -729,6 +779,7 @@ func TestWithURLs(t *testing.T) {
 
 func TestWithEnterpriseURLs(t *testing.T) {
 	t.Parallel()
+
 	for _, tt := range []struct {
 		name          string
 		baseURL       string
@@ -941,7 +992,7 @@ func TestNewClient(t *testing.T) {
 		{
 			name: "with_options",
 			opts: []ClientOptionsFunc{
-				WithHTTPClient(&http.Client{Timeout: 10 * time.Second}),
+				WithTimeout(10 * time.Second),
 			},
 			wantErr: "",
 		},
@@ -993,13 +1044,6 @@ func Test_newClient(t *testing.T) {
 			wantErr: "",
 		},
 		{
-			name: "with_http_client",
-			opts: clientOptions{
-				httpClient: &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
-			},
-			wantErr: "",
-		},
-		{
 			name: "with_transport",
 			opts: clientOptions{
 				transport: &http.Transport{IdleConnTimeout: 10 * time.Second},
@@ -1009,7 +1053,6 @@ func Test_newClient(t *testing.T) {
 		{
 			name: "with_all_options",
 			opts: clientOptions{
-				httpClient:                              &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
 				transport:                               &http.Transport{IdleConnTimeout: 10 * time.Second},
 				timeout:                                 new(15 * time.Second),
 				apiVersionMin:                           new(api20221128),
@@ -1070,30 +1113,11 @@ func Test_newClient(t *testing.T) {
 			if c.client == nil {
 				t.Error("newClient http.Client is not initialized")
 			}
-			if tt.opts.httpClient != nil && c.client != tt.opts.httpClient {
-				t.Error("newClient http.Client should be the same instance as the provided httpClient option")
-			}
-			if tt.opts.transport != nil && !tt.opts.envProxy && tt.opts.token == nil && c.client.Transport != tt.opts.transport {
+			if tt.opts.transport != nil && !tt.opts.envProxy && tt.opts.tokenSource == nil && c.client.Transport != tt.opts.transport {
 				t.Error("newClient http.Client.Transport should be the same instance as the provided transport option")
 			}
 			if tt.opts.timeout != nil && c.client.Timeout != *tt.opts.timeout {
 				t.Errorf("newClient http.Client.Timeout is %v, want %v", c.client.Timeout, *tt.opts.timeout)
-			}
-
-			if c.clientIgnoreRedirects == nil {
-				t.Error("newClient http.Client used for redirects is not initialized")
-			}
-			if c.clientIgnoreRedirects.Transport != c.client.Transport {
-				t.Error("newClient http.Client and http.Client used for redirects should share the same Transport instance")
-			}
-			if c.clientIgnoreRedirects.Timeout != c.client.Timeout {
-				t.Errorf("newClient http.Client and http.Client used for redirects should have the same Timeout, got %v and %v", c.client.Timeout, c.clientIgnoreRedirects.Timeout)
-			}
-			if c.clientIgnoreRedirects.Jar != c.client.Jar {
-				t.Error("newClient http.Client and http.Client used for redirects should share the same Jar instance")
-			}
-			if c.clientIgnoreRedirects.CheckRedirect == nil {
-				t.Error("newClient http.Client used for redirects should have a CheckRedirect function")
 			}
 
 			if tt.opts.apiVersionMin != nil && c.apiVersionMin != *tt.opts.apiVersionMin {
@@ -1292,6 +1316,7 @@ func TestClient_Clone(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
+		c.baseTransport = &http.Transport{IdleConnTimeout: 10 * time.Second}
 		c.apiVersionMin = api20221128
 		c.apiVersionMax = api20221128
 		c.userAgent = "CustomUserAgent/1.0"
@@ -1301,7 +1326,7 @@ func TestClient_Clone(t *testing.T) {
 		c.rateLimitRedirectionalEndpoints = true
 		c.maxSecondaryRateLimitRetryAfterDuration = 2 * time.Minute
 		c.Marketplace.Stubbed = true
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.Transport = c.baseTransport
 		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
 		c.client.Timeout = 15 * time.Second
 		c.rateLimits[CoreCategory].Remaining = 100
@@ -1317,12 +1342,6 @@ func TestClient_Clone(t *testing.T) {
 		}
 		if cloned.client.Transport != c.client.Transport {
 			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != c.client.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
 		}
 		if cloned.client.Timeout != c.client.Timeout {
 			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, c.client.Timeout)
@@ -1360,12 +1379,13 @@ func TestClient_Clone(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
+		c.baseTransport = &http.Transport{IdleConnTimeout: 10 * time.Second}
 		c.userAgent = "CustomUserAgent/1.0"
 		c.baseURL.Path = "/custom/"
 		c.uploadURL.Path = "/custom-upload/"
 		c.disableRateLimitCheck = true
 		c.Marketplace.Stubbed = true
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.Transport = c.baseTransport
 		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
 		c.client.Timeout = 15 * time.Second
 		c.rateLimits[CoreCategory].Remaining = 100
@@ -1381,12 +1401,6 @@ func TestClient_Clone(t *testing.T) {
 		}
 		if cloned.client.Transport != c.client.Transport {
 			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != c.client.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
 		}
 		if cloned.client.Timeout != c.client.Timeout {
 			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, c.client.Timeout)
@@ -1408,47 +1422,12 @@ func TestClient_Clone(t *testing.T) {
 		}
 	})
 
-	t.Run("initialized_client_with_http_client", func(t *testing.T) {
-		t.Parallel()
-
-		c := mustNewClient(t)
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
-		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
-		c.client.Timeout = 15 * time.Second
-
-		h := &http.Client{
-			Transport:     &http.Transport{IdleConnTimeout: 20 * time.Second},
-			CheckRedirect: func(_ *http.Request, _ []*http.Request) error { return http.ErrUseLastResponse },
-			Timeout:       25 * time.Second,
-		}
-
-		cloned, err := c.Clone(WithHTTPClient(h))
-		if err != nil {
-			t.Fatalf("Client.Clone returned error: %v", err)
-		}
-
-		if cloned.client == h {
-			t.Error("Cloned Client has same http.Client instance as provided in WithHTTPClient, but should be a different instance")
-		}
-		if cloned.client.Transport != h.Transport {
-			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", h.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != h.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
-		}
-		if cloned.client.Timeout != h.Timeout {
-			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, h.Timeout)
-		}
-	})
-
 	t.Run("initialized_client_with_transport", func(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.baseTransport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.Transport = c.baseTransport
 		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
 		c.client.Timeout = 15 * time.Second
 
@@ -1465,12 +1444,6 @@ func TestClient_Clone(t *testing.T) {
 		if cloned.client.Transport != tr {
 			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
 		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != c.client.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
-		}
 		if cloned.client.Timeout != c.client.Timeout {
 			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, c.client.Timeout)
 		}
@@ -1480,7 +1453,8 @@ func TestClient_Clone(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.baseTransport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.Transport = c.baseTransport
 		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
 		c.client.Timeout = 15 * time.Second
 
@@ -1496,52 +1470,6 @@ func TestClient_Clone(t *testing.T) {
 		}
 		if cloned.client.Transport != c.client.Transport {
 			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != c.client.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
-		}
-		if cloned.client.Timeout != timeout {
-			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, timeout)
-		}
-	})
-
-	t.Run("initialized_client_with_http_client_transport_timeout", func(t *testing.T) {
-		t.Parallel()
-
-		c := mustNewClient(t)
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
-		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
-		c.client.Timeout = 15 * time.Second
-
-		h := &http.Client{
-			Transport:     &http.Transport{IdleConnTimeout: 20 * time.Second},
-			CheckRedirect: func(_ *http.Request, _ []*http.Request) error { return http.ErrUseLastResponse },
-			Timeout:       25 * time.Second,
-		}
-
-		tr := &http.Transport{IdleConnTimeout: 30 * time.Second}
-
-		timeout := 45 * time.Second
-
-		cloned, err := c.Clone(WithHTTPClient(h), WithTransport(tr), WithTimeout(timeout))
-		if err != nil {
-			t.Fatalf("Client.Clone returned error: %v", err)
-		}
-
-		if cloned.client == h {
-			t.Error("Cloned Client has same http.Client instance as provided in WithHTTPClient, but should be a different instance")
-		}
-		if cloned.client.Transport != tr {
-			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", h.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != h.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
 		}
 		if cloned.client.Timeout != timeout {
 			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, timeout)
@@ -2602,15 +2530,7 @@ func TestDo_AcceptedError_LargeBodyTruncated(t *testing.T) {
 func TestDo_sanitizeURL(t *testing.T) {
 	t.Parallel()
 	baseURL := &url.URL{Scheme: "http", Host: "127.0.0.1:0", Path: "/"} // Use port 0 on purpose to trigger a dial TCP error, expect to get "dial tcp 127.0.0.1:0: connect: can't assign requested address".
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:     "id",
-		ClientSecret: "secret",
-		// Scope the transport to the origin below so that the credentials really are
-		// attached to this request; otherwise the test would pass vacuously, with the
-		// secret never sent in the first place.
-		AllowedOrigins: []*url.URL{baseURL},
-	}
-	unauthedClient := mustNewClient(t, WithHTTPClient(tp.Client()))
+	unauthedClient := mustNewClient(t, WithBasicAuth("id", "secret"))
 	unauthedClient.baseURL = baseURL
 	req, err := unauthedClient.NewRequest(t.Context(), "GET", ".", nil)
 	if err != nil {
@@ -4677,230 +4597,6 @@ func TestError_Error(t *testing.T) {
 	}
 }
 
-func TestSetCredentialsAsHeaders(t *testing.T) {
-	t.Parallel()
-	req := new(http.Request)
-	id, secret := "id", "secret"
-	modifiedRequest := setCredentialsAsHeaders(req, id, secret)
-
-	actualID, actualSecret, ok := modifiedRequest.BasicAuth()
-	if !ok {
-		t.Error("request does not contain basic credentials")
-	}
-
-	if actualID != id {
-		t.Errorf("id is %v, want %v", actualID, id)
-	}
-
-	if actualSecret != secret {
-		t.Errorf("secret is %v, want %v", actualSecret, secret)
-	}
-}
-
-func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	clientID, clientSecret := "id", "secret"
-	mux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		id, secret, ok := r.BasicAuth()
-		if !ok {
-			t.Error("request does not contain basic auth credentials")
-		}
-		if id != clientID {
-			t.Errorf("request contained basic auth username %q, want %q", id, clientID)
-		}
-		if secret != clientSecret {
-			t.Errorf("request contained basic auth password %q, want %q", secret, clientSecret)
-		}
-	})
-
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:       clientID,
-		ClientSecret:   clientSecret,
-		AllowedOrigins: []*url.URL{client.baseURL},
-	}
-	unauthedClient := mustNewClient(t, WithHTTPClient(tp.Client()))
-	unauthedClient.baseURL = client.baseURL
-	req, _ := unauthedClient.NewRequest(t.Context(), "GET", ".", nil)
-	_, err := unauthedClient.Do(req, nil)
-	assertNilError(t, err)
-}
-
-func TestUnauthenticatedRateLimitedTransport_originScope(t *testing.T) {
-	t.Parallel()
-	clientID, clientSecret := "id", "secret"
-
-	// The origin the transport is scoped to receives the credentials...
-	allowed, allowedMux, _ := setup(t)
-	allowedMux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		if _, _, ok := r.BasicAuth(); !ok {
-			t.Error("request to an allowed origin does not contain basic auth credentials")
-		}
-	})
-
-	// ...and any other origin does not, even when the same transport is used.
-	foreign, foreignMux, _ := setup(t)
-	foreignMux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		if id, secret, ok := r.BasicAuth(); ok {
-			t.Errorf("request to an unrelated origin contained basic auth credentials %q/%q", id, secret)
-		}
-	})
-
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:       clientID,
-		ClientSecret:   clientSecret,
-		AllowedOrigins: []*url.URL{allowed.baseURL},
-	}
-
-	for _, test := range []struct {
-		name string
-		base *url.URL
-	}{
-		{name: "allowed origin", base: allowed.baseURL},
-		{name: "foreign origin", base: foreign.baseURL},
-	} {
-		t.Run(test.name, func(t *testing.T) {
-			t.Parallel()
-			c := mustNewClient(t, WithHTTPClient(tp.Client()))
-			c.baseURL = test.base
-			req, _ := c.NewRequest(t.Context(), "GET", ".", nil)
-			_, err := c.Do(req, nil)
-			assertNilError(t, err)
-		})
-	}
-}
-
-func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
-	t.Parallel()
-	// missing ClientID
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientSecret: "secret",
-	}
-	_, err := tp.RoundTrip(nil)
-	if err == nil {
-		t.Error("Expected error to be returned")
-	}
-
-	// missing ClientSecret
-	tp = &UnauthenticatedRateLimitedTransport{
-		ClientID: "id",
-	}
-	_, err = tp.RoundTrip(nil)
-	if err == nil {
-		t.Error("Expected error to be returned")
-	}
-}
-
-func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
-	t.Parallel()
-	// default transport
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:     "id",
-		ClientSecret: "secret",
-	}
-	if tp.transport() != http.DefaultTransport {
-		t.Error("Expected http.DefaultTransport to be used.")
-	}
-
-	// custom transport
-	tp = &UnauthenticatedRateLimitedTransport{
-		ClientID:     "id",
-		ClientSecret: "secret",
-		Transport:    &http.Transport{},
-	}
-	if tp.transport() == http.DefaultTransport {
-		t.Error("Expected custom transport to be used.")
-	}
-}
-
-func TestBasicAuthTransport(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	username, password, otp := "u", "p", "123456"
-
-	mux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		u, p, ok := r.BasicAuth()
-		if !ok {
-			t.Error("request does not contain basic auth credentials")
-		}
-		if u != username {
-			t.Errorf("request contained basic auth username %q, want %q", u, username)
-		}
-		if p != password {
-			t.Errorf("request contained basic auth password %q, want %q", p, password)
-		}
-		if got, want := r.Header.Get(headerOTP), otp; got != want {
-			t.Errorf("request contained OTP %q, want %q", got, want)
-		}
-	})
-
-	tp := &BasicAuthTransport{
-		Username:       username,
-		Password:       password,
-		OTP:            otp,
-		AllowedOrigins: []*url.URL{client.baseURL},
-	}
-	basicAuthClient := mustNewClient(t, WithHTTPClient(tp.Client()))
-	basicAuthClient.baseURL = client.baseURL
-	req, _ := basicAuthClient.NewRequest(t.Context(), "GET", ".", nil)
-	_, err := basicAuthClient.Do(req, nil)
-	assertNilError(t, err)
-}
-
-func TestBasicAuthTransport_originScope(t *testing.T) {
-	t.Parallel()
-	username, password, otp := "u", "p", "123456"
-
-	// The origin the transport is scoped to receives both credentials and the OTP...
-	allowed, allowedMux, _ := setup(t)
-	allowedMux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		if u, p, ok := r.BasicAuth(); !ok || u != username || p != password {
-			t.Error("request to an allowed origin does not contain the expected basic auth credentials")
-		}
-		if got := r.Header.Get(headerOTP); got != otp {
-			t.Errorf("request to an allowed origin contained OTP %q, want %q", got, otp)
-		}
-	})
-
-	// ...and any other origin receives neither. The OTP is a second factor, so a
-	// foreign origin must not see it even though it is not itself a "credential".
-	foreign, foreignMux, _ := setup(t)
-	foreignMux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		if u, p, ok := r.BasicAuth(); ok {
-			t.Errorf("request to an unrelated origin contained basic auth credentials %q/%q", u, p)
-		}
-		if got := r.Header.Get(headerOTP); got != "" {
-			t.Errorf("request to an unrelated origin contained OTP %q, want none", got)
-		}
-	})
-
-	tp := &BasicAuthTransport{
-		Username:       username,
-		Password:       password,
-		OTP:            otp,
-		AllowedOrigins: []*url.URL{allowed.baseURL},
-	}
-
-	for _, test := range []struct {
-		name string
-		base *url.URL
-	}{
-		{name: "allowed origin", base: allowed.baseURL},
-		{name: "foreign origin", base: foreign.baseURL},
-	} {
-		t.Run(test.name, func(t *testing.T) {
-			t.Parallel()
-			c := mustNewClient(t, WithHTTPClient(tp.Client()))
-			c.baseURL = test.base
-			req, _ := c.NewRequest(t.Context(), "GET", ".", nil)
-			_, err := c.Do(req, nil)
-			assertNilError(t, err)
-		})
-	}
-}
-
 // authRecorderServer returns a server that reports the Authorization header of
 // each request it serves on the returned channel. The channel is buffered and
 // keeps only the first value, so a test cannot block the server, and a test that
@@ -5148,23 +4844,6 @@ func TestClient_CloneReScopesToken(t *testing.T) {
 		t.Fatalf("Do returned error: %v", err)
 	}
 	assertRecordedAuthHeader(t, firstAuth, "")
-}
-
-func TestBasicAuthTransport_transport(t *testing.T) {
-	t.Parallel()
-	// default transport
-	tp := &BasicAuthTransport{}
-	if tp.transport() != http.DefaultTransport {
-		t.Error("Expected http.DefaultTransport to be used.")
-	}
-
-	// custom transport
-	tp = &BasicAuthTransport{
-		Transport: &http.Transport{},
-	}
-	if tp.transport() == http.DefaultTransport {
-		t.Error("Expected custom transport to be used.")
-	}
 }
 
 func TestFormatRateReset(t *testing.T) {
