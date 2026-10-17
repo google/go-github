@@ -5384,6 +5384,37 @@ func (s *OrganizationsService) ListPendingOrgInvitationsIter(ctx context.Context
 	}
 }
 
+// ListRuleSuitesIter returns an iterator that paginates through all results of ListRuleSuites.
+func (s *OrganizationsService) ListRuleSuitesIter(ctx context.Context, org string, opts *ListRuleSuitesOptions) iter.Seq2[*RuleSuite, error] {
+	return func(yield func(*RuleSuite, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListRuleSuitesOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListRuleSuites(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListTeamsAssignedToOrgRoleIter returns an iterator that paginates through all results of ListTeamsAssignedToOrgRole.
 func (s *OrganizationsService) ListTeamsAssignedToOrgRoleIter(ctx context.Context, org string, roleID int64, opts *ListOptions) iter.Seq2[*Team, error] {
 	return func(yield func(*Team, error) bool) {
