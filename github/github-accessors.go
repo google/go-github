@@ -19446,6 +19446,14 @@ func (g *GetProvisionedSCIMGroupEnterpriseOptions) GetExcludedAttributes() strin
 	return *g.ExcludedAttributes
 }
 
+// GetIncludeMetadata returns the IncludeMetadata field.
+func (g *GetRuleSuiteOptions) GetIncludeMetadata() bool {
+	if g == nil {
+		return false
+	}
+	return g.IncludeMetadata
+}
+
 // GetComments returns the Comments field if it's non-nil, zero value otherwise.
 func (g *Gist) GetComments() int {
 	if g == nil || g.Comments == nil {
@@ -40646,6 +40654,14 @@ func (r *RuleEvaluation) GetEnforcement() string {
 	return *r.Enforcement
 }
 
+// GetMetadata returns the Metadata field.
+func (r *RuleEvaluation) GetMetadata() *RuleEvaluationMetadata {
+	if r == nil {
+		return nil
+	}
+	return r.Metadata
+}
+
 // GetResult returns the Result field if it's non-nil, zero value otherwise.
 func (r *RuleEvaluation) GetResult() string {
 	if r == nil || r.Result == nil {
@@ -40670,6 +40686,126 @@ func (r *RuleEvaluation) GetRuleType() string {
 	return *r.RuleType
 }
 
+// GetChecks returns the Checks slice if it's non-nil, nil otherwise.
+func (r *RuleEvaluationMetadata) GetChecks() []*RuleEvaluationStatusCheck {
+	if r == nil || r.Checks == nil {
+		return nil
+	}
+	return r.Checks
+}
+
+// GetPullRequest returns the PullRequest field.
+func (r *RuleEvaluationMetadata) GetPullRequest() *RuleEvaluationPullRequest {
+	if r == nil {
+		return nil
+	}
+	return r.PullRequest
+}
+
+// GetBaseSHA returns the BaseSHA field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationProofOfPresence) GetBaseSHA() string {
+	if r == nil || r.BaseSHA == nil {
+		return ""
+	}
+	return *r.BaseSHA
+}
+
+// GetCode returns the Code field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationProofOfPresence) GetCode() string {
+	if r == nil || r.Code == nil {
+		return ""
+	}
+	return *r.Code
+}
+
+// GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationProofOfPresence) GetHeadSHA() string {
+	if r == nil || r.HeadSHA == nil {
+		return ""
+	}
+	return *r.HeadSHA
+}
+
+// GetRequiredLevel returns the RequiredLevel field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationProofOfPresence) GetRequiredLevel() string {
+	if r == nil || r.RequiredLevel == nil {
+		return ""
+	}
+	return *r.RequiredLevel
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationProofOfPresence) GetState() string {
+	if r == nil || r.State == nil {
+		return ""
+	}
+	return *r.State
+}
+
+// GetVerifiedAt returns the VerifiedAt field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationProofOfPresence) GetVerifiedAt() string {
+	if r == nil || r.VerifiedAt == nil {
+		return ""
+	}
+	return *r.VerifiedAt
+}
+
+// GetVerifiedLevel returns the VerifiedLevel field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationProofOfPresence) GetVerifiedLevel() string {
+	if r == nil || r.VerifiedLevel == nil {
+		return ""
+	}
+	return *r.VerifiedLevel
+}
+
+// GetVerifier returns the Verifier field.
+func (r *RuleEvaluationProofOfPresence) GetVerifier() *User {
+	if r == nil {
+		return nil
+	}
+	return r.Verifier
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationPullRequest) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
+}
+
+// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationPullRequest) GetNumber() int {
+	if r == nil || r.Number == nil {
+		return 0
+	}
+	return *r.Number
+}
+
+// GetProofOfPresence returns the ProofOfPresence field.
+func (r *RuleEvaluationPullRequest) GetProofOfPresence() *RuleEvaluationProofOfPresence {
+	if r == nil {
+		return nil
+	}
+	return r.ProofOfPresence
+}
+
+// GetReviews returns the Reviews slice if it's non-nil, nil otherwise.
+func (r *RuleEvaluationPullRequest) GetReviews() []*PullRequestReview {
+	if r == nil || r.Reviews == nil {
+		return nil
+	}
+	return r.Reviews
+}
+
+// GetUser returns the User field.
+func (r *RuleEvaluationPullRequest) GetUser() *User {
+	if r == nil {
+		return nil
+	}
+	return r.User
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (r *RuleEvaluationSource) GetID() int64 {
 	if r == nil || r.ID == nil {
@@ -40688,6 +40824,46 @@ func (r *RuleEvaluationSource) GetName() string {
 
 // GetType returns the Type field if it's non-nil, zero value otherwise.
 func (r *RuleEvaluationSource) GetType() string {
+	if r == nil || r.Type == nil {
+		return ""
+	}
+	return *r.Type
+}
+
+// GetApp returns the App field.
+func (r *RuleEvaluationStatusCheck) GetApp() *App {
+	if r == nil {
+		return nil
+	}
+	return r.App
+}
+
+// GetContext returns the Context field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationStatusCheck) GetContext() string {
+	if r == nil || r.Context == nil {
+		return ""
+	}
+	return *r.Context
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationStatusCheck) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationStatusCheck) GetState() string {
+	if r == nil || r.State == nil {
+		return ""
+	}
+	return *r.State
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationStatusCheck) GetType() string {
 	if r == nil || r.Type == nil {
 		return ""
 	}

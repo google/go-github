@@ -28,11 +28,49 @@ type RuleSuite struct {
 
 // RuleEvaluation represents the result of evaluating a single rule within a rule suite.
 type RuleEvaluation struct {
-	RuleSource  *RuleEvaluationSource `json:"rule_source,omitempty"`
-	Enforcement *string               `json:"enforcement,omitempty"`
-	Result      *string               `json:"result,omitempty"`
-	RuleType    *string               `json:"rule_type,omitempty"`
-	Details     *string               `json:"details,omitempty"`
+	RuleSource  *RuleEvaluationSource   `json:"rule_source,omitempty"`
+	Enforcement *string                 `json:"enforcement,omitempty"`
+	Result      *string                 `json:"result,omitempty"`
+	RuleType    *string                 `json:"rule_type,omitempty"`
+	Details     *string                 `json:"details,omitempty"`
+	Metadata    *RuleEvaluationMetadata `json:"metadata,omitempty"`
+}
+
+// RuleEvaluationMetadata represents additional metadata about a rule evaluation.
+// PullRequest is set for pull_request rules, and Checks is set for required_status_checks rules.
+type RuleEvaluationMetadata struct {
+	PullRequest *RuleEvaluationPullRequest   `json:"pull_request,omitempty"`
+	Checks      []*RuleEvaluationStatusCheck `json:"checks,omitempty"`
+}
+
+// RuleEvaluationPullRequest represents the pull request associated with a rule evaluation.
+type RuleEvaluationPullRequest struct {
+	ID              *int64                         `json:"id,omitempty"`
+	Number          *int                           `json:"number,omitempty"`
+	User            *User                          `json:"user,omitempty"`
+	Reviews         []*PullRequestReview           `json:"reviews,omitempty"`
+	ProofOfPresence *RuleEvaluationProofOfPresence `json:"proof_of_presence,omitempty"`
+}
+
+// RuleEvaluationProofOfPresence represents the proof of presence evaluation for a pull request.
+type RuleEvaluationProofOfPresence struct {
+	State         *string `json:"state,omitempty"`
+	Code          *string `json:"code,omitempty"`
+	BaseSHA       *string `json:"base_sha,omitempty"`
+	HeadSHA       *string `json:"head_sha,omitempty"`
+	RequiredLevel *string `json:"required_level,omitempty"`
+	VerifiedLevel *string `json:"verified_level,omitempty"`
+	VerifiedAt    *string `json:"verified_at,omitempty"`
+	Verifier      *User   `json:"verifier,omitempty"`
+}
+
+// RuleEvaluationStatusCheck represents a status check associated with a rule evaluation.
+type RuleEvaluationStatusCheck struct {
+	ID      *int64  `json:"id,omitempty"`
+	Context *string `json:"context,omitempty"`
+	State   *string `json:"state,omitempty"`
+	Type    *string `json:"type,omitempty"`
+	App     *App    `json:"app,omitempty"`
 }
 
 // RuleEvaluationSource represents the source of an evaluated rule.
@@ -96,13 +134,25 @@ func (s *OrganizationsService) ListRuleSuites(ctx context.Context, org string, o
 	return ruleSuites, resp, nil
 }
 
+// GetRuleSuiteOptions specifies the optional parameters to the
+// OrganizationsService.GetRuleSuite method.
+type GetRuleSuiteOptions struct {
+	// IncludeMetadata, when true, includes additional metadata for pull request
+	// and required status check rule evaluations. Default: false.
+	IncludeMetadata bool `url:"include_metadata,omitempty"`
+}
+
 // GetRuleSuite gets a rule suite for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/rule-suites?apiVersion=2022-11-28#get-an-organization-rule-suite
 //
 //meta:operation GET /orgs/{org}/rulesets/rule-suites/{rule_suite_id}
-func (s *OrganizationsService) GetRuleSuite(ctx context.Context, org string, ruleSuiteID int64) (*RuleSuite, *Response, error) {
+func (s *OrganizationsService) GetRuleSuite(ctx context.Context, org string, ruleSuiteID int64, opts *GetRuleSuiteOptions) (*RuleSuite, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets/rule-suites/%v", org, ruleSuiteID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
