@@ -25,7 +25,7 @@ func TestOrganizationsService_ListRuleSuites(t *testing.T) {
 			"time_period":       "week",
 			"actor_name":        "octocat",
 			"rule_suite_result": "fail",
-			"evaluate_status":   "true",
+			"evaluate_status":   "evaluate",
 			"page":              "2",
 			"per_page":          "30",
 		})
@@ -51,7 +51,7 @@ func TestOrganizationsService_ListRuleSuites(t *testing.T) {
 		TimePeriod:      "week",
 		ActorName:       "octocat",
 		RuleSuiteResult: "fail",
-		EvaluateStatus:  "true",
+		EvaluateStatus:  "evaluate",
 		ListOptions:     ListOptions{Page: 2, PerPage: 30},
 	}
 	ruleSuites, _, err := client.Organizations.ListRuleSuites(ctx, "o", opts)

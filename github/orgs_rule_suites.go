@@ -45,12 +45,27 @@ type RuleEvaluationSource struct {
 // ListRuleSuitesOptions specifies the optional parameters to the
 // OrganizationsService.ListRuleSuites method.
 type ListRuleSuitesOptions struct {
-	Ref             string `url:"ref,omitempty"`
-	RepositoryName  string `url:"repository_name,omitempty"`
-	TimePeriod      string `url:"time_period,omitempty"`
-	ActorName       string `url:"actor_name,omitempty"`
+	// Ref filters rule suites by the name of the ref, which cannot contain wildcard characters.
+	// Prefix it with "refs/heads/" to limit to branches or "refs/tags/" to limit to tags.
+	Ref string `url:"ref,omitempty"`
+
+	// RepositoryName filters rule suites by the name of the repository.
+	RepositoryName string `url:"repository_name,omitempty"`
+
+	// TimePeriod filters rule suites by the time period in which they occurred.
+	// Can be one of: "hour", "day", "week", "month". Default: "day".
+	TimePeriod string `url:"time_period,omitempty"`
+
+	// ActorName filters rule suites by the handle of the user who triggered them.
+	ActorName string `url:"actor_name,omitempty"`
+
+	// RuleSuiteResult filters rule suites by their result.
+	// Can be one of: "pass", "fail", "bypass", "all". Default: "all".
 	RuleSuiteResult string `url:"rule_suite_result,omitempty"`
-	EvaluateStatus  string `url:"evaluate_status,omitempty"`
+
+	// EvaluateStatus filters rule suites by the evaluate status of the rulesets that produced them.
+	// Can be one of: "all", "active", "evaluate". Default: "all".
+	EvaluateStatus string `url:"evaluate_status,omitempty"`
 
 	ListOptions
 }
