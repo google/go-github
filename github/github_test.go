@@ -2751,6 +2751,54 @@ func TestDo_rateLimitCategory(t *testing.T) {
 	}
 }
 
+// Ensure the rate limit category is determined relative to BaseURL, so that a
+// client with a path prefix (GitHub Enterprise Server's "/api/v3/") does not
+// file search rate limits under the core category.
+func TestDo_rateLimitCategory_baseURLPath(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	reset := time.Now().UTC().Add(time.Minute).Round(time.Second)
+
+	mux.HandleFunc("/search/code", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set(HeaderRateLimit, "10")
+		w.Header().Set(HeaderRateRemaining, "0")
+		w.Header().Set(HeaderRateUsed, "10")
+		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(HeaderRateResource, "code_search")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{"message": "API rate limit exceeded"}`)
+	})
+
+	madeNetworkCall := false
+	mux.HandleFunc("/user", func(http.ResponseWriter, *http.Request) {
+		madeNetworkCall = true
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", "search/code", nil)
+	if _, err := client.Do(req, nil); err == nil {
+		t.Fatal("Expected error to be returned.")
+	}
+
+	client.rateMu.Lock()
+	codeSearch, core := client.rateLimits[CodeSearchCategory], client.rateLimits[CoreCategory]
+	client.rateMu.Unlock()
+	if got, want := codeSearch.Remaining, 0; got != want || codeSearch.Limit != 10 {
+		t.Errorf("rateLimits[CodeSearchCategory] = %+v, want Limit 10 and Remaining %v", codeSearch, want)
+	}
+	if core != (Rate{}) {
+		t.Errorf("rateLimits[CoreCategory] = %+v, want zero value", core)
+	}
+
+	req, _ = client.NewRequest(t.Context(), "GET", "user", nil)
+	if _, err := client.Do(req, nil); err != nil {
+		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+	if !madeNetworkCall {
+		t.Error("Core request was blocked by an exhausted code search rate limit.")
+	}
+}
+
 // Ensure rate limit is still parsed, even for error responses.
 func TestDo_rateLimit_errorResponse(t *testing.T) {
 	t.Parallel()
@@ -5487,5 +5535,38 @@ func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 
 	if got != want {
 		t.Errorf("want %#v, got %#v", want, got)
+	}
+}
+
+func TestClient_apiPath(t *testing.T) {
+	t.Parallel()
+
+	u, err := url.Parse("https://ghes.example.com/api/v3/search/code")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := (&Client{}).apiPath(u), "/api/v3/search/code"; got != want {
+		t.Errorf("apiPath with nil BaseURL = %q, want %q", got, want)
+	}
+
+	client, _, _ := setup(t)
+	base, err := url.Parse("https://ghes.example.com/api/v3/")
+	if err != nil {
+		t.Fatal(err)
+	}
+	client.baseURL = base
+	tests := []struct{ in, want string }{
+		{"https://ghes.example.com/api/v3/search/code", "/search/code"},
+		{"https://ghes.example.com/api/v3x/search/code", "/api/v3x/search/code"},
+		{"https://ghes.example.com/uploads/repos/o/r", "/uploads/repos/o/r"},
+	}
+	for _, tt := range tests {
+		u, err := url.Parse(tt.in)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got := client.apiPath(u); got != tt.want {
+			t.Errorf("apiPath(%q) = %q, want %q", tt.in, got, tt.want)
+		}
 	}
 }

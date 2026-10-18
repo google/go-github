@@ -1441,7 +1441,7 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 	rateLimitCategory := CoreCategory
 
 	if !c.disableRateLimitCheck {
-		rateLimitCategory = GetRateLimitCategory(req.Method, req.URL.Path)
+		rateLimitCategory = GetRateLimitCategory(req.Method, c.apiPath(req.URL))
 
 		if bypass := ctx.Value(BypassRateLimitCheck); bypass == nil {
 			// If we've hit rate limit, don't make further requests before Reset time.
@@ -1542,6 +1542,20 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		}
 	}
 	return response, err
+}
+
+// apiPath returns the path of u relative to the client's BaseURL, keeping the
+// leading slash, so that "/api/v3/search/code" on a GitHub Enterprise Server
+// client becomes "/search/code". Paths outside BaseURL are returned unchanged.
+func (c *Client) apiPath(u *url.URL) string {
+	if c.baseURL == nil {
+		return u.Path
+	}
+	prefix := strings.TrimSuffix(c.baseURL.Path, "/")
+	if path, ok := strings.CutPrefix(u.Path, prefix); ok && strings.HasPrefix(path, "/") {
+		return path
+	}
+	return u.Path
 }
 
 // BareDo sends an API request and lets you handle the api response. If an error

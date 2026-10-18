@@ -118,7 +118,7 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		_, r, err := client.SCIM.ListSCIMProvisionedIdentities(ctx, "o", nil)
 		return r, err
 	})
@@ -166,7 +166,7 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		got, resp, err := client.SCIM.ProvisionAndInviteSCIMUser(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -261,7 +261,7 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		_, r, err := client.SCIM.GetSCIMProvisioningInfoForUser(ctx, "o", "123")
 		return r, err
 	})
@@ -311,7 +311,7 @@ func TestSCIMService_UpdateProvisionedOrgMembership(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		got, resp, err := client.SCIM.UpdateProvisionedOrgMembership(ctx, "o", "123", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -376,7 +376,7 @@ func TestSCIMService_UpdateAttributeForSCIMUser(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		got, resp, err := client.SCIM.UpdateAttributeForSCIMUser(ctx, "o", "123", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -406,7 +406,7 @@ func TestSCIMService_DeleteSCIMUserFromOrg(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		return client.SCIM.DeleteSCIMUserFromOrg(ctx, "o", "123")
 	})
 }

@@ -93,7 +93,7 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 	}
 
 	const methodName = "CreateSnapshot"
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, DependencySnapshotsCategory, func() (*Response, error) {
 		got, resp, err := client.DependencyGraph.CreateSnapshot(ctx, "o", "r", snapshot)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
