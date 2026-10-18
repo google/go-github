@@ -264,7 +264,7 @@ func TestActionsService_ListConcurrencyGroupsIter(t *testing.T) {
 		t.Errorf("client.Actions.ListConcurrencyGroupsIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	opts := &ListConcurrencyGroupsOptions{}
+	opts := &ListCursorOptions{}
 	iter = client.Actions.ListConcurrencyGroupsIter(t.Context(), "", "", opts)
 	gotItems = 0
 	for _, err := range iter {
@@ -2208,7 +2208,7 @@ func TestActionsService_ListWorkflowRunConcurrencyGroupsIter(t *testing.T) {
 		t.Errorf("client.Actions.ListWorkflowRunConcurrencyGroupsIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	opts := &ListWorkflowRunConcurrencyGroupsOptions{}
+	opts := &ListCursorOptions{}
 	iter = client.Actions.ListWorkflowRunConcurrencyGroupsIter(t.Context(), "", "", 0, opts)
 	gotItems = 0
 	for _, err := range iter {

@@ -24,8 +24,8 @@ type ConcurrencyGroup struct {
 type ConcurrencyGroupMember struct {
 	RunID       int64   `json:"run_id"`
 	RunName     string  `json:"run_name"`
-	RunURL      *string `json:"run_url,omitempty"`
-	RunHTMLURL  *string `json:"run_html_url,omitempty"`
+	RunURL      string  `json:"run_url"`
+	RunHTMLURL  string  `json:"run_html_url"`
 	JobID       *int64  `json:"job_id,omitempty"`
 	JobName     *string `json:"job_name,omitempty"`
 	JobURL      *string `json:"job_url,omitempty"`
@@ -41,16 +41,6 @@ type ConcurrencyGroupList struct {
 	ConcurrencyGroups []*ConcurrencyGroup `json:"concurrency_groups"`
 }
 
-// ListConcurrencyGroupsOptions specifies the optional parameters to the
-// ActionsService.ListConcurrencyGroups method.
-type ListConcurrencyGroupsOptions struct {
-	// A cursor, as given in the Link header. If specified, the query only searches for concurrency groups after this cursor.
-	After string `url:"after,omitempty"`
-
-	// For paginated result sets, the number of results to include per page.
-	PerPage int `url:"per_page,omitempty"`
-}
-
 // GetConcurrencyGroupOptions specifies the optional parameters to the
 // ActionsService.GetConcurrencyGroup method.
 type GetConcurrencyGroupOptions struct {
@@ -61,25 +51,12 @@ type GetConcurrencyGroupOptions struct {
 	AheadOfJob int64 `url:"ahead_of_job,omitempty"`
 }
 
-// ListWorkflowRunConcurrencyGroupsOptions specifies the optional parameters to the
-// ActionsService.ListWorkflowRunConcurrencyGroups method.
-type ListWorkflowRunConcurrencyGroupsOptions struct {
-	// A cursor, as given in the Link header. If specified, the query only searches for concurrency groups before this cursor.
-	Before string `url:"before,omitempty"`
-
-	// A cursor, as given in the Link header. If specified, the query only searches for concurrency groups after this cursor.
-	After string `url:"after,omitempty"`
-
-	// For paginated result sets, the number of results to include per page.
-	PerPage int `url:"per_page,omitempty"`
-}
-
 // ListConcurrencyGroups lists the active concurrency groups for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/concurrency-groups?apiVersion=2022-11-28#list-concurrency-groups-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/concurrency_groups
-func (s *ActionsService) ListConcurrencyGroups(ctx context.Context, owner, repo string, opts *ListConcurrencyGroupsOptions) (*ConcurrencyGroupList, *Response, error) {
+func (s *ActionsService) ListConcurrencyGroups(ctx context.Context, owner, repo string, opts *ListCursorOptions) (*ConcurrencyGroupList, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/concurrency_groups", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -133,7 +110,7 @@ func (s *ActionsService) GetConcurrencyGroup(ctx context.Context, owner, repo, g
 // GitHub API docs: https://docs.github.com/rest/actions/concurrency-groups?apiVersion=2022-11-28#list-concurrency-groups-for-a-workflow-run
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runs/{run_id}/concurrency_groups
-func (s *ActionsService) ListWorkflowRunConcurrencyGroups(ctx context.Context, owner, repo string, runID int64, opts *ListWorkflowRunConcurrencyGroupsOptions) (*ConcurrencyGroupList, *Response, error) {
+func (s *ActionsService) ListWorkflowRunConcurrencyGroups(ctx context.Context, owner, repo string, runID int64, opts *ListCursorOptions) (*ConcurrencyGroupList, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/concurrency_groups", owner, repo, runID)
 	u, err := addOptions(u, opts)
 	if err != nil {

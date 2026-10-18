@@ -120,11 +120,11 @@ func (s *ActionsService) ListCachesIter(ctx context.Context, owner string, repo 
 }
 
 // ListConcurrencyGroupsIter returns an iterator that paginates through all results of ListConcurrencyGroups.
-func (s *ActionsService) ListConcurrencyGroupsIter(ctx context.Context, owner string, repo string, opts *ListConcurrencyGroupsOptions) iter.Seq2[*ConcurrencyGroup, error] {
+func (s *ActionsService) ListConcurrencyGroupsIter(ctx context.Context, owner string, repo string, opts *ListCursorOptions) iter.Seq2[*ConcurrencyGroup, error] {
 	return func(yield func(*ConcurrencyGroup, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
-			opts = &ListConcurrencyGroupsOptions{}
+			opts = &ListCursorOptions{}
 		} else {
 			opts = new(*opts)
 		}
@@ -1065,11 +1065,11 @@ func (s *ActionsService) ListWorkflowRunArtifactsIter(ctx context.Context, owner
 }
 
 // ListWorkflowRunConcurrencyGroupsIter returns an iterator that paginates through all results of ListWorkflowRunConcurrencyGroups.
-func (s *ActionsService) ListWorkflowRunConcurrencyGroupsIter(ctx context.Context, owner string, repo string, runID int64, opts *ListWorkflowRunConcurrencyGroupsOptions) iter.Seq2[*ConcurrencyGroup, error] {
+func (s *ActionsService) ListWorkflowRunConcurrencyGroupsIter(ctx context.Context, owner string, repo string, runID int64, opts *ListCursorOptions) iter.Seq2[*ConcurrencyGroup, error] {
 	return func(yield func(*ConcurrencyGroup, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
-			opts = &ListWorkflowRunConcurrencyGroupsOptions{}
+			opts = &ListCursorOptions{}
 		} else {
 			opts = new(*opts)
 		}

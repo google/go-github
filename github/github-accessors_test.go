@@ -10012,10 +10012,7 @@ func TestConcurrencyGroupMember_GetPositionURL(tt *testing.T) {
 
 func TestConcurrencyGroupMember_GetRunHTMLURL(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &ConcurrencyGroupMember{RunHTMLURL: &zeroValue}
-	c.GetRunHTMLURL()
-	c = &ConcurrencyGroupMember{}
+	c := &ConcurrencyGroupMember{}
 	c.GetRunHTMLURL()
 	c = nil
 	c.GetRunHTMLURL()
@@ -10039,10 +10036,7 @@ func TestConcurrencyGroupMember_GetRunName(tt *testing.T) {
 
 func TestConcurrencyGroupMember_GetRunURL(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &ConcurrencyGroupMember{RunURL: &zeroValue}
-	c.GetRunURL()
-	c = &ConcurrencyGroupMember{}
+	c := &ConcurrencyGroupMember{}
 	c.GetRunURL()
 	c = nil
 	c.GetRunURL()
@@ -31510,22 +31504,6 @@ func TestListCollaboratorsOptions_GetPermission(tt *testing.T) {
 	l.GetPermission()
 }
 
-func TestListConcurrencyGroupsOptions_GetAfter(tt *testing.T) {
-	tt.Parallel()
-	l := &ListConcurrencyGroupsOptions{}
-	l.GetAfter()
-	l = nil
-	l.GetAfter()
-}
-
-func TestListConcurrencyGroupsOptions_GetPerPage(tt *testing.T) {
-	tt.Parallel()
-	l := &ListConcurrencyGroupsOptions{}
-	l.GetPerPage()
-	l = nil
-	l.GetPerPage()
-}
-
 func TestListContributorsOptions_GetAnon(tt *testing.T) {
 	tt.Parallel()
 	l := &ListContributorsOptions{}
@@ -32450,30 +32428,6 @@ func TestListWorkflowJobsOptions_GetFilter(tt *testing.T) {
 	l.GetFilter()
 	l = nil
 	l.GetFilter()
-}
-
-func TestListWorkflowRunConcurrencyGroupsOptions_GetAfter(tt *testing.T) {
-	tt.Parallel()
-	l := &ListWorkflowRunConcurrencyGroupsOptions{}
-	l.GetAfter()
-	l = nil
-	l.GetAfter()
-}
-
-func TestListWorkflowRunConcurrencyGroupsOptions_GetBefore(tt *testing.T) {
-	tt.Parallel()
-	l := &ListWorkflowRunConcurrencyGroupsOptions{}
-	l.GetBefore()
-	l = nil
-	l.GetBefore()
-}
-
-func TestListWorkflowRunConcurrencyGroupsOptions_GetPerPage(tt *testing.T) {
-	tt.Parallel()
-	l := &ListWorkflowRunConcurrencyGroupsOptions{}
-	l.GetPerPage()
-	l = nil
-	l.GetPerPage()
 }
 
 func TestListWorkflowRunsOptions_GetActor(tt *testing.T) {

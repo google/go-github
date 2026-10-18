@@ -7918,12 +7918,12 @@ func (c *ConcurrencyGroupMember) GetPositionURL() string {
 	return *c.PositionURL
 }
 
-// GetRunHTMLURL returns the RunHTMLURL field if it's non-nil, zero value otherwise.
+// GetRunHTMLURL returns the RunHTMLURL field.
 func (c *ConcurrencyGroupMember) GetRunHTMLURL() string {
-	if c == nil || c.RunHTMLURL == nil {
+	if c == nil {
 		return ""
 	}
-	return *c.RunHTMLURL
+	return c.RunHTMLURL
 }
 
 // GetRunID returns the RunID field.
@@ -7942,12 +7942,12 @@ func (c *ConcurrencyGroupMember) GetRunName() string {
 	return c.RunName
 }
 
-// GetRunURL returns the RunURL field if it's non-nil, zero value otherwise.
+// GetRunURL returns the RunURL field.
 func (c *ConcurrencyGroupMember) GetRunURL() string {
-	if c == nil || c.RunURL == nil {
+	if c == nil {
 		return ""
 	}
-	return *c.RunURL
+	return c.RunURL
 }
 
 // GetStatus returns the Status field.
@@ -25158,22 +25158,6 @@ func (l *ListCollaboratorsOptions) GetPermission() string {
 	return l.Permission
 }
 
-// GetAfter returns the After field.
-func (l *ListConcurrencyGroupsOptions) GetAfter() string {
-	if l == nil {
-		return ""
-	}
-	return l.After
-}
-
-// GetPerPage returns the PerPage field.
-func (l *ListConcurrencyGroupsOptions) GetPerPage() int {
-	if l == nil {
-		return 0
-	}
-	return l.PerPage
-}
-
 // GetAnon returns the Anon field.
 func (l *ListContributorsOptions) GetAnon() string {
 	if l == nil {
@@ -25972,30 +25956,6 @@ func (l *ListWorkflowJobsOptions) GetFilter() string {
 		return ""
 	}
 	return l.Filter
-}
-
-// GetAfter returns the After field.
-func (l *ListWorkflowRunConcurrencyGroupsOptions) GetAfter() string {
-	if l == nil {
-		return ""
-	}
-	return l.After
-}
-
-// GetBefore returns the Before field.
-func (l *ListWorkflowRunConcurrencyGroupsOptions) GetBefore() string {
-	if l == nil {
-		return ""
-	}
-	return l.Before
-}
-
-// GetPerPage returns the PerPage field.
-func (l *ListWorkflowRunConcurrencyGroupsOptions) GetPerPage() int {
-	if l == nil {
-		return 0
-	}
-	return l.PerPage
 }
 
 // GetActor returns the Actor field.

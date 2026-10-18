@@ -41,7 +41,7 @@ func TestActionsService_ListConcurrencyGroups(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := &ListConcurrencyGroupsOptions{After: "abc", PerPage: 2}
+	opts := &ListCursorOptions{After: "abc", PerPage: 2}
 	groups, _, err := client.Actions.ListConcurrencyGroups(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Actions.ListConcurrencyGroups returned error: %v", err)
@@ -131,15 +131,15 @@ func TestActionsService_GetConcurrencyGroup(t *testing.T) {
 			{
 				RunID:      1,
 				RunName:    "Deploy",
-				RunURL:     new("https://api.github.com/repos/o/r/actions/runs/1"),
-				RunHTMLURL: new("https://github.com/o/r/actions/runs/1"),
+				RunURL:     "https://api.github.com/repos/o/r/actions/runs/1",
+				RunHTMLURL: "https://github.com/o/r/actions/runs/1",
 				Status:     "in_progress",
 			},
 			{
 				RunID:      3,
 				RunName:    "Deploy hotfix",
-				RunURL:     new("https://api.github.com/repos/o/r/actions/runs/3"),
-				RunHTMLURL: new("https://github.com/o/r/actions/runs/3"),
+				RunURL:     "https://api.github.com/repos/o/r/actions/runs/3",
+				RunHTMLURL: "https://github.com/o/r/actions/runs/3",
 				JobID:      new(int64(2)),
 				JobName:    new("deploy"),
 				JobURL:     new("https://api.github.com/repos/o/r/actions/jobs/2"),
@@ -238,7 +238,7 @@ func TestActionsService_ListWorkflowRunConcurrencyGroups(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := &ListWorkflowRunConcurrencyGroupsOptions{Before: "xyz", PerPage: 2}
+	opts := &ListCursorOptions{Before: "xyz", PerPage: 2}
 	groups, _, err := client.Actions.ListWorkflowRunConcurrencyGroups(ctx, "o", "r", 1, opts)
 	if err != nil {
 		t.Errorf("Actions.ListWorkflowRunConcurrencyGroups returned error: %v", err)
@@ -254,8 +254,8 @@ func TestActionsService_ListWorkflowRunConcurrencyGroups(t *testing.T) {
 					{
 						RunID:       1,
 						RunName:     "Deploy",
-						RunURL:      new("https://api.github.com/repos/o/r/actions/runs/1"),
-						RunHTMLURL:  new("https://github.com/o/r/actions/runs/1"),
+						RunURL:      "https://api.github.com/repos/o/r/actions/runs/1",
+						RunHTMLURL:  "https://github.com/o/r/actions/runs/1",
 						Status:      "in_progress",
 						Position:    new(0),
 						PositionURL: new("https://api.github.com/repos/o/r/actions/concurrency_groups/deploy-prod?ahead_of_run=1"),
