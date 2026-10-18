@@ -56,7 +56,7 @@ type TotalCacheUsage struct {
 	TotalActiveCachesCount            int   `json:"total_active_caches_count"`
 }
 
-// ActionsCacheRetentionLimit represents the GitHub Actions cache retention limit for an organization.
+// ActionsCacheRetentionLimit represents the GitHub Actions cache retention limit for a repository, organization, or enterprise.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-retention-limit-for-an-organization
 type ActionsCacheRetentionLimit struct {
@@ -65,7 +65,7 @@ type ActionsCacheRetentionLimit struct {
 	MaxCacheRetentionDays *int `json:"max_cache_retention_days,omitempty"`
 }
 
-// ActionsCacheStorageLimit represents the GitHub Actions cache storage limit for an organization.
+// ActionsCacheStorageLimit represents the GitHub Actions cache storage limit for a repository, organization, or enterprise.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-storage-limit-for-an-organization
 type ActionsCacheStorageLimit struct {
@@ -342,6 +342,174 @@ func (s *ActionsService) GetCacheStorageLimitForOrg(ctx context.Context, org str
 //meta:operation PUT /organizations/{org}/actions/cache/storage-limit
 func (s *ActionsService) SetCacheStorageLimitForOrg(ctx context.Context, org string, body ActionsCacheStorageLimit) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/actions/cache/storage-limit", org)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
+// GetCacheRetentionLimitForRepo gets the GitHub Actions cache retention limit for a repository.
+// This determines how long caches will be retained for, if not manually removed or evicted due to size constraints.
+//
+// Permissions: OAuth tokens and personal access tokens (classic) need the admin:repository scope to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-retention-limit-for-a-repository
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/cache/retention-limit
+func (s *ActionsService) GetCacheRetentionLimitForRepo(ctx context.Context, owner, repo string) (*ActionsCacheRetentionLimit, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/cache/retention-limit", owner, repo)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var limit *ActionsCacheRetentionLimit
+	res, err := s.client.Do(req, &limit)
+	if err != nil {
+		return nil, res, err
+	}
+
+	return limit, res, nil
+}
+
+// SetCacheRetentionLimitForRepo sets the GitHub Actions cache retention limit for a repository.
+// This determines how long caches will be retained for, if not manually removed or evicted due to size constraints.
+//
+// Permissions: OAuth tokens and personal access tokens (classic) need the admin:repository scope to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/cache?apiVersion=2022-11-28#set-github-actions-cache-retention-limit-for-a-repository
+//
+//meta:operation PUT /repos/{owner}/{repo}/actions/cache/retention-limit
+func (s *ActionsService) SetCacheRetentionLimitForRepo(ctx context.Context, owner, repo string, body ActionsCacheRetentionLimit) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/cache/retention-limit", owner, repo)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
+// GetCacheStorageLimitForRepo gets the GitHub Actions cache storage limit for a repository.
+// This determines the maximum size of caches that can be stored before eviction occurs.
+//
+// Permissions: OAuth tokens and personal access tokens (classic) need the admin:repository scope to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-storage-limit-for-a-repository
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/cache/storage-limit
+func (s *ActionsService) GetCacheStorageLimitForRepo(ctx context.Context, owner, repo string) (*ActionsCacheStorageLimit, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/cache/storage-limit", owner, repo)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var limit *ActionsCacheStorageLimit
+	res, err := s.client.Do(req, &limit)
+	if err != nil {
+		return nil, res, err
+	}
+
+	return limit, res, nil
+}
+
+// SetCacheStorageLimitForRepo sets the GitHub Actions cache storage limit for a repository.
+// This determines the maximum size of caches that can be stored before eviction occurs.
+//
+// Permissions: OAuth tokens and personal access tokens (classic) need the admin:repository scope to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/cache?apiVersion=2022-11-28#set-github-actions-cache-storage-limit-for-a-repository
+//
+//meta:operation PUT /repos/{owner}/{repo}/actions/cache/storage-limit
+func (s *ActionsService) SetCacheStorageLimitForRepo(ctx context.Context, owner, repo string, body ActionsCacheStorageLimit) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/cache/storage-limit", owner, repo)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
+// GetCacheRetentionLimitForEnterprise gets the GitHub Actions cache retention limit for an enterprise.
+// Organizations and repositories in the enterprise may not set a higher cache retention limit.
+//
+// Permissions: OAuth tokens and personal access tokens (classic) need the admin:enterprise scope to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-retention-limit-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/cache/retention-limit
+func (s *ActionsService) GetCacheRetentionLimitForEnterprise(ctx context.Context, enterprise string) (*ActionsCacheRetentionLimit, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/cache/retention-limit", enterprise)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var limit *ActionsCacheRetentionLimit
+	res, err := s.client.Do(req, &limit)
+	if err != nil {
+		return nil, res, err
+	}
+
+	return limit, res, nil
+}
+
+// SetCacheRetentionLimitForEnterprise sets the GitHub Actions cache retention limit for an enterprise.
+// Organizations and repositories in the enterprise may not set a higher cache retention limit.
+//
+// Permissions: OAuth tokens and personal access tokens (classic) need the admin:enterprise scope to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/cache?apiVersion=2022-11-28#set-github-actions-cache-retention-limit-for-an-enterprise
+//
+//meta:operation PUT /enterprises/{enterprise}/actions/cache/retention-limit
+func (s *ActionsService) SetCacheRetentionLimitForEnterprise(ctx context.Context, enterprise string, body ActionsCacheRetentionLimit) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/cache/retention-limit", enterprise)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
+// GetCacheStorageLimitForEnterprise gets the GitHub Actions cache storage limit for an enterprise.
+// Organizations and repositories in the enterprise may not set a higher cache storage limit.
+//
+// Permissions: OAuth tokens and personal access tokens (classic) need the admin:enterprise scope to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-storage-limit-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/cache/storage-limit
+func (s *ActionsService) GetCacheStorageLimitForEnterprise(ctx context.Context, enterprise string) (*ActionsCacheStorageLimit, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/cache/storage-limit", enterprise)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var limit *ActionsCacheStorageLimit
+	res, err := s.client.Do(req, &limit)
+	if err != nil {
+		return nil, res, err
+	}
+
+	return limit, res, nil
+}
+
+// SetCacheStorageLimitForEnterprise sets the GitHub Actions cache storage limit for an enterprise.
+// Organizations and repositories in the enterprise may not set a higher cache storage limit.
+//
+// Permissions: OAuth tokens and personal access tokens (classic) need the admin:enterprise scope to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/cache?apiVersion=2022-11-28#set-github-actions-cache-storage-limit-for-an-enterprise
+//
+//meta:operation PUT /enterprises/{enterprise}/actions/cache/storage-limit
+func (s *ActionsService) SetCacheStorageLimitForEnterprise(ctx context.Context, enterprise string, body ActionsCacheStorageLimit) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/cache/storage-limit", enterprise)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
