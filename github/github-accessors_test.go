@@ -24310,6 +24310,14 @@ func TestGetProvisionedSCIMGroupEnterpriseOptions_GetExcludedAttributes(tt *test
 	g.GetExcludedAttributes()
 }
 
+func TestGetRuleSuiteOptions_GetIncludeMetadata(tt *testing.T) {
+	tt.Parallel()
+	g := &GetRuleSuiteOptions{}
+	g.GetIncludeMetadata()
+	g = nil
+	g.GetIncludeMetadata()
+}
+
 func TestGist_GetComments(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -32127,6 +32135,54 @@ func TestListRepositorySecurityAdvisoriesOptions_GetState(tt *testing.T) {
 	l.GetState()
 	l = nil
 	l.GetState()
+}
+
+func TestListRuleSuitesOptions_GetActorName(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetActorName()
+	l = nil
+	l.GetActorName()
+}
+
+func TestListRuleSuitesOptions_GetEvaluateStatus(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetEvaluateStatus()
+	l = nil
+	l.GetEvaluateStatus()
+}
+
+func TestListRuleSuitesOptions_GetRef(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetRef()
+	l = nil
+	l.GetRef()
+}
+
+func TestListRuleSuitesOptions_GetRepositoryName(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetRepositoryName()
+	l = nil
+	l.GetRepositoryName()
+}
+
+func TestListRuleSuitesOptions_GetRuleSuiteResult(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetRuleSuiteResult()
+	l = nil
+	l.GetRuleSuiteResult()
+}
+
+func TestListRuleSuitesOptions_GetTimePeriod(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetTimePeriod()
+	l = nil
+	l.GetTimePeriod()
 }
 
 func TestListRunnersOptions_GetName(tt *testing.T) {
@@ -50585,6 +50641,304 @@ func TestRuleCodeScanningTool_GetTool(tt *testing.T) {
 	r.GetTool()
 }
 
+func TestRuleEvaluation_GetDetails(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluation{Details: &zeroValue}
+	r.GetDetails()
+	r = &RuleEvaluation{}
+	r.GetDetails()
+	r = nil
+	r.GetDetails()
+}
+
+func TestRuleEvaluation_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluation{Enforcement: &zeroValue}
+	r.GetEnforcement()
+	r = &RuleEvaluation{}
+	r.GetEnforcement()
+	r = nil
+	r.GetEnforcement()
+}
+
+func TestRuleEvaluation_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	r := &RuleEvaluation{}
+	r.GetMetadata()
+	r = nil
+	r.GetMetadata()
+}
+
+func TestRuleEvaluation_GetResult(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluation{Result: &zeroValue}
+	r.GetResult()
+	r = &RuleEvaluation{}
+	r.GetResult()
+	r = nil
+	r.GetResult()
+}
+
+func TestRuleEvaluation_GetRuleSource(tt *testing.T) {
+	tt.Parallel()
+	r := &RuleEvaluation{}
+	r.GetRuleSource()
+	r = nil
+	r.GetRuleSource()
+}
+
+func TestRuleEvaluation_GetRuleType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluation{RuleType: &zeroValue}
+	r.GetRuleType()
+	r = &RuleEvaluation{}
+	r.GetRuleType()
+	r = nil
+	r.GetRuleType()
+}
+
+func TestRuleEvaluationMetadata_GetChecks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RuleEvaluationStatusCheck{}
+	r := &RuleEvaluationMetadata{Checks: zeroValue}
+	r.GetChecks()
+	r = &RuleEvaluationMetadata{}
+	r.GetChecks()
+	r = nil
+	r.GetChecks()
+}
+
+func TestRuleEvaluationMetadata_GetPullRequest(tt *testing.T) {
+	tt.Parallel()
+	r := &RuleEvaluationMetadata{}
+	r.GetPullRequest()
+	r = nil
+	r.GetPullRequest()
+}
+
+func TestRuleEvaluationProofOfPresence_GetBaseSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationProofOfPresence{BaseSHA: &zeroValue}
+	r.GetBaseSHA()
+	r = &RuleEvaluationProofOfPresence{}
+	r.GetBaseSHA()
+	r = nil
+	r.GetBaseSHA()
+}
+
+func TestRuleEvaluationProofOfPresence_GetCode(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationProofOfPresence{Code: &zeroValue}
+	r.GetCode()
+	r = &RuleEvaluationProofOfPresence{}
+	r.GetCode()
+	r = nil
+	r.GetCode()
+}
+
+func TestRuleEvaluationProofOfPresence_GetHeadSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationProofOfPresence{HeadSHA: &zeroValue}
+	r.GetHeadSHA()
+	r = &RuleEvaluationProofOfPresence{}
+	r.GetHeadSHA()
+	r = nil
+	r.GetHeadSHA()
+}
+
+func TestRuleEvaluationProofOfPresence_GetRequiredLevel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationProofOfPresence{RequiredLevel: &zeroValue}
+	r.GetRequiredLevel()
+	r = &RuleEvaluationProofOfPresence{}
+	r.GetRequiredLevel()
+	r = nil
+	r.GetRequiredLevel()
+}
+
+func TestRuleEvaluationProofOfPresence_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationProofOfPresence{State: &zeroValue}
+	r.GetState()
+	r = &RuleEvaluationProofOfPresence{}
+	r.GetState()
+	r = nil
+	r.GetState()
+}
+
+func TestRuleEvaluationProofOfPresence_GetVerifiedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationProofOfPresence{VerifiedAt: &zeroValue}
+	r.GetVerifiedAt()
+	r = &RuleEvaluationProofOfPresence{}
+	r.GetVerifiedAt()
+	r = nil
+	r.GetVerifiedAt()
+}
+
+func TestRuleEvaluationProofOfPresence_GetVerifiedLevel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationProofOfPresence{VerifiedLevel: &zeroValue}
+	r.GetVerifiedLevel()
+	r = &RuleEvaluationProofOfPresence{}
+	r.GetVerifiedLevel()
+	r = nil
+	r.GetVerifiedLevel()
+}
+
+func TestRuleEvaluationProofOfPresence_GetVerifier(tt *testing.T) {
+	tt.Parallel()
+	r := &RuleEvaluationProofOfPresence{}
+	r.GetVerifier()
+	r = nil
+	r.GetVerifier()
+}
+
+func TestRuleEvaluationPullRequest_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &RuleEvaluationPullRequest{ID: &zeroValue}
+	r.GetID()
+	r = &RuleEvaluationPullRequest{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRuleEvaluationPullRequest_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	r := &RuleEvaluationPullRequest{Number: &zeroValue}
+	r.GetNumber()
+	r = &RuleEvaluationPullRequest{}
+	r.GetNumber()
+	r = nil
+	r.GetNumber()
+}
+
+func TestRuleEvaluationPullRequest_GetProofOfPresence(tt *testing.T) {
+	tt.Parallel()
+	r := &RuleEvaluationPullRequest{}
+	r.GetProofOfPresence()
+	r = nil
+	r.GetProofOfPresence()
+}
+
+func TestRuleEvaluationPullRequest_GetReviews(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PullRequestReview{}
+	r := &RuleEvaluationPullRequest{Reviews: zeroValue}
+	r.GetReviews()
+	r = &RuleEvaluationPullRequest{}
+	r.GetReviews()
+	r = nil
+	r.GetReviews()
+}
+
+func TestRuleEvaluationPullRequest_GetUser(tt *testing.T) {
+	tt.Parallel()
+	r := &RuleEvaluationPullRequest{}
+	r.GetUser()
+	r = nil
+	r.GetUser()
+}
+
+func TestRuleEvaluationSource_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &RuleEvaluationSource{ID: &zeroValue}
+	r.GetID()
+	r = &RuleEvaluationSource{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRuleEvaluationSource_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationSource{Name: &zeroValue}
+	r.GetName()
+	r = &RuleEvaluationSource{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRuleEvaluationSource_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationSource{Type: &zeroValue}
+	r.GetType()
+	r = &RuleEvaluationSource{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
+func TestRuleEvaluationStatusCheck_GetApp(tt *testing.T) {
+	tt.Parallel()
+	r := &RuleEvaluationStatusCheck{}
+	r.GetApp()
+	r = nil
+	r.GetApp()
+}
+
+func TestRuleEvaluationStatusCheck_GetContext(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationStatusCheck{Context: &zeroValue}
+	r.GetContext()
+	r = &RuleEvaluationStatusCheck{}
+	r.GetContext()
+	r = nil
+	r.GetContext()
+}
+
+func TestRuleEvaluationStatusCheck_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &RuleEvaluationStatusCheck{ID: &zeroValue}
+	r.GetID()
+	r = &RuleEvaluationStatusCheck{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRuleEvaluationStatusCheck_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationStatusCheck{State: &zeroValue}
+	r.GetState()
+	r = &RuleEvaluationStatusCheck{}
+	r.GetState()
+	r = nil
+	r.GetState()
+}
+
+func TestRuleEvaluationStatusCheck_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationStatusCheck{Type: &zeroValue}
+	r.GetType()
+	r = &RuleEvaluationStatusCheck{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
 func TestRulesetRequiredReviewer_GetFilePatterns(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
@@ -50651,6 +51005,138 @@ func TestRuleStatusCheck_GetIntegrationID(tt *testing.T) {
 	r.GetIntegrationID()
 	r = nil
 	r.GetIntegrationID()
+}
+
+func TestRuleSuite_GetActorID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &RuleSuite{ActorID: &zeroValue}
+	r.GetActorID()
+	r = &RuleSuite{}
+	r.GetActorID()
+	r = nil
+	r.GetActorID()
+}
+
+func TestRuleSuite_GetActorName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{ActorName: &zeroValue}
+	r.GetActorName()
+	r = &RuleSuite{}
+	r.GetActorName()
+	r = nil
+	r.GetActorName()
+}
+
+func TestRuleSuite_GetAfterSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{AfterSHA: &zeroValue}
+	r.GetAfterSHA()
+	r = &RuleSuite{}
+	r.GetAfterSHA()
+	r = nil
+	r.GetAfterSHA()
+}
+
+func TestRuleSuite_GetBeforeSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{BeforeSHA: &zeroValue}
+	r.GetBeforeSHA()
+	r = &RuleSuite{}
+	r.GetBeforeSHA()
+	r = nil
+	r.GetBeforeSHA()
+}
+
+func TestRuleSuite_GetEvaluationResult(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{EvaluationResult: &zeroValue}
+	r.GetEvaluationResult()
+	r = &RuleSuite{}
+	r.GetEvaluationResult()
+	r = nil
+	r.GetEvaluationResult()
+}
+
+func TestRuleSuite_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &RuleSuite{ID: &zeroValue}
+	r.GetID()
+	r = &RuleSuite{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRuleSuite_GetPushedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	r := &RuleSuite{PushedAt: &zeroValue}
+	r.GetPushedAt()
+	r = &RuleSuite{}
+	r.GetPushedAt()
+	r = nil
+	r.GetPushedAt()
+}
+
+func TestRuleSuite_GetRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{Ref: &zeroValue}
+	r.GetRef()
+	r = &RuleSuite{}
+	r.GetRef()
+	r = nil
+	r.GetRef()
+}
+
+func TestRuleSuite_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &RuleSuite{RepositoryID: &zeroValue}
+	r.GetRepositoryID()
+	r = &RuleSuite{}
+	r.GetRepositoryID()
+	r = nil
+	r.GetRepositoryID()
+}
+
+func TestRuleSuite_GetRepositoryName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{RepositoryName: &zeroValue}
+	r.GetRepositoryName()
+	r = &RuleSuite{}
+	r.GetRepositoryName()
+	r = nil
+	r.GetRepositoryName()
+}
+
+func TestRuleSuite_GetResult(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{Result: &zeroValue}
+	r.GetResult()
+	r = &RuleSuite{}
+	r.GetResult()
+	r = nil
+	r.GetResult()
+}
+
+func TestRuleSuite_GetRuleEvaluations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RuleEvaluation{}
+	r := &RuleSuite{RuleEvaluations: zeroValue}
+	r.GetRuleEvaluations()
+	r = &RuleSuite{}
+	r.GetRuleEvaluations()
+	r = nil
+	r.GetRuleEvaluations()
 }
 
 func TestRuleWorkflow_GetPath(tt *testing.T) {
