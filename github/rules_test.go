@@ -100,6 +100,67 @@ func TestRepositoryRulesetRules_CodeCoverageMarshalError(t *testing.T) {
 	}
 }
 
+func TestCodeQualityRuleRoundTrip(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name   string
+		params CodeQualityRuleParameters
+		json   string
+	}{
+		{
+			"with_severity",
+			CodeQualityRuleParameters{Severity: "errors"},
+			`{"severity":"errors"}`,
+		},
+		{
+			"empty_parameters",
+			CodeQualityRuleParameters{},
+			`{}`,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			ruleJSON := `{"type":"code_quality","parameters":` + tt.json + `}`
+			testJSONMarshal(t, &RepositoryRule{
+				Type:       RulesetRuleTypeCodeQuality,
+				Parameters: &tt.params,
+			}, ruleJSON)
+			testJSONMarshal(t, &RepositoryRulesetRules{CodeQuality: &tt.params}, `[`+ruleJSON+`]`)
+		})
+	}
+
+	t.Run("missing_parameters", func(t *testing.T) {
+		t.Parallel()
+		testJSONUnmarshalOnly(t, &RepositoryRule{
+			Type:       RulesetRuleTypeCodeQuality,
+			Parameters: &CodeQualityRuleParameters{},
+		}, `{"type":"code_quality"}`)
+		testJSONUnmarshalOnly(t, &RepositoryRulesetRules{
+			CodeQuality: &CodeQualityRuleParameters{},
+		}, `[{"type":"code_quality"}]`)
+	})
+}
+
+func TestCodeQualityRuleInvalidParameters(t *testing.T) {
+	t.Parallel()
+	for _, params := range []string{
+		`{"severity":123}`,
+		`"not_an_object"`,
+	} {
+		t.Run(params, func(t *testing.T) {
+			t.Parallel()
+			data := `{"type":"code_quality","parameters":` + params + `}`
+			if err := json.Unmarshal([]byte(data), &RepositoryRule{}); err == nil {
+				t.Errorf("Expected error unmarshaling %q, got nil", data)
+			}
+			if err := json.Unmarshal([]byte(`[`+data+`]`), &RepositoryRulesetRules{}); err == nil {
+				t.Errorf("Expected error unmarshaling [%v], got nil", data)
+			}
+		})
+	}
+}
+
 func TestRepositoryRulesetRules(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
