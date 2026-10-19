@@ -15,7 +15,7 @@ type CreateIssueTypeRequest struct {
 	Name        string  `json:"name"`                  // Name of the issue type. (Required.)
 	IsEnabled   bool    `json:"is_enabled"`            // Whether or not the issue type is enabled at the organization level. (Required.)
 	Description *string `json:"description,omitempty"` // Description of the issue type. (Optional.)
-	Color       *string `json:"color,omitempty"`       // Color for the issue type. Can be one of "gray", "blue", "green", "yellow", "orange", "red", "pink", "purple", "null". (Optional.)
+	Color       *string `json:"color,omitempty"`       // Color for the issue type. Can be one of "gray", "blue", "green", "yellow", "orange", "red", "pink", "purple". (Optional.)
 }
 
 // UpdateIssueTypeRequest represents the parameters to update an issue type.
