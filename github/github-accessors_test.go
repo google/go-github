@@ -16586,6 +16586,44 @@ func TestCreateIssueRequest_GetType(tt *testing.T) {
 	c.GetType()
 }
 
+func TestCreateIssueTypeRequest_GetColor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateIssueTypeRequest{Color: &zeroValue}
+	c.GetColor()
+	c = &CreateIssueTypeRequest{}
+	c.GetColor()
+	c = nil
+	c.GetColor()
+}
+
+func TestCreateIssueTypeRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateIssueTypeRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateIssueTypeRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateIssueTypeRequest_GetIsEnabled(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateIssueTypeRequest{}
+	c.GetIsEnabled()
+	c = nil
+	c.GetIsEnabled()
+}
+
+func TestCreateIssueTypeRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateIssueTypeRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
 func TestCreateJITConfigRequest_GetLabels(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
@@ -16959,55 +16997,6 @@ func TestCreateOrgInvitationRequest_GetTeamIDs(tt *testing.T) {
 	c.GetTeamIDs()
 	c = nil
 	c.GetTeamIDs()
-}
-
-func TestCreateOrUpdateIssueTypesOptions_GetColor(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateOrUpdateIssueTypesOptions{Color: &zeroValue}
-	c.GetColor()
-	c = &CreateOrUpdateIssueTypesOptions{}
-	c.GetColor()
-	c = nil
-	c.GetColor()
-}
-
-func TestCreateOrUpdateIssueTypesOptions_GetDescription(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateOrUpdateIssueTypesOptions{Description: &zeroValue}
-	c.GetDescription()
-	c = &CreateOrUpdateIssueTypesOptions{}
-	c.GetDescription()
-	c = nil
-	c.GetDescription()
-}
-
-func TestCreateOrUpdateIssueTypesOptions_GetIsEnabled(tt *testing.T) {
-	tt.Parallel()
-	c := &CreateOrUpdateIssueTypesOptions{}
-	c.GetIsEnabled()
-	c = nil
-	c.GetIsEnabled()
-}
-
-func TestCreateOrUpdateIssueTypesOptions_GetIsPrivate(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	c := &CreateOrUpdateIssueTypesOptions{IsPrivate: &zeroValue}
-	c.GetIsPrivate()
-	c = &CreateOrUpdateIssueTypesOptions{}
-	c.GetIsPrivate()
-	c = nil
-	c.GetIsPrivate()
-}
-
-func TestCreateOrUpdateIssueTypesOptions_GetName(tt *testing.T) {
-	tt.Parallel()
-	c := &CreateOrUpdateIssueTypesOptions{}
-	c.GetName()
-	c = nil
-	c.GetName()
 }
 
 func TestCreateProjectV2DraftItemRequest_GetBody(tt *testing.T) {
@@ -58770,6 +58759,44 @@ func TestUpdateIssueRequest_GetType(tt *testing.T) {
 	u.GetType()
 	u = nil
 	u.GetType()
+}
+
+func TestUpdateIssueTypeRequest_GetColor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateIssueTypeRequest{Color: &zeroValue}
+	u.GetColor()
+	u = &UpdateIssueTypeRequest{}
+	u.GetColor()
+	u = nil
+	u.GetColor()
+}
+
+func TestUpdateIssueTypeRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateIssueTypeRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateIssueTypeRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateIssueTypeRequest_GetIsEnabled(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateIssueTypeRequest{}
+	u.GetIsEnabled()
+	u = nil
+	u.GetIsEnabled()
+}
+
+func TestUpdateIssueTypeRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateIssueTypeRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
 }
 
 func TestUpdateMilestoneRequest_GetDescription(tt *testing.T) {
