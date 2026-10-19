@@ -543,13 +543,12 @@ func (s *IssuesService) RemoveMilestone(ctx context.Context, owner, repo string,
 	return i, resp, nil
 }
 
-// LockIssueOptions specifies the optional parameters to the
-// IssuesService.Lock method.
-type LockIssueOptions struct {
+// LockIssueRequest represents a request to lock an issue.
+type LockIssueRequest struct {
 	// LockReason specifies the reason to lock this issue.
 	// Providing a lock reason can help make it clearer to contributors why an issue
 	// was locked. Possible values are: "off-topic", "too heated", "resolved", and "spam".
-	LockReason string `json:"lock_reason,omitempty"`
+	LockReason *string `json:"lock_reason,omitempty"`
 }
 
 // Lock an issue's conversation.
@@ -557,7 +556,7 @@ type LockIssueOptions struct {
 // GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#lock-an-issue
 //
 //meta:operation PUT /repos/{owner}/{repo}/issues/{issue_number}/lock
-func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int, body *LockIssueOptions) (*Response, error) {
+func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int, body LockIssueRequest) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/lock", owner, repo, number)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {

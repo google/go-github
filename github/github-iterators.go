@@ -1413,6 +1413,37 @@ func (s *ActivityService) ListRepositoryNotificationsIter(ctx context.Context, o
 	}
 }
 
+// ListStargazerHistoryIter returns an iterator that paginates through all results of ListStargazerHistory.
+func (s *ActivityService) ListStargazerHistoryIter(ctx context.Context, owner string, repo string, opts *ListOptions) iter.Seq2[*StargazerHistory, error] {
+	return func(yield func(*StargazerHistory, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListStargazerHistory(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListStargazersIter returns an iterator that paginates through all results of ListStargazers.
 func (s *ActivityService) ListStargazersIter(ctx context.Context, owner string, repo string, opts *ListOptions) iter.Seq2[*Stargazer, error] {
 	return func(yield func(*Stargazer, error) bool) {

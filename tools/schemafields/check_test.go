@@ -39,7 +39,7 @@ ERROR github/runner_groups.go:92: SharedRequest.Code: schema REQUIRES "code" in 
 // find the call sites a changed field type leaves unable to compile. The fixture cannot carry a
 // go.mod of its own: script/lint.sh and test-all.sh read the modules to lint and test from
 // "git ls-files '*go.mod'", so a tracked go.mod under testdata would be linted as a real module.
-const fixtureGoMod = "module github.com/google/go-github/v92\n\ngo 1.26.0\n"
+const fixtureGoMod = "module github.com/google/go-github/v93\n\ngo 1.26.0\n"
 
 // copyFixture copies the fixture checkout into dir and makes the copy a module.
 func copyFixture(t *testing.T, dir string) {

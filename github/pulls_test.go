@@ -403,9 +403,14 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	body := UpdatePullRequestBranchRequest{
+		ExpectedHeadSHA: new("s"),
+	}
+
 	mux.HandleFunc("/repos/o/r/pulls/1/update-branch", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeUpdatePullRequestBranchPreview)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `
 			{
 			  "message": "Updating pull request branch.",
@@ -413,12 +418,8 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 			}`)
 	})
 
-	opts := &PullRequestBranchUpdateOptions{
-		ExpectedHeadSHA: new("s"),
-	}
-
 	ctx := t.Context()
-	pull, _, err := client.PullRequests.UpdateBranch(ctx, "o", "r", 1, opts)
+	pull, _, err := client.PullRequests.UpdateBranch(ctx, "o", "r", 1, body)
 	if err != nil {
 		t.Errorf("PullRequests.UpdateBranch returned error: %v", err)
 	}
@@ -434,12 +435,12 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 
 	const methodName = "UpdateBranch"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.PullRequests.UpdateBranch(ctx, "\n", "\n", -1, opts)
+		_, _, err = client.PullRequests.UpdateBranch(ctx, "\n", "\n", -1, body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.PullRequests.UpdateBranch(ctx, "o", "r", 1, opts)
+		got, resp, err := client.PullRequests.UpdateBranch(ctx, "o", "r", 1, body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

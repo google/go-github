@@ -16,7 +16,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v92/github"
+	"github.com/google/go-github/v93/github"
 )
 
 var (
@@ -41,7 +41,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	r := &github.Repository{Name: name, Private: private, Description: description, AutoInit: autoInit}
+	r := github.CreateRepositoryRequest{Name: *name, Private: private, Description: description, AutoInit: autoInit}
 	repo, _, err := client.Repositories.Create(ctx, "", r)
 	if err != nil {
 		log.Fatal(err)

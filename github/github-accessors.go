@@ -13662,6 +13662,222 @@ func (c *CreateReleaseRequest) GetTargetCommitish() string {
 	return *c.TargetCommitish
 }
 
+// GetAllowAutoMerge returns the AllowAutoMerge field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetAllowAutoMerge() bool {
+	if c == nil || c.AllowAutoMerge == nil {
+		return false
+	}
+	return *c.AllowAutoMerge
+}
+
+// GetAllowForking returns the AllowForking field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetAllowForking() bool {
+	if c == nil || c.AllowForking == nil {
+		return false
+	}
+	return *c.AllowForking
+}
+
+// GetAllowMergeCommit returns the AllowMergeCommit field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetAllowMergeCommit() bool {
+	if c == nil || c.AllowMergeCommit == nil {
+		return false
+	}
+	return *c.AllowMergeCommit
+}
+
+// GetAllowRebaseMerge returns the AllowRebaseMerge field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetAllowRebaseMerge() bool {
+	if c == nil || c.AllowRebaseMerge == nil {
+		return false
+	}
+	return *c.AllowRebaseMerge
+}
+
+// GetAllowSquashMerge returns the AllowSquashMerge field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetAllowSquashMerge() bool {
+	if c == nil || c.AllowSquashMerge == nil {
+		return false
+	}
+	return *c.AllowSquashMerge
+}
+
+// GetAllowUpdateBranch returns the AllowUpdateBranch field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetAllowUpdateBranch() bool {
+	if c == nil || c.AllowUpdateBranch == nil {
+		return false
+	}
+	return *c.AllowUpdateBranch
+}
+
+// GetAutoInit returns the AutoInit field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetAutoInit() bool {
+	if c == nil || c.AutoInit == nil {
+		return false
+	}
+	return *c.AutoInit
+}
+
+// GetCustomProperties returns the CustomProperties map if it's non-nil, an empty map otherwise.
+func (c *CreateRepositoryRequest) GetCustomProperties() map[string]any {
+	if c == nil || c.CustomProperties == nil {
+		return map[string]any{}
+	}
+	return c.CustomProperties
+}
+
+// GetDeleteBranchOnMerge returns the DeleteBranchOnMerge field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetDeleteBranchOnMerge() bool {
+	if c == nil || c.DeleteBranchOnMerge == nil {
+		return false
+	}
+	return *c.DeleteBranchOnMerge
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetGitignoreTemplate returns the GitignoreTemplate field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetGitignoreTemplate() string {
+	if c == nil || c.GitignoreTemplate == nil {
+		return ""
+	}
+	return *c.GitignoreTemplate
+}
+
+// GetHasDiscussions returns the HasDiscussions field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetHasDiscussions() bool {
+	if c == nil || c.HasDiscussions == nil {
+		return false
+	}
+	return *c.HasDiscussions
+}
+
+// GetHasIssues returns the HasIssues field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetHasIssues() bool {
+	if c == nil || c.HasIssues == nil {
+		return false
+	}
+	return *c.HasIssues
+}
+
+// GetHasProjects returns the HasProjects field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetHasProjects() bool {
+	if c == nil || c.HasProjects == nil {
+		return false
+	}
+	return *c.HasProjects
+}
+
+// GetHasWiki returns the HasWiki field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetHasWiki() bool {
+	if c == nil || c.HasWiki == nil {
+		return false
+	}
+	return *c.HasWiki
+}
+
+// GetHomepage returns the Homepage field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetHomepage() string {
+	if c == nil || c.Homepage == nil {
+		return ""
+	}
+	return *c.Homepage
+}
+
+// GetIsTemplate returns the IsTemplate field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetIsTemplate() bool {
+	if c == nil || c.IsTemplate == nil {
+		return false
+	}
+	return *c.IsTemplate
+}
+
+// GetLicenseTemplate returns the LicenseTemplate field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetLicenseTemplate() string {
+	if c == nil || c.LicenseTemplate == nil {
+		return ""
+	}
+	return *c.LicenseTemplate
+}
+
+// GetMergeCommitMessage returns the MergeCommitMessage field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetMergeCommitMessage() string {
+	if c == nil || c.MergeCommitMessage == nil {
+		return ""
+	}
+	return *c.MergeCommitMessage
+}
+
+// GetMergeCommitTitle returns the MergeCommitTitle field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetMergeCommitTitle() string {
+	if c == nil || c.MergeCommitTitle == nil {
+		return ""
+	}
+	return *c.MergeCommitTitle
+}
+
+// GetName returns the Name field.
+func (c *CreateRepositoryRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+// GetPrivate returns the Private field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetPrivate() bool {
+	if c == nil || c.Private == nil {
+		return false
+	}
+	return *c.Private
+}
+
+// GetSquashMergeCommitMessage returns the SquashMergeCommitMessage field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetSquashMergeCommitMessage() string {
+	if c == nil || c.SquashMergeCommitMessage == nil {
+		return ""
+	}
+	return *c.SquashMergeCommitMessage
+}
+
+// GetSquashMergeCommitTitle returns the SquashMergeCommitTitle field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetSquashMergeCommitTitle() string {
+	if c == nil || c.SquashMergeCommitTitle == nil {
+		return ""
+	}
+	return *c.SquashMergeCommitTitle
+}
+
+// GetTeamID returns the TeamID field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetTeamID() int64 {
+	if c == nil || c.TeamID == nil {
+		return 0
+	}
+	return *c.TeamID
+}
+
+// GetUseSquashPRTitleAsDefault returns the UseSquashPRTitleAsDefault field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetUseSquashPRTitleAsDefault() bool {
+	if c == nil || c.UseSquashPRTitleAsDefault == nil {
+		return false
+	}
+	return *c.UseSquashPRTitleAsDefault
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (c *CreateRepositoryRequest) GetVisibility() string {
+	if c == nil || c.Visibility == nil {
+		return ""
+	}
+	return *c.Visibility
+}
+
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
 func (c *CreateRunnerGroupRequest) GetAllowsPublicRepositories() bool {
 	if c == nil || c.AllowsPublicRepositories == nil {
@@ -25686,12 +25902,12 @@ func (l *LockBranch) GetEnabled() bool {
 	return *l.Enabled
 }
 
-// GetLockReason returns the LockReason field.
-func (l *LockIssueOptions) GetLockReason() string {
-	if l == nil {
+// GetLockReason returns the LockReason field if it's non-nil, zero value otherwise.
+func (l *LockIssueRequest) GetLockReason() string {
+	if l == nil || l.LockReason == nil {
 		return ""
 	}
-	return l.LockReason
+	return *l.LockReason
 }
 
 // GetHostname returns the Hostname field if it's non-nil, zero value otherwise.
@@ -33132,14 +33348,6 @@ func (p *PullRequestBranchRule) GetParameters() PullRequestRuleParameters {
 		return PullRequestRuleParameters{}
 	}
 	return p.Parameters
-}
-
-// GetExpectedHeadSHA returns the ExpectedHeadSHA field if it's non-nil, zero value otherwise.
-func (p *PullRequestBranchUpdateOptions) GetExpectedHeadSHA() string {
-	if p == nil || p.ExpectedHeadSHA == nil {
-		return ""
-	}
-	return *p.ExpectedHeadSHA
 }
 
 // GetMessage returns the Message field if it's non-nil, zero value otherwise.
@@ -43958,6 +44166,38 @@ func (s *Stargazer) GetUser() *User {
 	return s.User
 }
 
+// GetCount returns the Count field.
+func (s *StargazerCount) GetCount() int {
+	if s == nil {
+		return 0
+	}
+	return s.Count
+}
+
+// GetDays returns the Days slice if it's non-nil, nil otherwise.
+func (s *StargazerHistory) GetDays() []int {
+	if s == nil || s.Days == nil {
+		return nil
+	}
+	return s.Days
+}
+
+// GetTotal returns the Total field.
+func (s *StargazerHistory) GetTotal() int {
+	if s == nil {
+		return 0
+	}
+	return s.Total
+}
+
+// GetWeek returns the Week field.
+func (s *StargazerHistory) GetWeek() Timestamp {
+	if s == nil {
+		return Timestamp{}
+	}
+	return s.Week
+}
+
 // GetRepository returns the Repository field.
 func (s *StarredRepository) GetRepository() *Repository {
 	if s == nil {
@@ -44228,6 +44468,14 @@ func (s *Subscription) GetURL() string {
 		return ""
 	}
 	return *s.URL
+}
+
+// GetReason returns the Reason field if it's non-nil, zero value otherwise.
+func (s *SuspendUserRequest) GetReason() string {
+	if s == nil || s.Reason == nil {
+		return ""
+	}
+	return *s.Reason
 }
 
 // GetNodes returns the Nodes slice if it's non-nil, nil otherwise.
@@ -45694,6 +45942,14 @@ func (u *UnauthenticatedRateLimitedTransport) GetClientSecret() string {
 	return u.ClientSecret
 }
 
+// GetReason returns the Reason field if it's non-nil, zero value otherwise.
+func (u *UnsuspendUserRequest) GetReason() string {
+	if u == nil || u.Reason == nil {
+		return ""
+	}
+	return *u.Reason
+}
+
 // GetConditions returns the Conditions field.
 func (u *UpdateActionsPolicyRequest) GetConditions() *ActionsPolicyConditions {
 	if u == nil {
@@ -46652,6 +46908,14 @@ func (u *UpdateProvisionedOrgMembershipRequest) GetUserName() string {
 		return ""
 	}
 	return u.UserName
+}
+
+// GetExpectedHeadSHA returns the ExpectedHeadSHA field if it's non-nil, zero value otherwise.
+func (u *UpdatePullRequestBranchRequest) GetExpectedHeadSHA() string {
+	if u == nil || u.ExpectedHeadSHA == nil {
+		return ""
+	}
+	return *u.ExpectedHeadSHA
 }
 
 // GetBody returns the Body field.
@@ -48220,14 +48484,6 @@ func (u *UserStats) GetTotalUsers() int {
 		return 0
 	}
 	return *u.TotalUsers
-}
-
-// GetReason returns the Reason field if it's non-nil, zero value otherwise.
-func (u *UserSuspendOptions) GetReason() string {
-	if u == nil || u.Reason == nil {
-		return ""
-	}
-	return *u.Reason
 }
 
 // GetBio returns the Bio field if it's non-nil, zero value otherwise.

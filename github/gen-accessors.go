@@ -126,6 +126,7 @@ func main() {
 	}
 	logf("Done.")
 }
+
 func packageNamedZeroValues(pkg *ast.Package) map[string]string {
 	values := make(map[string]string)
 	for _, f := range pkg.Files {

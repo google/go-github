@@ -16,7 +16,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/google/go-github/v92/github"
+	"github.com/google/go-github/v93/github"
 )
 
 // client is a github.Client with the default http.Client. It is authorized if auth is true.
@@ -79,8 +79,8 @@ func createRandomTestRepository(t *testing.T, owner string, autoinit bool) *gith
 	repo, _, err := client.Repositories.Create(
 		t.Context(),
 		owner,
-		&github.Repository{
-			Name:     &repoName,
+		github.CreateRepositoryRequest{
+			Name:     repoName,
 			AutoInit: &autoinit,
 		},
 	)
