@@ -47,7 +47,7 @@ func TestSearchService_Repositories(t *testing.T) {
 		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)
 	}
 	const methodName = "Repositories"
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, SearchCategory, func() (*Response, error) {
 		got, resp, err := client.Search.Repositories(ctx, "blah", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -180,7 +180,7 @@ func TestSearchService_Topics(t *testing.T) {
 		t.Errorf("Search.Topics returned %+v, want %+v", result, want)
 	}
 	const methodName = "Topics"
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, SearchCategory, func() (*Response, error) {
 		got, resp, err := client.Search.Topics(ctx, "blah", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -233,7 +233,7 @@ func TestSearchService_Commits(t *testing.T) {
 		t.Errorf("Search.Commits returned %+v, want %+v", result, want)
 	}
 	const methodName = "Commits"
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, SearchCategory, func() (*Response, error) {
 		got, resp, err := client.Search.Commits(ctx, "blah", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -288,7 +288,7 @@ func TestSearchService_Issues(t *testing.T) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
 	}
 	const methodName = "Issues"
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, SearchCategory, func() (*Response, error) {
 		got, resp, err := client.Search.Issues(ctx, "blah", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -491,7 +491,7 @@ func TestSearchService_Users(t *testing.T) {
 		t.Errorf("Search.Users returned %+v, want %+v", result, want)
 	}
 	const methodName = "Users"
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, SearchCategory, func() (*Response, error) {
 		got, resp, err := client.Search.Users(ctx, "blah", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -546,7 +546,7 @@ func TestSearchService_Code(t *testing.T) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
 	}
 	const methodName = "Code"
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, CodeSearchCategory, func() (*Response, error) {
 		got, resp, err := client.Search.Code(ctx, "blah", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -668,7 +668,7 @@ func TestSearchService_Labels(t *testing.T) {
 		t.Errorf("Search.Labels returned %+v, want %+v", result, want)
 	}
 	const methodName = "Labels"
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, SearchCategory, func() (*Response, error) {
 		got, resp, err := client.Search.Labels(ctx, 1234, "blah", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)

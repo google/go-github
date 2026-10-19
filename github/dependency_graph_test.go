@@ -69,7 +69,7 @@ func TestDependencyGraphService_GetSBOM(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, DependencySBOMCategory, func() (*Response, error) {
 		got, resp, err := client.DependencyGraph.GetSBOM(ctx, "owner", "repo")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -111,7 +111,7 @@ func TestDependencyGraphService_GenerateSBOM(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, DependencySBOMCategory, func() (*Response, error) {
 		got, resp, err := client.DependencyGraph.GenerateSBOM(ctx, "owner", "repo")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
