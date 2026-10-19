@@ -3054,6 +3054,14 @@ func (a *Attestation) GetBundleURL() string {
 	return *a.BundleURL
 }
 
+// GetInitiator returns the Initiator field if it's non-nil, zero value otherwise.
+func (a *Attestation) GetInitiator() string {
+	if a == nil || a.Initiator == nil {
+		return ""
+	}
+	return *a.Initiator
+}
+
 // GetRepositoryID returns the RepositoryID field.
 func (a *Attestation) GetRepositoryID() int64 {
 	if a == nil {
