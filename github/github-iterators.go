@@ -119,6 +119,41 @@ func (s *ActionsService) ListCachesIter(ctx context.Context, owner string, repo 
 	}
 }
 
+// ListConcurrencyGroupsIter returns an iterator that paginates through all results of ListConcurrencyGroups.
+func (s *ActionsService) ListConcurrencyGroupsIter(ctx context.Context, owner string, repo string, opts *ListCursorOptions) iter.Seq2[*ConcurrencyGroup, error] {
+	return func(yield func(*ConcurrencyGroup, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListCursorOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListConcurrencyGroups(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*ConcurrencyGroup
+			if results != nil {
+				iterItems = results.ConcurrencyGroups
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.After == "" {
+				break
+			}
+			opts.After = resp.After
+		}
+	}
+}
+
 // ListEnabledOrgsInEnterpriseIter returns an iterator that paginates through all results of ListEnabledOrgsInEnterprise.
 func (s *ActionsService) ListEnabledOrgsInEnterpriseIter(ctx context.Context, owner string, opts *ListOptions) iter.Seq2[*Organization, error] {
 	return func(yield func(*Organization, error) bool) {
@@ -1025,6 +1060,41 @@ func (s *ActionsService) ListWorkflowRunArtifactsIter(ctx context.Context, owner
 				break
 			}
 			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListWorkflowRunConcurrencyGroupsIter returns an iterator that paginates through all results of ListWorkflowRunConcurrencyGroups.
+func (s *ActionsService) ListWorkflowRunConcurrencyGroupsIter(ctx context.Context, owner string, repo string, runID int64, opts *ListCursorOptions) iter.Seq2[*ConcurrencyGroup, error] {
+	return func(yield func(*ConcurrencyGroup, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListCursorOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListWorkflowRunConcurrencyGroups(ctx, owner, repo, runID, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*ConcurrencyGroup
+			if results != nil {
+				iterItems = results.ConcurrencyGroups
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.After == "" {
+				break
+			}
+			opts.After = resp.After
 		}
 	}
 }

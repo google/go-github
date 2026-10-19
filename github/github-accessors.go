@@ -7814,6 +7814,150 @@ func (c *CommunityHealthMetrics) GetUpdatedAt() Timestamp {
 	return *c.UpdatedAt
 }
 
+// GetGroupMembers returns the GroupMembers slice if it's non-nil, nil otherwise.
+func (c *ConcurrencyGroup) GetGroupMembers() []*ConcurrencyGroupMember {
+	if c == nil || c.GroupMembers == nil {
+		return nil
+	}
+	return c.GroupMembers
+}
+
+// GetGroupName returns the GroupName field.
+func (c *ConcurrencyGroup) GetGroupName() string {
+	if c == nil {
+		return ""
+	}
+	return c.GroupName
+}
+
+// GetGroupURL returns the GroupURL field.
+func (c *ConcurrencyGroup) GetGroupURL() string {
+	if c == nil {
+		return ""
+	}
+	return c.GroupURL
+}
+
+// GetLastAcquiredAt returns the LastAcquiredAt field if it's non-nil, zero value otherwise.
+func (c *ConcurrencyGroup) GetLastAcquiredAt() Timestamp {
+	if c == nil || c.LastAcquiredAt == nil {
+		return Timestamp{}
+	}
+	return *c.LastAcquiredAt
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (c *ConcurrencyGroup) GetTotalCount() int {
+	if c == nil || c.TotalCount == nil {
+		return 0
+	}
+	return *c.TotalCount
+}
+
+// GetConcurrencyGroups returns the ConcurrencyGroups slice if it's non-nil, nil otherwise.
+func (c *ConcurrencyGroupList) GetConcurrencyGroups() []*ConcurrencyGroup {
+	if c == nil || c.ConcurrencyGroups == nil {
+		return nil
+	}
+	return c.ConcurrencyGroups
+}
+
+// GetTotalCount returns the TotalCount field.
+func (c *ConcurrencyGroupList) GetTotalCount() int {
+	if c == nil {
+		return 0
+	}
+	return c.TotalCount
+}
+
+// GetJobHTMLURL returns the JobHTMLURL field if it's non-nil, zero value otherwise.
+func (c *ConcurrencyGroupMember) GetJobHTMLURL() string {
+	if c == nil || c.JobHTMLURL == nil {
+		return ""
+	}
+	return *c.JobHTMLURL
+}
+
+// GetJobID returns the JobID field if it's non-nil, zero value otherwise.
+func (c *ConcurrencyGroupMember) GetJobID() int64 {
+	if c == nil || c.JobID == nil {
+		return 0
+	}
+	return *c.JobID
+}
+
+// GetJobName returns the JobName field if it's non-nil, zero value otherwise.
+func (c *ConcurrencyGroupMember) GetJobName() string {
+	if c == nil || c.JobName == nil {
+		return ""
+	}
+	return *c.JobName
+}
+
+// GetJobURL returns the JobURL field if it's non-nil, zero value otherwise.
+func (c *ConcurrencyGroupMember) GetJobURL() string {
+	if c == nil || c.JobURL == nil {
+		return ""
+	}
+	return *c.JobURL
+}
+
+// GetPosition returns the Position field if it's non-nil, zero value otherwise.
+func (c *ConcurrencyGroupMember) GetPosition() int {
+	if c == nil || c.Position == nil {
+		return 0
+	}
+	return *c.Position
+}
+
+// GetPositionURL returns the PositionURL field if it's non-nil, zero value otherwise.
+func (c *ConcurrencyGroupMember) GetPositionURL() string {
+	if c == nil || c.PositionURL == nil {
+		return ""
+	}
+	return *c.PositionURL
+}
+
+// GetRunHTMLURL returns the RunHTMLURL field.
+func (c *ConcurrencyGroupMember) GetRunHTMLURL() string {
+	if c == nil {
+		return ""
+	}
+	return c.RunHTMLURL
+}
+
+// GetRunID returns the RunID field.
+func (c *ConcurrencyGroupMember) GetRunID() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.RunID
+}
+
+// GetRunName returns the RunName field.
+func (c *ConcurrencyGroupMember) GetRunName() string {
+	if c == nil {
+		return ""
+	}
+	return c.RunName
+}
+
+// GetRunURL returns the RunURL field.
+func (c *ConcurrencyGroupMember) GetRunURL() string {
+	if c == nil {
+		return ""
+	}
+	return c.RunURL
+}
+
+// GetStatus returns the Status field.
+func (c *ConcurrencyGroupMember) GetStatus() string {
+	if c == nil {
+		return ""
+	}
+	return c.Status
+}
+
 // GetNodes returns the Nodes slice if it's non-nil, nil otherwise.
 func (c *ConfigApplyEvents) GetNodes() []*ConfigApplyEventsNode {
 	if c == nil || c.Nodes == nil {
@@ -19428,6 +19572,22 @@ func (g *GetCodeownersErrorsOptions) GetRef() string {
 		return ""
 	}
 	return g.Ref
+}
+
+// GetAheadOfJob returns the AheadOfJob field.
+func (g *GetConcurrencyGroupOptions) GetAheadOfJob() int64 {
+	if g == nil {
+		return 0
+	}
+	return g.AheadOfJob
+}
+
+// GetAheadOfRun returns the AheadOfRun field.
+func (g *GetConcurrencyGroupOptions) GetAheadOfRun() int64 {
+	if g == nil {
+		return 0
+	}
+	return g.AheadOfRun
 }
 
 // GetFields returns the Fields slice if it's non-nil, nil otherwise.

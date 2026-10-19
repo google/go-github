@@ -231,6 +231,78 @@ func TestActionsService_ListCachesIter(t *testing.T) {
 	}
 }
 
+func TestActionsService_ListConcurrencyGroupsIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
+			fmt.Fprint(w, `{"concurrency_groups": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"concurrency_groups": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"concurrency_groups": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"concurrency_groups": [{},{}]}`)
+		}
+	})
+
+	iter := client.Actions.ListConcurrencyGroupsIter(t.Context(), "", "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Actions.ListConcurrencyGroupsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListCursorOptions{}
+	iter = client.Actions.ListConcurrencyGroupsIter(t.Context(), "", "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Actions.ListConcurrencyGroupsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Actions.ListConcurrencyGroupsIter(t.Context(), "", "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Actions.ListConcurrencyGroupsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Actions.ListConcurrencyGroupsIter(t.Context(), "", "", nil)
+	gotItems = 0
+	iter(func(item *ConcurrencyGroup, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Actions.ListConcurrencyGroupsIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
 func TestActionsService_ListEnabledOrgsInEnterpriseIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -2100,6 +2172,78 @@ func TestActionsService_ListWorkflowRunArtifactsIter(t *testing.T) {
 	})
 	if gotItems != 1 {
 		t.Errorf("client.Actions.ListWorkflowRunArtifactsIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestActionsService_ListWorkflowRunConcurrencyGroupsIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
+			fmt.Fprint(w, `{"concurrency_groups": [{},{},{}]}`)
+		case 2:
+			fmt.Fprint(w, `{"concurrency_groups": [{},{},{},{}]}`)
+		case 3:
+			fmt.Fprint(w, `{"concurrency_groups": [{},{}]}`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `{"concurrency_groups": [{},{}]}`)
+		}
+	})
+
+	iter := client.Actions.ListWorkflowRunConcurrencyGroupsIter(t.Context(), "", "", 0, nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Actions.ListWorkflowRunConcurrencyGroupsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListCursorOptions{}
+	iter = client.Actions.ListWorkflowRunConcurrencyGroupsIter(t.Context(), "", "", 0, opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Actions.ListWorkflowRunConcurrencyGroupsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Actions.ListWorkflowRunConcurrencyGroupsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Actions.ListWorkflowRunConcurrencyGroupsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Actions.ListWorkflowRunConcurrencyGroupsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0
+	iter(func(item *ConcurrencyGroup, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Actions.ListWorkflowRunConcurrencyGroupsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 

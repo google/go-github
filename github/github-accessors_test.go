@@ -9876,6 +9876,180 @@ func TestCommunityHealthMetrics_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
+func TestConcurrencyGroup_GetGroupMembers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ConcurrencyGroupMember{}
+	c := &ConcurrencyGroup{GroupMembers: zeroValue}
+	c.GetGroupMembers()
+	c = &ConcurrencyGroup{}
+	c.GetGroupMembers()
+	c = nil
+	c.GetGroupMembers()
+}
+
+func TestConcurrencyGroup_GetGroupName(tt *testing.T) {
+	tt.Parallel()
+	c := &ConcurrencyGroup{}
+	c.GetGroupName()
+	c = nil
+	c.GetGroupName()
+}
+
+func TestConcurrencyGroup_GetGroupURL(tt *testing.T) {
+	tt.Parallel()
+	c := &ConcurrencyGroup{}
+	c.GetGroupURL()
+	c = nil
+	c.GetGroupURL()
+}
+
+func TestConcurrencyGroup_GetLastAcquiredAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	c := &ConcurrencyGroup{LastAcquiredAt: &zeroValue}
+	c.GetLastAcquiredAt()
+	c = &ConcurrencyGroup{}
+	c.GetLastAcquiredAt()
+	c = nil
+	c.GetLastAcquiredAt()
+}
+
+func TestConcurrencyGroup_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &ConcurrencyGroup{TotalCount: &zeroValue}
+	c.GetTotalCount()
+	c = &ConcurrencyGroup{}
+	c.GetTotalCount()
+	c = nil
+	c.GetTotalCount()
+}
+
+func TestConcurrencyGroupList_GetConcurrencyGroups(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ConcurrencyGroup{}
+	c := &ConcurrencyGroupList{ConcurrencyGroups: zeroValue}
+	c.GetConcurrencyGroups()
+	c = &ConcurrencyGroupList{}
+	c.GetConcurrencyGroups()
+	c = nil
+	c.GetConcurrencyGroups()
+}
+
+func TestConcurrencyGroupList_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	c := &ConcurrencyGroupList{}
+	c.GetTotalCount()
+	c = nil
+	c.GetTotalCount()
+}
+
+func TestConcurrencyGroupMember_GetJobHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ConcurrencyGroupMember{JobHTMLURL: &zeroValue}
+	c.GetJobHTMLURL()
+	c = &ConcurrencyGroupMember{}
+	c.GetJobHTMLURL()
+	c = nil
+	c.GetJobHTMLURL()
+}
+
+func TestConcurrencyGroupMember_GetJobID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &ConcurrencyGroupMember{JobID: &zeroValue}
+	c.GetJobID()
+	c = &ConcurrencyGroupMember{}
+	c.GetJobID()
+	c = nil
+	c.GetJobID()
+}
+
+func TestConcurrencyGroupMember_GetJobName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ConcurrencyGroupMember{JobName: &zeroValue}
+	c.GetJobName()
+	c = &ConcurrencyGroupMember{}
+	c.GetJobName()
+	c = nil
+	c.GetJobName()
+}
+
+func TestConcurrencyGroupMember_GetJobURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ConcurrencyGroupMember{JobURL: &zeroValue}
+	c.GetJobURL()
+	c = &ConcurrencyGroupMember{}
+	c.GetJobURL()
+	c = nil
+	c.GetJobURL()
+}
+
+func TestConcurrencyGroupMember_GetPosition(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &ConcurrencyGroupMember{Position: &zeroValue}
+	c.GetPosition()
+	c = &ConcurrencyGroupMember{}
+	c.GetPosition()
+	c = nil
+	c.GetPosition()
+}
+
+func TestConcurrencyGroupMember_GetPositionURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ConcurrencyGroupMember{PositionURL: &zeroValue}
+	c.GetPositionURL()
+	c = &ConcurrencyGroupMember{}
+	c.GetPositionURL()
+	c = nil
+	c.GetPositionURL()
+}
+
+func TestConcurrencyGroupMember_GetRunHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	c := &ConcurrencyGroupMember{}
+	c.GetRunHTMLURL()
+	c = nil
+	c.GetRunHTMLURL()
+}
+
+func TestConcurrencyGroupMember_GetRunID(tt *testing.T) {
+	tt.Parallel()
+	c := &ConcurrencyGroupMember{}
+	c.GetRunID()
+	c = nil
+	c.GetRunID()
+}
+
+func TestConcurrencyGroupMember_GetRunName(tt *testing.T) {
+	tt.Parallel()
+	c := &ConcurrencyGroupMember{}
+	c.GetRunName()
+	c = nil
+	c.GetRunName()
+}
+
+func TestConcurrencyGroupMember_GetRunURL(tt *testing.T) {
+	tt.Parallel()
+	c := &ConcurrencyGroupMember{}
+	c.GetRunURL()
+	c = nil
+	c.GetRunURL()
+}
+
+func TestConcurrencyGroupMember_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	c := &ConcurrencyGroupMember{}
+	c.GetStatus()
+	c = nil
+	c.GetStatus()
+}
+
 func TestConfigApplyEvents_GetNodes(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*ConfigApplyEventsNode{}
@@ -24286,6 +24460,22 @@ func TestGetCodeownersErrorsOptions_GetRef(tt *testing.T) {
 	g.GetRef()
 	g = nil
 	g.GetRef()
+}
+
+func TestGetConcurrencyGroupOptions_GetAheadOfJob(tt *testing.T) {
+	tt.Parallel()
+	g := &GetConcurrencyGroupOptions{}
+	g.GetAheadOfJob()
+	g = nil
+	g.GetAheadOfJob()
+}
+
+func TestGetConcurrencyGroupOptions_GetAheadOfRun(tt *testing.T) {
+	tt.Parallel()
+	g := &GetConcurrencyGroupOptions{}
+	g.GetAheadOfRun()
+	g = nil
+	g.GetAheadOfRun()
 }
 
 func TestGetProjectItemOptions_GetFields(tt *testing.T) {
