@@ -1068,6 +1068,166 @@ func TestCopilotService_ListOrganizationCodingAgentRepositories(t *testing.T) {
 	})
 }
 
+func TestCopilotService_GetOrganizationCodingAgentPermissions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot/coding-agent/permissions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"enabled_repositories": "selected",
+			"selected_repositories_url": "https://api.github.com/orgs/o/copilot/coding-agent/permissions/repositories"
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.GetOrganizationCodingAgentPermissions(ctx, "o")
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationCodingAgentPermissions returned error: %v", err)
+	}
+
+	want := &CopilotCodingAgentPermissions{
+		EnabledRepositories:     "selected",
+		SelectedRepositoriesURL: new("https://api.github.com/orgs/o/copilot/coding-agent/permissions/repositories"),
+	}
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetOrganizationCodingAgentPermissions returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetOrganizationCodingAgentPermissions"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationCodingAgentPermissions(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationCodingAgentPermissions(ctx, "o")
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationCodingAgentPermissions returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_SetOrganizationCodingAgentPermissions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := CopilotCodingAgentPermissionsRequest{EnabledRepositories: "all"}
+
+	mux.HandleFunc("/orgs/o/copilot/coding-agent/permissions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	_, err := client.Copilot.SetOrganizationCodingAgentPermissions(ctx, "o", input)
+	if err != nil {
+		t.Errorf("Copilot.SetOrganizationCodingAgentPermissions returned error: %v", err)
+	}
+
+	const methodName = "SetOrganizationCodingAgentPermissions"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Copilot.SetOrganizationCodingAgentPermissions(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Copilot.SetOrganizationCodingAgentPermissions(ctx, "o", input)
+	})
+}
+
+func TestCopilotService_SetOrganizationCodingAgentRepositories(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := []int64{123, 1234}
+
+	mux.HandleFunc("/orgs/o/copilot/coding-agent/permissions/repositories", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, struct {
+			IDs []int64 `json:"selected_repository_ids"`
+		}{
+			IDs: input,
+		})
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	_, err := client.Copilot.SetOrganizationCodingAgentRepositories(ctx, "o", input)
+	if err != nil {
+		t.Errorf("Copilot.SetOrganizationCodingAgentRepositories returned error: %v", err)
+	}
+
+	const methodName = "SetOrganizationCodingAgentRepositories"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Copilot.SetOrganizationCodingAgentRepositories(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Copilot.SetOrganizationCodingAgentRepositories(ctx, "o", input)
+	})
+}
+
+func TestCopilotService_EnableOrganizationCodingAgentRepository(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot/coding-agent/permissions/repositories/123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	_, err := client.Copilot.EnableOrganizationCodingAgentRepository(ctx, "o", 123)
+	if err != nil {
+		t.Errorf("Copilot.EnableOrganizationCodingAgentRepository returned error: %v", err)
+	}
+
+	const methodName = "EnableOrganizationCodingAgentRepository"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Copilot.EnableOrganizationCodingAgentRepository(ctx, "\n", 123)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Copilot.EnableOrganizationCodingAgentRepository(ctx, "o", 123)
+	})
+}
+
+func TestCopilotService_DisableOrganizationCodingAgentRepository(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot/coding-agent/permissions/repositories/123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	_, err := client.Copilot.DisableOrganizationCodingAgentRepository(ctx, "o", 123)
+	if err != nil {
+		t.Errorf("Copilot.DisableOrganizationCodingAgentRepository returned error: %v", err)
+	}
+
+	const methodName = "DisableOrganizationCodingAgentRepository"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Copilot.DisableOrganizationCodingAgentRepository(ctx, "\n", 123)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Copilot.DisableOrganizationCodingAgentRepository(ctx, "o", 123)
+	})
+}
+
 func TestCopilotService_GetOrganizationContentExclusionDetails(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

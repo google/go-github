@@ -9462,6 +9462,30 @@ func (c *CopilotCodeReviewRuleParameters) GetReviewOnPush() bool {
 	return c.ReviewOnPush
 }
 
+// GetEnabledRepositories returns the EnabledRepositories field.
+func (c *CopilotCodingAgentPermissions) GetEnabledRepositories() string {
+	if c == nil {
+		return ""
+	}
+	return c.EnabledRepositories
+}
+
+// GetSelectedRepositoriesURL returns the SelectedRepositoriesURL field if it's non-nil, zero value otherwise.
+func (c *CopilotCodingAgentPermissions) GetSelectedRepositoriesURL() string {
+	if c == nil || c.SelectedRepositoriesURL == nil {
+		return ""
+	}
+	return *c.SelectedRepositoriesURL
+}
+
+// GetEnabledRepositories returns the EnabledRepositories field.
+func (c *CopilotCodingAgentPermissionsRequest) GetEnabledRepositories() string {
+	if c == nil {
+		return ""
+	}
+	return c.EnabledRepositories
+}
+
 // GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field if it's non-nil, zero value otherwise.
 func (c *CopilotDailyMetrics) GetCodeAcceptanceActivityCount() int {
 	if c == nil || c.CodeAcceptanceActivityCount == nil {
