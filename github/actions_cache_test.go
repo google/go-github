@@ -729,3 +729,271 @@ func TestActionsService_SetCacheStorageLimitForOrg_invalidOrganization(t *testin
 	_, err := client.Actions.SetCacheStorageLimitForOrg(ctx, "%", ActionsCacheStorageLimit{})
 	testURLParseError(t, err)
 }
+
+func TestActionsService_GetCacheRetentionLimitForRepo(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/actions/cache/retention-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"max_cache_retention_days":14}`)
+	})
+
+	ctx := t.Context()
+	limit, _, err := client.Actions.GetCacheRetentionLimitForRepo(ctx, "o", "r")
+	if err != nil {
+		t.Errorf("Actions.GetCacheRetentionLimitForRepo returned error: %v", err)
+	}
+
+	want := &ActionsCacheRetentionLimit{MaxCacheRetentionDays: new(14)}
+	if !cmp.Equal(limit, want) {
+		t.Errorf("Actions.GetCacheRetentionLimitForRepo returned %+v, want %+v", limit, want)
+	}
+
+	const methodName = "GetCacheRetentionLimitForRepo"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetCacheRetentionLimitForRepo(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetCacheRetentionLimitForRepo(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_SetCacheRetentionLimitForRepo(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := ActionsCacheRetentionLimit{MaxCacheRetentionDays: new(14)}
+
+	mux.HandleFunc("/repos/o/r/actions/cache/retention-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Actions.SetCacheRetentionLimitForRepo(ctx, "o", "r", input)
+	if err != nil {
+		t.Errorf("Actions.SetCacheRetentionLimitForRepo returned error: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusNoContent; got != want {
+		t.Errorf("Actions.SetCacheRetentionLimitForRepo return status %v, want %v", got, want)
+	}
+
+	const methodName = "SetCacheRetentionLimitForRepo"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.SetCacheRetentionLimitForRepo(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.SetCacheRetentionLimitForRepo(ctx, "o", "r", input)
+	})
+}
+
+func TestActionsService_GetCacheStorageLimitForRepo(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/actions/cache/storage-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"max_cache_size_gb":10}`)
+	})
+
+	ctx := t.Context()
+	limit, _, err := client.Actions.GetCacheStorageLimitForRepo(ctx, "o", "r")
+	if err != nil {
+		t.Errorf("Actions.GetCacheStorageLimitForRepo returned error: %v", err)
+	}
+
+	want := &ActionsCacheStorageLimit{MaxCacheSizeGB: new(10)}
+	if !cmp.Equal(limit, want) {
+		t.Errorf("Actions.GetCacheStorageLimitForRepo returned %+v, want %+v", limit, want)
+	}
+
+	const methodName = "GetCacheStorageLimitForRepo"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetCacheStorageLimitForRepo(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetCacheStorageLimitForRepo(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_SetCacheStorageLimitForRepo(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := ActionsCacheStorageLimit{MaxCacheSizeGB: new(10)}
+
+	mux.HandleFunc("/repos/o/r/actions/cache/storage-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Actions.SetCacheStorageLimitForRepo(ctx, "o", "r", input)
+	if err != nil {
+		t.Errorf("Actions.SetCacheStorageLimitForRepo returned error: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusNoContent; got != want {
+		t.Errorf("Actions.SetCacheStorageLimitForRepo return status %v, want %v", got, want)
+	}
+
+	const methodName = "SetCacheStorageLimitForRepo"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.SetCacheStorageLimitForRepo(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.SetCacheStorageLimitForRepo(ctx, "o", "r", input)
+	})
+}
+
+func TestActionsService_GetCacheRetentionLimitForEnterprise(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/actions/cache/retention-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"max_cache_retention_days":14}`)
+	})
+
+	ctx := t.Context()
+	limit, _, err := client.Actions.GetCacheRetentionLimitForEnterprise(ctx, "e")
+	if err != nil {
+		t.Errorf("Actions.GetCacheRetentionLimitForEnterprise returned error: %v", err)
+	}
+
+	want := &ActionsCacheRetentionLimit{MaxCacheRetentionDays: new(14)}
+	if !cmp.Equal(limit, want) {
+		t.Errorf("Actions.GetCacheRetentionLimitForEnterprise returned %+v, want %+v", limit, want)
+	}
+
+	const methodName = "GetCacheRetentionLimitForEnterprise"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetCacheRetentionLimitForEnterprise(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetCacheRetentionLimitForEnterprise(ctx, "e")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_SetCacheRetentionLimitForEnterprise(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := ActionsCacheRetentionLimit{MaxCacheRetentionDays: new(14)}
+
+	mux.HandleFunc("/enterprises/e/actions/cache/retention-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Actions.SetCacheRetentionLimitForEnterprise(ctx, "e", input)
+	if err != nil {
+		t.Errorf("Actions.SetCacheRetentionLimitForEnterprise returned error: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusNoContent; got != want {
+		t.Errorf("Actions.SetCacheRetentionLimitForEnterprise return status %v, want %v", got, want)
+	}
+
+	const methodName = "SetCacheRetentionLimitForEnterprise"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.SetCacheRetentionLimitForEnterprise(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.SetCacheRetentionLimitForEnterprise(ctx, "e", input)
+	})
+}
+
+func TestActionsService_GetCacheStorageLimitForEnterprise(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/actions/cache/storage-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"max_cache_size_gb":10}`)
+	})
+
+	ctx := t.Context()
+	limit, _, err := client.Actions.GetCacheStorageLimitForEnterprise(ctx, "e")
+	if err != nil {
+		t.Errorf("Actions.GetCacheStorageLimitForEnterprise returned error: %v", err)
+	}
+
+	want := &ActionsCacheStorageLimit{MaxCacheSizeGB: new(10)}
+	if !cmp.Equal(limit, want) {
+		t.Errorf("Actions.GetCacheStorageLimitForEnterprise returned %+v, want %+v", limit, want)
+	}
+
+	const methodName = "GetCacheStorageLimitForEnterprise"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetCacheStorageLimitForEnterprise(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetCacheStorageLimitForEnterprise(ctx, "e")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_SetCacheStorageLimitForEnterprise(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := ActionsCacheStorageLimit{MaxCacheSizeGB: new(10)}
+
+	mux.HandleFunc("/enterprises/e/actions/cache/storage-limit", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Actions.SetCacheStorageLimitForEnterprise(ctx, "e", input)
+	if err != nil {
+		t.Errorf("Actions.SetCacheStorageLimitForEnterprise returned error: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusNoContent; got != want {
+		t.Errorf("Actions.SetCacheStorageLimitForEnterprise return status %v, want %v", got, want)
+	}
+
+	const methodName = "SetCacheStorageLimitForEnterprise"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.SetCacheStorageLimitForEnterprise(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.SetCacheStorageLimitForEnterprise(ctx, "e", input)
+	})
+}
