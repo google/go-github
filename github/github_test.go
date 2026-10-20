@@ -4706,7 +4706,7 @@ func TestErrorResponse_Error_DoesNotMutateRequestURL(t *testing.T) {
 	const rawURL = "https://api.github.com/user?access_token=secret123&client_secret=secret456&token=secret789"
 	reqURL := mustParseURL(t, rawURL)
 	req := &http.Request{
-		Method: http.MethodGet,
+		Method: "GET",
 		URL:    reqURL,
 	}
 	resp := &http.Response{
@@ -4743,7 +4743,7 @@ func TestRateLimitError_Error_DoesNotMutateRequestURL(t *testing.T) {
 	const rawURL = "https://api.github.com/user?access_token=secret123"
 	reqURL := mustParseURL(t, rawURL)
 	req := &http.Request{
-		Method: http.MethodGet,
+		Method: "GET",
 		URL:    reqURL,
 	}
 	resp := &http.Response{
@@ -4776,7 +4776,7 @@ func TestAbuseRateLimitError_Error_DoesNotMutateRequestURL(t *testing.T) {
 	const rawURL = "https://api.github.com/user?token=secret123"
 	reqURL := mustParseURL(t, rawURL)
 	req := &http.Request{
-		Method: http.MethodGet,
+		Method: "GET",
 		URL:    reqURL,
 	}
 	resp := &http.Response{
@@ -4810,7 +4810,7 @@ func TestRedirectionError_Error_DoesNotMutateRequestURL(t *testing.T) {
 	reqURL := mustParseURL(t, rawURL)
 	targetURL := mustParseURL(t, locURL)
 	req := &http.Request{
-		Method: http.MethodGet,
+		Method: "GET",
 		URL:    reqURL,
 	}
 	resp := &http.Response{
