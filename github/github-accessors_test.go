@@ -43469,6 +43469,14 @@ func TestPullRequestRuleParameters_GetRequiredReviewThreadResolution(tt *testing
 	p.GetRequiredReviewThreadResolution()
 }
 
+func TestPullRequestRuleParameters_GetRequireExtraApprovalForUnattributedChanges(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestRuleParameters{}
+	p.GetRequireExtraApprovalForUnattributedChanges()
+	p = nil
+	p.GetRequireExtraApprovalForUnattributedChanges()
+}
+
 func TestPullRequestRuleParameters_GetRequireLastPushApproval(tt *testing.T) {
 	tt.Parallel()
 	p := &PullRequestRuleParameters{}
