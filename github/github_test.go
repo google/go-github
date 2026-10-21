@@ -3040,6 +3040,118 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 	}
 }
 
+// Ensure a retried request replays the request body.
+func TestDo_rateLimit_sleepUntilResponseResetLimitReplaysBody(t *testing.T) {
+	t.Parallel()
+
+	body := map[string]string{"name": "go-github"}
+	wantBody, err := json.Marshal(body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// NewRequest encodes the body with json.Encoder, which appends a newline.
+	wantBody = append(wantBody, '\n')
+
+	for _, method := range []string{http.MethodPost, http.MethodPut, http.MethodPatch} {
+		t.Run(method, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+
+			// A reset time in the past keeps sleepUntilResetWithBuffer from
+			// sleeping in the test.
+			reset := time.Now().UTC().Add(-time.Minute)
+
+			var requestCount atomic.Int32
+			mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+				requestCount.Add(1)
+				gotBody, err := io.ReadAll(r.Body)
+				if err != nil {
+					t.Errorf("Reading request body: %v", err)
+				}
+				if !bytes.Equal(gotBody, wantBody) {
+					t.Errorf("Request body = %q, want %q", gotBody, wantBody)
+				}
+
+				if requestCount.Load() == 1 {
+					w.Header().Set(HeaderRateLimit, "60")
+					w.Header().Set(HeaderRateRemaining, "0")
+					w.Header().Set(HeaderRateUsed, "60")
+					w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
+					w.Header().Set(HeaderRateResource, "core")
+					w.Header().Set("Content-Type", "application/json; charset=utf-8")
+					w.WriteHeader(http.StatusForbidden)
+					fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx."
+}`)
+					return
+				}
+
+				w.Header().Set(HeaderRateLimit, "5000")
+				w.Header().Set(HeaderRateRemaining, "4999")
+				w.Header().Set(HeaderRateUsed, "1")
+				w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+				w.Header().Set(HeaderRateResource, "core")
+				w.Header().Set("Content-Type", "application/json; charset=utf-8")
+				w.WriteHeader(http.StatusOK)
+				fmt.Fprintln(w, `{}`)
+			})
+
+			req, err := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), method, ".", body)
+			if err != nil {
+				t.Fatal(err)
+			}
+			resp, err := client.Do(req, nil)
+			if err != nil {
+				t.Fatalf("Do returned unexpected error: %v", err)
+			}
+			if got, want := resp.StatusCode, http.StatusOK; got != want {
+				t.Errorf("Response status code = %v, want %v", got, want)
+			}
+			if got, want := int(requestCount.Load()), 2; got != want {
+				t.Errorf("Expected %v requests, got %v", want, got)
+			}
+		})
+	}
+}
+
+// Ensure a body-carrying request without GetBody is not retried.
+func TestDo_rateLimit_sleepUntilResponseResetLimitNoRetryWithoutGetBody(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	reset := time.Now().UTC().Add(-time.Minute)
+
+	var requestCount atomic.Int32
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		requestCount.Add(1)
+		w.Header().Set(HeaderRateLimit, "60")
+		w.Header().Set(HeaderRateRemaining, "0")
+		w.Header().Set(HeaderRateUsed, "60")
+		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(HeaderRateResource, "core")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx."
+}`)
+	})
+
+	req, err := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), http.MethodPost, ".", map[string]string{"name": "go-github"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.GetBody = nil
+
+	_, err = client.Do(req, nil)
+	var rateLimitError *RateLimitError
+	if !errors.As(err, &rateLimitError) {
+		t.Fatalf("Expected a *RateLimitError, got %v", err)
+	}
+	if got, want := int(requestCount.Load()), 1; got != want {
+		t.Errorf("Expected %v request, got %v", want, got)
+	}
+}
+
 // Ensure tries to sleep until the rate limit is reset when the client is rate limited, but only once.
 func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 	t.Parallel()
