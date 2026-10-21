@@ -3809,6 +3809,28 @@ func TestAttestation_GetBundle(tt *testing.T) {
 	a.GetBundle()
 }
 
+func TestAttestation_GetBundleURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &Attestation{BundleURL: &zeroValue}
+	a.GetBundleURL()
+	a = &Attestation{}
+	a.GetBundleURL()
+	a = nil
+	a.GetBundleURL()
+}
+
+func TestAttestation_GetInitiator(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &Attestation{Initiator: &zeroValue}
+	a.GetInitiator()
+	a = &Attestation{}
+	a.GetInitiator()
+	a = nil
+	a.GetInitiator()
+}
+
 func TestAttestation_GetRepositoryID(tt *testing.T) {
 	tt.Parallel()
 	a := &Attestation{}

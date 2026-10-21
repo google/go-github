@@ -17,8 +17,12 @@ type Attestation struct {
 	// The attestation's Sigstore Bundle.
 	// Refer to the sigstore bundle specification for more info:
 	// https://github.com/sigstore/protobuf-specs/blob/main/protos/sigstore_bundle.proto
-	Bundle       json.RawMessage `json:"bundle"`
-	RepositoryID int64           `json:"repository_id"`
+	Bundle json.RawMessage `json:"bundle,omitempty"`
+	// The download URL for the attestation's Sigstore Bundle.
+	BundleURL *string `json:"bundle_url,omitempty"`
+	// The entity that initiated the attestation.
+	Initiator    *string `json:"initiator,omitempty"`
+	RepositoryID int64   `json:"repository_id"`
 }
 
 // AttestationsResponse represents a collection of artifact attestations.
