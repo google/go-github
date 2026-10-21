@@ -1526,6 +1526,15 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 			}
 			// retry the request now the rate limit should have been reset
 			newReq := req.Clone(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, nil))
+			if req.GetBody != nil {
+				body, err := req.GetBody()
+				if err != nil {
+					return response, err
+				}
+				newReq.Body = body
+			} else if req.Body != nil && req.Body != http.NoBody {
+				return response, err
+			}
 			return c.bareDo(caller, newReq)
 		}
 
