@@ -9,7 +9,6 @@ package otel
 import (
 	"fmt"
 	"net/http"
-	"net/url"
 	"strconv"
 
 	"github.com/google/go-github/v93/github"
@@ -51,34 +50,6 @@ func NewTransport(base http.RoundTripper, opts ...Option) *Transport {
 	return t
 }
 
-// sensitiveQueryParams lists query parameters whose values must not be
-// recorded in telemetry.
-var sensitiveQueryParams = []string{"client_secret", "access_token", "token"}
-
-// redactURL returns a copy of u with userinfo removed and sensitive query
-// values redacted. The scheme, host, path, and non-sensitive query parameters
-// are preserved.
-func redactURL(u *url.URL) string {
-	if u == nil {
-		return ""
-	}
-	redacted := *u
-	redacted.User = nil
-
-	params := redacted.Query()
-	var changed bool
-	for _, p := range sensitiveQueryParams {
-		if params.Has(p) {
-			params.Set(p, "REDACTED")
-			changed = true
-		}
-	}
-	if changed {
-		redacted.RawQuery = params.Encode()
-	}
-	return redacted.String()
-}
-
 // RoundTrip implements http.RoundTripper.
 func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	ctx := req.Context()
@@ -90,7 +61,7 @@ func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	// Inject Attributes
 	span.SetAttributes(
 		attribute.String("http.method", req.Method),
-		attribute.String("http.url", redactURL(req.URL)),
+		attribute.String("http.url", github.SanitizeURL(req.URL).String()),
 		attribute.String("http.host", req.URL.Host),
 	)
 

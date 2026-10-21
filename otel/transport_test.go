@@ -134,8 +134,12 @@ func TestRoundTrip_RedactsSensitiveURL(t *testing.T) {
 	transport := NewTransport(&mockTransport{}, WithTracerProvider(tp))
 
 	req := httptest.NewRequest("GET", "https://alice:s3cr3t-password@api.github.com/repos/google/go-github?access_token=s3cr3t-access&client_secret=s3cr3t-client&token=s3cr3t-token&page=2", nil)
+	originalURL := req.URL.String()
 	if _, err := transport.RoundTrip(req); err != nil {
 		t.Fatalf("RoundTrip failed: %v", err)
+	}
+	if got := req.URL.String(); got != originalURL {
+		t.Errorf("RoundTrip modified the request URL: got %q, want %q", got, originalURL)
 	}
 
 	spans := exporter.GetSpans()
@@ -175,7 +179,7 @@ func TestRoundTrip_RedactsSensitiveURL(t *testing.T) {
 	if u.User != nil {
 		t.Errorf("URL userinfo = %v, want nil", u.User)
 	}
-	for _, p := range sensitiveQueryParams {
+	for _, p := range []string{"access_token", "client_secret", "token"} {
 		if got, want := u.Query().Get(p), "REDACTED"; got != want {
 			t.Errorf("Query parameter %q = %q, want %q", p, got, want)
 		}

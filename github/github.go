@@ -1479,7 +1479,7 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		// If the error type is *url.Error, sanitize its URL before returning.
 		if e, ok := errors.AsType[*url.Error](err); ok {
 			if url, err := url.Parse(e.URL); err == nil {
-				e.URL = sanitizeURL(url).String()
+				e.URL = SanitizeURL(url).String()
 				return response, e
 			}
 		}
@@ -1774,7 +1774,7 @@ type ErrorBlock struct {
 func (r *ErrorResponse) Error() string {
 	if r.Response != nil && r.Response.Request != nil {
 		return fmt.Sprintf("%v %v: %v %v %+v",
-			r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
+			r.Response.Request.Method, SanitizeURL(r.Response.Request.URL),
 			r.Response.StatusCode, r.Message, r.Errors)
 	}
 
@@ -1846,7 +1846,7 @@ type RateLimitError struct {
 
 func (r *RateLimitError) Error() string {
 	return fmt.Sprintf("%v %v: %v %v %v",
-		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
+		r.Response.Request.Method, SanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode, r.Message, formatRateReset(time.Until(r.Rate.Reset.Time)))
 }
 
@@ -1904,7 +1904,7 @@ func (r *AbuseRateLimitError) Error() string {
 		retryInfo = fmt.Sprintf(" [retry after %v]", r.RetryAfter.Round(time.Second))
 	}
 	return fmt.Sprintf("%v %v: %v %v%v",
-		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
+		r.Response.Request.Method, SanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode, r.Message, retryInfo)
 }
 
@@ -1945,8 +1945,8 @@ type RedirectionError struct {
 
 func (r *RedirectionError) Error() string {
 	return fmt.Sprintf("%v %v: %v location %v",
-		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
-		r.StatusCode, sanitizeURL(r.Location))
+		r.Response.Request.Method, SanitizeURL(r.Response.Request.URL),
+		r.StatusCode, SanitizeURL(r.Location))
 }
 
 // Is returns whether the provided error equals this error.
@@ -1963,13 +1963,16 @@ func (r *RedirectionError) Is(target error) bool {
 
 var sensitiveParams = []string{"client_secret", "access_token", "token"}
 
-// sanitizeURL redacts sensitive parameters from the URL which may be
-// exposed to the user.
-func sanitizeURL(uri *url.URL) *url.URL {
+// SanitizeURL returns a copy of uri with userinfo removed and sensitive query
+// parameters redacted. It is safe to expose the result to users or to record
+// it in telemetry because the input URL is not modified.
+func SanitizeURL(uri *url.URL) *url.URL {
 	if uri == nil {
 		return nil
 	}
-	params := uri.Query()
+	sanitized := *uri
+	sanitized.User = nil
+	params := sanitized.Query()
 	var redacted bool
 	for _, p := range sensitiveParams {
 		if len(params.Get(p)) > 0 {
@@ -1978,9 +1981,9 @@ func sanitizeURL(uri *url.URL) *url.URL {
 		}
 	}
 	if redacted {
-		uri.RawQuery = params.Encode()
+		sanitized.RawQuery = params.Encode()
 	}
-	return uri
+	return &sanitized
 }
 
 /*
