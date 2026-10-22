@@ -777,7 +777,7 @@ func newClient(opts clientOptions) (*Client, error) {
 // GitHub Enterprise or proxy deployment whose upload host differs from its API
 // host must therefore configure both. sameOrigin is the one predicate behind
 // both rules. Every place that decides whether a destination may receive
-// credentials — the [WithAuthToken], [WithBasicAuth], [WithTokenSource], and
+// credentials — [WithAuthToken], [WithBasicAuth], [WithTokenSource], and
 // the redirect guards — must use it, so the answer cannot differ depending on
 // which code path a request happens to take.
 

@@ -650,6 +650,9 @@ func TestWithBasicAuth(t *testing.T) {
 		if err != nil {
 			t.Fatalf("TokenSource errored: %v", err)
 		}
+		if gotToken.TokenType != "Basic" {
+			t.Fatalf("got token type %v, want Basic", gotToken.TokenType)
+		}
 		if gotToken.AccessToken != validToken {
 			t.Fatalf("got token %v, want %v", gotToken.AccessToken, validToken)
 		}

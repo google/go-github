@@ -115,9 +115,9 @@ if err != nil {
 To support more advanced use cases; you can use the `github.WithTokenSource` option to provide a
 `oauth2.TokenSource` that handles authentication for you.
 
-Note that when using an authenticated Client, all calls made by the client will
-include the specified OAuth token. Therefore, authenticated clients should
-almost never be shared between different users.
+Note that when using an authenticated Client, all calls made by the client to
+will the client base and upload URL origins will include a token. Therefore,
+authenticated clients should almost never be shared between different users.
 
 #### As a GitHub App ####
 
@@ -141,7 +141,6 @@ Another example using `go-githubauth`:
 package main
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"strconv"
