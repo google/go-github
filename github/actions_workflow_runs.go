@@ -374,6 +374,40 @@ func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo 
 	return s.client.Do(req, nil)
 }
 
+// ForceCancelWorkflowRunByID forcefully cancels a workflow run by ID.
+// Use this only when the workflow run does not respond to CancelWorkflowRunByID.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#force-cancel-a-workflow-run
+//
+//meta:operation POST /repos/{owner}/{repo}/actions/runs/{run_id}/force-cancel
+func (s *ActionsService) ForceCancelWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/force-cancel", owner, repo, runID)
+
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
+// ApproveWorkflowRunByID approves a workflow run for a pull request from a
+// first-time contributor's public fork.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#approve-a-workflow-run-for-a-fork-pull-request
+//
+//meta:operation POST /repos/{owner}/{repo}/actions/runs/{run_id}/approve
+func (s *ActionsService) ApproveWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/approve", owner, repo, runID)
+
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
 // GetWorkflowRunLogs gets a redirect URL to download a plain text file of logs for a workflow run.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
