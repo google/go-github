@@ -610,6 +610,108 @@ func (s *CopilotService) ListOrganizationCodingAgentRepositories(ctx context.Con
 	return result, resp, nil
 }
 
+// CopilotCodingAgentPermissions represents which repositories in an organization can use the Copilot coding agent.
+type CopilotCodingAgentPermissions struct {
+	// EnabledRepositories is one of "all", "selected" or "none".
+	EnabledRepositories     string  `json:"enabled_repositories"`
+	SelectedRepositoriesURL *string `json:"selected_repositories_url,omitempty"`
+}
+
+// CopilotCodingAgentPermissionsRequest represents the request body to set the Copilot coding agent permissions for an organization.
+type CopilotCodingAgentPermissionsRequest struct {
+	// EnabledRepositories is one of "all", "selected" or "none".
+	EnabledRepositories string `json:"enabled_repositories"`
+}
+
+// GetOrganizationCodingAgentPermissions gets which repositories in an organization can use the Copilot coding agent.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-coding-agent-management?apiVersion=2022-11-28#get-copilot-cloud-agent-permissions-for-an-organization
+//
+//meta:operation GET /orgs/{org}/copilot/coding-agent/permissions
+func (s *CopilotService) GetOrganizationCodingAgentPermissions(ctx context.Context, org string) (*CopilotCodingAgentPermissions, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/coding-agent/permissions", org)
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var permissions *CopilotCodingAgentPermissions
+	resp, err := s.client.Do(req, &permissions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return permissions, resp, nil
+}
+
+// SetOrganizationCodingAgentPermissions sets which repositories in an organization can use the Copilot coding agent.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-coding-agent-management?apiVersion=2022-11-28#set-copilot-cloud-agent-permissions-for-an-organization
+//
+//meta:operation PUT /orgs/{org}/copilot/coding-agent/permissions
+func (s *CopilotService) SetOrganizationCodingAgentPermissions(ctx context.Context, org string, body CopilotCodingAgentPermissionsRequest) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/coding-agent/permissions", org)
+
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
+// SetOrganizationCodingAgentRepositories replaces the list of repositories enabled for the Copilot coding agent in an organization.
+// The organization's EnabledRepositories permission must be set to "selected".
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-coding-agent-management?apiVersion=2022-11-28#set-selected-repositories-for-copilot-cloud-agent-in-an-organization
+//
+//meta:operation PUT /orgs/{org}/copilot/coding-agent/permissions/repositories
+func (s *CopilotService) SetOrganizationCodingAgentRepositories(ctx context.Context, org string, repositoryIDs []int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/coding-agent/permissions/repositories", org)
+
+	req, err := s.client.NewRequest(ctx, "PUT", u, struct {
+		IDs []int64 `json:"selected_repository_ids"`
+	}{IDs: repositoryIDs})
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
+// EnableOrganizationCodingAgentRepository enables a repository for the Copilot coding agent in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-coding-agent-management?apiVersion=2022-11-28#enable-a-repository-for-copilot-cloud-agent-in-an-organization
+//
+//meta:operation PUT /orgs/{org}/copilot/coding-agent/permissions/repositories/{repository_id}
+func (s *CopilotService) EnableOrganizationCodingAgentRepository(ctx context.Context, org string, repositoryID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/coding-agent/permissions/repositories/%v", org, repositoryID)
+
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
+// DisableOrganizationCodingAgentRepository disables a repository for the Copilot coding agent in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-coding-agent-management?apiVersion=2022-11-28#disable-a-repository-for-copilot-cloud-agent-in-an-organization
+//
+//meta:operation DELETE /orgs/{org}/copilot/coding-agent/permissions/repositories/{repository_id}
+func (s *CopilotService) DisableOrganizationCodingAgentRepository(ctx context.Context, org string, repositoryID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/coding-agent/permissions/repositories/%v", org, repositoryID)
+
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
 // CopilotOrganizationContentExclusionDetails lists all Copilot content exclusion
 // rules for an organization, keyed by repository full name. Each value is the
 // list of file paths excluded from Copilot for that repository.

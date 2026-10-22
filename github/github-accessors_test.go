@@ -12035,6 +12035,33 @@ func TestCopilotCodeReviewRuleParameters_GetReviewOnPush(tt *testing.T) {
 	c.GetReviewOnPush()
 }
 
+func TestCopilotCodingAgentPermissions_GetEnabledRepositories(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCodingAgentPermissions{}
+	c.GetEnabledRepositories()
+	c = nil
+	c.GetEnabledRepositories()
+}
+
+func TestCopilotCodingAgentPermissions_GetSelectedRepositoriesURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotCodingAgentPermissions{SelectedRepositoriesURL: &zeroValue}
+	c.GetSelectedRepositoriesURL()
+	c = &CopilotCodingAgentPermissions{}
+	c.GetSelectedRepositoriesURL()
+	c = nil
+	c.GetSelectedRepositoriesURL()
+}
+
+func TestCopilotCodingAgentPermissionsRequest_GetEnabledRepositories(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCodingAgentPermissionsRequest{}
+	c.GetEnabledRepositories()
+	c = nil
+	c.GetEnabledRepositories()
+}
+
 func TestCopilotDailyMetrics_GetCodeAcceptanceActivityCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
