@@ -8,6 +8,7 @@ package github
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -446,6 +447,28 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestAppsService_CreateInstallationTokenLongToken(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	longToken := "ghs_" + strings.Repeat("a", 256)
+
+	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprintf(w, `{"token":%q}`, longToken)
+	})
+
+	token, _, err := client.Apps.CreateInstallationToken(t.Context(), 1, nil)
+	if err != nil {
+		t.Fatalf("Apps.CreateInstallationToken returned error: %v", err)
+	}
+
+	if token.GetToken() != longToken {
+		t.Errorf("Apps.CreateInstallationToken returned token length %d, want %d",
+			len(token.GetToken()), len(longToken))
+	}
 }
 
 func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
