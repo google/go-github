@@ -34814,6 +34814,14 @@ func (p *PullRequestRuleParameters) GetRequiredReviewThreadResolution() bool {
 	return p.RequiredReviewThreadResolution
 }
 
+// GetRequireExtraApprovalForUnattributedChanges returns the RequireExtraApprovalForUnattributedChanges field.
+func (p *PullRequestRuleParameters) GetRequireExtraApprovalForUnattributedChanges() bool {
+	if p == nil {
+		return false
+	}
+	return p.RequireExtraApprovalForUnattributedChanges
+}
+
 // GetRequireLastPushApproval returns the RequireLastPushApproval field.
 func (p *PullRequestRuleParameters) GetRequireLastPushApproval() bool {
 	if p == nil {
