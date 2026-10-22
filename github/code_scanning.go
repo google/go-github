@@ -71,28 +71,31 @@ type Tool struct {
 //
 // GitHub API docs: https://docs.github.com/rest/code-scanning?apiVersion=2022-11-28
 type Alert struct {
-	Number             *int                  `json:"number,omitempty"`
-	Repository         *Repository           `json:"repository,omitempty"`
-	RuleID             *string               `json:"rule_id,omitempty"`
-	RuleSeverity       *string               `json:"rule_severity,omitempty"`
-	RuleDescription    *string               `json:"rule_description,omitempty"`
-	Rule               *Rule                 `json:"rule,omitempty"`
-	Tool               *Tool                 `json:"tool,omitempty"`
-	CreatedAt          *Timestamp            `json:"created_at,omitempty"`
-	UpdatedAt          *Timestamp            `json:"updated_at,omitempty"`
-	FixedAt            *Timestamp            `json:"fixed_at,omitempty"`
-	State              *string               `json:"state,omitempty"`
-	ClosedBy           *User                 `json:"closed_by,omitempty"`
-	ClosedAt           *Timestamp            `json:"closed_at,omitempty"`
-	URL                *string               `json:"url,omitempty"`
-	HTMLURL            *string               `json:"html_url,omitempty"`
-	MostRecentInstance *MostRecentInstance   `json:"most_recent_instance,omitempty"`
-	Instances          []*MostRecentInstance `json:"instances,omitempty"`
-	DismissedBy        *User                 `json:"dismissed_by,omitempty"`
-	DismissedAt        *Timestamp            `json:"dismissed_at,omitempty"`
-	DismissedReason    *string               `json:"dismissed_reason,omitempty"`
-	DismissedComment   *string               `json:"dismissed_comment,omitempty"`
-	InstancesURL       *string               `json:"instances_url,omitempty"`
+	Number              *int                  `json:"number,omitempty"`
+	Repository          *Repository           `json:"repository,omitempty"`
+	RuleID              *string               `json:"rule_id,omitempty"`
+	RuleSeverity        *string               `json:"rule_severity,omitempty"`
+	RuleDescription     *string               `json:"rule_description,omitempty"`
+	Rule                *Rule                 `json:"rule,omitempty"`
+	Tool                *Tool                 `json:"tool,omitempty"`
+	CreatedAt           *Timestamp            `json:"created_at,omitempty"`
+	UpdatedAt           *Timestamp            `json:"updated_at,omitempty"`
+	FixedAt             *Timestamp            `json:"fixed_at,omitempty"`
+	State               *string               `json:"state,omitempty"`
+	ClosedBy            *User                 `json:"closed_by,omitempty"`
+	ClosedAt            *Timestamp            `json:"closed_at,omitempty"`
+	URL                 *string               `json:"url,omitempty"`
+	HTMLURL             *string               `json:"html_url,omitempty"`
+	MostRecentInstance  *MostRecentInstance   `json:"most_recent_instance,omitempty"`
+	Instances           []*MostRecentInstance `json:"instances,omitempty"`
+	DismissedBy         *User                 `json:"dismissed_by,omitempty"`
+	DismissedAt         *Timestamp            `json:"dismissed_at,omitempty"`
+	DismissedReason     *string               `json:"dismissed_reason,omitempty"`
+	DismissedComment    *string               `json:"dismissed_comment,omitempty"`
+	DismissalApprovedBy *User                 `json:"dismissal_approved_by,omitempty"`
+	InstancesURL        *string               `json:"instances_url,omitempty"`
+	Assignees           []*User               `json:"assignees,omitempty"`
+	LinkedPullRequests  []*PullRequest        `json:"linked_pull_requests,omitempty"`
 }
 
 // ID returns the ID associated with an alert. It is the number at the end of the security alert's URL.
@@ -218,20 +221,26 @@ type SarifAnalysis struct {
 	Validate    *bool      `json:"validate,omitempty"`
 }
 
-// CodeScanningAlertState specifies the state of a code scanning alert.
+// UpdateCodeScanningAlertRequest represents a request to update a code scanning alert.
 //
 // GitHub API docs: https://docs.github.com/rest/code-scanning?apiVersion=2022-11-28
-type CodeScanningAlertState struct {
-	// State sets the state of the code scanning alert and is a required field.
+type UpdateCodeScanningAlertRequest struct {
+	// State sets the state of the code scanning alert.
+	// Either State or Assignees must be provided.
 	// You must also provide DismissedReason when you set the state to "dismissed".
 	// State can be one of: "open", "dismissed".
-	State string `json:"state"`
+	State *string `json:"state,omitempty"`
 	// DismissedReason represents the reason for dismissing or closing the alert.
 	// It is required when the state is "dismissed".
 	// It can be one of: "false positive", "won't fix", "used in tests".
 	DismissedReason *string `json:"dismissed_reason,omitempty"`
 	// DismissedComment is associated with the dismissal of the alert.
 	DismissedComment *string `json:"dismissed_comment,omitempty"`
+	// CreateRequest, if true, attempts to create an alert dismissal request.
+	CreateRequest *bool `json:"create_request,omitempty"`
+	// Assignees replaces the users assigned to the alert.
+	// Either State or Assignees must be provided. An empty slice removes all assignees.
+	Assignees []string `json:"assignees,omitzero"`
 }
 
 // SarifID identifies a sarif analysis upload.
@@ -338,7 +347,7 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 // GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning?apiVersion=2022-11-28#update-a-code-scanning-alert
 //
 //meta:operation PATCH /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}
-func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo string, id int64, body *CodeScanningAlertState) (*Alert, *Response, error) {
+func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo string, id int64, body UpdateCodeScanningAlertRequest) (*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
 
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
