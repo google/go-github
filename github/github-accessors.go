@@ -3694,30 +3694,6 @@ func (a *AzureHubConfig) GetName() string {
 	return a.Name
 }
 
-// GetOTP returns the OTP field.
-func (b *BasicAuthTransport) GetOTP() string {
-	if b == nil {
-		return ""
-	}
-	return b.OTP
-}
-
-// GetPassword returns the Password field.
-func (b *BasicAuthTransport) GetPassword() string {
-	if b == nil {
-		return ""
-	}
-	return b.Password
-}
-
-// GetUsername returns the Username field.
-func (b *BasicAuthTransport) GetUsername() string {
-	if b == nil {
-		return ""
-	}
-	return b.Username
-}
-
 // GetID returns the ID field.
 func (b *BillingCostCenter) GetID() string {
 	if b == nil {
@@ -46516,22 +46492,6 @@ func (t *TreeEntry) GetURL() string {
 		return ""
 	}
 	return *t.URL
-}
-
-// GetClientID returns the ClientID field.
-func (u *UnauthenticatedRateLimitedTransport) GetClientID() string {
-	if u == nil {
-		return ""
-	}
-	return u.ClientID
-}
-
-// GetClientSecret returns the ClientSecret field.
-func (u *UnauthenticatedRateLimitedTransport) GetClientSecret() string {
-	if u == nil {
-		return ""
-	}
-	return u.ClientSecret
 }
 
 // GetReason returns the Reason field if it's non-nil, zero value otherwise.
