@@ -4637,30 +4637,6 @@ func TestAzureHubConfig_GetName(tt *testing.T) {
 	a.GetName()
 }
 
-func TestBasicAuthTransport_GetOTP(tt *testing.T) {
-	tt.Parallel()
-	b := &BasicAuthTransport{}
-	b.GetOTP()
-	b = nil
-	b.GetOTP()
-}
-
-func TestBasicAuthTransport_GetPassword(tt *testing.T) {
-	tt.Parallel()
-	b := &BasicAuthTransport{}
-	b.GetPassword()
-	b = nil
-	b.GetPassword()
-}
-
-func TestBasicAuthTransport_GetUsername(tt *testing.T) {
-	tt.Parallel()
-	b := &BasicAuthTransport{}
-	b.GetUsername()
-	b = nil
-	b.GetUsername()
-}
-
 func TestBillingCostCenter_GetID(tt *testing.T) {
 	tt.Parallel()
 	b := &BillingCostCenter{}
@@ -12033,6 +12009,33 @@ func TestCopilotCodeReviewRuleParameters_GetReviewOnPush(tt *testing.T) {
 	c.GetReviewOnPush()
 	c = nil
 	c.GetReviewOnPush()
+}
+
+func TestCopilotCodingAgentPermissions_GetEnabledRepositories(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCodingAgentPermissions{}
+	c.GetEnabledRepositories()
+	c = nil
+	c.GetEnabledRepositories()
+}
+
+func TestCopilotCodingAgentPermissions_GetSelectedRepositoriesURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotCodingAgentPermissions{SelectedRepositoriesURL: &zeroValue}
+	c.GetSelectedRepositoriesURL()
+	c = &CopilotCodingAgentPermissions{}
+	c.GetSelectedRepositoriesURL()
+	c = nil
+	c.GetSelectedRepositoriesURL()
+}
+
+func TestCopilotCodingAgentPermissionsRequest_GetEnabledRepositories(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCodingAgentPermissionsRequest{}
+	c.GetEnabledRepositories()
+	c = nil
+	c.GetEnabledRepositories()
 }
 
 func TestCopilotDailyMetrics_GetCodeAcceptanceActivityCount(tt *testing.T) {
@@ -43491,6 +43494,14 @@ func TestPullRequestRuleParameters_GetRequiredReviewThreadResolution(tt *testing
 	p.GetRequiredReviewThreadResolution()
 }
 
+func TestPullRequestRuleParameters_GetRequireExtraApprovalForUnattributedChanges(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestRuleParameters{}
+	p.GetRequireExtraApprovalForUnattributedChanges()
+	p = nil
+	p.GetRequireExtraApprovalForUnattributedChanges()
+}
+
 func TestPullRequestRuleParameters_GetRequireLastPushApproval(tt *testing.T) {
 	tt.Parallel()
 	p := &PullRequestRuleParameters{}
@@ -57963,22 +57974,6 @@ func TestTreeEntry_GetURL(tt *testing.T) {
 	t.GetURL()
 	t = nil
 	t.GetURL()
-}
-
-func TestUnauthenticatedRateLimitedTransport_GetClientID(tt *testing.T) {
-	tt.Parallel()
-	u := &UnauthenticatedRateLimitedTransport{}
-	u.GetClientID()
-	u = nil
-	u.GetClientID()
-}
-
-func TestUnauthenticatedRateLimitedTransport_GetClientSecret(tt *testing.T) {
-	tt.Parallel()
-	u := &UnauthenticatedRateLimitedTransport{}
-	u.GetClientSecret()
-	u = nil
-	u.GetClientSecret()
 }
 
 func TestUnsuspendUserRequest_GetReason(tt *testing.T) {

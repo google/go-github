@@ -13,6 +13,7 @@ package github
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -27,6 +28,7 @@ import (
 	"time"
 
 	"github.com/google/go-querystring/query"
+	"golang.org/x/oauth2"
 )
 
 const (
@@ -163,14 +165,34 @@ const (
 // segment, which could allow path traversal attacks.
 var ErrPathForbidden = errors.New("path must not contain '..' due to auth vulnerability issue")
 
+// conditionalAuthTransport is an http.RoundTripper that conditionally
+// uses an auth transport for URLs that are checked by a given function.
+type conditionalAuthTransport struct {
+	baseTransport    http.RoundTripper
+	authTransport    http.RoundTripper
+	checkURLAuthFunc func(url *url.URL) bool
+}
+
+// RoundTrip implements the http.RoundTripper interface for conditionalAuthTransport.
+func (t *conditionalAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	// Check if the URL should be authenticated
+	if t.checkURLAuthFunc(req.URL) {
+		// Use the auth transport for URLs that match the pattern
+		return t.authTransport.RoundTrip(req)
+	}
+
+	// Don't use the auth transport for URLs that don't match the pattern
+	return t.baseTransport.RoundTrip(req)
+}
+
 // A Client manages communication with the GitHub API.
 type Client struct {
-	client                *http.Client // HTTP client used to communicate with the API.
-	clientIgnoreRedirects *http.Client // HTTP client used to communicate with the API on endpoints where we don't want to follow redirects.
+	client *http.Client // HTTP client used to communicate with the API.
 
-	// authToken is the token configured by [WithAuthToken], retained so that
-	// [Client.Clone] can install it against the clone's own origins.
-	authToken *string
+	// tokenSource is the token source configured by [WithAuthToken],
+	// [WithBasicAuth] or [WithTokenSource], used to obtain access tokens for
+	// authenticated requests.
+	tokenSource oauth2.TokenSource
 
 	// baseTransport is the transport the credential wrapper was installed on
 	// top of, so that [Client.Clone] can rebase onto it rather than layering a
@@ -266,9 +288,10 @@ type service struct {
 }
 
 // Client returns the http.Client used by this GitHub client.
-// The token configured by [WithAuthToken] is attached only to requests to this
-// client's configured API and upload origins, so the returned client may also
-// be used for requests to other hosts without leaking the token.
+// The token source configured by [WithAuthToken], [WithBasicAuth] or
+// [WithTokenSource] is attached only to requests to this client's configured
+// API and upload origins, so the returned client may also be used for requests
+// to other hosts without leaking the token.
 func (c *Client) Client() *http.Client {
 	clientCopy := *c.client
 	return &clientCopy
@@ -362,14 +385,13 @@ var errUninitialized = errors.New("client is not initialized")
 
 // clientOptions holds the configuration options for a Client.
 type clientOptions struct {
-	httpClient                              *http.Client
 	transport                               http.RoundTripper
 	timeout                                 *time.Duration
 	apiVersionMin                           *string
 	apiVersionMax                           *string
 	userAgent                               *string
 	envProxy                                bool
-	token                                   *string
+	tokenSource                             oauth2.TokenSource
 	baseURL                                 *url.URL
 	uploadURL                               *url.URL
 	disableRateLimitCheck                   bool
@@ -382,23 +404,10 @@ type clientOptions struct {
 // to a Client.
 type ClientOptionsFunc func(*clientOptions) error
 
-// WithHTTPClient returns a ClientOptionsFunc that sets the http.Client
-// for a Client. If not set, a default http.Client will be used.
-func WithHTTPClient(httpClient *http.Client) ClientOptionsFunc {
-	return func(o *clientOptions) error {
-		if httpClient == nil {
-			return errors.New("http client must not be nil")
-		}
-
-		httpClient := *httpClient
-		o.httpClient = &httpClient
-		return nil
-	}
-}
-
 // WithTransport returns a ClientOptionsFunc that sets the http.RoundTripper
-// for a Client. This overrides the transport set by [WithHTTPClient]. If not
-// set and no HTTP client is provided, the default http.RoundTripper will be used.
+// for a Client. If not set, the default http.RoundTripper will be used.
+// Do not use this to authenticate requests; use [WithTokenSource],
+// [WithBasicAuth] or [WithAuthToken] instead.
 func WithTransport(transport http.RoundTripper) ClientOptionsFunc {
 	return func(o *clientOptions) error {
 		if transport == nil {
@@ -411,8 +420,7 @@ func WithTransport(transport http.RoundTripper) ClientOptionsFunc {
 }
 
 // WithTimeout returns a ClientOptionsFunc that sets the timeout for a Client.
-// This overrides the timeout set by [WithHTTPClient]. If not set and no HTTP
-// client is provided, the default http.Client with no timeout will be used.
+// If not set, the default http.Client with no timeout will be used.
 // It is recommended to provide a timeout for production environments.
 func WithTimeout(timeout time.Duration) ClientOptionsFunc {
 	return func(o *clientOptions) error {
@@ -445,17 +453,44 @@ func WithEnvProxy() ClientOptionsFunc {
 	}
 }
 
-// WithAuthToken returns a ClientOptionsFunc that sets the authentication token
-// for a Client. The token is attached only to requests to the Client's
-// configured API and upload origins; a request to any other origin is sent
-// without it. If not set, the client will make unauthenticated requests.
+// WithAuthToken returns a ClientOptionsFunc that sets the token source
+// for a Client to use the provided authentication token.
 func WithAuthToken(token string) ClientOptionsFunc {
 	return func(o *clientOptions) error {
 		if token == "" {
 			return errors.New("token must not be empty")
 		}
 
-		o.token = &token
+		o.tokenSource = oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
+		return nil
+	}
+}
+
+// WithBasicAuth returns a ClientOptionsFunc that sets the token source
+// for a Client to use basic authentication with the provided username and password.
+func WithBasicAuth(username, password string) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		if username == "" || password == "" {
+			return errors.New("username and password must not be empty")
+		}
+
+		creds := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
+
+		o.tokenSource = oauth2.StaticTokenSource(&oauth2.Token{TokenType: "Basic", AccessToken: creds})
+		return nil
+	}
+}
+
+// WithTokenSource returns a ClientOptionsFunc that sets the token source
+// for a Client. If a token source is not set, the client will operate
+// unauthenticated.
+func WithTokenSource(tokenSource oauth2.TokenSource) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		if tokenSource == nil {
+			return errors.New("tokenSource must not be nil")
+		}
+
+		o.tokenSource = oauth2.ReuseTokenSource(nil, tokenSource)
 		return nil
 	}
 }
@@ -559,13 +594,11 @@ func WithMaxSecondaryRateLimitRetryAfterDuration(duration time.Duration) ClientO
 // For GitHub Enterprise, use [WithEnterpriseURLs] to set the base and upload
 // URLs.
 //
-// To make authenticated requests, use [WithAuthToken] or [WithHTTPClient] to
-// pass in a [http.Client] that performs authentication
-// (e.g., using golang.org/x/oauth2).
+// To make authenticated requests, use [WithAuthToken], [WithBasicAuth] or
+// [WithTokenSource] to provide a token source.
 //
 // For production usage it is recommended to provide a timeout using
-// [WithTimeout] or by providing a custom [http.Client] with an appropriate
-// timeout using [WithHTTPClient].
+// [WithTimeout].
 func NewClient(opts ...ClientOptionsFunc) (*Client, error) {
 	o := clientOptions{}
 	for _, opt := range opts {
@@ -584,12 +617,7 @@ func newClient(opts clientOptions) (*Client, error) {
 		apiVersionDefault: api20221128,
 		apiVersionMin:     api20221128,
 		apiVersionMax:     api20260310,
-	}
-
-	if opts.httpClient != nil {
-		c.client = opts.httpClient
-	} else {
-		c.client = &http.Client{}
+		client:            &http.Client{},
 	}
 
 	if opts.transport != nil {
@@ -616,6 +644,27 @@ func newClient(opts clientOptions) (*Client, error) {
 		c.client.Transport = t2
 	}
 
+	c.baseTransport = c.client.Transport
+
+	if opts.tokenSource != nil {
+		if c.baseTransport == nil {
+			c.baseTransport = http.DefaultTransport
+		}
+
+		c.tokenSource = opts.tokenSource
+
+		t := &conditionalAuthTransport{
+			baseTransport: c.baseTransport,
+			authTransport: &oauth2.Transport{
+				Source: c.tokenSource,
+				Base:   c.baseTransport,
+			},
+			checkURLAuthFunc: c.shouldAuthorizeRequest,
+		}
+
+		c.client.Transport = t
+	}
+
 	if opts.apiVersionMin != nil {
 		c.apiVersionMin = *opts.apiVersionMin
 	}
@@ -640,36 +689,6 @@ func newClient(opts clientOptions) (*Client, error) {
 		c.uploadURL = opts.uploadURL
 	} else {
 		c.uploadURL, _ = url.Parse(uploadBaseURL)
-	}
-
-	// Install the credential wrapper only after the API and upload origins are
-	// known: the wrapper consults them for every request, so that a request to
-	// any other origin goes out unauthenticated instead of carrying the token.
-	c.baseTransport = c.client.Transport
-	if opts.token != nil {
-		token := "Bearer " + *opts.token
-		c.authToken = opts.token
-
-		transport := c.baseTransport
-		if transport == nil {
-			transport = http.DefaultTransport
-		}
-
-		c.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
-			if c.shouldAuthorizeRequest(req.URL) {
-				req = req.Clone(req.Context())
-				req.Header.Set("Authorization", token)
-			}
-
-			return transport.RoundTrip(req)
-		})
-	}
-
-	c.clientIgnoreRedirects = &http.Client{
-		Transport:     c.client.Transport,
-		Timeout:       c.client.Timeout,
-		Jar:           c.client.Jar,
-		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
 	}
 
 	c.disableRateLimitCheck = opts.disableRateLimitCheck
@@ -735,15 +754,15 @@ func newClient(opts clientOptions) (*Client, error) {
 // A request's destination is governed by two rules, and they deliberately differ
 // because a credential and a payload fail in opposite ways.
 //
-// Credentials — the token configured by [WithAuthToken], and the credentials on
-// [BasicAuthTransport] and [UnauthenticatedRateLimitedTransport] — are sent
-// only to origins the caller has configured. Any other destination, including
-// a redirect hop, goes out with no credentials attached. Such a request is
-// never rejected and the credentials are never forwarded: it is simply sent
-// unauthenticated, so that a caller cannot leak a token by handing the client a
-// URL whose host it does not control. Withholding a credential is safe to do
-// silently because the request can still succeed without it — a pre-signed
-// download URL handed back by the API is the ordinary case.
+// Credentials — the token source configured by [WithAuthToken], [WithBasicAuth]
+// or [WithTokenSource] — are sent only to origins the caller
+// has configured. Any other destination, including a redirect hop, goes out
+// with no credentials attached. Such a request is never rejected and the
+// credentials are never forwarded: it is simply sent unauthenticated, so that
+// a caller cannot leak a token by handing the client a URL whose host it does
+// not control. Withholding a credential is safe to do silently because the
+// request can still succeed without it — a pre-signed download URL handed back
+// by the API is the ordinary case.
 //
 // A payload cannot be withheld that way, because a request whose body is dropped
 // cannot succeed at all, and the caller would be told a request succeeded when
@@ -756,13 +775,11 @@ func newClient(opts clientOptions) (*Client, error) {
 // Within a Client both rules read the same two configured origins, BaseURL and
 // UploadURL, which is where [WithEnterpriseURLs] and [WithURLs] put them; a
 // GitHub Enterprise or proxy deployment whose upload host differs from its API
-// host must therefore configure both. The exported transports are not attached
-// to a Client and take their own [BasicAuthTransport.AllowedOrigins] list
-// instead. sameOrigin is the one predicate behind both rules. Every place that
-// decides whether a destination may receive credentials — the WithAuthToken
-// wrapper, both exported auth transports, and the redirect guards — must use it,
-// so the answer cannot differ depending on which code path a request happens to
-// take.
+// host must therefore configure both. sameOrigin is the one predicate behind
+// both rules. Every place that decides whether a destination may receive
+// credentials — [WithAuthToken], [WithBasicAuth], [WithTokenSource], and
+// the redirect guards — must use it, so the answer cannot differ depending on
+// which code path a request happens to take.
 
 // ErrUntrustedDestination is returned by [Client.NewUploadRequest] and
 // [Client.NewFormRequest] when a request they build would send its body to an
@@ -778,14 +795,6 @@ func newClient(opts clientOptions) (*Client, error) {
 // Configure the destination with [WithURLs] or [WithEnterpriseURLs] if a request
 // legitimately belongs on a host other than BaseURL or UploadURL.
 var ErrUntrustedDestination = errors.New("refusing to send a request body to a destination the client is not configured for")
-
-// defaultAuthOrigins are the origins credentials may be sent to when no
-// allowlist is configured: GitHub.com's API and upload hosts. An empty
-// allowlist must never be read as "any origin".
-var defaultAuthOrigins = []*url.URL{
-	{Scheme: "https", Host: "api.github.com"},
-	{Scheme: "https", Host: "uploads.github.com"},
-}
 
 // sameOrigin reports whether u and base share an origin: the same scheme, the
 // same hostname, and the same port once the scheme's default port is implied. A
@@ -816,22 +825,6 @@ func normalizedPort(u *url.URL) string {
 	default:
 		return ""
 	}
-}
-
-// isAllowedOrigin reports whether u matches one of origins. An empty origins
-// list means [defaultAuthOrigins], not "allow every origin".
-func isAllowedOrigin(u *url.URL, origins []*url.URL) bool {
-	if len(origins) == 0 {
-		origins = defaultAuthOrigins
-	}
-
-	for _, origin := range origins {
-		if sameOrigin(u, origin) {
-			return true
-		}
-	}
-
-	return false
 }
 
 // shouldAuthorizeRequest reports whether the credentials configured on c may be
@@ -887,20 +880,22 @@ func (c *Client) UploadURL() string {
 // updated when the original client's rate limit information is updated.
 // The returned client is independent of the original client and can be
 // modified without affecting the original client. Any token configured by
-// [WithAuthToken] carries over to the clone, and is re-scoped to the clone's
-// own API and upload origins.
+// [WithAuthToken], [WithBasicAuth] or [WithTokenSource] carries over to the
+// clone, and is re-scoped to the clone's own API and upload origins.
 func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 	if c.client == nil {
 		return nil, errUninitialized
 	}
 
 	o := clientOptions{
+		transport:                               c.baseTransport,
+		timeout:                                 &c.client.Timeout,
 		apiVersionMin:                           &c.apiVersionMin,
 		apiVersionMax:                           &c.apiVersionMax,
 		userAgent:                               &c.userAgent,
 		baseURL:                                 new(*c.baseURL),
 		uploadURL:                               new(*c.uploadURL),
-		token:                                   c.authToken,
+		tokenSource:                             c.tokenSource,
 		disableRateLimitCheck:                   c.disableRateLimitCheck,
 		rateLimitRedirectionalEndpoints:         c.rateLimitRedirectionalEndpoints,
 		maxSecondaryRateLimitRetryAfterDuration: &c.maxSecondaryRateLimitRetryAfterDuration,
@@ -913,24 +908,6 @@ func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 	for _, opt := range opts {
 		if err := opt(&o); err != nil {
 			return nil, err
-		}
-	}
-
-	if o.httpClient == nil {
-		// A clone that carries a token installs the credential against its own
-		// origins, so it starts from the unwrapped transport: reusing the
-		// wrapped one would stack a second check that still enforces the
-		// original client's origins.
-		transport := c.client.Transport
-		if c.authToken != nil {
-			transport = c.baseTransport
-		}
-
-		o.httpClient = &http.Client{
-			Transport:     transport,
-			CheckRedirect: c.client.CheckRedirect,
-			Jar:           c.client.Jar,
-			Timeout:       c.client.Timeout,
 		}
 	}
 
@@ -1571,7 +1548,14 @@ func (c *Client) BareDo(req *http.Request) (*Response, error) {
 // redirection code returned by the API. If a redirection is returned by the api, bareDoIgnoreRedirects
 // returns a *RedirectionError.
 func (c *Client) bareDoIgnoreRedirects(req *http.Request) (*Response, error) {
-	return c.bareDo(c.clientIgnoreRedirects, req)
+	cc := &http.Client{
+		Transport:     c.client.Transport,
+		Timeout:       c.client.Timeout,
+		Jar:           c.client.Jar,
+		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
+	}
+
+	return c.bareDo(cc, req)
 }
 
 var errInvalidLocation = errors.New("invalid or empty Location header in redirection response")
@@ -1761,6 +1745,35 @@ type ErrorResponse struct {
 	// to some content that might help you resolve the error, see
 	// https://docs.github.com/rest?apiVersion=2022-11-28#client-errors
 	DocumentationURL string `json:"documentation_url,omitempty"`
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface.
+func (r *ErrorResponse) UnmarshalJSON(data []byte) error {
+	type aliasErrorResponse ErrorResponse // avoid infinite recursion by using type alias.
+	response := struct {
+		Errors json.RawMessage `json:"errors"`
+		*aliasErrorResponse
+	}{
+		aliasErrorResponse: (*aliasErrorResponse)(r),
+	}
+
+	if err := json.Unmarshal(data, &response); err != nil {
+		return err
+	}
+	if len(response.Errors) == 0 || string(response.Errors) == "null" {
+		return nil
+	}
+	if err := json.Unmarshal(response.Errors, &r.Errors); err == nil {
+		return nil
+	}
+
+	var message string
+	if err := json.Unmarshal(response.Errors, &message); err != nil {
+		return err
+	}
+	//nolint:sliceofpointers
+	r.Errors = []Error{{Message: message}}
+	return nil
 }
 
 // ErrorBlock contains a further explanation for the reason of an error.
@@ -2215,142 +2228,6 @@ func GetRateLimitCategory(method, path string) RateLimitCategory {
 // Deprecated: Use RateLimitService.Get instead.
 func (c *Client) RateLimits(ctx context.Context) (*RateLimits, *Response, error) {
 	return c.RateLimit.Get(ctx)
-}
-
-func setCredentialsAsHeaders(req *http.Request, id, secret string) *http.Request {
-	// To set extra headers, we must make a copy of the Request so
-	// that we don't modify the Request we were given. This is required by the
-	// specification of http.RoundTripper.
-	//
-	// Since we are going to modify only req.Header here, we only need a deep copy
-	// of req.Header.
-	convertedRequest := *req
-	convertedRequest.Header = make(http.Header, len(req.Header))
-
-	for k, s := range req.Header {
-		convertedRequest.Header[k] = append([]string(nil), s...)
-	}
-	convertedRequest.SetBasicAuth(id, secret)
-	return &convertedRequest
-}
-
-/*
-UnauthenticatedRateLimitedTransport allows you to make unauthenticated calls
-that need to use a higher rate limit associated with your OAuth application.
-
-	t := &github.UnauthenticatedRateLimitedTransport{
-		ClientID:     "your app's client ID",
-		ClientSecret: "your app's client secret",
-	}
-	client := github.NewClient(t.Client())
-
-This will add the client id and secret as a base64-encoded string in the format
-ClientID:ClientSecret and apply it as an "Authorization": "Basic" header.
-
-See https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#primary-rate-limit-for-oauth-apps
-for more information.
-*/
-type UnauthenticatedRateLimitedTransport struct {
-	// ClientID is the GitHub OAuth client ID of the current application, which
-	// can be found by selecting its entry in the list at
-	// https://github.com/settings/applications.
-	ClientID string
-
-	// ClientSecret is the GitHub OAuth client secret of the current
-	// application.
-	ClientSecret string
-
-	// AllowedOrigins limits the origins ClientID and ClientSecret are sent to.
-	// The credentials are attached only to requests whose origin matches one of
-	// these; every other request, including a redirect hop, is sent without
-	// them.
-	//
-	// If empty, the GitHub.com API and upload origins are used. An empty
-	// AllowedOrigins does not mean "any origin": set it explicitly when talking
-	// to GitHub Enterprise.
-	AllowedOrigins []*url.URL
-
-	// Transport is the underlying HTTP transport to use when making requests.
-	// It will default to http.DefaultTransport if nil.
-	Transport http.RoundTripper
-}
-
-// RoundTrip implements the RoundTripper interface.
-func (t *UnauthenticatedRateLimitedTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	if t.ClientID == "" {
-		return nil, errors.New("t.ClientID is empty")
-	}
-	if t.ClientSecret == "" {
-		return nil, errors.New("t.ClientSecret is empty")
-	}
-
-	if isAllowedOrigin(req.URL, t.AllowedOrigins) {
-		req = setCredentialsAsHeaders(req, t.ClientID, t.ClientSecret)
-	}
-
-	// Make the HTTP request.
-	return t.transport().RoundTrip(req)
-}
-
-// Client returns an *http.Client that makes requests which are subject to the
-// rate limit of your OAuth application.
-func (t *UnauthenticatedRateLimitedTransport) Client() *http.Client {
-	return &http.Client{Transport: t}
-}
-
-func (t *UnauthenticatedRateLimitedTransport) transport() http.RoundTripper {
-	if t.Transport != nil {
-		return t.Transport
-	}
-	return http.DefaultTransport
-}
-
-// BasicAuthTransport is an http.RoundTripper that authenticates all requests
-// using HTTP Basic Authentication with the provided username and password. It
-// additionally supports users who have two-factor authentication enabled on
-// their GitHub account.
-type BasicAuthTransport struct {
-	Username string // GitHub username
-	Password string // GitHub password
-	OTP      string // one-time password for users with two-factor auth enabled
-
-	// AllowedOrigins limits the origins the credentials above are sent to. They
-	// are attached only to requests whose origin matches one of these; every
-	// other request, including a redirect hop, is sent without them.
-	//
-	// If empty, the GitHub.com API and upload origins are used. An empty
-	// AllowedOrigins does not mean "any origin": set it explicitly when talking
-	// to GitHub Enterprise.
-	AllowedOrigins []*url.URL
-
-	// Transport is the underlying HTTP transport to use when making requests.
-	// It will default to http.DefaultTransport if nil.
-	Transport http.RoundTripper
-}
-
-// RoundTrip implements the RoundTripper interface.
-func (t *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	if isAllowedOrigin(req.URL, t.AllowedOrigins) {
-		req = setCredentialsAsHeaders(req, t.Username, t.Password)
-		if t.OTP != "" {
-			req.Header.Set(headerOTP, t.OTP)
-		}
-	}
-
-	return t.transport().RoundTrip(req)
-}
-
-// Client returns an *http.Client that makes requests that are authenticated
-// using HTTP Basic Authentication.
-func (t *BasicAuthTransport) Client() *http.Client {
-	return &http.Client{Transport: t}
-}
-
-func (t *BasicAuthTransport) transport() http.RoundTripper {
-	if t.Transport != nil {
-		return t.Transport
-	}
-	return http.DefaultTransport
 }
 
 // formatRateReset formats d to look like "[rate reset in 2s]" or

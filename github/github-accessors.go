@@ -3694,30 +3694,6 @@ func (a *AzureHubConfig) GetName() string {
 	return a.Name
 }
 
-// GetOTP returns the OTP field.
-func (b *BasicAuthTransport) GetOTP() string {
-	if b == nil {
-		return ""
-	}
-	return b.OTP
-}
-
-// GetPassword returns the Password field.
-func (b *BasicAuthTransport) GetPassword() string {
-	if b == nil {
-		return ""
-	}
-	return b.Password
-}
-
-// GetUsername returns the Username field.
-func (b *BasicAuthTransport) GetUsername() string {
-	if b == nil {
-		return ""
-	}
-	return b.Username
-}
-
 // GetID returns the ID field.
 func (b *BillingCostCenter) GetID() string {
 	if b == nil {
@@ -9476,6 +9452,30 @@ func (c *CopilotCodeReviewRuleParameters) GetReviewOnPush() bool {
 		return false
 	}
 	return c.ReviewOnPush
+}
+
+// GetEnabledRepositories returns the EnabledRepositories field.
+func (c *CopilotCodingAgentPermissions) GetEnabledRepositories() string {
+	if c == nil {
+		return ""
+	}
+	return c.EnabledRepositories
+}
+
+// GetSelectedRepositoriesURL returns the SelectedRepositoriesURL field if it's non-nil, zero value otherwise.
+func (c *CopilotCodingAgentPermissions) GetSelectedRepositoriesURL() string {
+	if c == nil || c.SelectedRepositoriesURL == nil {
+		return ""
+	}
+	return *c.SelectedRepositoriesURL
+}
+
+// GetEnabledRepositories returns the EnabledRepositories field.
+func (c *CopilotCodingAgentPermissionsRequest) GetEnabledRepositories() string {
+	if c == nil {
+		return ""
+	}
+	return c.EnabledRepositories
 }
 
 // GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field if it's non-nil, zero value otherwise.
@@ -34790,6 +34790,14 @@ func (p *PullRequestRuleParameters) GetRequiredReviewThreadResolution() bool {
 	return p.RequiredReviewThreadResolution
 }
 
+// GetRequireExtraApprovalForUnattributedChanges returns the RequireExtraApprovalForUnattributedChanges field.
+func (p *PullRequestRuleParameters) GetRequireExtraApprovalForUnattributedChanges() bool {
+	if p == nil {
+		return false
+	}
+	return p.RequireExtraApprovalForUnattributedChanges
+}
+
 // GetRequireLastPushApproval returns the RequireLastPushApproval field.
 func (p *PullRequestRuleParameters) GetRequireLastPushApproval() bool {
 	if p == nil {
@@ -46484,22 +46492,6 @@ func (t *TreeEntry) GetURL() string {
 		return ""
 	}
 	return *t.URL
-}
-
-// GetClientID returns the ClientID field.
-func (u *UnauthenticatedRateLimitedTransport) GetClientID() string {
-	if u == nil {
-		return ""
-	}
-	return u.ClientID
-}
-
-// GetClientSecret returns the ClientSecret field.
-func (u *UnauthenticatedRateLimitedTransport) GetClientSecret() string {
-	if u == nil {
-		return ""
-	}
-	return u.ClientSecret
 }
 
 // GetReason returns the Reason field if it's non-nil, zero value otherwise.
