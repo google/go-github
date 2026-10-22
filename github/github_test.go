@@ -3078,6 +3078,10 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 func TestDo_rateLimit_sleepUntilResponseResetLimit_replaysBody(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	// Disable keep-alives so the retried request opens a fresh connection rather
+	// than reusing the transport connection pool, verifying that the retried POST
+	// sends the replayed payload reconstituted by bareDo.
+	client.client.Transport.(*http.Transport).DisableKeepAlives = true
 
 	reset := time.Now().UTC().Add(time.Second)
 
@@ -3159,6 +3163,8 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit_replaysBody(t *testing.T) {
 func TestDo_rateLimit_sleepUntilResponseResetLimit_nonReplayableBody(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	// Disable keep-alives so requests do not reuse connections.
+	client.client.Transport.(*http.Transport).DisableKeepAlives = true
 
 	reset := time.Now().UTC().Add(time.Second)
 
@@ -3193,8 +3199,7 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit_nonReplayableBody(t *testing.
 	if err == nil {
 		t.Fatal("Expected error to be returned, got nil")
 	}
-	var rateLimitError *RateLimitError
-	if !errors.As(err, &rateLimitError) {
+	if _, ok := errors.AsType[*RateLimitError](err); !ok {
 		t.Fatalf("Expected *RateLimitError, got %#v", err)
 	}
 	if got, want := int(requestCount.Load()), 1; got != want {
@@ -3211,6 +3216,8 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit_nonReplayableBody(t *testing.
 func TestDo_rateLimit_sleepUntilResponseResetLimit_getBodyError(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	// Disable keep-alives so requests do not reuse connections.
+	client.client.Transport.(*http.Transport).DisableKeepAlives = true
 
 	reset := time.Now().UTC().Add(time.Second)
 
