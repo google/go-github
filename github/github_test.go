@@ -4624,6 +4624,86 @@ func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
 	}
 }
 
+func TestCheckResponse_errorString(t *testing.T) {
+	t.Parallel()
+	httpBody := `{"message":"Forbidden","errors":"Repository level self-hosted runners are disabled on this repository","documentation_url":"https://docs.github.com/rest/actions/self-hosted-runners#create-a-registration-token-for-a-repository","status":"403"}`
+	res := &http.Response{
+		Request:    &http.Request{},
+		StatusCode: http.StatusForbidden,
+		Body:       io.NopCloser(strings.NewReader(httpBody)),
+	}
+	var err *ErrorResponse
+	errors.As(CheckResponse(res), &err)
+
+	if err == nil {
+		t.Fatal("Expected error response.")
+	}
+
+	want := &ErrorResponse{
+		Response:         res,
+		Message:          "Forbidden",
+		Errors:           []Error{{Message: "Repository level self-hosted runners are disabled on this repository"}},
+		DocumentationURL: "https://docs.github.com/rest/actions/self-hosted-runners#create-a-registration-token-for-a-repository",
+	}
+	if !errors.Is(err, want) {
+		t.Errorf("Error = %#v, want %#v", err, want)
+	}
+}
+
+func TestErrorResponse_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
+	tests := map[string]struct {
+		data    string
+		want    ErrorResponse
+		wantErr bool
+	}{
+		"no errors": {
+			data: `{"message":"m"}`,
+			want: ErrorResponse{Message: "m"},
+		},
+		"null errors": {
+			data: `{"message":"m","errors":null}`,
+			want: ErrorResponse{Message: "m"},
+		},
+		"array of errors": {
+			data: `{"message":"m","errors":[{"resource":"r","field":"f","code":"c"},"e"]}`,
+			want: ErrorResponse{Message: "m", Errors: []Error{{Resource: "r", Field: "f", Code: "c"}, {Message: "e"}}},
+		},
+		"string errors": {
+			data: `{"message":"m","errors":"e"}`,
+			want: ErrorResponse{Message: "m", Errors: []Error{{Message: "e"}}},
+		},
+		"number errors": {
+			data:    `{"message":"m","errors":1}`,
+			wantErr: true,
+		},
+		"invalid message": {
+			data:    `{"message":1}`,
+			wantErr: true,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+			var got ErrorResponse
+			err := json.Unmarshal([]byte(tt.data), &got)
+			if tt.wantErr {
+				if err == nil {
+					t.Error("json.Unmarshal returned no error, want an error")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("json.Unmarshal returned error: %v", err)
+			}
+			if !cmp.Equal(got, tt.want) {
+				t.Errorf("ErrorResponse = %+v, want %+v", got, tt.want)
+			}
+		})
+	}
+}
+
 // TestCheckResponse_LargeBodyTruncated verifies that CheckResponse reads at
 // most maxErrorBodySize bytes from an error response body, so that a
 // malicious or buggy server cannot cause the client to allocate unbounded
