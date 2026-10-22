@@ -15,6 +15,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/google/go-github/v93/github"
 	"github.com/jferrl/go-githubauth"
@@ -40,7 +41,7 @@ func main() {
 	}
 
 	// create git client with app transport
-	client, err := github.NewClient(github.WithTokenSource(appTokenSource), github.WithURLs(&gitHost, &gitHost))
+	client, err := github.NewClient(github.WithTokenSource(appTokenSource), github.WithEnterpriseURLs(gitHost, gitHost), github.WithTimeout(30*time.Second))
 	if err != nil {
 		log.Fatalf("failed to create git client for app: %v", err)
 	}
@@ -62,9 +63,9 @@ func main() {
 		log.Fatal("no installation found")
 	}
 
-	installationTokenSource := githubauth.NewInstallationTokenSource(installID, appTokenSource, githubauth.WithBaseURL(gitHost))
+	installationTokenSource := githubauth.NewInstallationTokenSource(installID, appTokenSource, githubauth.WithEnterpriseURL(gitHost))
 
-	apiClient, err := github.NewClient(github.WithTokenSource(installationTokenSource), github.WithURLs(&gitHost, &gitHost))
+	apiClient, err := github.NewClient(github.WithTokenSource(installationTokenSource), github.WithEnterpriseURLs(gitHost, gitHost), github.WithTimeout(30*time.Second))
 	if err != nil {
 		log.Fatalf("failed to create new git client with token: %v", err)
 	}

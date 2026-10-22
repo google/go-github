@@ -119,9 +119,6 @@ Note that when using an authenticated Client, all calls made by the client will
 include the specified OAuth token. Therefore, authenticated clients should
 almost never be shared between different users.
 
-For API methods that require HTTP Basic Authentication, use the
-`github.WithBasicAuth` option.
-
 #### As a GitHub App ####
 
 GitHub Apps authentication can be provided by [jferrl/go-githubauth](https://github.com/jferrl/go-githubauth).
@@ -151,7 +148,6 @@ import (
 
 	"github.com/google/go-github/v93/github"
 	"github.com/jferrl/go-githubauth"
-	"golang.org/x/oauth2"
 )
 
 func main() {

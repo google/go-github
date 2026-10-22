@@ -490,7 +490,7 @@ func WithTokenSource(tokenSource oauth2.TokenSource) ClientOptionsFunc {
 			return errors.New("tokenSource must not be nil")
 		}
 
-		o.tokenSource = tokenSource
+		o.tokenSource = oauth2.ReuseTokenSource(nil, tokenSource)
 		return nil
 	}
 }
@@ -755,8 +755,7 @@ func newClient(opts clientOptions) (*Client, error) {
 // because a credential and a payload fail in opposite ways.
 //
 // Credentials — the token source configured by [WithAuthToken], [WithBasicAuth]
-// or [WithTokenSource], and the credentials on [BasicAuthTransport] and
-// [UnauthenticatedRateLimitedTransport] — are sent only to origins the caller
+// or [WithTokenSource] — are sent only to origins the caller
 // has configured. Any other destination, including a redirect hop, goes out
 // with no credentials attached. Such a request is never rejected and the
 // credentials are never forwarded: it is simply sent unauthenticated, so that
@@ -776,13 +775,11 @@ func newClient(opts clientOptions) (*Client, error) {
 // Within a Client both rules read the same two configured origins, BaseURL and
 // UploadURL, which is where [WithEnterpriseURLs] and [WithURLs] put them; a
 // GitHub Enterprise or proxy deployment whose upload host differs from its API
-// host must therefore configure both. The exported transports are not attached
-// to a Client and take their own [BasicAuthTransport.AllowedOrigins] list
-// instead. sameOrigin is the one predicate behind both rules. Every place that
-// decides whether a destination may receive credentials — the WithAuthToken
-// wrapper, both exported auth transports, and the redirect guards — must use it,
-// so the answer cannot differ depending on which code path a request happens to
-// take.
+// host must therefore configure both. sameOrigin is the one predicate behind
+// both rules. Every place that decides whether a destination may receive
+// credentials — the [WithAuthToken], [WithBasicAuth], [WithTokenSource], and
+// the redirect guards — must use it, so the answer cannot differ depending on
+// which code path a request happens to take.
 
 // ErrUntrustedDestination is returned by [Client.NewUploadRequest] and
 // [Client.NewFormRequest] when a request they build would send its body to an
@@ -798,14 +795,6 @@ func newClient(opts clientOptions) (*Client, error) {
 // Configure the destination with [WithURLs] or [WithEnterpriseURLs] if a request
 // legitimately belongs on a host other than BaseURL or UploadURL.
 var ErrUntrustedDestination = errors.New("refusing to send a request body to a destination the client is not configured for")
-
-// defaultAuthOrigins are the origins credentials may be sent to when no
-// allowlist is configured: GitHub.com's API and upload hosts. An empty
-// allowlist must never be read as "any origin".
-var defaultAuthOrigins = []*url.URL{
-	{Scheme: "https", Host: "api.github.com"},
-	{Scheme: "https", Host: "uploads.github.com"},
-}
 
 // sameOrigin reports whether u and base share an origin: the same scheme, the
 // same hostname, and the same port once the scheme's default port is implied. A
@@ -836,22 +825,6 @@ func normalizedPort(u *url.URL) string {
 	default:
 		return ""
 	}
-}
-
-// isAllowedOrigin reports whether u matches one of origins. An empty origins
-// list means [defaultAuthOrigins], not "allow every origin".
-func isAllowedOrigin(u *url.URL, origins []*url.URL) bool {
-	if len(origins) == 0 {
-		origins = defaultAuthOrigins
-	}
-
-	for _, origin := range origins {
-		if sameOrigin(u, origin) {
-			return true
-		}
-	}
-
-	return false
 }
 
 // shouldAuthorizeRequest reports whether the credentials configured on c may be

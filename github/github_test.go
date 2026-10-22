@@ -8,6 +8,7 @@ package github
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -631,8 +632,12 @@ func TestWithBasicAuth(t *testing.T) {
 	t.Run("valid_credentials", func(t *testing.T) {
 		t.Parallel()
 
+		username := "foo"
+		password := "bar"
+		validToken := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
+
 		opts := clientOptions{}
-		err := WithBasicAuth("foo", "bar")(&opts)
+		err := WithBasicAuth(username, password)(&opts)
 		if err != nil {
 			t.Fatalf("WithBasicAuth errored: %v", err)
 		}
@@ -641,9 +646,12 @@ func TestWithBasicAuth(t *testing.T) {
 			t.Fatal("tokenSource is nil, want non-nil")
 		}
 
-		_, err = opts.tokenSource.Token()
+		gotToken, err := opts.tokenSource.Token()
 		if err != nil {
 			t.Fatalf("TokenSource errored: %v", err)
+		}
+		if gotToken.AccessToken != validToken {
+			t.Fatalf("got token %v, want %v", gotToken.AccessToken, validToken)
 		}
 	})
 }
@@ -4698,37 +4706,6 @@ func TestNormalizedPort(t *testing.T) {
 			t.Parallel()
 			if got := normalizedPort(mustParseURL(t, tt.url)); got != tt.want {
 				t.Errorf("normalizedPort(%q) = %q, want %q", tt.url, got, tt.want)
-			}
-		})
-	}
-}
-
-func TestIsAllowedOrigin(t *testing.T) {
-	t.Parallel()
-	ghe := mustParseURL(t, "https://ghe.example.com")
-	uploads := mustParseURL(t, "https://uploads.github.com")
-
-	for _, tt := range []struct {
-		name    string
-		u       string
-		origins []*url.URL
-		want    bool
-	}{
-		{name: "api.github.com is allowed by default", u: "https://api.github.com", want: true},
-		{name: "uploads.github.com is allowed by default", u: "https://uploads.github.com", want: true},
-		{name: "the default port may be spelled out", u: "https://api.github.com:443", want: true},
-		{name: "an unrelated host is not allowed by default", u: "https://evil.example.com", want: false},
-		{name: "http is not allowed by default", u: "http://api.github.com", want: false},
-		{name: "a configured origin is allowed", u: "https://ghe.example.com", origins: []*url.URL{ghe}, want: true},
-		{name: "an origin absent from the allowlist is not", u: "https://api.github.com", origins: []*url.URL{ghe}, want: false},
-		{name: "any one match is enough", u: "https://uploads.github.com", origins: []*url.URL{ghe, uploads}, want: true},
-		{name: "a nil entry is skipped", u: "https://ghe.example.com", origins: []*url.URL{nil, ghe}, want: true},
-		{name: "a nil-only allowlist allows nothing", u: "https://api.github.com", origins: []*url.URL{nil}, want: false},
-	} {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			if got := isAllowedOrigin(mustParseURL(t, tt.u), tt.origins); got != tt.want {
-				t.Errorf("isAllowedOrigin(%q, %v) = %v, want %v", tt.u, tt.origins, got, tt.want)
 			}
 		})
 	}

@@ -58,9 +58,6 @@ Note that when using an authenticated [Client], all calls made by the client wil
 include the specified OAuth token. Therefore, authenticated clients should
 almost never be shared between different users.
 
-For API methods that require HTTP Basic Authentication, use the
-[WithBasicAuth] option.
-
 GitHub Apps authentication can be provided by the
 [github.com/jferrl/go-githubauth](https://github.com/jferrl/go-githubauth) package.
 Most endpoints (for example, `GET /rate_limit`) require access token
