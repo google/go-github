@@ -1518,12 +1518,16 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 			err = aerr
 		}
 
-		var rateLimitError *RateLimitError
-		if errors.As(err, &rateLimitError) &&
+		if rlErr, ok := errors.AsType[*RateLimitError](err); ok &&
 			ctx.Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
-			if err := sleepUntilResetWithBuffer(ctx, rateLimitError.Rate.Reset.Time); err != nil {
+			if req.Body != nil && req.Body != http.NoBody && req.GetBody == nil {
 				return response, err
 			}
+
+			if err := sleepUntilResetWithBuffer(ctx, rlErr.Rate.Reset.Time); err != nil {
+				return response, err
+			}
+
 			// retry the request now the rate limit should have been reset
 			newReq := req.Clone(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, nil))
 			if req.GetBody != nil {
@@ -1532,8 +1536,6 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 					return response, err
 				}
 				newReq.Body = body
-			} else if req.Body != nil && req.Body != http.NoBody {
-				return response, err
 			}
 			return c.bareDo(caller, newReq)
 		}
