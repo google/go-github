@@ -22,6 +22,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"testing/synctest"
@@ -3001,6 +3002,191 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 	}
 	if got, want := int(requestCount.Load()), 2; got != want {
 		t.Errorf("Expected 2 requests, got %v", got)
+	}
+}
+
+// Verify request body is replayed when retrying after rate limit reset.
+func TestDo_rateLimit_sleepUntilResponseResetLimit_replaysBody(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	// Disable keep-alives so the retried request opens a fresh connection rather
+	// than reusing the transport connection pool, verifying that the retried POST
+	// sends the replayed payload reconstituted by bareDo.
+	client.client.Transport.(*http.Transport).DisableKeepAlives = true
+
+	reset := time.Now().UTC().Add(time.Second)
+
+	type testPayload struct {
+		Name *string `json:"name"`
+	}
+
+	var requestCount atomic.Int32
+	var bodies []string
+	var mu sync.Mutex
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		requestCount.Add(1)
+		b, err := io.ReadAll(r.Body)
+		if err != nil {
+			t.Errorf("failed to read body: %v", err)
+		}
+		mu.Lock()
+		bodies = append(bodies, string(b))
+		mu.Unlock()
+
+		if requestCount.Load() == 1 {
+			w.Header().Set(HeaderRateLimit, "60")
+			w.Header().Set(HeaderRateRemaining, "0")
+			w.Header().Set(HeaderRateUsed, "60")
+			w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
+			w.Header().Set(HeaderRateResource, "core")
+			w.Header().Set("Content-Type", "application/json; charset=utf-8")
+			w.WriteHeader(http.StatusForbidden)
+			fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+}`)
+			return
+		}
+
+		w.Header().Set(HeaderRateLimit, "5000")
+		w.Header().Set(HeaderRateRemaining, "5000")
+		w.Header().Set(HeaderRateUsed, "0")
+		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set(HeaderRateResource, "core")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintln(w, `{}`)
+	})
+
+	input := &testPayload{Name: Ptr("test-name")}
+	req, err := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "POST", ".", input)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+
+	resp, err := client.Do(req, nil)
+	if err != nil {
+		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusOK; got != want {
+		t.Errorf("Response status code = %v, want %v", got, want)
+	}
+	if got, want := int(requestCount.Load()), 2; got != want {
+		t.Fatalf("Expected 2 requests, got %v", got)
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+	wantBody := `{"name":"test-name"}` + "\n"
+	if len(bodies) != 2 {
+		t.Fatalf("Expected 2 captured bodies, got %d", len(bodies))
+	}
+	if bodies[0] != wantBody {
+		t.Errorf("First request body = %q, want %q", bodies[0], wantBody)
+	}
+	if bodies[1] != wantBody {
+		t.Errorf("Second request body (retried) = %q, want %q", bodies[1], wantBody)
+	}
+}
+
+// Verify request with non-replayable body returns rate limit error without retrying.
+func TestDo_rateLimit_sleepUntilResponseResetLimit_nonReplayableBody(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	// Disable keep-alives so requests do not reuse connections.
+	client.client.Transport.(*http.Transport).DisableKeepAlives = true
+
+	reset := time.Now().UTC().Add(time.Second)
+
+	var requestCount atomic.Int32
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		requestCount.Add(1)
+		w.Header().Set(HeaderRateLimit, "60")
+		w.Header().Set(HeaderRateRemaining, "0")
+		w.Header().Set(HeaderRateUsed, "60")
+		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(HeaderRateResource, "core")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+}`)
+	})
+
+	type testPayload struct {
+		Name *string `json:"name"`
+	}
+	input := &testPayload{Name: Ptr("test-name")}
+	req, err := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "POST", ".", input)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+	// Explicitly clear GetBody to simulate a body stream that cannot be replayed.
+	req.GetBody = nil
+
+	resp, err := client.Do(req, nil)
+	if err == nil {
+		t.Fatal("Expected error to be returned, got nil")
+	}
+	if _, ok := errors.AsType[*RateLimitError](err); !ok {
+		t.Fatalf("Expected *RateLimitError, got %#v", err)
+	}
+	if got, want := int(requestCount.Load()), 1; got != want {
+		t.Errorf("Expected 1 request, got %v", got)
+	}
+	if resp == nil {
+		t.Error("Expected non-nil Response")
+	} else if got, want := resp.StatusCode, http.StatusForbidden; got != want {
+		t.Errorf("Response status code = %v, want %v", resp.StatusCode, http.StatusForbidden)
+	}
+}
+
+// Verify GetBody error aborts retry and is returned directly.
+func TestDo_rateLimit_sleepUntilResponseResetLimit_getBodyError(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	// Disable keep-alives so requests do not reuse connections.
+	client.client.Transport.(*http.Transport).DisableKeepAlives = true
+
+	reset := time.Now().UTC().Add(time.Second)
+
+	var requestCount atomic.Int32
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		requestCount.Add(1)
+		w.Header().Set(HeaderRateLimit, "60")
+		w.Header().Set(HeaderRateRemaining, "0")
+		w.Header().Set(HeaderRateUsed, "60")
+		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(HeaderRateResource, "core")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+}`)
+	})
+
+	type testPayload struct {
+		Name *string `json:"name"`
+	}
+	input := &testPayload{Name: Ptr("test-name")}
+	req, err := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "POST", ".", input)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+	expectedErr := errors.New("cannot recreate body")
+	req.GetBody = func() (io.ReadCloser, error) {
+		return nil, expectedErr
+	}
+
+	_, err = client.Do(req, nil)
+	if !errors.Is(err, expectedErr) {
+		t.Fatalf("Expected getBody error, got: %v", err)
+	}
+	if got, want := int(requestCount.Load()), 1; got != want {
+		t.Errorf("Expected 1 request, got %v", got)
 	}
 }
 
