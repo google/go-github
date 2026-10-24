@@ -1982,7 +1982,8 @@ func sanitizeURL(uri *url.URL) *url.URL {
 	if uri == nil {
 		return nil
 	}
-	params := uri.Query()
+	u := *uri
+	params := u.Query()
 	var redacted bool
 	for _, p := range sensitiveParams {
 		if len(params.Get(p)) > 0 {
@@ -1991,9 +1992,9 @@ func sanitizeURL(uri *url.URL) *url.URL {
 		}
 	}
 	if redacted {
-		uri.RawQuery = params.Encode()
+		u.RawQuery = params.Encode()
 	}
-	return uri
+	return &u
 }
 
 /*

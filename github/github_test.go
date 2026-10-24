@@ -3899,6 +3899,37 @@ func TestSanitizeURL(t *testing.T) {
 	}
 }
 
+func TestSanitizeURL_DoesNotMutateInput(t *testing.T) {
+	t.Parallel()
+
+	const rawURL = "https://api.github.com/user?access_token=secret&client_secret=topsecret&token=tok&other=val"
+	inURL := mustParseURL(t, rawURL)
+
+	sanitized := sanitizeURL(inURL)
+	if sanitized == inURL {
+		t.Errorf("sanitizeURL returned identical pointer %p; expected new clone pointer", sanitized)
+	}
+
+	// Verify original URL remains completely unmodified on the original pointer
+	if got, want := inURL.RawQuery, "access_token=secret&client_secret=topsecret&token=tok&other=val"; got != want {
+		t.Errorf("inURL.RawQuery was mutated: got %q, want %q", got, want)
+	}
+	if got, want := inURL.String(), rawURL; got != want {
+		t.Errorf("inURL.String() was mutated: got %q, want %q", got, want)
+	}
+
+	// Verify sanitized URL properly redacted credentials
+	wantSanitized := "https://api.github.com/user?access_token=REDACTED&client_secret=REDACTED&other=val&token=REDACTED"
+	if got := sanitized.String(); got != wantSanitized {
+		t.Errorf("sanitized.String() = %q, want %q", got, wantSanitized)
+	}
+
+	// Verify nil handling
+	if got := sanitizeURL(nil); got != nil {
+		t.Errorf("sanitizeURL(nil) = %v, want nil", got)
+	}
+}
+
 func TestCheckResponse(t *testing.T) {
 	t.Parallel()
 	res := &http.Response{
@@ -4725,6 +4756,144 @@ func TestErrorResponse_Error(t *testing.T) {
 	err = ErrorResponse{Message: "m"}
 	if err.Error() == "" {
 		t.Error("Expected non-empty ErrorResponse.Error()")
+	}
+}
+
+func TestErrorResponse_Error_DoesNotMutateRequestURL(t *testing.T) {
+	t.Parallel()
+
+	const rawURL = "https://api.github.com/user?access_token=secret123&client_secret=secret456&token=secret789"
+	reqURL := mustParseURL(t, rawURL)
+	req := &http.Request{
+		Method: "GET",
+		URL:    reqURL,
+	}
+	resp := &http.Response{
+		StatusCode: http.StatusUnauthorized,
+		Request:    req,
+	}
+	errResp := &ErrorResponse{
+		Response: resp,
+		Message:  "Bad credentials",
+	}
+
+	errMsg := errResp.Error()
+
+	// Verify formatted error message redacted credentials
+	if strings.Contains(errMsg, "secret123") || strings.Contains(errMsg, "secret456") || strings.Contains(errMsg, "secret789") {
+		t.Errorf("ErrorResponse.Error() leaked credentials: %q", errMsg)
+	}
+	if !strings.Contains(errMsg, "access_token=REDACTED") || !strings.Contains(errMsg, "client_secret=REDACTED") || !strings.Contains(errMsg, "token=REDACTED") {
+		t.Errorf("ErrorResponse.Error() did not redact credentials: %q", errMsg)
+	}
+
+	// Verify original Request.URL retains its original credentials
+	if got, want := req.URL.RawQuery, "access_token=secret123&client_secret=secret456&token=secret789"; got != want {
+		t.Errorf("req.URL.RawQuery was mutated: got %q, want %q", got, want)
+	}
+	if got, want := req.URL.String(), rawURL; got != want {
+		t.Errorf("req.URL.String() was mutated: got %q, want %q", got, want)
+	}
+}
+
+func TestRateLimitError_Error_DoesNotMutateRequestURL(t *testing.T) {
+	t.Parallel()
+
+	const rawURL = "https://api.github.com/user?access_token=secret123"
+	reqURL := mustParseURL(t, rawURL)
+	req := &http.Request{
+		Method: "GET",
+		URL:    reqURL,
+	}
+	resp := &http.Response{
+		StatusCode: http.StatusForbidden,
+		Request:    req,
+	}
+	rateErr := &RateLimitError{
+		Response: resp,
+		Message:  "rate limit exceeded",
+		Rate: Rate{
+			Reset: Timestamp{Time: time.Now().Add(time.Hour)},
+		},
+	}
+
+	errMsg := rateErr.Error()
+	if strings.Contains(errMsg, "secret123") {
+		t.Errorf("RateLimitError.Error() leaked credentials: %q", errMsg)
+	}
+	if !strings.Contains(errMsg, "access_token=REDACTED") {
+		t.Errorf("RateLimitError.Error() did not redact credentials: %q", errMsg)
+	}
+	if got, want := req.URL.RawQuery, "access_token=secret123"; got != want {
+		t.Errorf("req.URL.RawQuery was mutated: got %q, want %q", got, want)
+	}
+}
+
+func TestAbuseRateLimitError_Error_DoesNotMutateRequestURL(t *testing.T) {
+	t.Parallel()
+
+	const rawURL = "https://api.github.com/user?token=secret123"
+	reqURL := mustParseURL(t, rawURL)
+	req := &http.Request{
+		Method: "GET",
+		URL:    reqURL,
+	}
+	resp := &http.Response{
+		StatusCode: http.StatusForbidden,
+		Request:    req,
+	}
+	retryAfter := 60 * time.Second
+	abuseErr := &AbuseRateLimitError{
+		Response:   resp,
+		Message:    "abuse rate limit",
+		RetryAfter: &retryAfter,
+	}
+
+	errMsg := abuseErr.Error()
+	if strings.Contains(errMsg, "secret123") {
+		t.Errorf("AbuseRateLimitError.Error() leaked credentials: %q", errMsg)
+	}
+	if !strings.Contains(errMsg, "token=REDACTED") {
+		t.Errorf("AbuseRateLimitError.Error() did not redact credentials: %q", errMsg)
+	}
+	if got, want := req.URL.RawQuery, "token=secret123"; got != want {
+		t.Errorf("req.URL.RawQuery was mutated: got %q, want %q", got, want)
+	}
+}
+
+func TestRedirectionError_Error_DoesNotMutateRequestURL(t *testing.T) {
+	t.Parallel()
+
+	const rawURL = "https://api.github.com/user?access_token=secret123"
+	const locURL = "https://api.github.com/target?client_secret=secret456"
+	reqURL := mustParseURL(t, rawURL)
+	targetURL := mustParseURL(t, locURL)
+	req := &http.Request{
+		Method: "GET",
+		URL:    reqURL,
+	}
+	resp := &http.Response{
+		StatusCode: http.StatusMovedPermanently,
+		Request:    req,
+	}
+	redirErr := &RedirectionError{
+		Response:   resp,
+		StatusCode: http.StatusMovedPermanently,
+		Location:   targetURL,
+	}
+
+	errMsg := redirErr.Error()
+	if strings.Contains(errMsg, "secret123") || strings.Contains(errMsg, "secret456") {
+		t.Errorf("RedirectionError.Error() leaked credentials: %q", errMsg)
+	}
+	if !strings.Contains(errMsg, "access_token=REDACTED") || !strings.Contains(errMsg, "client_secret=REDACTED") {
+		t.Errorf("RedirectionError.Error() did not redact credentials: %q", errMsg)
+	}
+	if got, want := req.URL.RawQuery, "access_token=secret123"; got != want {
+		t.Errorf("req.URL.RawQuery was mutated: got %q, want %q", got, want)
+	}
+	if got, want := targetURL.RawQuery, "client_secret=secret456"; got != want {
+		t.Errorf("targetURL.RawQuery was mutated: got %q, want %q", got, want)
 	}
 }
 
