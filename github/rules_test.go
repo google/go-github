@@ -100,6 +100,75 @@ func TestRepositoryRulesetRules_CodeCoverageMarshalError(t *testing.T) {
 	}
 }
 
+func TestCodeQualityRuleRoundTrip(t *testing.T) {
+	t.Parallel()
+	for _, severity := range []CodeQualitySeverity{
+		CodeQualitySeverityErrors,
+		CodeQualitySeverityWarnings,
+		CodeQualitySeverityNotes,
+		CodeQualitySeverityAll,
+	} {
+		t.Run(string(severity), func(t *testing.T) {
+			t.Parallel()
+			params := CodeQualityRuleParameters{Severity: severity}
+			ruleJSON := `{"type":"code_quality","parameters":{"severity":"` + string(severity) + `"}}`
+			testJSONMarshal(t, &RepositoryRule{
+				Type:       RulesetRuleTypeCodeQuality,
+				Parameters: &params,
+			}, ruleJSON)
+			testJSONMarshal(t, &RepositoryRulesetRules{CodeQuality: &params}, `[`+ruleJSON+`]`)
+		})
+	}
+
+	t.Run("missing_parameters", func(t *testing.T) {
+		t.Parallel()
+		testJSONUnmarshalOnly(t, &RepositoryRule{
+			Type:       RulesetRuleTypeCodeQuality,
+			Parameters: &CodeQualityRuleParameters{},
+		}, `{"type":"code_quality"}`)
+		testJSONUnmarshalOnly(t, &RepositoryRulesetRules{
+			CodeQuality: &CodeQualityRuleParameters{},
+		}, `[{"type":"code_quality"}]`)
+		testJSONUnmarshalOnly(t, &BranchRules{
+			CodeQuality: []*CodeQualityBranchRule{{
+				BranchRuleMetadata: BranchRuleMetadata{RulesetSourceType: RulesetSourceTypeRepository, RulesetSource: "test/test", RulesetID: 1},
+			}},
+		}, `[{"type":"code_quality","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1}]`)
+	})
+}
+
+func TestBranchRules_CodeQuality(t *testing.T) {
+	t.Parallel()
+	testJSONUnmarshalOnly(t, &BranchRules{
+		CodeQuality: []*CodeQualityBranchRule{{
+			BranchRuleMetadata: BranchRuleMetadata{RulesetSourceType: RulesetSourceTypeOrganization, RulesetSource: "test", RulesetID: 2},
+			Parameters:         CodeQualityRuleParameters{Severity: CodeQualitySeverityErrors},
+		}},
+	}, `[{"type":"code_quality","ruleset_source_type":"Organization","ruleset_source":"test","ruleset_id":2,"parameters":{"severity":"errors"}}]`)
+}
+
+func TestCodeQualityRuleInvalidParameters(t *testing.T) {
+	t.Parallel()
+	for _, params := range []string{
+		`{"severity":1}`,
+		`"not_an_object"`,
+	} {
+		t.Run(params, func(t *testing.T) {
+			t.Parallel()
+			data := `{"type":"code_quality","parameters":` + params + `}`
+			if err := json.Unmarshal([]byte(data), &RepositoryRule{}); err == nil {
+				t.Errorf("Expected error unmarshaling %q into RepositoryRule, got nil", data)
+			}
+			if err := json.Unmarshal([]byte(`[`+data+`]`), &RepositoryRulesetRules{}); err == nil {
+				t.Errorf("Expected error unmarshaling [%v] into RepositoryRulesetRules, got nil", data)
+			}
+			if err := json.Unmarshal([]byte(`[`+data+`]`), &BranchRules{}); err == nil {
+				t.Errorf("Expected error unmarshaling [%v] into BranchRules, got nil", data)
+			}
+		})
+	}
+}
+
 func TestRepositoryRulesetRules(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
