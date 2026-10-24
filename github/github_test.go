@@ -3887,14 +3887,19 @@ func TestSanitizeURL(t *testing.T) {
 		{"/?a=b&access_token=secret", "/?a=b&access_token=REDACTED"},
 		{"/?a=b&token=secret", "/?a=b&token=REDACTED"},
 		{"/?client_secret=s&access_token=t&token=u", "/?access_token=REDACTED&client_secret=REDACTED&token=REDACTED"},
+		{"https://user:password@example.com/path?token=secret", "https://example.com/path?token=REDACTED"},
 	}
 
 	for _, tt := range tests {
 		inURL, _ := url.Parse(tt.in)
 		want, _ := url.Parse(tt.want)
+		original := inURL.String()
 
-		if got := sanitizeURL(inURL); !cmp.Equal(got, want) {
-			t.Errorf("sanitizeURL(%v) returned %v, want %v", tt.in, got, want)
+		if got := SanitizeURL(inURL); !cmp.Equal(got, want) {
+			t.Errorf("SanitizeURL(%v) returned %v, want %v", tt.in, got, want)
+		}
+		if got := inURL.String(); got != original {
+			t.Errorf("SanitizeURL modified its input: got %v, want %v", got, original)
 		}
 	}
 }
