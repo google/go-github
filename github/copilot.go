@@ -712,17 +712,45 @@ func (s *CopilotService) DisableOrganizationCodingAgentRepository(ctx context.Co
 	return s.client.Do(req, nil)
 }
 
-// CopilotOrganizationContentExclusionDetails lists all Copilot content exclusion
-// rules for an organization, keyed by repository full name. Each value is the
-// list of file paths excluded from Copilot for that repository.
-type CopilotOrganizationContentExclusionDetails map[string][]string
+// CopilotContentExclusionDetails lists Copilot content exclusion path rules,
+// keyed by repository identifier. Each value is the list of file paths excluded
+// from Copilot for that repository.
+type CopilotContentExclusionDetails map[string][]string
+
+// CopilotSetContentExclusionDetailsRequest represents the Copilot content exclusion
+// rules to set, keyed by repository identifier.
+type CopilotSetContentExclusionDetailsRequest map[string][]*CopilotContentExclusionRule
+
+// CopilotContentExclusionRule represents a single Copilot content exclusion rule.
+// Exactly one of Path, IfAnyMatch, or IfNoneMatch should be set.
+type CopilotContentExclusionRule struct {
+	Path        *string  `json:"-"`
+	IfAnyMatch  []string `json:"ifAnyMatch,omitempty"`
+	IfNoneMatch []string `json:"ifNoneMatch,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaler interface.
+// A rule with Path set is encoded as a plain string.
+func (r CopilotContentExclusionRule) MarshalJSON() ([]byte, error) {
+	if r.Path != nil {
+		return json.Marshal(*r.Path)
+	}
+	type alias CopilotContentExclusionRule
+	return json.Marshal(alias(r))
+}
+
+// CopilotSetContentExclusionResponse represents the response from setting
+// Copilot content exclusion rules.
+type CopilotSetContentExclusionResponse struct {
+	Message *string `json:"message,omitempty"`
+}
 
 // GetOrganizationContentExclusionDetails gets the Copilot content exclusion rules for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-content-exclusion-management?apiVersion=2022-11-28#get-copilot-content-exclusion-rules-for-an-organization
 //
 //meta:operation GET /orgs/{org}/copilot/content_exclusion
-func (s *CopilotService) GetOrganizationContentExclusionDetails(ctx context.Context, org string) (CopilotOrganizationContentExclusionDetails, *Response, error) {
+func (s *CopilotService) GetOrganizationContentExclusionDetails(ctx context.Context, org string) (CopilotContentExclusionDetails, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/content_exclusion", org)
 
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
@@ -730,13 +758,79 @@ func (s *CopilotService) GetOrganizationContentExclusionDetails(ctx context.Cont
 		return nil, nil, err
 	}
 
-	details := CopilotOrganizationContentExclusionDetails{}
+	details := CopilotContentExclusionDetails{}
 	resp, err := s.client.Do(req, &details)
 	if err != nil {
 		return nil, resp, err
 	}
 
 	return details, resp, nil
+}
+
+// SetOrganizationContentExclusionDetails sets the Copilot content exclusion rules for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-content-exclusion-management?apiVersion=2022-11-28#set-copilot-content-exclusion-rules-for-an-organization
+//
+//meta:operation PUT /orgs/{org}/copilot/content_exclusion
+func (s *CopilotService) SetOrganizationContentExclusionDetails(ctx context.Context, org string, body CopilotSetContentExclusionDetailsRequest) (*CopilotSetContentExclusionResponse, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/content_exclusion", org)
+
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var result *CopilotSetContentExclusionResponse
+	resp, err := s.client.Do(req, &result)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
+}
+
+// GetEnterpriseContentExclusionDetails gets the Copilot content exclusion rules for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-content-exclusion-management?apiVersion=2022-11-28#get-copilot-content-exclusion-rules-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/copilot/content_exclusion
+func (s *CopilotService) GetEnterpriseContentExclusionDetails(ctx context.Context, enterprise string) (CopilotContentExclusionDetails, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/copilot/content_exclusion", enterprise)
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	details := CopilotContentExclusionDetails{}
+	resp, err := s.client.Do(req, &details)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return details, resp, nil
+}
+
+// SetEnterpriseContentExclusionDetails sets the Copilot content exclusion rules for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-content-exclusion-management?apiVersion=2022-11-28#set-copilot-content-exclusion-rules-for-an-enterprise
+//
+//meta:operation PUT /enterprises/{enterprise}/copilot/content_exclusion
+func (s *CopilotService) SetEnterpriseContentExclusionDetails(ctx context.Context, enterprise string, body CopilotSetContentExclusionDetailsRequest) (*CopilotSetContentExclusionResponse, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/copilot/content_exclusion", enterprise)
+
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var result *CopilotSetContentExclusionResponse
+	resp, err := s.client.Do(req, &result)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
 }
 
 // AddCopilotTeams adds teams to the Copilot for Business subscription for an organization.

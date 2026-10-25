@@ -9502,6 +9502,30 @@ func (c *CopilotCodingAgentPermissionsRequest) GetEnabledRepositories() string {
 	return c.EnabledRepositories
 }
 
+// GetIfAnyMatch returns the IfAnyMatch slice if it's non-nil, nil otherwise.
+func (c *CopilotContentExclusionRule) GetIfAnyMatch() []string {
+	if c == nil || c.IfAnyMatch == nil {
+		return nil
+	}
+	return c.IfAnyMatch
+}
+
+// GetIfNoneMatch returns the IfNoneMatch slice if it's non-nil, nil otherwise.
+func (c *CopilotContentExclusionRule) GetIfNoneMatch() []string {
+	if c == nil || c.IfNoneMatch == nil {
+		return nil
+	}
+	return c.IfNoneMatch
+}
+
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (c *CopilotContentExclusionRule) GetPath() string {
+	if c == nil || c.Path == nil {
+		return ""
+	}
+	return *c.Path
+}
+
 // GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field if it's non-nil, zero value otherwise.
 func (c *CopilotDailyMetrics) GetCodeAcceptanceActivityCount() int {
 	if c == nil || c.CodeAcceptanceActivityCount == nil {
@@ -11180,6 +11204,14 @@ func (c *CopilotSeatDetails) GetUpdatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *c.UpdatedAt
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (c *CopilotSetContentExclusionResponse) GetMessage() string {
+	if c == nil || c.Message == nil {
+		return ""
+	}
+	return *c.Message
 }
 
 // GetAPIURL returns the APIURL field.

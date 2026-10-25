@@ -12065,6 +12065,39 @@ func TestCopilotCodingAgentPermissionsRequest_GetEnabledRepositories(tt *testing
 	c.GetEnabledRepositories()
 }
 
+func TestCopilotContentExclusionRule_GetIfAnyMatch(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CopilotContentExclusionRule{IfAnyMatch: zeroValue}
+	c.GetIfAnyMatch()
+	c = &CopilotContentExclusionRule{}
+	c.GetIfAnyMatch()
+	c = nil
+	c.GetIfAnyMatch()
+}
+
+func TestCopilotContentExclusionRule_GetIfNoneMatch(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CopilotContentExclusionRule{IfNoneMatch: zeroValue}
+	c.GetIfNoneMatch()
+	c = &CopilotContentExclusionRule{}
+	c.GetIfNoneMatch()
+	c = nil
+	c.GetIfNoneMatch()
+}
+
+func TestCopilotContentExclusionRule_GetPath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotContentExclusionRule{Path: &zeroValue}
+	c.GetPath()
+	c = &CopilotContentExclusionRule{}
+	c.GetPath()
+	c = nil
+	c.GetPath()
+}
+
 func TestCopilotDailyMetrics_GetCodeAcceptanceActivityCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -14070,6 +14103,17 @@ func TestCopilotSeatDetails_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 	c = nil
 	c.GetUpdatedAt()
+}
+
+func TestCopilotSetContentExclusionResponse_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSetContentExclusionResponse{Message: &zeroValue}
+	c.GetMessage()
+	c = &CopilotSetContentExclusionResponse{}
+	c.GetMessage()
+	c = nil
+	c.GetMessage()
 }
 
 func TestCopilotSpace_GetAPIURL(tt *testing.T) {
