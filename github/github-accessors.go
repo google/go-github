@@ -1726,6 +1726,14 @@ func (a *AgentTaskSessionError) GetMessage() string {
 	return *a.Message
 }
 
+// GetAssignees returns the Assignees slice if it's non-nil, nil otherwise.
+func (a *Alert) GetAssignees() []*User {
+	if a == nil || a.Assignees == nil {
+		return nil
+	}
+	return a.Assignees
+}
+
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
 func (a *Alert) GetClosedAt() Timestamp {
 	if a == nil || a.ClosedAt == nil {
@@ -1748,6 +1756,14 @@ func (a *Alert) GetCreatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *a.CreatedAt
+}
+
+// GetDismissalApprovedBy returns the DismissalApprovedBy field.
+func (a *Alert) GetDismissalApprovedBy() *User {
+	if a == nil {
+		return nil
+	}
+	return a.DismissalApprovedBy
 }
 
 // GetDismissedAt returns the DismissedAt field if it's non-nil, zero value otherwise.
@@ -1812,6 +1828,14 @@ func (a *Alert) GetInstancesURL() string {
 		return ""
 	}
 	return *a.InstancesURL
+}
+
+// GetLinkedPullRequests returns the LinkedPullRequests slice if it's non-nil, nil otherwise.
+func (a *Alert) GetLinkedPullRequests() []*PullRequest {
+	if a == nil || a.LinkedPullRequests == nil {
+		return nil
+	}
+	return a.LinkedPullRequests
 }
 
 // GetMostRecentInstance returns the MostRecentInstance field.
@@ -6044,30 +6068,6 @@ func (c *CodeScanningAlertEvent) GetSender() *User {
 		return nil
 	}
 	return c.Sender
-}
-
-// GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
-func (c *CodeScanningAlertState) GetDismissedComment() string {
-	if c == nil || c.DismissedComment == nil {
-		return ""
-	}
-	return *c.DismissedComment
-}
-
-// GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
-func (c *CodeScanningAlertState) GetDismissedReason() string {
-	if c == nil || c.DismissedReason == nil {
-		return ""
-	}
-	return *c.DismissedReason
-}
-
-// GetState returns the State field.
-func (c *CodeScanningAlertState) GetState() string {
-	if c == nil {
-		return ""
-	}
-	return c.State
 }
 
 // GetParameters returns the Parameters field.
@@ -15150,6 +15150,14 @@ func (d *DeleteEvent) GetSender() *User {
 	return d.Sender
 }
 
+// GetAssignees returns the Assignees slice if it's non-nil, nil otherwise.
+func (d *DependabotAlert) GetAssignees() []*User {
+	if d == nil || d.Assignees == nil {
+		return nil
+	}
+	return d.Assignees
+}
+
 // GetAutoDismissedAt returns the AutoDismissedAt field if it's non-nil, zero value otherwise.
 func (d *DependabotAlert) GetAutoDismissedAt() Timestamp {
 	if d == nil || d.AutoDismissedAt == nil {
@@ -15172,6 +15180,14 @@ func (d *DependabotAlert) GetDependency() *Dependency {
 		return nil
 	}
 	return d.Dependency
+}
+
+// GetDismissalRequest returns the DismissalRequest field.
+func (d *DependabotAlert) GetDismissalRequest() *DependabotAlertDismissalRequest {
+	if d == nil {
+		return nil
+	}
+	return d.DismissalRequest
 }
 
 // GetDismissedAt returns the DismissedAt field if it's non-nil, zero value otherwise.
@@ -15278,6 +15294,70 @@ func (d *DependabotAlert) GetURL() string {
 	return *d.URL
 }
 
+// GetCustomAgent returns the CustomAgent field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertAgentAssignment) GetCustomAgent() string {
+	if d == nil || d.CustomAgent == nil {
+		return ""
+	}
+	return *d.CustomAgent
+}
+
+// GetCustomInstructions returns the CustomInstructions field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertAgentAssignment) GetCustomInstructions() string {
+	if d == nil || d.CustomInstructions == nil {
+		return ""
+	}
+	return *d.CustomInstructions
+}
+
+// GetModel returns the Model field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertAgentAssignment) GetModel() string {
+	if d == nil || d.Model == nil {
+		return ""
+	}
+	return *d.Model
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertDismissalRequest) GetCreatedAt() Timestamp {
+	if d == nil || d.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *d.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertDismissalRequest) GetID() int64 {
+	if d == nil || d.ID == nil {
+		return 0
+	}
+	return *d.ID
+}
+
+// GetRequester returns the Requester field.
+func (d *DependabotAlertDismissalRequest) GetRequester() *User {
+	if d == nil {
+		return nil
+	}
+	return d.Requester
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertDismissalRequest) GetStatus() string {
+	if d == nil || d.Status == nil {
+		return ""
+	}
+	return *d.Status
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertDismissalRequest) GetURL() string {
+	if d == nil || d.URL == nil {
+		return ""
+	}
+	return *d.URL
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (d *DependabotAlertEvent) GetAction() string {
 	if d == nil || d.Action == nil {
@@ -15332,30 +15412,6 @@ func (d *DependabotAlertEvent) GetSender() *User {
 		return nil
 	}
 	return d.Sender
-}
-
-// GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
-func (d *DependabotAlertState) GetDismissedComment() string {
-	if d == nil || d.DismissedComment == nil {
-		return ""
-	}
-	return *d.DismissedComment
-}
-
-// GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
-func (d *DependabotAlertState) GetDismissedReason() string {
-	if d == nil || d.DismissedReason == nil {
-		return ""
-	}
-	return *d.DismissedReason
-}
-
-// GetState returns the State field.
-func (d *DependabotAlertState) GetState() string {
-	if d == nil {
-		return ""
-	}
-	return d.State
 }
 
 // GetClassification returns the Classification field if it's non-nil, zero value otherwise.
@@ -46694,6 +46750,46 @@ func (u *UpdateCheckRunOptions) GetStatus() string {
 	return *u.Status
 }
 
+// GetAssignees returns the Assignees slice if it's non-nil, nil otherwise.
+func (u *UpdateCodeScanningAlertRequest) GetAssignees() []string {
+	if u == nil || u.Assignees == nil {
+		return nil
+	}
+	return u.Assignees
+}
+
+// GetCreateRequest returns the CreateRequest field if it's non-nil, zero value otherwise.
+func (u *UpdateCodeScanningAlertRequest) GetCreateRequest() bool {
+	if u == nil || u.CreateRequest == nil {
+		return false
+	}
+	return *u.CreateRequest
+}
+
+// GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
+func (u *UpdateCodeScanningAlertRequest) GetDismissedComment() string {
+	if u == nil || u.DismissedComment == nil {
+		return ""
+	}
+	return *u.DismissedComment
+}
+
+// GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
+func (u *UpdateCodeScanningAlertRequest) GetDismissedReason() string {
+	if u == nil || u.DismissedReason == nil {
+		return ""
+	}
+	return *u.DismissedReason
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (u *UpdateCodeScanningAlertRequest) GetState() string {
+	if u == nil || u.State == nil {
+		return ""
+	}
+	return *u.State
+}
+
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
 func (u *UpdateCodespaceRequest) GetDisplayName() string {
 	if u == nil || u.DisplayName == nil {
@@ -46868,6 +46964,46 @@ func (u *UpdateDefaultSetupConfigurationResponse) GetRunURL() string {
 		return ""
 	}
 	return *u.RunURL
+}
+
+// GetAgentAssignment returns the AgentAssignment field.
+func (u *UpdateDependabotAlertRequest) GetAgentAssignment() *DependabotAlertAgentAssignment {
+	if u == nil {
+		return nil
+	}
+	return u.AgentAssignment
+}
+
+// GetAssignees returns the Assignees slice if it's non-nil, nil otherwise.
+func (u *UpdateDependabotAlertRequest) GetAssignees() []string {
+	if u == nil || u.Assignees == nil {
+		return nil
+	}
+	return u.Assignees
+}
+
+// GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
+func (u *UpdateDependabotAlertRequest) GetDismissedComment() string {
+	if u == nil || u.DismissedComment == nil {
+		return ""
+	}
+	return *u.DismissedComment
+}
+
+// GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
+func (u *UpdateDependabotAlertRequest) GetDismissedReason() string {
+	if u == nil || u.DismissedReason == nil {
+		return ""
+	}
+	return *u.DismissedReason
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (u *UpdateDependabotAlertRequest) GetState() string {
+	if u == nil || u.State == nil {
+		return ""
+	}
+	return *u.State
 }
 
 // GetName returns the Name field.

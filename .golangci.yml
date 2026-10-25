@@ -203,14 +203,12 @@ linters:
           # TODO: fix and remove these exceptions.
           body-allowed-pointer-types:
             - AuthorizationRequest
-            - CodeScanningAlertState
             - ConfigApplyOptions
             - ConfigSettings
             - CreateUpdateEnvironment
             - CreateWorkflowDispatchEventRequest
             - CustomDeploymentProtectionRuleRequest
             - CustomProperty
-            - DependabotAlertState
             - EncryptedSecret
             - EnterpriseSecurityAnalysisSettings
             - Hook
