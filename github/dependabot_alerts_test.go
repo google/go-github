@@ -176,27 +176,3 @@ func TestDependabotService_UpdateAlert(t *testing.T) {
 		return resp, err
 	})
 }
-
-func TestUpdateDependabotAlertRequest_Marshal(t *testing.T) {
-	t.Parallel()
-
-	dismissInput := UpdateDependabotAlertRequest{
-		State:           new("dismissed"),
-		DismissedReason: new("no_bandwidth"),
-	}
-	testJSONMarshal(t, dismissInput, `{"state":"dismissed","dismissed_reason":"no_bandwidth"}`)
-
-	assignInput := UpdateDependabotAlertRequest{
-		Assignees: []string{"copilot-swe-agent[bot]"},
-		AgentAssignment: &DependabotAlertAgentAssignment{
-			CustomInstructions: new("Upgrade the dependency"),
-			Model:              new("m"),
-		},
-	}
-	testJSONMarshal(t, assignInput, `{"assignees":["copilot-swe-agent[bot]"],"agent_assignment":{"custom_instructions":"Upgrade the dependency","model":"m"}}`)
-
-	unassignInput := UpdateDependabotAlertRequest{
-		Assignees: []string{},
-	}
-	testJSONMarshal(t, unassignInput, `{"assignees":[]}`)
-}

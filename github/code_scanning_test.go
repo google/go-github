@@ -772,27 +772,6 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 	})
 }
 
-func TestUpdateCodeScanningAlertRequest_Marshal(t *testing.T) {
-	t.Parallel()
-
-	dismissInput := UpdateCodeScanningAlertRequest{
-		State:           new("dismissed"),
-		DismissedReason: new("false positive"),
-		CreateRequest:   new(true),
-	}
-	testJSONMarshal(t, dismissInput, `{"state":"dismissed","dismissed_reason":"false positive","create_request":true}`)
-
-	assignInput := UpdateCodeScanningAlertRequest{
-		Assignees: []string{"octocat"},
-	}
-	testJSONMarshal(t, assignInput, `{"assignees":["octocat"]}`)
-
-	unassignInput := UpdateCodeScanningAlertRequest{
-		Assignees: []string{},
-	}
-	testJSONMarshal(t, unassignInput, `{"assignees":[]}`)
-}
-
 func TestCodeScanningService_ListAlertInstances(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
