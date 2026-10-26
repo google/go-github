@@ -9,6 +9,8 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
+	"strings"
 	"testing"
 
 	"go.opentelemetry.io/otel"
@@ -122,6 +124,68 @@ func TestRoundTrip_Spans(t *testing.T) {
 		if got, ok := attrs[k]; !ok || got.AsInt64() != v {
 			t.Errorf("Expected attr '%v' = '%v', got '%v'", k, v, got)
 		}
+	}
+}
+
+func TestRoundTrip_RedactsSensitiveURL(t *testing.T) {
+	t.Parallel()
+	exporter := tracetest.NewInMemoryExporter()
+	tp := trace.NewTracerProvider(trace.WithSyncer(exporter))
+	transport := NewTransport(&mockTransport{}, WithTracerProvider(tp))
+
+	req := httptest.NewRequest("GET", "https://alice:s3cr3t-password@api.github.com/repos/google/go-github?access_token=s3cr3t-access&client_secret=s3cr3t-client&token=s3cr3t-token&page=2", nil)
+	originalURL := req.URL.String()
+	if _, err := transport.RoundTrip(req); err != nil {
+		t.Fatalf("RoundTrip failed: %v", err)
+	}
+	if got := req.URL.String(); got != originalURL {
+		t.Errorf("RoundTrip modified the request URL: got %q, want %q", got, originalURL)
+	}
+
+	spans := exporter.GetSpans()
+	if len(spans) != 1 {
+		t.Fatalf("Expected 1 span, got %v", len(spans))
+	}
+
+	var gotURL string
+	for _, a := range spans[0].Attributes {
+		if a.Key == "http.url" {
+			gotURL = a.Value.AsString()
+		}
+	}
+	if gotURL == "" {
+		t.Fatal("http.url attribute not recorded")
+	}
+
+	for _, secret := range []string{"alice", "s3cr3t"} {
+		if strings.Contains(gotURL, secret) {
+			t.Errorf("http.url = %q, must not contain %q", gotURL, secret)
+		}
+	}
+
+	u, err := url.Parse(gotURL)
+	if err != nil {
+		t.Fatalf("Parsing recorded http.url: %v", err)
+	}
+	if got, want := u.Scheme, "https"; got != want {
+		t.Errorf("URL scheme = %q, want %q", got, want)
+	}
+	if got, want := u.Host, "api.github.com"; got != want {
+		t.Errorf("URL host = %q, want %q", got, want)
+	}
+	if got, want := u.Path, "/repos/google/go-github"; got != want {
+		t.Errorf("URL path = %q, want %q", got, want)
+	}
+	if u.User != nil {
+		t.Errorf("URL userinfo = %v, want nil", u.User)
+	}
+	for _, p := range []string{"access_token", "client_secret", "token"} {
+		if got, want := u.Query().Get(p), "REDACTED"; got != want {
+			t.Errorf("Query parameter %q = %q, want %q", p, got, want)
+		}
+	}
+	if got, want := u.Query().Get("page"), "2"; got != want {
+		t.Errorf("Query parameter %q = %q, want %q", "page", got, want)
 	}
 }
 

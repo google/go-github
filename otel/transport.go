@@ -61,7 +61,7 @@ func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	// Inject Attributes
 	span.SetAttributes(
 		attribute.String("http.method", req.Method),
-		attribute.String("http.url", req.URL.String()),
+		attribute.String("http.url", github.SanitizeURL(req.URL).String()),
 		attribute.String("http.host", req.URL.Host),
 	)
 
