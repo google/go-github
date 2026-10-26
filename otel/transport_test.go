@@ -144,7 +144,7 @@ func TestRoundTrip_RedactsSensitiveURL(t *testing.T) {
 
 	spans := exporter.GetSpans()
 	if len(spans) != 1 {
-		t.Fatalf("Expected 1 span, got %d", len(spans))
+		t.Fatalf("Expected 1 span, got %v", len(spans))
 	}
 
 	var gotURL string
