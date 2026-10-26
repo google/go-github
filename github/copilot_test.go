@@ -1273,9 +1273,34 @@ func TestCopilotService_GetOrganizationContentExclusionDetails(t *testing.T) {
 func TestCopilotContentExclusionRule_Marshal(t *testing.T) {
 	t.Parallel()
 
-	testJSONMarshalOnly(t, CopilotContentExclusionRule{Path: new("/src/some-dir/kernel.rs")}, `"/src/some-dir/kernel.rs"`)
-	testJSONMarshalOnly(t, CopilotContentExclusionRule{IfAnyMatch: []string{"*.env"}}, `{"ifAnyMatch":["*.env"]}`)
-	testJSONMarshalOnly(t, CopilotContentExclusionRule{IfNoneMatch: []string{"*.go", "*.md"}}, `{"ifNoneMatch":["*.go","*.md"]}`)
+	tests := []struct {
+		name string
+		rule CopilotContentExclusionRule
+		want string
+	}{
+		{
+			name: "path",
+			rule: CopilotContentExclusionRule{Path: new("/src/some-dir/kernel.rs")},
+			want: `"/src/some-dir/kernel.rs"`,
+		},
+		{
+			name: "ifAnyMatch",
+			rule: CopilotContentExclusionRule{IfAnyMatch: []string{"*.env"}},
+			want: `{"ifAnyMatch":["*.env"]}`,
+		},
+		{
+			name: "ifNoneMatch",
+			rule: CopilotContentExclusionRule{IfNoneMatch: []string{"*.go", "*.md"}},
+			want: `{"ifNoneMatch":["*.go","*.md"]}`,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			testJSONMarshalOnly(t, tt.rule, tt.want)
+		})
+	}
 }
 
 func TestCopilotService_SetOrganizationContentExclusionDetails(t *testing.T) {
