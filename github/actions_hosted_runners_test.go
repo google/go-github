@@ -1159,3 +1159,75 @@ func TestActionsService_DeleteHostedRunnerCustomImageVersion(t *testing.T) {
 		return client.Actions.DeleteHostedRunnerCustomImageVersion(ctx, "o", 1, "1.0.0")
 	})
 }
+
+func TestHostedRunner_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &HostedRunner{}, "{}")
+
+	u := &HostedRunner{
+		ID:            new(int64(5)),
+		Name:          new("My hosted ubuntu runner"),
+		RunnerGroupID: new(int64(2)),
+		Platform:      new("linux-x64"),
+		ImageDetails: &HostedRunnerImageDetail{
+			ID:          new("ubuntu-20.04"),
+			SizeGB:      new(int64(86)),
+			DisplayName: new("20.04"),
+			Source:      new("github"),
+			Version:     new("latest"),
+		},
+		MachineSizeDetails: &HostedRunnerMachineSpec{ID: "4-core", CPUCores: 4, MemoryGB: 16, StorageGB: 150},
+		Status:             new("Ready"),
+		MaximumRunners:     new(int64(10)),
+		PublicIPEnabled:    new(true),
+		PublicIPs:          []*HostedRunnerPublicIP{{Enabled: true, Prefix: "20.80.208.150", Length: 31}},
+		ImageGen:           new(true),
+		LastActiveOn:       &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"id": 5,
+		"name": "My hosted ubuntu runner",
+		"runner_group_id": 2,
+		"platform": "linux-x64",
+		"image_details": {"id": "ubuntu-20.04", "size_gb": 86, "display_name": "20.04", "source": "github", "version": "latest"},
+		"machine_size_details": {"id": "4-core", "cpu_cores": 4, "memory_gb": 16, "storage_gb": 150},
+		"status": "Ready",
+		"maximum_runners": 10,
+		"public_ip_enabled": true,
+		"public_ips": [{"enabled": true, "prefix": "20.80.208.150", "length": 31}],
+		"image_gen": true,
+		"last_active_on": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestUpdateHostedRunnerRequest_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &UpdateHostedRunnerRequest{}, "{}")
+
+	u := &UpdateHostedRunnerRequest{
+		Name:           new("My hosted ubuntu runner"),
+		RunnerGroupID:  new(int64(2)),
+		MaximumRunners: new(int64(10)),
+		EnableStaticIP: new(true),
+		Size:           new("4-core"),
+		ImageID:        new("ubuntu-20.04"),
+		ImageVersion:   new("latest"),
+		ImageGen:       new(true),
+	}
+
+	want := `{
+		"name": "My hosted ubuntu runner",
+		"runner_group_id": 2,
+		"maximum_runners": 10,
+		"enable_static_ip": true,
+		"size": "4-core",
+		"image_id": "ubuntu-20.04",
+		"image_version": "latest",
+		"image_gen": true
+	}`
+
+	testJSONMarshal(t, u, want)
+}

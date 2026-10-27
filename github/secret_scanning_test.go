@@ -345,11 +345,11 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: new("used_in_tests")}
+	input := UpdateSecretScanningAlertRequest{State: new("resolved"), Resolution: new("used_in_tests")}
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, opts)
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 			"number": 1,
 			"created_at": `+refTimeStr(1136178000)+`,
@@ -362,29 +362,39 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 			"resolved_at": `+refTimeStr(1136178001)+`,
 			"resolved_by": null,
 			"secret_type": "mailchimp_api_key",
-			"secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"
+			"secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2",
+			"assigned_to": {"login": "octocat"},
+			"closure_request_comment": "closure comment",
+			"provider": "Mailchimp",
+			"provider_slug": "mailchimp",
+			"metadata": [{"key": "k", "value": "v"}]
 		}`)
 	})
 
 	ctx := t.Context()
-	alert, _, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, opts)
+	alert, _, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("SecretScanning.UpdateAlert returned error: %v", err)
 	}
 
 	want := &SecretScanningAlert{
-		Number:            new(1),
-		CreatedAt:         refTimestamp(1136178000),
-		URL:               new("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
-		HTMLURL:           new("https://github.com/o/r/security/secret-scanning/1"),
-		LocationsURL:      new("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
-		State:             new("resolved"),
-		Resolution:        new("used_in_tests"),
-		ResolutionComment: new("resolution comment"),
-		ResolvedAt:        refTimestamp(1136178001),
-		ResolvedBy:        nil,
-		SecretType:        new("mailchimp_api_key"),
-		Secret:            new("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+		Number:                new(1),
+		CreatedAt:             refTimestamp(1136178000),
+		URL:                   new("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
+		HTMLURL:               new("https://github.com/o/r/security/secret-scanning/1"),
+		LocationsURL:          new("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
+		State:                 new("resolved"),
+		Resolution:            new("used_in_tests"),
+		ResolutionComment:     new("resolution comment"),
+		ResolvedAt:            refTimestamp(1136178001),
+		ResolvedBy:            nil,
+		SecretType:            new("mailchimp_api_key"),
+		Secret:                new("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+		AssignedTo:            &User{Login: new("octocat")},
+		ClosureRequestComment: new("closure comment"),
+		Provider:              new("Mailchimp"),
+		ProviderSlug:          new("mailchimp"),
+		Metadata:              []*SecretScanningAlertMetadata{{Key: "k", Value: "v"}},
 	}
 
 	if !cmp.Equal(alert, want) {
@@ -394,14 +404,29 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	const methodName = "UpdateAlert"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.SecretScanning.UpdateAlert(ctx, "\n", "\n", 1, opts)
+		_, _, err = client.SecretScanning.UpdateAlert(ctx, "\n", "\n", 1, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		_, resp, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, opts)
+		_, resp, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, input)
 		return resp, err
 	})
+}
+
+func TestUpdateSecretScanningAlertRequest_Marshal(t *testing.T) {
+	t.Parallel()
+
+	resolveInput := UpdateSecretScanningAlertRequest{
+		State:      new("resolved"),
+		Resolution: new("used_in_tests"),
+	}
+	testJSONMarshal(t, resolveInput, `{"state":"resolved","resolution":"used_in_tests"}`)
+
+	assignInput := UpdateSecretScanningAlertRequest{
+		Assignee: new("octocat"),
+	}
+	testJSONMarshal(t, assignInput, `{"assignee":"octocat"}`)
 }
 
 func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {

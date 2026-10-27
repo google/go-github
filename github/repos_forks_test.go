@@ -71,16 +71,16 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
+	body := CreateForkRequest{Organization: new("o"), Name: new("n"), DefaultBranchOnly: new(true)}
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
 	ctx := t.Context()
-	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
+	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", body)
 	if err != nil {
 		t.Errorf("Repositories.CreateFork returned error: %v", err)
 	}
@@ -92,12 +92,12 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 
 	const methodName = "CreateFork"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.CreateFork(ctx, "\n", "\n", opt)
+		_, _, err = client.Repositories.CreateFork(ctx, "\n", "\n", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
+		got, resp, err := client.Repositories.CreateFork(ctx, "o", "r", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -109,18 +109,18 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
+	body := CreateForkRequest{Organization: new("o"), Name: new("n"), DefaultBranchOnly: new(true)}
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, body)
 		// This response indicates the fork will happen asynchronously.
 		w.WriteHeader(http.StatusAccepted)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
 	ctx := t.Context()
-	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
+	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", body)
 	if !errors.As(err, new(*AcceptedError)) {
 		t.Errorf("Repositories.CreateFork returned error: %v (want AcceptedError)", err)
 	}
@@ -135,17 +135,17 @@ func TestRepositoriesService_CreateFork_deferred_badBody(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
+	body := CreateForkRequest{Organization: new("o"), Name: new("n"), DefaultBranchOnly: new(true)}
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, body)
 		w.WriteHeader(http.StatusAccepted)
 		fmt.Fprint(w, `{invalid json`)
 	})
 
 	ctx := t.Context()
-	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
+	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", body)
 	if err == nil {
 		t.Fatal("Repositories.CreateFork returned nil error")
 	}
@@ -159,6 +159,6 @@ func TestRepositoriesService_CreateFork_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Repositories.CreateFork(ctx, "%", "r", nil)
+	_, _, err := client.Repositories.CreateFork(ctx, "%", "r", CreateForkRequest{})
 	testURLParseError(t, err)
 }

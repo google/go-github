@@ -57,7 +57,7 @@ func TestAppsService_CompleteAppManifest(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, IntegrationManifestCategory, func() (*Response, error) {
 		got, resp, err := client.Apps.CompleteAppManifest(ctx, "code")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)

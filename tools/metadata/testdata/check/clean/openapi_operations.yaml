@@ -1,0 +1,15 @@
+openapi_commit: b8dafbe912a3be421d21346faa2b29bf15e6f84d
+operations:
+  - name: GET /manual/{manual_id}
+    documentation_url: https://docs.github.com/rest/m/manual#get-manual
+operation_overrides:
+  - name: GET /a/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a?apiVersion=2026-03-10#get-a
+  - name: GET /manual/{manual_id}
+    documentation_url: https://docs.github.com/rest/m/manual?apiVersion=2026-03-10#get-manual
+openapi_operations:
+  - name: GET /a/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#get-a
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+  - name: GET /undocumented/{undocumented_id}

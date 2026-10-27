@@ -51,9 +51,11 @@ type PullRequest struct {
 	CommentsURL       *string    `json:"comments_url,omitempty"`
 	ReviewCommentsURL *string    `json:"review_comments_url,omitempty"`
 	ReviewCommentURL  *string    `json:"review_comment_url,omitempty"`
-	Assignee          *User      `json:"assignee,omitempty"`
-	Assignees         []*User    `json:"assignees,omitempty"`
-	Milestone         *Milestone `json:"milestone,omitempty"`
+	// Deprecated: GitHub REST API version 2026-03-10 removed the singular assignee field.
+	// Use Assignees instead.
+	Assignee  *User      `json:"assignee,omitempty"`
+	Assignees []*User    `json:"assignees,omitempty"`
+	Milestone *Milestone `json:"milestone,omitempty"`
 	// AuthorAssociation is the pull request author's relationship to the repository.
 	// Possible values are "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MEMBER", "OWNER", or "NONE".
 	//
@@ -324,9 +326,8 @@ func (s *PullRequestsService) Create(ctx context.Context, owner, repo string, bo
 	return p, resp, nil
 }
 
-// PullRequestBranchUpdateOptions specifies the optional parameters to the
-// PullRequestsService.UpdateBranch method.
-type PullRequestBranchUpdateOptions struct {
+// UpdatePullRequestBranchRequest represents a request to update a pull request branch.
+type UpdatePullRequestBranchRequest struct {
 	// ExpectedHeadSHA specifies the most recent commit on the pull request's branch.
 	// Default value is the SHA of the pull request's current HEAD ref.
 	ExpectedHeadSHA *string `json:"expected_head_sha,omitempty"`
@@ -349,7 +350,7 @@ type PullRequestBranchUpdateResponse struct {
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#update-a-pull-request-branch
 //
 //meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/update-branch
-func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo string, number int, body *PullRequestBranchUpdateOptions) (*PullRequestBranchUpdateResponse, *Response, error) {
+func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo string, number int, body UpdatePullRequestBranchRequest) (*PullRequestBranchUpdateResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/update-branch", owner, repo, number)
 
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)

@@ -307,7 +307,7 @@ type NodeDetails struct {
 
 // ConfigApplyEvents gets events from the command ghe-config-apply.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#list-events-from-ghe-config-apply
+// GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/manage-ghes#list-events-from-ghe-config-apply
 //
 //meta:operation GET /manage/v1/config/apply/events
 func (s *EnterpriseService) ConfigApplyEvents(ctx context.Context, opts *ConfigApplyEventsOptions) (*ConfigApplyEvents, *Response, error) {
@@ -332,7 +332,7 @@ func (s *EnterpriseService) ConfigApplyEvents(ctx context.Context, opts *ConfigA
 // InitialConfig initializes the GitHub Enterprise instance with a license and password.
 // After initializing the instance, you need to run an apply to apply the configuration.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#initialize-instance-configuration-with-license-and-password
+// GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/manage-ghes#initialize-instance-configuration-with-license-and-password
 //
 //meta:operation POST /manage/v1/config/init
 func (s *EnterpriseService) InitialConfig(ctx context.Context, license, password string) (*Response, error) {
@@ -357,7 +357,7 @@ func (s *EnterpriseService) InitialConfig(ctx context.Context, license, password
 // but the actual response is a single object ({...}).
 // TODO: Remove this note once GitHub corrects the schema documentation.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#get-the-enterprise-license-information
+// GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/manage-ghes#get-the-enterprise-license-information
 //
 //meta:operation GET /manage/v1/config/license
 func (s *EnterpriseService) License(ctx context.Context) (*LicenseStatus, *Response, error) {
@@ -378,7 +378,7 @@ func (s *EnterpriseService) License(ctx context.Context) (*LicenseStatus, *Respo
 
 // UploadLicense uploads a new license to the GitHub Enterprise instance.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#upload-an-enterprise-license
+// GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/manage-ghes#upload-an-enterprise-license
 //
 //meta:operation PUT /manage/v1/config/license
 func (s *EnterpriseService) UploadLicense(ctx context.Context, license string) (*Response, error) {
@@ -396,7 +396,7 @@ func (s *EnterpriseService) UploadLicense(ctx context.Context, license string) (
 
 // LicenseStatus gets the current license status for the GitHub Enterprise instance.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#check-a-license
+// GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/manage-ghes#check-a-license
 //
 //meta:operation GET /manage/v1/config/license/check
 func (s *EnterpriseService) LicenseStatus(ctx context.Context) ([]*LicenseCheck, *Response, error) {
@@ -418,7 +418,7 @@ func (s *EnterpriseService) LicenseStatus(ctx context.Context) ([]*LicenseCheck,
 // NodeMetadata gets the metadata for all nodes in the GitHub Enterprise instance.
 // This is required for clustered setups.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#get-ghes-node-metadata-for-all-nodes
+// GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/manage-ghes#get-ghes-node-metadata-for-all-nodes
 //
 //meta:operation GET /manage/v1/config/nodes
 func (s *EnterpriseService) NodeMetadata(ctx context.Context, opts *NodeQueryOptions) (*NodeMetadataStatus, *Response, error) {
@@ -442,7 +442,7 @@ func (s *EnterpriseService) NodeMetadata(ctx context.Context, opts *NodeQueryOpt
 
 // Settings gets the current configuration settings for the GitHub Enterprise instance.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#get-the-ghes-settings
+// GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/manage-ghes#get-the-ghes-settings
 //
 //meta:operation GET /manage/v1/config/settings
 func (s *EnterpriseService) Settings(ctx context.Context) (*ConfigSettings, *Response, error) {
@@ -463,7 +463,7 @@ func (s *EnterpriseService) Settings(ctx context.Context) (*ConfigSettings, *Res
 
 // UpdateSettings updates the configuration settings for the GitHub Enterprise instance.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#set-settings
+// GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/manage-ghes#set-settings
 //
 //meta:operation PUT /manage/v1/config/settings
 func (s *EnterpriseService) UpdateSettings(ctx context.Context, body *ConfigSettings) (*Response, error) {
@@ -482,7 +482,7 @@ func (s *EnterpriseService) UpdateSettings(ctx context.Context, body *ConfigSett
 
 // ConfigApply triggers a configuration apply run on the GitHub Enterprise instance.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#trigger-a-ghe-config-apply-run
+// GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/manage-ghes#trigger-a-ghe-config-apply-run
 //
 //meta:operation POST /manage/v1/config/apply
 func (s *EnterpriseService) ConfigApply(ctx context.Context, body *ConfigApplyOptions) (*ConfigApplyOptions, *Response, error) {
@@ -503,7 +503,7 @@ func (s *EnterpriseService) ConfigApply(ctx context.Context, body *ConfigApplyOp
 // ConfigApplyStatus gets the status of a ghe-config-apply run on the GitHub Enterprise instance.
 // You can request lat one or specific id one.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#get-the-status-of-a-ghe-config-apply-run
+// GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/manage-ghes#get-the-status-of-a-ghe-config-apply-run
 //
 //meta:operation GET /manage/v1/config/apply
 func (s *EnterpriseService) ConfigApplyStatus(ctx context.Context, opts *ConfigApplyOptions) (*ConfigApplyStatus, *Response, error) {

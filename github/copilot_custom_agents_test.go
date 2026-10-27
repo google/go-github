@@ -43,7 +43,7 @@ func TestCopilotService_ListEnterpriseCustomAgents(t *testing.T) {
 		t.Errorf("Copilot.ListEnterpriseCustomAgents returned error: %v", err)
 	}
 
-	want := &EnterpriseCustomAgents{
+	want := &CopilotEnterpriseCustomAgents{
 		CustomAgents: []*CopilotCustomAgent{
 			{
 				Name:     new("performance-optimizer"),
@@ -91,7 +91,7 @@ func TestCopilotService_ListEnterpriseCustomAgents_NullAgents(t *testing.T) {
 		t.Errorf("Copilot.ListEnterpriseCustomAgents returned error: %v", err)
 	}
 
-	want := &EnterpriseCustomAgents{CustomAgents: nil}
+	want := &CopilotEnterpriseCustomAgents{CustomAgents: nil}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Copilot.ListEnterpriseCustomAgents returned %+v, want %+v", got, want)
 	}

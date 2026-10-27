@@ -8,6 +8,7 @@ package github
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -21,12 +22,14 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"testing/synctest"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
+	"golang.org/x/oauth2"
 )
 
 const (
@@ -117,14 +120,9 @@ func setup(t *testing.T) (client *Client, mux *http.ServeMux, serverURL string) 
 		IdleConnTimeout: 20 * time.Second,
 	}
 
-	// Create HTTP client with the isolated transport
-	httpClient := &http.Client{
-		Transport: transport,
-		Timeout:   30 * time.Second,
-	}
 	// client is the GitHub client being tested and is
 	// configured to use test server.
-	client = mustNewClient(t, WithHTTPClient(httpClient))
+	client = mustNewClient(t, WithTransport(transport), WithTimeout(30*time.Second))
 
 	url, _ := url.Parse(server.URL + baseURLPath + "/")
 	client.baseURL = url
@@ -221,20 +219,62 @@ func testPlainBody(t *testing.T, r *http.Request, want string) {
 	}
 }
 
-func testJSONBody[T any](t *testing.T, r *http.Request, want T, opts ...cmp.Option) {
+// testJSONBody asserts that the request body is the JSON encoding of want.
+//
+// want is marshaled and read back before the comparison, so that both sides have been
+// through the same conversion. A test can therefore pass the very value that it passed to
+// the method, whatever JSON does to that value on the way: a pointer and the value it
+// points at compare equal, a field that a tag keeps out of the body is absent on both
+// sides, and a field of type any compares as the JSON it holds.
+//
+// The comparison cannot tell a field that the tag leaves out from one that is sent as its
+// zero value, because both sides are encoded the same way. testJSONBodyRaw asserts the exact
+// body for the cases where that matters.
+func testJSONBody[T any](t *testing.T, r *http.Request, want T) {
 	t.Helper()
 	b, err := io.ReadAll(r.Body)
 	if err != nil {
 		t.Errorf("Error reading request body: %v", err)
 	}
 
-	var got T
+	wantJSON, err := json.Marshal(want)
+	if err != nil {
+		t.Errorf("Error marshaling want: %v", err)
+	}
 
+	var got, wantAny any
 	if err := json.Unmarshal(b, &got); err != nil {
 		t.Errorf("Error unmarshaling request body JSON: %v", err)
 	}
+	if err := json.Unmarshal(wantJSON, &wantAny); err != nil {
+		t.Errorf("Error unmarshaling want: %v", err)
+	}
 
-	if diff := cmp.Diff(want, got, opts...); diff != "" {
+	if diff := cmp.Diff(wantAny, got); diff != "" {
+		t.Errorf("request JSON body mismatch (-want +got):\n%v", diff)
+	}
+}
+
+// testJSONBodyRaw asserts that the request body is exactly the given JSON. The two are
+// compared as JSON, so key order and white space do not matter, but a field that the body
+// leaves out does. Use it for the assertions that testJSONBody cannot express, such as a
+// required field that must not be omitted.
+func testJSONBodyRaw(t *testing.T, r *http.Request, want string) {
+	t.Helper()
+	b, err := io.ReadAll(r.Body)
+	if err != nil {
+		t.Errorf("Error reading request body: %v", err)
+	}
+
+	var got, wantAny any
+	if err := json.Unmarshal(b, &got); err != nil {
+		t.Errorf("Error unmarshaling request body JSON: %v", err)
+	}
+	if err := json.Unmarshal([]byte(want), &wantAny); err != nil {
+		t.Errorf("Error unmarshaling want: %v", err)
+	}
+
+	if diff := cmp.Diff(wantAny, got); diff != "" {
 		t.Errorf("request JSON body mismatch (-want +got):\n%v", diff)
 	}
 }
@@ -407,43 +447,6 @@ func assertWrite(t *testing.T, w io.Writer, data []byte) {
 	assertNilError(t, err)
 }
 
-func TestWithHTTPClient(t *testing.T) {
-	t.Parallel()
-
-	t.Run("nil_client", func(t *testing.T) {
-		t.Parallel()
-
-		opts := clientOptions{}
-		err := WithHTTPClient(nil)(&opts)
-		if err == nil || err.Error() != "http client must not be nil" {
-			t.Errorf("WithHTTPClient errored: %v", err)
-		}
-	})
-
-	t.Run("non_nil_client", func(t *testing.T) {
-		t.Parallel()
-
-		customClient := &http.Client{Timeout: 10 * time.Second}
-		opts := clientOptions{}
-		err := WithHTTPClient(customClient)(&opts)
-		if err != nil {
-			t.Fatalf("WithHTTPClient errored: %v", err)
-		}
-
-		if opts.httpClient == nil {
-			t.Fatal("httpClient is nil")
-		}
-
-		if opts.httpClient == customClient {
-			t.Error("httpClient should be a shallow copy of the provided client, but is the same instance")
-		}
-
-		if opts.httpClient.Timeout != customClient.Timeout {
-			t.Errorf("httpClient Timeout = %v, want %v", opts.httpClient.Timeout, customClient.Timeout)
-		}
-	})
-}
-
 func TestWithTransport(t *testing.T) {
 	t.Parallel()
 
@@ -590,14 +593,115 @@ func TestWithAuthToken(t *testing.T) {
 			t.Fatalf("WithAuthToken errored: %v", err)
 		}
 
-		if opts.token == nil || *opts.token != validToken {
-			t.Errorf("token = %v, want %v", opts.token, validToken)
+		if opts.tokenSource == nil {
+			t.Fatal("tokenSource is nil, want non-nil")
+		}
+
+		gotToken, err := opts.tokenSource.Token()
+		if err != nil {
+			t.Fatalf("TokenSource errored: %v", err)
+		}
+		if gotToken.AccessToken != validToken {
+			t.Fatalf("got token %v, want %v", gotToken.AccessToken, validToken)
+		}
+	})
+}
+
+func TestWithBasicAuth(t *testing.T) {
+	t.Parallel()
+
+	t.Run("empty_username", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithBasicAuth("", "bar")(&opts)
+		if err == nil || err.Error() != "username and password must not be empty" {
+			t.Error("expected error for empty username, got nil")
+		}
+	})
+
+	t.Run("empty_password", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithBasicAuth("foo", "")(&opts)
+		if err == nil || err.Error() != "username and password must not be empty" {
+			t.Error("expected error for empty password, got nil")
+		}
+	})
+
+	t.Run("valid_credentials", func(t *testing.T) {
+		t.Parallel()
+
+		username := "foo"
+		password := "bar"
+		validToken := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
+
+		opts := clientOptions{}
+		err := WithBasicAuth(username, password)(&opts)
+		if err != nil {
+			t.Fatalf("WithBasicAuth errored: %v", err)
+		}
+
+		if opts.tokenSource == nil {
+			t.Fatal("tokenSource is nil, want non-nil")
+		}
+
+		gotToken, err := opts.tokenSource.Token()
+		if err != nil {
+			t.Fatalf("TokenSource errored: %v", err)
+		}
+		if gotToken.TokenType != "Basic" {
+			t.Fatalf("got token type %v, want Basic", gotToken.TokenType)
+		}
+		if gotToken.AccessToken != validToken {
+			t.Fatalf("got token %v, want %v", gotToken.AccessToken, validToken)
+		}
+	})
+}
+
+func TestWithTokenSource(t *testing.T) {
+	t.Parallel()
+
+	t.Run("nil_token_source", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithTokenSource(nil)(&opts)
+		if err == nil || err.Error() != "tokenSource must not be nil" {
+			t.Error("expected error for nil token source, got nil")
+		}
+	})
+
+	t.Run("valid_token_source", func(t *testing.T) {
+		t.Parallel()
+
+		validToken := "ghp_exampletoken1234567890"
+		source := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: validToken})
+
+		opts := clientOptions{}
+		err := WithTokenSource(source)(&opts)
+		if err != nil {
+			t.Fatalf("WithTokenSource errored: %v", err)
+		}
+
+		if opts.tokenSource == nil {
+			t.Fatal("tokenSource is nil, want non-nil")
+		}
+
+		gotToken, err := opts.tokenSource.Token()
+		if err != nil {
+			t.Fatalf("TokenSource errored: %v", err)
+		}
+		if gotToken.AccessToken != validToken {
+			t.Fatalf("got token %v, want %v", gotToken.AccessToken, validToken)
 		}
 	})
 }
 
 func TestWithURLs(t *testing.T) {
 	t.Parallel()
+
 	for _, tt := range []struct {
 		name          string
 		baseURL       *string
@@ -687,6 +791,7 @@ func TestWithURLs(t *testing.T) {
 
 func TestWithEnterpriseURLs(t *testing.T) {
 	t.Parallel()
+
 	for _, tt := range []struct {
 		name          string
 		baseURL       string
@@ -899,7 +1004,7 @@ func TestNewClient(t *testing.T) {
 		{
 			name: "with_options",
 			opts: []ClientOptionsFunc{
-				WithHTTPClient(&http.Client{Timeout: 10 * time.Second}),
+				WithTimeout(10 * time.Second),
 			},
 			wantErr: "",
 		},
@@ -951,13 +1056,6 @@ func Test_newClient(t *testing.T) {
 			wantErr: "",
 		},
 		{
-			name: "with_http_client",
-			opts: clientOptions{
-				httpClient: &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
-			},
-			wantErr: "",
-		},
-		{
 			name: "with_transport",
 			opts: clientOptions{
 				transport: &http.Transport{IdleConnTimeout: 10 * time.Second},
@@ -967,7 +1065,6 @@ func Test_newClient(t *testing.T) {
 		{
 			name: "with_all_options",
 			opts: clientOptions{
-				httpClient:                              &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
 				transport:                               &http.Transport{IdleConnTimeout: 10 * time.Second},
 				timeout:                                 new(15 * time.Second),
 				apiVersionMin:                           new(api20221128),
@@ -1028,30 +1125,11 @@ func Test_newClient(t *testing.T) {
 			if c.client == nil {
 				t.Error("newClient http.Client is not initialized")
 			}
-			if tt.opts.httpClient != nil && c.client != tt.opts.httpClient {
-				t.Error("newClient http.Client should be the same instance as the provided httpClient option")
-			}
-			if tt.opts.transport != nil && !tt.opts.envProxy && tt.opts.token == nil && c.client.Transport != tt.opts.transport {
+			if tt.opts.transport != nil && !tt.opts.envProxy && tt.opts.tokenSource == nil && c.client.Transport != tt.opts.transport {
 				t.Error("newClient http.Client.Transport should be the same instance as the provided transport option")
 			}
 			if tt.opts.timeout != nil && c.client.Timeout != *tt.opts.timeout {
 				t.Errorf("newClient http.Client.Timeout is %v, want %v", c.client.Timeout, *tt.opts.timeout)
-			}
-
-			if c.clientIgnoreRedirects == nil {
-				t.Error("newClient http.Client used for redirects is not initialized")
-			}
-			if c.clientIgnoreRedirects.Transport != c.client.Transport {
-				t.Error("newClient http.Client and http.Client used for redirects should share the same Transport instance")
-			}
-			if c.clientIgnoreRedirects.Timeout != c.client.Timeout {
-				t.Errorf("newClient http.Client and http.Client used for redirects should have the same Timeout, got %v and %v", c.client.Timeout, c.clientIgnoreRedirects.Timeout)
-			}
-			if c.clientIgnoreRedirects.Jar != c.client.Jar {
-				t.Error("newClient http.Client and http.Client used for redirects should share the same Jar instance")
-			}
-			if c.clientIgnoreRedirects.CheckRedirect == nil {
-				t.Error("newClient http.Client used for redirects should have a CheckRedirect function")
 			}
 
 			if tt.opts.apiVersionMin != nil && c.apiVersionMin != *tt.opts.apiVersionMin {
@@ -1250,6 +1328,7 @@ func TestClient_Clone(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
+		c.baseTransport = &http.Transport{IdleConnTimeout: 10 * time.Second}
 		c.apiVersionMin = api20221128
 		c.apiVersionMax = api20221128
 		c.userAgent = "CustomUserAgent/1.0"
@@ -1259,7 +1338,7 @@ func TestClient_Clone(t *testing.T) {
 		c.rateLimitRedirectionalEndpoints = true
 		c.maxSecondaryRateLimitRetryAfterDuration = 2 * time.Minute
 		c.Marketplace.Stubbed = true
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.Transport = c.baseTransport
 		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
 		c.client.Timeout = 15 * time.Second
 		c.rateLimits[CoreCategory].Remaining = 100
@@ -1275,12 +1354,6 @@ func TestClient_Clone(t *testing.T) {
 		}
 		if cloned.client.Transport != c.client.Transport {
 			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != c.client.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
 		}
 		if cloned.client.Timeout != c.client.Timeout {
 			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, c.client.Timeout)
@@ -1318,12 +1391,13 @@ func TestClient_Clone(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
+		c.baseTransport = &http.Transport{IdleConnTimeout: 10 * time.Second}
 		c.userAgent = "CustomUserAgent/1.0"
 		c.baseURL.Path = "/custom/"
 		c.uploadURL.Path = "/custom-upload/"
 		c.disableRateLimitCheck = true
 		c.Marketplace.Stubbed = true
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.Transport = c.baseTransport
 		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
 		c.client.Timeout = 15 * time.Second
 		c.rateLimits[CoreCategory].Remaining = 100
@@ -1339,12 +1413,6 @@ func TestClient_Clone(t *testing.T) {
 		}
 		if cloned.client.Transport != c.client.Transport {
 			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != c.client.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
 		}
 		if cloned.client.Timeout != c.client.Timeout {
 			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, c.client.Timeout)
@@ -1366,47 +1434,12 @@ func TestClient_Clone(t *testing.T) {
 		}
 	})
 
-	t.Run("initialized_client_with_http_client", func(t *testing.T) {
-		t.Parallel()
-
-		c := mustNewClient(t)
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
-		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
-		c.client.Timeout = 15 * time.Second
-
-		h := &http.Client{
-			Transport:     &http.Transport{IdleConnTimeout: 20 * time.Second},
-			CheckRedirect: func(_ *http.Request, _ []*http.Request) error { return http.ErrUseLastResponse },
-			Timeout:       25 * time.Second,
-		}
-
-		cloned, err := c.Clone(WithHTTPClient(h))
-		if err != nil {
-			t.Fatalf("Client.Clone returned error: %v", err)
-		}
-
-		if cloned.client == h {
-			t.Error("Cloned Client has same http.Client instance as provided in WithHTTPClient, but should be a different instance")
-		}
-		if cloned.client.Transport != h.Transport {
-			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", h.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != h.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
-		}
-		if cloned.client.Timeout != h.Timeout {
-			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, h.Timeout)
-		}
-	})
-
 	t.Run("initialized_client_with_transport", func(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.baseTransport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.Transport = c.baseTransport
 		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
 		c.client.Timeout = 15 * time.Second
 
@@ -1423,12 +1456,6 @@ func TestClient_Clone(t *testing.T) {
 		if cloned.client.Transport != tr {
 			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
 		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != c.client.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
-		}
 		if cloned.client.Timeout != c.client.Timeout {
 			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, c.client.Timeout)
 		}
@@ -1438,7 +1465,8 @@ func TestClient_Clone(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.baseTransport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.Transport = c.baseTransport
 		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
 		c.client.Timeout = 15 * time.Second
 
@@ -1454,52 +1482,6 @@ func TestClient_Clone(t *testing.T) {
 		}
 		if cloned.client.Transport != c.client.Transport {
 			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != c.client.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
-		}
-		if cloned.client.Timeout != timeout {
-			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, timeout)
-		}
-	})
-
-	t.Run("initialized_client_with_http_client_transport_timeout", func(t *testing.T) {
-		t.Parallel()
-
-		c := mustNewClient(t)
-		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
-		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
-		c.client.Timeout = 15 * time.Second
-
-		h := &http.Client{
-			Transport:     &http.Transport{IdleConnTimeout: 20 * time.Second},
-			CheckRedirect: func(_ *http.Request, _ []*http.Request) error { return http.ErrUseLastResponse },
-			Timeout:       25 * time.Second,
-		}
-
-		tr := &http.Transport{IdleConnTimeout: 30 * time.Second}
-
-		timeout := 45 * time.Second
-
-		cloned, err := c.Clone(WithHTTPClient(h), WithTransport(tr), WithTimeout(timeout))
-		if err != nil {
-			t.Fatalf("Client.Clone returned error: %v", err)
-		}
-
-		if cloned.client == h {
-			t.Error("Cloned Client has same http.Client instance as provided in WithHTTPClient, but should be a different instance")
-		}
-		if cloned.client.Transport != tr {
-			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
-		}
-		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", h.CheckRedirect) {
-			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
-		}
-		if cloned.client.Jar != h.Jar {
-			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
 		}
 		if cloned.client.Timeout != timeout {
 			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, timeout)
@@ -1729,6 +1711,50 @@ func TestNewFormRequest_pathTraversal(t *testing.T) {
 	}
 }
 
+// TestNewFormRequest_rejectsUnconfiguredDestination covers the same rule as
+// TestNewUploadRequest_rejectsUnconfiguredDestination, for the other constructor
+// that builds a body-carrying request. Its only call site passes a relative path
+// today, so this guards the next caller rather than a present exposure: an
+// absolute urlStr is a destination a response could have supplied, and the body
+// cannot be withheld the way a credential can.
+func TestNewFormRequest_rejectsUnconfiguredDestination(t *testing.T) {
+	t.Parallel()
+	c := mustNewClient(t)
+
+	tests := []struct {
+		name   string
+		rawurl string
+	}{
+		{"foreign https host", "https://evil.example.com/hub"},
+		{"foreign http host", "http://evil.example.com/hub"},
+		{"scheme downgrade of a configured host", "http://api.github.com/hub"},
+		{"configured host as a prefix of the real host", "https://api.github.com.evil.example.com/hub"},
+		{"host that merely ends with the configured name", "https://evil-api.github.com/hub"},
+		{"subdomain of a configured host", "https://cdn.api.github.com/hub"},
+		{"non-default port on a configured host", "https://api.github.com:8443/hub"},
+		// The userinfo is a decoy: the host the check reads is the one after the
+		// @, evil.example.com -- foreign, so the body is refused. The allow table
+		// has the mirror case, where the userinfo names a foreign host instead.
+		{"userinfo naming a configured host", "https://api.github.com@evil.example.com/hub"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			_, err := c.NewFormRequest(t.Context(), tt.rawurl, strings.NewReader("a=b"))
+			if !errors.Is(err, ErrUntrustedDestination) {
+				t.Fatalf("NewFormRequest(%q): want ErrUntrustedDestination, got %v", tt.rawurl, err)
+			}
+		})
+	}
+
+	// A relative path resolves against BaseURL, which is always configured, so
+	// the ordinary call keeps working.
+	if _, err := c.NewFormRequest(t.Context(), "hub", strings.NewReader("a=b")); err != nil {
+		t.Fatalf("NewFormRequest with a relative path returned unexpected error: %v", err)
+	}
+}
+
 func TestNewUploadRequest_pathTraversal(t *testing.T) {
 	t.Parallel()
 	c := mustNewClient(t)
@@ -1746,7 +1772,7 @@ func TestNewUploadRequest_setsGetBodyForSeekableReader(t *testing.T) {
 	const content = "upload content"
 	file := openTestFile(t, "upload.txt", content)
 
-	req, err := c.NewUploadRequest(t.Context(), "https://example.com/", file, int64(len(content)), "text/plain")
+	req, err := c.NewUploadRequest(t.Context(), "repos/o/r/releases/1/assets", file, int64(len(content)), "text/plain")
 	if err != nil {
 		t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
 	}
@@ -1815,7 +1841,7 @@ func TestNewUploadRequest_noGetBodyWithoutReaderAt(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			req, err := c.NewUploadRequest(t.Context(), "https://example.com/", tt.reader, 14, "text/plain")
+			req, err := c.NewUploadRequest(t.Context(), "repos/o/r/releases/1/assets", tt.reader, 14, "text/plain")
 			if err != nil {
 				t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
 			}
@@ -1838,7 +1864,7 @@ func TestNewUploadRequest_returnsErrorWhenSeekFails(t *testing.T) {
 		t.Fatalf("closing test file: %v", err)
 	}
 
-	_, err := c.NewUploadRequest(t.Context(), "https://example.com/", file, int64(len(content)), "text/plain")
+	_, err := c.NewUploadRequest(t.Context(), "repos/o/r/releases/1/assets", file, int64(len(content)), "text/plain")
 	if err == nil {
 		t.Error("NewUploadRequest returned nil error when Seek failed, want error")
 	}
@@ -1950,14 +1976,14 @@ func TestNewFormRequest_errorForNoTrailingSlash(t *testing.T) {
 func TestNewUploadRequest_WithVersion(t *testing.T) {
 	t.Parallel()
 	c := mustNewClient(t)
-	req, _ := c.NewUploadRequest(t.Context(), "https://example.com/", nil, 0, "")
+	req, _ := c.NewUploadRequest(t.Context(), "repos/o/r/releases/1/assets", nil, 0, "")
 
 	apiVersion := req.Header.Get(headerAPIVersion)
 	if got, want := apiVersion, api20221128; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
-	req, _ = c.NewUploadRequest(t.Context(), "https://example.com/", nil, 0, "", WithVersion("2022-11-29"))
+	req, _ = c.NewUploadRequest(t.Context(), "repos/o/r/releases/1/assets", nil, 0, "", WithVersion("2022-11-29"))
 	apiVersion = req.Header.Get(headerAPIVersion)
 	if got, want := apiVersion, "2022-11-29"; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
@@ -1998,6 +2024,80 @@ func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {
 		} else if !test.wantError && err != nil {
 			t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
 		}
+	}
+}
+
+// TestNewUploadRequest_rejectsUnconfiguredDestination covers the rule that an
+// upload carrying the caller's bytes is refused unless it targets an origin the
+// client was configured for. An upload URL routinely comes out of a response --
+// a release's UploadURL is the usual case -- so the host in one is chosen by
+// whoever answered the request rather than by the caller.
+func TestNewUploadRequest_rejectsUnconfiguredDestination(t *testing.T) {
+	t.Parallel()
+	c := mustNewClient(t)
+
+	tests := []struct {
+		name   string
+		rawurl string
+	}{
+		{"foreign https host", "https://evil.example.com/upload"},
+		{"foreign http host", "http://evil.example.com/upload"},
+		{"scheme downgrade of a configured host", "http://uploads.github.com/upload"},
+		{"configured host as a prefix of the real host", "https://uploads.github.com.evil.example.com/upload"},
+		{"host that merely ends with the configured name", "https://evil-uploads.github.com/upload"},
+		{"subdomain of a configured host", "https://cdn.uploads.github.com/upload"},
+		{"non-default port on a configured host", "https://uploads.github.com:8443/upload"},
+		// The userinfo is a decoy: the host the check reads is the one after the
+		// @, evil.example.com -- foreign, so the body is refused. The allow table
+		// has the mirror case, where the userinfo names a foreign host instead.
+		{"userinfo naming a configured host", "https://uploads.github.com@evil.example.com/upload"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			_, err := c.NewUploadRequest(t.Context(), tt.rawurl, strings.NewReader("x"), 1, "text/plain")
+			if !errors.Is(err, ErrUntrustedDestination) {
+				t.Fatalf("NewUploadRequest(%q): want ErrUntrustedDestination, got %v", tt.rawurl, err)
+			}
+		})
+	}
+}
+
+// TestNewUploadRequest_allowsConfiguredDestination covers the uploads that must
+// keep working: the origins the client was configured for, whether that is the
+// GitHub.com defaults or a GitHub Enterprise or proxy deployment.
+func TestNewUploadRequest_allowsConfiguredDestination(t *testing.T) {
+	t.Parallel()
+
+	ghe := mustNewClient(t, WithEnterpriseURLs("https://ghe.example.com/", "https://uploads.ghe.example.com/"))
+
+	tests := []struct {
+		name   string
+		client *Client
+		rawurl string
+	}{
+		{"relative path resolves against the configured upload origin", mustNewClient(t), "repos/o/r/releases/1/assets"},
+		{"absolute upload origin", mustNewClient(t), "https://uploads.github.com/repos/o/r/releases/1/assets"},
+		{"absolute API origin", mustNewClient(t), "https://api.github.com/repos/o/r/releases/1/assets"},
+		{"userinfo that does not change the real destination", mustNewClient(t), "https://example.com@uploads.github.com/repos/o/r/releases/1/assets"},
+		{"enterprise upload origin", ghe, "https://uploads.ghe.example.com/api/uploads/repos/o/r/releases/1/assets"},
+		{"enterprise API origin", ghe, "https://ghe.example.com/api/v3/repos/o/r/releases/1/assets"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			if _, err := tt.client.NewUploadRequest(t.Context(), tt.rawurl, strings.NewReader("x"), 1, "text/plain"); err != nil {
+				t.Fatalf("NewUploadRequest(%q) returned unexpected error: %v", tt.rawurl, err)
+			}
+		})
+	}
+
+	// An enterprise client is scoped to its own origins: carrying the same rule
+	// over from the default configuration would widen it, not narrow it.
+	if _, err := ghe.NewUploadRequest(t.Context(), "https://uploads.github.com/repos/o/r/releases/1/assets", strings.NewReader("x"), 1, "text/plain"); !errors.Is(err, ErrUntrustedDestination) {
+		t.Fatalf("enterprise client accepted the GitHub.com upload origin: %v", err)
 	}
 }
 
@@ -2441,12 +2541,9 @@ func TestDo_AcceptedError_LargeBodyTruncated(t *testing.T) {
 // does not leak the client secret.
 func TestDo_sanitizeURL(t *testing.T) {
 	t.Parallel()
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:     "id",
-		ClientSecret: "secret",
-	}
-	unauthedClient := mustNewClient(t, WithHTTPClient(tp.Client()))
-	unauthedClient.baseURL = &url.URL{Scheme: "http", Host: "127.0.0.1:0", Path: "/"} // Use port 0 on purpose to trigger a dial TCP error, expect to get "dial tcp 127.0.0.1:0: connect: can't assign requested address".
+	baseURL := &url.URL{Scheme: "http", Host: "127.0.0.1:0", Path: "/"} // Use port 0 on purpose to trigger a dial TCP error, expect to get "dial tcp 127.0.0.1:0: connect: can't assign requested address".
+	unauthedClient := mustNewClient(t, WithBasicAuth("id", "secret"))
+	unauthedClient.baseURL = baseURL
 	req, err := unauthedClient.NewRequest(t.Context(), "GET", ".", nil)
 	if err != nil {
 		t.Fatalf("NewRequest returned unexpected error: %v", err)
@@ -2566,6 +2663,16 @@ func TestDo_rateLimitCategory(t *testing.T) {
 			url:      "/repos/google/go-github/dependency-graph/sbom",
 			category: DependencySBOMCategory,
 		},
+		{
+			method:   "GET",
+			url:      "/repos/google/go-github/dependency-graph/sbom/generate-report",
+			category: DependencySBOMCategory,
+		},
+		{
+			method:   "GET",
+			url:      "/repos/google/go-github/dependency-graph/sbom/fetch-report/1234",
+			category: CoreCategory,
+		},
 		// missing a check for actionsRunnerRegistrationCategory: API not found
 	}
 
@@ -2573,6 +2680,54 @@ func TestDo_rateLimitCategory(t *testing.T) {
 		if got, want := GetRateLimitCategory(tt.method, tt.url), tt.category; got != want {
 			t.Errorf("expecting category %v, found %v", got, want)
 		}
+	}
+}
+
+// Ensure the rate limit category is determined relative to BaseURL, so that a
+// client with a path prefix (GitHub Enterprise Server's "/api/v3/") does not
+// file search rate limits under the core category.
+func TestDo_rateLimitCategory_baseURLPath(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	reset := time.Now().UTC().Add(time.Minute).Round(time.Second)
+
+	mux.HandleFunc("/search/code", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set(HeaderRateLimit, "10")
+		w.Header().Set(HeaderRateRemaining, "0")
+		w.Header().Set(HeaderRateUsed, "10")
+		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(HeaderRateResource, "code_search")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{"message": "API rate limit exceeded"}`)
+	})
+
+	madeNetworkCall := false
+	mux.HandleFunc("/user", func(http.ResponseWriter, *http.Request) {
+		madeNetworkCall = true
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", "search/code", nil)
+	if _, err := client.Do(req, nil); err == nil {
+		t.Fatal("Expected error to be returned.")
+	}
+
+	client.rateMu.Lock()
+	codeSearch, core := client.rateLimits[CodeSearchCategory], client.rateLimits[CoreCategory]
+	client.rateMu.Unlock()
+	if got, want := codeSearch.Remaining, 0; got != want || codeSearch.Limit != 10 {
+		t.Errorf("rateLimits[CodeSearchCategory] = %+v, want Limit 10 and Remaining %v", codeSearch, want)
+	}
+	if core != (Rate{}) {
+		t.Errorf("rateLimits[CoreCategory] = %+v, want zero value", core)
+	}
+
+	req, _ = client.NewRequest(t.Context(), "GET", "user", nil)
+	if _, err := client.Do(req, nil); err != nil {
+		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+	if !madeNetworkCall {
+		t.Error("Core request was blocked by an exhausted code search rate limit.")
 	}
 }
 
@@ -2847,6 +3002,191 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 	}
 	if got, want := int(requestCount.Load()), 2; got != want {
 		t.Errorf("Expected 2 requests, got %v", got)
+	}
+}
+
+// Verify request body is replayed when retrying after rate limit reset.
+func TestDo_rateLimit_sleepUntilResponseResetLimit_replaysBody(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	// Disable keep-alives so the retried request opens a fresh connection rather
+	// than reusing the transport connection pool, verifying that the retried POST
+	// sends the replayed payload reconstituted by bareDo.
+	client.client.Transport.(*http.Transport).DisableKeepAlives = true
+
+	reset := time.Now().UTC().Add(time.Second)
+
+	type testPayload struct {
+		Name *string `json:"name"`
+	}
+
+	var requestCount atomic.Int32
+	var bodies []string
+	var mu sync.Mutex
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		requestCount.Add(1)
+		b, err := io.ReadAll(r.Body)
+		if err != nil {
+			t.Errorf("failed to read body: %v", err)
+		}
+		mu.Lock()
+		bodies = append(bodies, string(b))
+		mu.Unlock()
+
+		if requestCount.Load() == 1 {
+			w.Header().Set(HeaderRateLimit, "60")
+			w.Header().Set(HeaderRateRemaining, "0")
+			w.Header().Set(HeaderRateUsed, "60")
+			w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
+			w.Header().Set(HeaderRateResource, "core")
+			w.Header().Set("Content-Type", "application/json; charset=utf-8")
+			w.WriteHeader(http.StatusForbidden)
+			fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+}`)
+			return
+		}
+
+		w.Header().Set(HeaderRateLimit, "5000")
+		w.Header().Set(HeaderRateRemaining, "5000")
+		w.Header().Set(HeaderRateUsed, "0")
+		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set(HeaderRateResource, "core")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintln(w, `{}`)
+	})
+
+	input := &testPayload{Name: Ptr("test-name")}
+	req, err := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "POST", ".", input)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+
+	resp, err := client.Do(req, nil)
+	if err != nil {
+		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusOK; got != want {
+		t.Errorf("Response status code = %v, want %v", got, want)
+	}
+	if got, want := int(requestCount.Load()), 2; got != want {
+		t.Fatalf("Expected 2 requests, got %v", got)
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+	wantBody := `{"name":"test-name"}` + "\n"
+	if len(bodies) != 2 {
+		t.Fatalf("Expected 2 captured bodies, got %d", len(bodies))
+	}
+	if bodies[0] != wantBody {
+		t.Errorf("First request body = %q, want %q", bodies[0], wantBody)
+	}
+	if bodies[1] != wantBody {
+		t.Errorf("Second request body (retried) = %q, want %q", bodies[1], wantBody)
+	}
+}
+
+// Verify request with non-replayable body returns rate limit error without retrying.
+func TestDo_rateLimit_sleepUntilResponseResetLimit_nonReplayableBody(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	// Disable keep-alives so requests do not reuse connections.
+	client.client.Transport.(*http.Transport).DisableKeepAlives = true
+
+	reset := time.Now().UTC().Add(time.Second)
+
+	var requestCount atomic.Int32
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		requestCount.Add(1)
+		w.Header().Set(HeaderRateLimit, "60")
+		w.Header().Set(HeaderRateRemaining, "0")
+		w.Header().Set(HeaderRateUsed, "60")
+		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(HeaderRateResource, "core")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+}`)
+	})
+
+	type testPayload struct {
+		Name *string `json:"name"`
+	}
+	input := &testPayload{Name: Ptr("test-name")}
+	req, err := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "POST", ".", input)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+	// Explicitly clear GetBody to simulate a body stream that cannot be replayed.
+	req.GetBody = nil
+
+	resp, err := client.Do(req, nil)
+	if err == nil {
+		t.Fatal("Expected error to be returned, got nil")
+	}
+	if _, ok := errors.AsType[*RateLimitError](err); !ok {
+		t.Fatalf("Expected *RateLimitError, got %#v", err)
+	}
+	if got, want := int(requestCount.Load()), 1; got != want {
+		t.Errorf("Expected 1 request, got %v", got)
+	}
+	if resp == nil {
+		t.Error("Expected non-nil Response")
+	} else if got, want := resp.StatusCode, http.StatusForbidden; got != want {
+		t.Errorf("Response status code = %v, want %v", resp.StatusCode, http.StatusForbidden)
+	}
+}
+
+// Verify GetBody error aborts retry and is returned directly.
+func TestDo_rateLimit_sleepUntilResponseResetLimit_getBodyError(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	// Disable keep-alives so requests do not reuse connections.
+	client.client.Transport.(*http.Transport).DisableKeepAlives = true
+
+	reset := time.Now().UTC().Add(time.Second)
+
+	var requestCount atomic.Int32
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		requestCount.Add(1)
+		w.Header().Set(HeaderRateLimit, "60")
+		w.Header().Set(HeaderRateRemaining, "0")
+		w.Header().Set(HeaderRateUsed, "60")
+		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(HeaderRateResource, "core")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+}`)
+	})
+
+	type testPayload struct {
+		Name *string `json:"name"`
+	}
+	input := &testPayload{Name: Ptr("test-name")}
+	req, err := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "POST", ".", input)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+	expectedErr := errors.New("cannot recreate body")
+	req.GetBody = func() (io.ReadCloser, error) {
+		return nil, expectedErr
+	}
+
+	_, err = client.Do(req, nil)
+	if !errors.Is(err, expectedErr) {
+		t.Fatalf("Expected getBody error, got: %v", err)
+	}
+	if got, want := int(requestCount.Load()), 1; got != want {
+		t.Errorf("Expected 1 request, got %v", got)
 	}
 }
 
@@ -3629,6 +3969,28 @@ func TestBareDoUntilFound_RejectsCrossHostRedirect(t *testing.T) {
 	}
 }
 
+// TestBareDoUntilFound_MissingRedirectLocation covers a 301 that carries no
+// Location header at all. There is no target to resolve, so the redirect cannot
+// be followed and the caller gets an error rather than a request built from an
+// empty Location.
+func TestBareDoUntilFound_MissingRedirectLocation(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, _, err := client.bareDoUntilFound(req, 1)
+	if err == nil {
+		t.Fatal("Expected a 301 with no Location header to be rejected, got nil error.")
+	}
+	if !errors.Is(err, errInvalidLocation) {
+		t.Errorf("Expected errInvalidLocation, got: %v", err)
+	}
+}
+
 // TestRoundTripWithOptionalFollowRedirect_RejectsCrossHostRedirect verifies
 // that roundTripWithOptionalFollowRedirect refuses to follow a 301 redirect to
 // a different host, preventing Authorization-header leakage to attacker-
@@ -3648,6 +4010,26 @@ func TestRoundTripWithOptionalFollowRedirect_RejectsCrossHostRedirect(t *testing
 	}
 	if !strings.Contains(err.Error(), "cross-host redirect") {
 		t.Errorf("Expected cross-host redirect error, got: %v", err)
+	}
+}
+
+// TestRoundTripWithOptionalFollowRedirect_MissingRedirectLocation covers a 301
+// that carries no Location header at all. There is no target to check or follow,
+// so the caller gets an error rather than a request built from an empty Location.
+func TestRoundTripWithOptionalFollowRedirect_MissingRedirectLocation(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+
+	_, err := client.roundTripWithOptionalFollowRedirect(t.Context(), ".", 1)
+	if err == nil {
+		t.Fatal("Expected a 301 with no Location header to be rejected, got nil error.")
+	}
+	if !errors.Is(err, errInvalidLocation) {
+		t.Errorf("Expected errInvalidLocation, got: %v", err)
 	}
 }
 
@@ -3691,14 +4073,19 @@ func TestSanitizeURL(t *testing.T) {
 		{"/?a=b&access_token=secret", "/?a=b&access_token=REDACTED"},
 		{"/?a=b&token=secret", "/?a=b&token=REDACTED"},
 		{"/?client_secret=s&access_token=t&token=u", "/?access_token=REDACTED&client_secret=REDACTED&token=REDACTED"},
+		{"https://user:password@example.com/path?token=secret", "https://example.com/path?token=REDACTED"},
 	}
 
 	for _, tt := range tests {
 		inURL, _ := url.Parse(tt.in)
 		want, _ := url.Parse(tt.want)
+		original := inURL.String()
 
-		if got := sanitizeURL(inURL); !cmp.Equal(got, want) {
-			t.Errorf("sanitizeURL(%v) returned %v, want %v", tt.in, got, want)
+		if got := SanitizeURL(inURL); !cmp.Equal(got, want) {
+			t.Errorf("SanitizeURL(%v) returned %v, want %v", tt.in, got, want)
+		}
+		if got := inURL.String(); got != original {
+			t.Errorf("SanitizeURL modified its input: got %v, want %v", got, original)
 		}
 	}
 }
@@ -4359,6 +4746,86 @@ func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
 	}
 }
 
+func TestCheckResponse_errorString(t *testing.T) {
+	t.Parallel()
+	httpBody := `{"message":"Forbidden","errors":"Repository level self-hosted runners are disabled on this repository","documentation_url":"https://docs.github.com/rest/actions/self-hosted-runners#create-a-registration-token-for-a-repository","status":"403"}`
+	res := &http.Response{
+		Request:    &http.Request{},
+		StatusCode: http.StatusForbidden,
+		Body:       io.NopCloser(strings.NewReader(httpBody)),
+	}
+	var err *ErrorResponse
+	errors.As(CheckResponse(res), &err)
+
+	if err == nil {
+		t.Fatal("Expected error response.")
+	}
+
+	want := &ErrorResponse{
+		Response:         res,
+		Message:          "Forbidden",
+		Errors:           []Error{{Message: "Repository level self-hosted runners are disabled on this repository"}},
+		DocumentationURL: "https://docs.github.com/rest/actions/self-hosted-runners#create-a-registration-token-for-a-repository",
+	}
+	if !errors.Is(err, want) {
+		t.Errorf("Error = %#v, want %#v", err, want)
+	}
+}
+
+func TestErrorResponse_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
+	tests := map[string]struct {
+		data    string
+		want    ErrorResponse
+		wantErr bool
+	}{
+		"no errors": {
+			data: `{"message":"m"}`,
+			want: ErrorResponse{Message: "m"},
+		},
+		"null errors": {
+			data: `{"message":"m","errors":null}`,
+			want: ErrorResponse{Message: "m"},
+		},
+		"array of errors": {
+			data: `{"message":"m","errors":[{"resource":"r","field":"f","code":"c"},"e"]}`,
+			want: ErrorResponse{Message: "m", Errors: []Error{{Resource: "r", Field: "f", Code: "c"}, {Message: "e"}}},
+		},
+		"string errors": {
+			data: `{"message":"m","errors":"e"}`,
+			want: ErrorResponse{Message: "m", Errors: []Error{{Message: "e"}}},
+		},
+		"number errors": {
+			data:    `{"message":"m","errors":1}`,
+			wantErr: true,
+		},
+		"invalid message": {
+			data:    `{"message":1}`,
+			wantErr: true,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+			var got ErrorResponse
+			err := json.Unmarshal([]byte(tt.data), &got)
+			if tt.wantErr {
+				if err == nil {
+					t.Error("json.Unmarshal returned no error, want an error")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("json.Unmarshal returned error: %v", err)
+			}
+			if !cmp.Equal(got, tt.want) {
+				t.Errorf("ErrorResponse = %+v, want %+v", got, tt.want)
+			}
+		})
+	}
+}
+
 // TestCheckResponse_LargeBodyTruncated verifies that CheckResponse reads at
 // most maxErrorBodySize bytes from an error response body, so that a
 // malicious or buggy server cannot cause the client to allocate unbounded
@@ -4460,147 +4927,222 @@ func TestError_Error(t *testing.T) {
 	}
 }
 
-func TestSetCredentialsAsHeaders(t *testing.T) {
-	t.Parallel()
-	req := new(http.Request)
-	id, secret := "id", "secret"
-	modifiedRequest := setCredentialsAsHeaders(req, id, secret)
+// authRecorderServer returns a server that reports the Authorization header of
+// each request it serves on the returned channel. The channel is buffered and
+// keeps only the first value, so a test cannot block the server, and a test that
+// expects exactly one request does not have to drain it.
+func authRecorderServer(t *testing.T) (*httptest.Server, <-chan string) {
+	t.Helper()
+	auth := make(chan string, 1)
+	srv := httptest.NewServer(http.HandlerFunc(func(_ http.ResponseWriter, r *http.Request) {
+		select {
+		case auth <- r.Header.Get("Authorization"):
+		default:
+		}
+	}))
+	t.Cleanup(srv.Close)
+	return srv, auth
+}
 
-	actualID, actualSecret, ok := modifiedRequest.BasicAuth()
-	if !ok {
-		t.Error("request does not contain basic credentials")
-	}
-
-	if actualID != id {
-		t.Errorf("id is %v, want %v", actualID, id)
-	}
-
-	if actualSecret != secret {
-		t.Errorf("secret is %v, want %v", actualSecret, secret)
+// assertRecordedAuthHeader asserts the Authorization header the recorded server
+// received. It fails if the server was never reached, so a test cannot pass
+// merely because the request never left the client.
+func assertRecordedAuthHeader(t *testing.T, auth <-chan string, want string) {
+	t.Helper()
+	select {
+	case got := <-auth:
+		if got != want {
+			t.Errorf("Authorization header sent to the server = %q, want %q", got, want)
+		}
+	default:
+		t.Fatal("the server was never reached")
 	}
 }
 
-func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
+func TestSameOrigin(t *testing.T) {
 	t.Parallel()
-	client, mux, _ := setup(t)
+	for _, tt := range []struct {
+		name string
+		a    string
+		b    string
+		want bool
+	}{
+		{name: "identical", a: "https://api.github.com", b: "https://api.github.com", want: true},
+		{name: "path and trailing slash are irrelevant", a: "https://api.github.com/", b: "https://api.github.com/repos/o/r", want: true},
+		{name: "default https port is implied", a: "https://api.github.com", b: "https://api.github.com:443", want: true},
+		{name: "default http port is implied", a: "http://ghe.example.com:80", b: "http://ghe.example.com", want: true},
+		{name: "hostname case is ignored", a: "https://API.GitHub.com", b: "https://api.github.com", want: true},
+		{name: "scheme case is ignored", a: "HTTPS://api.github.com", b: "https://api.github.com", want: true},
+		{name: "userinfo is not part of the origin", a: "https://user:pass@api.github.com", b: "https://api.github.com", want: true},
+		{name: "scheme is compared", a: "http://api.github.com", b: "https://api.github.com", want: false},
+		{name: "a scheme with no default port implies none", a: "ftp://ghe.example.com", b: "ftp://ghe.example.com:21", want: false},
+		{name: "explicit non-default port differs", a: "https://ghe.example.com", b: "https://ghe.example.com:8443", want: false},
+		{name: "two ports differ", a: "http://127.0.0.1:8080", b: "http://127.0.0.1:9090", want: false},
+		{name: "subdomain is a different origin", a: "https://evil.api.github.com", b: "https://api.github.com", want: false},
+		{name: "suffix is a different origin", a: "https://api.github.com.evil.example", b: "https://api.github.com", want: false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			a, b := mustParseURL(t, tt.a), mustParseURL(t, tt.b)
+			if got := sameOrigin(a, b); got != tt.want {
+				t.Errorf("sameOrigin(%q, %q) = %v, want %v", tt.a, tt.b, got, tt.want)
+			}
+			// Neither argument is privileged, so the answer must not depend on
+			// which one is the destination.
+			if got := sameOrigin(b, a); got != tt.want {
+				t.Errorf("sameOrigin(%q, %q) = %v, want %v", tt.b, tt.a, got, tt.want)
+			}
+		})
+	}
 
-	clientID, clientSecret := "id", "secret"
-	mux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		id, secret, ok := r.BasicAuth()
-		if !ok {
-			t.Error("request does not contain basic auth credentials")
+	t.Run("nil never matches", func(t *testing.T) {
+		t.Parallel()
+		base := mustParseURL(t, "https://api.github.com")
+		if sameOrigin(nil, nil) {
+			t.Error("sameOrigin(nil, nil) = true, want false")
 		}
-		if id != clientID {
-			t.Errorf("request contained basic auth username %q, want %q", id, clientID)
+		if sameOrigin(nil, base) {
+			t.Error("sameOrigin(nil, base) = true, want false")
 		}
-		if secret != clientSecret {
-			t.Errorf("request contained basic auth password %q, want %q", secret, clientSecret)
+		if sameOrigin(base, nil) {
+			t.Error("sameOrigin(base, nil) = true, want false")
 		}
 	})
-
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:     clientID,
-		ClientSecret: clientSecret,
-	}
-	unauthedClient := mustNewClient(t, WithHTTPClient(tp.Client()))
-	unauthedClient.baseURL = client.baseURL
-	req, _ := unauthedClient.NewRequest(t.Context(), "GET", ".", nil)
-	_, err := unauthedClient.Do(req, nil)
-	assertNilError(t, err)
 }
 
-func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
+func TestNormalizedPort(t *testing.T) {
 	t.Parallel()
-	// missing ClientID
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientSecret: "secret",
-	}
-	_, err := tp.RoundTrip(nil)
-	if err == nil {
-		t.Error("Expected error to be returned")
-	}
-
-	// missing ClientSecret
-	tp = &UnauthenticatedRateLimitedTransport{
-		ClientID: "id",
-	}
-	_, err = tp.RoundTrip(nil)
-	if err == nil {
-		t.Error("Expected error to be returned")
+	for _, tt := range []struct {
+		name string
+		url  string
+		want string
+	}{
+		{name: "http implies its default port", url: "http://ghe.example.com", want: "80"},
+		{name: "https implies its default port", url: "https://ghe.example.com", want: "443"},
+		{name: "an explicit port wins", url: "https://ghe.example.com:8443", want: "8443"},
+		{name: "an explicit default port stays explicit", url: "https://ghe.example.com:443", want: "443"},
+		{name: "a scheme with no default port has none to imply", url: "ftp://ghe.example.com", want: ""},
+		{name: "an explicit port is kept whatever the scheme", url: "ftp://ghe.example.com:21", want: "21"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			if got := normalizedPort(mustParseURL(t, tt.url)); got != tt.want {
+				t.Errorf("normalizedPort(%q) = %q, want %q", tt.url, got, tt.want)
+			}
+		})
 	}
 }
 
-func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
+// TestClient_tokenOriginScope is the policy's end-to-end guarantee on the
+// default client: a [WithAuthToken] token reaches the client's configured API
+// and upload origins, and no other destination.
+func TestClient_tokenOriginScope(t *testing.T) {
 	t.Parallel()
-	// default transport
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:     "id",
-		ClientSecret: "secret",
-	}
-	if tp.transport() != http.DefaultTransport {
-		t.Error("Expected http.DefaultTransport to be used.")
-	}
+	api, apiAuth := authRecorderServer(t)
+	upload, uploadAuth := authRecorderServer(t)
+	foreign, foreignAuth := authRecorderServer(t)
 
-	// custom transport
-	tp = &UnauthenticatedRateLimitedTransport{
-		ClientID:     "id",
-		ClientSecret: "secret",
-		Transport:    &http.Transport{},
-	}
-	if tp.transport() == http.DefaultTransport {
-		t.Error("Expected custom transport to be used.")
+	const token = "secret-token"
+	client := mustNewClient(t, WithAuthToken(token), WithURLs(&api.URL, &upload.URL))
+
+	for _, tt := range []struct {
+		name string
+		url  string
+		auth <-chan string
+		want string
+	}{
+		{name: "API origin", url: api.URL, auth: apiAuth, want: "Bearer " + token},
+		{name: "upload origin", url: upload.URL, auth: uploadAuth, want: "Bearer " + token},
+		{name: "foreign origin", url: foreign.URL, auth: foreignAuth, want: ""},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			req, err := client.NewRequest(t.Context(), "GET", tt.url, nil)
+			if err != nil {
+				t.Fatalf("NewRequest returned error: %v", err)
+			}
+			if _, err := client.Do(req, nil); err != nil {
+				t.Fatalf("Do returned error: %v", err)
+			}
+			assertRecordedAuthHeader(t, tt.auth, tt.want)
+		})
 	}
 }
 
-func TestBasicAuthTransport(t *testing.T) {
+// TestClient_tokenNotForwardedOnCrossOriginRedirect is the guarantee the policy
+// exists for. The credential wrapper runs on every hop, including redirect hops,
+// and decides per destination, so a redirect cannot carry the token off the
+// configured origins.
+//
+// net/http's own redirect handling cannot be relied on here: it decides whether
+// to copy sensitive headers by comparing hostnames and ignoring the port, so two
+// servers on the same host with different ports count as a single destination.
+// This test uses exactly that pair, so the outcome depends on the wrapper alone:
+// it is the wrapper's per-hop decision that must keep the token off the redirect
+// target.
+func TestClient_tokenNotForwardedOnCrossOriginRedirect(t *testing.T) {
 	t.Parallel()
-	client, mux, _ := setup(t)
+	foreign, foreignAuth := authRecorderServer(t)
 
-	username, password, otp := "u", "p", "123456"
+	redirector := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, foreign.URL+"/steal", http.StatusFound)
+	}))
+	t.Cleanup(redirector.Close)
 
-	mux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
-		u, p, ok := r.BasicAuth()
-		if !ok {
-			t.Error("request does not contain basic auth credentials")
-		}
-		if u != username {
-			t.Errorf("request contained basic auth username %q, want %q", u, username)
-		}
-		if p != password {
-			t.Errorf("request contained basic auth password %q, want %q", p, password)
-		}
-		if got, want := r.Header.Get(headerOTP), otp; got != want {
-			t.Errorf("request contained OTP %q, want %q", got, want)
-		}
-	})
-
-	tp := &BasicAuthTransport{
-		Username: username,
-		Password: password,
-		OTP:      otp,
+	if got := mustParseURL(t, redirector.URL).Hostname(); got != mustParseURL(t, foreign.URL).Hostname() {
+		t.Fatalf("this test requires both servers to share a hostname, got %q and %q", redirector.URL, foreign.URL)
 	}
-	basicAuthClient := mustNewClient(t, WithHTTPClient(tp.Client()))
-	basicAuthClient.baseURL = client.baseURL
-	req, _ := basicAuthClient.NewRequest(t.Context(), "GET", ".", nil)
-	_, err := basicAuthClient.Do(req, nil)
-	assertNilError(t, err)
+
+	client := mustNewClient(t, WithAuthToken("secret-token"), WithURLs(&redirector.URL, nil))
+
+	req, err := client.NewRequest(t.Context(), "GET", ".", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+	// Do follows the redirect, so the foreign server really is contacted; the
+	// only question is what it is sent.
+	if _, err := client.Do(req, nil); err != nil {
+		t.Fatalf("Do returned error: %v", err)
+	}
+
+	assertRecordedAuthHeader(t, foreignAuth, "")
 }
 
-func TestBasicAuthTransport_transport(t *testing.T) {
+// TestClient_CloneReScopesToken verifies that a clone carries the token over but
+// installs it against the clone's own origins, rather than the origins the
+// original client was built with.
+func TestClient_CloneReScopesToken(t *testing.T) {
 	t.Parallel()
-	// default transport
-	tp := &BasicAuthTransport{}
-	if tp.transport() != http.DefaultTransport {
-		t.Error("Expected http.DefaultTransport to be used.")
+	first, firstAuth := authRecorderServer(t)
+	second, secondAuth := authRecorderServer(t)
+
+	const token = "secret-token"
+	original := mustNewClient(t, WithAuthToken(token), WithURLs(&first.URL, nil))
+
+	clone, err := original.Clone(WithURLs(&second.URL, nil))
+	if err != nil {
+		t.Fatalf("Clone returned error: %v", err)
 	}
 
-	// custom transport
-	tp = &BasicAuthTransport{
-		Transport: &http.Transport{},
+	// The clone's own origin receives the token...
+	req, err := clone.NewRequest(t.Context(), "GET", ".", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
 	}
-	if tp.transport() == http.DefaultTransport {
-		t.Error("Expected custom transport to be used.")
+	if _, err := clone.Do(req, nil); err != nil {
+		t.Fatalf("Do returned error: %v", err)
 	}
+	assertRecordedAuthHeader(t, secondAuth, "Bearer "+token)
+
+	// ...and the original client's origin does not, since it is foreign to the clone.
+	req, err = clone.NewRequest(t.Context(), "GET", first.URL, nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+	if _, err := clone.Do(req, nil); err != nil {
+		t.Fatalf("Do returned error: %v", err)
+	}
+	assertRecordedAuthHeader(t, firstAuth, "")
 }
 
 func TestFormatRateReset(t *testing.T) {
@@ -4923,5 +5465,38 @@ func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 
 	if got != want {
 		t.Errorf("want %#v, got %#v", want, got)
+	}
+}
+
+func TestClient_apiPath(t *testing.T) {
+	t.Parallel()
+
+	u, err := url.Parse("https://ghes.example.com/api/v3/search/code")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := (&Client{}).apiPath(u), "/api/v3/search/code"; got != want {
+		t.Errorf("apiPath with nil BaseURL = %q, want %q", got, want)
+	}
+
+	client, _, _ := setup(t)
+	base, err := url.Parse("https://ghes.example.com/api/v3/")
+	if err != nil {
+		t.Fatal(err)
+	}
+	client.baseURL = base
+	tests := []struct{ in, want string }{
+		{"https://ghes.example.com/api/v3/search/code", "/search/code"},
+		{"https://ghes.example.com/api/v3x/search/code", "/api/v3x/search/code"},
+		{"https://ghes.example.com/uploads/repos/o/r", "/uploads/repos/o/r"},
+	}
+	for _, tt := range tests {
+		u, err := url.Parse(tt.in)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got := client.apiPath(u); got != tt.want {
+			t.Errorf("apiPath(%q) = %q, want %q", tt.in, got, tt.want)
+		}
 	}
 }

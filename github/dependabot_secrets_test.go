@@ -19,7 +19,7 @@ func TestDependabotService_GetRepoPublicKey(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
+		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234","id":1,"url":"https://api.github.com/repos/o/r/dependabot/secrets/public-key","title":"title","created_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -28,7 +28,14 @@ func TestDependabotService_GetRepoPublicKey(t *testing.T) {
 		t.Errorf("Dependabot.GetRepoPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: new("1234"), Key: new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{
+		KeyID:     new("1234"),
+		Key:       new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"),
+		ID:        new(int64(1)),
+		URL:       new("https://api.github.com/repos/o/r/dependabot/secrets/public-key"),
+		Title:     new("title"),
+		CreatedAt: &referenceTimestamp,
+	}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Dependabot.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
@@ -361,18 +368,7 @@ func TestDependabotService_CreateOrUpdateOrgSecret(t *testing.T) {
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		want := SecretOrgRequest{
-			EncryptedValue: input.EncryptedValue,
-			KeyID:          input.KeyID,
-			Visibility:     input.Visibility,
-		}
-		testJSONBody(t, r, struct {
-			SecretOrgRequest
-			SelectedRepositoryIDs []string `json:"selected_repository_ids,omitempty"`
-		}{
-			SecretOrgRequest:      want,
-			SelectedRepositoryIDs: []string{"1296269", "1269280"},
-		})
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 	})
 

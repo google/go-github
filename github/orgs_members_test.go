@@ -648,10 +648,10 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &CreateOrgInvitationOptions{
+	input := CreateOrgInvitationRequest{
 		Email: new("octocat@github.com"),
 		Role:  new("direct_member"),
-		TeamID: []int64{
+		TeamIDs: []int64{
 			12,
 			26,
 		},

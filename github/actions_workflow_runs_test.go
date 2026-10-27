@@ -498,6 +498,64 @@ func TestActionsService_CancelWorkflowRunByID(t *testing.T) {
 	})
 }
 
+func TestActionsService_ForceCancelWorkflowRunByID(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/actions/runs/3434/force-cancel", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		w.WriteHeader(http.StatusAccepted)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Actions.ForceCancelWorkflowRunByID(ctx, "o", "r", 3434)
+	if !errors.As(err, new(*AcceptedError)) {
+		t.Errorf("Actions.ForceCancelWorkflowRunByID returned error: %v (want AcceptedError)", err)
+	}
+	if resp.StatusCode != http.StatusAccepted {
+		t.Errorf("Actions.ForceCancelWorkflowRunByID returned status: %v, want %v", resp.StatusCode, http.StatusAccepted)
+	}
+
+	const methodName = "ForceCancelWorkflowRunByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.ForceCancelWorkflowRunByID(ctx, "\n", "\n", 3434)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.ForceCancelWorkflowRunByID(ctx, "o", "r", 3434)
+	})
+}
+
+func TestActionsService_ApproveWorkflowRunByID(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/actions/runs/3434/approve", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		w.WriteHeader(http.StatusCreated)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Actions.ApproveWorkflowRunByID(ctx, "o", "r", 3434)
+	if err != nil {
+		t.Fatalf("Actions.ApproveWorkflowRunByID returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusCreated {
+		t.Errorf("Actions.ApproveWorkflowRunByID returned status: %v, want %v", resp.StatusCode, http.StatusCreated)
+	}
+
+	const methodName = "ApproveWorkflowRunByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.ApproveWorkflowRunByID(ctx, "\n", "\n", 3434)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.ApproveWorkflowRunByID(ctx, "o", "r", 3434)
+	})
+}
+
 func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 	t.Parallel()
 	tcs := []struct {

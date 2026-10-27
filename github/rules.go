@@ -72,6 +72,8 @@ type RepositoryRuleType string
 const (
 	// Branch or tag target rules.
 	RulesetRuleTypeBranchNamePattern        RepositoryRuleType = "branch_name_pattern"
+	RulesetRuleTypeCodeCoverage             RepositoryRuleType = "code_coverage"
+	RulesetRuleTypeCodeQuality              RepositoryRuleType = "code_quality"
 	RulesetRuleTypeCodeScanning             RepositoryRuleType = "code_scanning"
 	RulesetRuleTypeCommitAuthorEmailPattern RepositoryRuleType = "commit_author_email_pattern"
 	RulesetRuleTypeCommitMessagePattern     RepositoryRuleType = "commit_message_pattern"
@@ -151,6 +153,17 @@ const (
 	RulesetReviewerTypeTeam RulesetReviewerType = "Team"
 )
 
+// DismissalRestrictionActorType represents the type of actor allowed to dismiss pull request reviews.
+type DismissalRestrictionActorType string
+
+// This is the set of GitHub dismissal restriction actor types.
+const (
+	DismissalRestrictionActorTypeUser                    DismissalRestrictionActorType = "User"
+	DismissalRestrictionActorTypeTeam                    DismissalRestrictionActorType = "Team"
+	DismissalRestrictionActorTypeIntegrationInstallation DismissalRestrictionActorType = "IntegrationInstallation"
+	DismissalRestrictionActorTypeRepositoryRole          DismissalRestrictionActorType = "RepositoryRole"
+)
+
 // PatternRuleOperator models a GitHub pattern rule operator.
 type PatternRuleOperator string
 
@@ -183,6 +196,17 @@ const (
 	CodeScanningSecurityAlertsThresholdHighOrHigher   CodeScanningSecurityAlertsThreshold = "high_or_higher"
 	CodeScanningSecurityAlertsThresholdMediumOrHigher CodeScanningSecurityAlertsThreshold = "medium_or_higher"
 	CodeScanningSecurityAlertsThresholdAll            CodeScanningSecurityAlertsThreshold = "all"
+)
+
+// CodeQualitySeverity models the lowest code quality severity level that blocks a merge.
+type CodeQualitySeverity string
+
+// This is the set of GitHub code quality severity levels.
+const (
+	CodeQualitySeverityErrors   CodeQualitySeverity = "errors"
+	CodeQualitySeverityWarnings CodeQualitySeverity = "warnings"
+	CodeQualitySeverityNotes    CodeQualitySeverity = "notes"
+	CodeQualitySeverityAll      CodeQualitySeverity = "all"
 )
 
 // RepositoryRuleset represents a GitHub ruleset object.
@@ -308,6 +332,8 @@ type RepositoryRulesetRules struct {
 	TagNamePattern           *PatternRuleParameters
 	Workflows                *WorkflowsRuleParameters
 	CodeScanning             *CodeScanningRuleParameters
+	CodeCoverage             *CodeCoverageRuleParameters
+	CodeQuality              *CodeQualityRuleParameters
 	CopilotCodeReview        *CopilotCodeReviewRuleParameters
 
 	// Push target rules.
@@ -345,6 +371,7 @@ type BranchRules struct {
 	TagNamePattern           []*PatternBranchRule
 	Workflows                []*WorkflowsBranchRule
 	CodeScanning             []*CodeScanningBranchRule
+	CodeQuality              []*CodeQualityBranchRule
 	CopilotCodeReview        []*CopilotCodeReviewBranchRule
 
 	// Push target rules.
@@ -433,6 +460,12 @@ type CodeScanningBranchRule struct {
 	Parameters CodeScanningRuleParameters `json:"parameters"`
 }
 
+// CodeQualityBranchRule represents a code quality branch rule.
+type CodeQualityBranchRule struct {
+	BranchRuleMetadata
+	Parameters CodeQualityRuleParameters `json:"parameters"`
+}
+
 // CopilotCodeReviewBranchRule represents a copilot code review branch rule.
 type CopilotCodeReviewBranchRule struct {
 	BranchRuleMetadata
@@ -465,13 +498,27 @@ type RequiredDeploymentsRuleParameters struct {
 
 // PullRequestRuleParameters represents the pull_request rule parameters.
 type PullRequestRuleParameters struct {
-	AllowedMergeMethods            []PullRequestMergeMethod   `json:"allowed_merge_methods,omitempty"`
-	DismissStaleReviewsOnPush      bool                       `json:"dismiss_stale_reviews_on_push"`
-	RequireCodeOwnerReview         bool                       `json:"require_code_owner_review"`
-	RequireLastPushApproval        bool                       `json:"require_last_push_approval"`
-	RequiredApprovingReviewCount   int                        `json:"required_approving_review_count"`
-	RequiredReviewers              []*RulesetRequiredReviewer `json:"required_reviewers,omitempty"`
-	RequiredReviewThreadResolution bool                       `json:"required_review_thread_resolution"`
+	AllowedMergeMethods                        []PullRequestMergeMethod   `json:"allowed_merge_methods,omitempty"`
+	DismissalRestriction                       *DismissalRestriction      `json:"dismissal_restriction,omitempty"`
+	DismissStaleReviewsOnPush                  bool                       `json:"dismiss_stale_reviews_on_push"`
+	RequireCodeOwnerReview                     bool                       `json:"require_code_owner_review"`
+	RequireExtraApprovalForUnattributedChanges bool                       `json:"require_extra_approval_for_unattributed_changes"`
+	RequireLastPushApproval                    bool                       `json:"require_last_push_approval"`
+	RequiredApprovingReviewCount               int                        `json:"required_approving_review_count"`
+	RequiredReviewers                          []*RulesetRequiredReviewer `json:"required_reviewers,omitempty"`
+	RequiredReviewThreadResolution             bool                       `json:"required_review_thread_resolution"`
+}
+
+// DismissalRestriction represents the people, teams, or apps allowed to dismiss pull request reviews.
+type DismissalRestriction struct {
+	AllowedActors []*DismissalRestrictionActor `json:"allowed_actors,omitempty"`
+	Enabled       bool                         `json:"enabled"`
+}
+
+// DismissalRestrictionActor represents an actor allowed to dismiss pull request reviews.
+type DismissalRestrictionActor struct {
+	ID   int64                         `json:"id"`
+	Type DismissalRestrictionActorType `json:"type"`
 }
 
 // RulesetRequiredReviewer represents required reviewer parameters for pull requests in rulesets.
@@ -577,6 +624,17 @@ type RuleWorkflow struct {
 // CodeScanningRuleParameters represents the code scanning rule parameters.
 type CodeScanningRuleParameters struct {
 	CodeScanningTools []*RuleCodeScanningTool `json:"code_scanning_tools"`
+}
+
+// CodeCoverageRuleParameters represents the code_coverage rule parameters.
+type CodeCoverageRuleParameters struct {
+	MaxCoverageDrop *float64 `json:"max_coverage_drop,omitempty"`
+	MinimumCoverage *float64 `json:"minimum_coverage,omitempty"`
+}
+
+// CodeQualityRuleParameters represents the code_quality rule parameters.
+type CodeQualityRuleParameters struct {
+	Severity CodeQualitySeverity `json:"severity"`
 }
 
 // CopilotCodeReviewRuleParameters represents the copilot_code_review rule parameters.
@@ -777,6 +835,22 @@ func (r RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 
 	if r.CodeScanning != nil {
 		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCodeScanning, r.CodeScanning)
+		if err != nil {
+			return nil, err
+		}
+		rawRules = append(rawRules, json.RawMessage(bytes))
+	}
+
+	if r.CodeCoverage != nil {
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCodeCoverage, r.CodeCoverage)
+		if err != nil {
+			return nil, err
+		}
+		rawRules = append(rawRules, json.RawMessage(bytes))
+	}
+
+	if r.CodeQuality != nil {
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCodeQuality, r.CodeQuality)
 		if err != nil {
 			return nil, err
 		}
@@ -1022,6 +1096,22 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 					return err
 				}
 			}
+		case RulesetRuleTypeCodeCoverage:
+			r.CodeCoverage = &CodeCoverageRuleParameters{}
+
+			if w.Parameters != nil {
+				if err := json.Unmarshal(w.Parameters, r.CodeCoverage); err != nil {
+					return err
+				}
+			}
+		case RulesetRuleTypeCodeQuality:
+			r.CodeQuality = &CodeQualityRuleParameters{}
+
+			if w.Parameters != nil {
+				if err := json.Unmarshal(w.Parameters, r.CodeQuality); err != nil {
+					return err
+				}
+			}
 		case RulesetRuleTypeCopilotCodeReview:
 			r.CopilotCodeReview = &CopilotCodeReviewRuleParameters{}
 
@@ -1245,6 +1335,16 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			}
 
 			r.CodeScanning = append(r.CodeScanning, &CodeScanningBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+		case RulesetRuleTypeCodeQuality:
+			params := &CodeQualityRuleParameters{}
+
+			if w.Parameters != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
+					return err
+				}
+			}
+
+			r.CodeQuality = append(r.CodeQuality, &CodeQualityBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeCopilotCodeReview:
 			params := &CopilotCodeReviewRuleParameters{}
 
@@ -1397,6 +1497,26 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = p
 	case RulesetRuleTypeCodeScanning:
 		p := &CodeScanningRuleParameters{}
+
+		if w.Parameters != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
+				return err
+			}
+		}
+
+		r.Parameters = p
+	case RulesetRuleTypeCodeCoverage:
+		p := &CodeCoverageRuleParameters{}
+
+		if w.Parameters != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
+				return err
+			}
+		}
+
+		r.Parameters = p
+	case RulesetRuleTypeCodeQuality:
+		p := &CodeQualityRuleParameters{}
 
 		if w.Parameters != nil {
 			if err := json.Unmarshal(w.Parameters, p); err != nil {

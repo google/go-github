@@ -21,7 +21,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/google/go-github/v91/github"
+	"github.com/google/go-github/v93/github"
 )
 
 func main() {

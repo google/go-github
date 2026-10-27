@@ -23,7 +23,8 @@ func TestRepositoriesService_ListAttestations(t *testing.T) {
 			"attestations": [
 				{
 					"repository_id": 1,
-					"bundle": {}
+					"bundle_url": "https://example.com/bundle.json",
+					"initiator": "octocat"
 				},
 				{
 					"repository_id": 2,
@@ -42,7 +43,8 @@ func TestRepositoriesService_ListAttestations(t *testing.T) {
 		Attestations: []*Attestation{
 			{
 				RepositoryID: 1,
-				Bundle:       []byte(`{}`),
+				BundleURL:    new("https://example.com/bundle.json"),
+				Initiator:    new("octocat"),
 			},
 			{
 				RepositoryID: 2,

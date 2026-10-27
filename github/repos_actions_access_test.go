@@ -27,7 +27,7 @@ func TestRepositoriesService_GetActionsAccessLevel(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetActionsAccessLevel returned error: %v", err)
 	}
-	want := &RepositoryActionsAccessLevel{AccessLevel: new("none")}
+	want := &RepositoryActionsAccessLevel{AccessLevel: "none"}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.GetActionsAccessLevel returned %+v, want %+v", org, want)
 	}
@@ -51,7 +51,7 @@ func TestRepositoriesService_EditActionsAccessLevel(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &RepositoryActionsAccessLevel{AccessLevel: new("organization")}
+	input := &RepositoryActionsAccessLevel{AccessLevel: "organization"}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/access", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")

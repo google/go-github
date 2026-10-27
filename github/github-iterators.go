@@ -119,6 +119,41 @@ func (s *ActionsService) ListCachesIter(ctx context.Context, owner string, repo 
 	}
 }
 
+// ListConcurrencyGroupsIter returns an iterator that paginates through all results of ListConcurrencyGroups.
+func (s *ActionsService) ListConcurrencyGroupsIter(ctx context.Context, owner string, repo string, opts *ListCursorOptions) iter.Seq2[*ConcurrencyGroup, error] {
+	return func(yield func(*ConcurrencyGroup, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListCursorOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListConcurrencyGroups(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*ConcurrencyGroup
+			if results != nil {
+				iterItems = results.ConcurrencyGroups
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.After == "" {
+				break
+			}
+			opts.After = resp.After
+		}
+	}
+}
+
 // ListEnabledOrgsInEnterpriseIter returns an iterator that paginates through all results of ListEnabledOrgsInEnterprise.
 func (s *ActionsService) ListEnabledOrgsInEnterpriseIter(ctx context.Context, owner string, opts *ListOptions) iter.Seq2[*Organization, error] {
 	return func(yield func(*Organization, error) bool) {
@@ -360,6 +395,41 @@ func (s *ActionsService) ListOrgVariablesIter(ctx context.Context, org string, o
 				break
 			}
 			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListOrganizationPoliciesIter returns an iterator that paginates through all results of ListOrganizationPolicies.
+func (s *ActionsService) ListOrganizationPoliciesIter(ctx context.Context, org string, opts *ActionsPolicyListOptions) iter.Seq2[*ActionsPolicy, error] {
+	return func(yield func(*ActionsPolicy, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ActionsPolicyListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListOrganizationPolicies(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*ActionsPolicy
+			if results != nil {
+				iterItems = results.Policies
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
 		}
 	}
 }
@@ -640,6 +710,41 @@ func (s *ActionsService) ListRepositoryAccessRunnerGroupIter(ctx context.Context
 				break
 			}
 			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListRepositoryPoliciesIter returns an iterator that paginates through all results of ListRepositoryPolicies.
+func (s *ActionsService) ListRepositoryPoliciesIter(ctx context.Context, owner string, repo string, opts *ActionsPolicyListOptions) iter.Seq2[*ActionsPolicy, error] {
+	return func(yield func(*ActionsPolicy, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ActionsPolicyListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListRepositoryPolicies(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*ActionsPolicy
+			if results != nil {
+				iterItems = results.Policies
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
 		}
 	}
 }
@@ -955,6 +1060,41 @@ func (s *ActionsService) ListWorkflowRunArtifactsIter(ctx context.Context, owner
 				break
 			}
 			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListWorkflowRunConcurrencyGroupsIter returns an iterator that paginates through all results of ListWorkflowRunConcurrencyGroups.
+func (s *ActionsService) ListWorkflowRunConcurrencyGroupsIter(ctx context.Context, owner string, repo string, runID int64, opts *ListCursorOptions) iter.Seq2[*ConcurrencyGroup, error] {
+	return func(yield func(*ConcurrencyGroup, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListCursorOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListWorkflowRunConcurrencyGroups(ctx, owner, repo, runID, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*ConcurrencyGroup
+			if results != nil {
+				iterItems = results.ConcurrencyGroups
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.After == "" {
+				break
+			}
+			opts.After = resp.After
 		}
 	}
 }
@@ -1343,6 +1483,37 @@ func (s *ActivityService) ListRepositoryNotificationsIter(ctx context.Context, o
 	}
 }
 
+// ListStargazerHistoryIter returns an iterator that paginates through all results of ListStargazerHistory.
+func (s *ActivityService) ListStargazerHistoryIter(ctx context.Context, owner string, repo string, opts *ListOptions) iter.Seq2[*StargazerHistory, error] {
+	return func(yield func(*StargazerHistory, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListStargazerHistory(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListStargazersIter returns an iterator that paginates through all results of ListStargazers.
 func (s *ActivityService) ListStargazersIter(ctx context.Context, owner string, repo string, opts *ListOptions) iter.Seq2[*Stargazer, error] {
 	return func(yield func(*Stargazer, error) bool) {
@@ -1564,6 +1735,286 @@ func (s *AgentTasksService) ListByRepoIter(ctx context.Context, owner string, re
 				break
 			}
 			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
+// ListOrgSecretsIter returns an iterator that paginates through all results of ListOrgSecrets.
+func (s *AgentsService) ListOrgSecretsIter(ctx context.Context, org string, opts *ListOptions) iter.Seq2[*Secret, error] {
+	return func(yield func(*Secret, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListOrgSecrets(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*Secret
+			if results != nil {
+				iterItems = results.Secrets
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListOrgVariablesIter returns an iterator that paginates through all results of ListOrgVariables.
+func (s *AgentsService) ListOrgVariablesIter(ctx context.Context, org string, opts *ListOptions) iter.Seq2[*ActionsVariable, error] {
+	return func(yield func(*ActionsVariable, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListOrgVariables(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*ActionsVariable
+			if results != nil {
+				iterItems = results.Variables
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListRepoOrgSecretsIter returns an iterator that paginates through all results of ListRepoOrgSecrets.
+func (s *AgentsService) ListRepoOrgSecretsIter(ctx context.Context, owner string, repo string, opts *ListOptions) iter.Seq2[*Secret, error] {
+	return func(yield func(*Secret, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListRepoOrgSecrets(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*Secret
+			if results != nil {
+				iterItems = results.Secrets
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListRepoOrgVariablesIter returns an iterator that paginates through all results of ListRepoOrgVariables.
+func (s *AgentsService) ListRepoOrgVariablesIter(ctx context.Context, owner string, repo string, opts *ListOptions) iter.Seq2[*ActionsVariable, error] {
+	return func(yield func(*ActionsVariable, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListRepoOrgVariables(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*ActionsVariable
+			if results != nil {
+				iterItems = results.Variables
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListRepoSecretsIter returns an iterator that paginates through all results of ListRepoSecrets.
+func (s *AgentsService) ListRepoSecretsIter(ctx context.Context, owner string, repo string, opts *ListOptions) iter.Seq2[*Secret, error] {
+	return func(yield func(*Secret, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListRepoSecrets(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*Secret
+			if results != nil {
+				iterItems = results.Secrets
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListRepoVariablesIter returns an iterator that paginates through all results of ListRepoVariables.
+func (s *AgentsService) ListRepoVariablesIter(ctx context.Context, owner string, repo string, opts *ListOptions) iter.Seq2[*ActionsVariable, error] {
+	return func(yield func(*ActionsVariable, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListRepoVariables(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*ActionsVariable
+			if results != nil {
+				iterItems = results.Variables
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListSelectedReposForOrgSecretIter returns an iterator that paginates through all results of ListSelectedReposForOrgSecret.
+func (s *AgentsService) ListSelectedReposForOrgSecretIter(ctx context.Context, org string, name string, opts *ListOptions) iter.Seq2[*Repository, error] {
+	return func(yield func(*Repository, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListSelectedReposForOrgSecret(ctx, org, name, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*Repository
+			if results != nil {
+				iterItems = results.Repositories
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListSelectedReposForOrgVariableIter returns an iterator that paginates through all results of ListSelectedReposForOrgVariable.
+func (s *AgentsService) ListSelectedReposForOrgVariableIter(ctx context.Context, org string, name string, opts *ListOptions) iter.Seq2[*Repository, error] {
+	return func(yield func(*Repository, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListSelectedReposForOrgVariable(ctx, org, name, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*Repository
+			if results != nil {
+				iterItems = results.Repositories
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
 		}
 	}
 }
@@ -2634,6 +3085,41 @@ func (s *CopilotService) ListOrganizationCodingAgentRepositoriesIter(ctx context
 				break
 			}
 			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListOrganizationCopilotSpacesIter returns an iterator that paginates through all results of ListOrganizationCopilotSpaces.
+func (s *CopilotService) ListOrganizationCopilotSpacesIter(ctx context.Context, org string, opts *ListCursorOptions) iter.Seq2[*CopilotSpace, error] {
+	return func(yield func(*CopilotSpace, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListCursorOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListOrganizationCopilotSpaces(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*CopilotSpace
+			if results != nil {
+				iterItems = results.Spaces
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.After == "" {
+				break
+			}
+			opts.After = resp.After
 		}
 	}
 }
@@ -5003,6 +5489,37 @@ func (s *OrganizationsService) ListPendingOrgInvitationsIter(ctx context.Context
 	}
 }
 
+// ListRuleSuitesIter returns an iterator that paginates through all results of ListRuleSuites.
+func (s *OrganizationsService) ListRuleSuitesIter(ctx context.Context, org string, opts *ListRuleSuitesOptions) iter.Seq2[*RuleSuite, error] {
+	return func(yield func(*RuleSuite, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListRuleSuitesOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListRuleSuites(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListTeamsAssignedToOrgRoleIter returns an iterator that paginates through all results of ListTeamsAssignedToOrgRole.
 func (s *OrganizationsService) ListTeamsAssignedToOrgRoleIter(ctx context.Context, org string, roleID int64, opts *ListOptions) iter.Seq2[*Team, error] {
 	return func(yield func(*Team, error) bool) {
@@ -5561,6 +6078,37 @@ func (s *PullRequestsService) ListReviewsIter(ctx context.Context, owner string,
 				break
 			}
 			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListStacksIter returns an iterator that paginates through all results of ListStacks.
+func (s *PullRequestsService) ListStacksIter(ctx context.Context, owner string, repo string, opts *PullRequestListStacksOptions) iter.Seq2[*PullRequestStackMinimal, error] {
+	return func(yield func(*PullRequestStackMinimal, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &PullRequestListStacksOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListStacks(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
 		}
 	}
 }
@@ -7991,6 +8539,37 @@ func (s *UsersService) ListPackagesIter(ctx context.Context, user string, opts *
 				break
 			}
 			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
+// ListPublicEmailsIter returns an iterator that paginates through all results of ListPublicEmails.
+func (s *UsersService) ListPublicEmailsIter(ctx context.Context, opts *ListOptions) iter.Seq2[*UserEmail, error] {
+	return func(yield func(*UserEmail, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListPublicEmails(ctx, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
 		}
 	}
 }

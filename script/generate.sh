@@ -2,7 +2,8 @@
 #/ `script/generate.sh` runs `go generate` on repo.
 #/ It also runs `script/run-check-structfield-settings.sh -fix` to keep linter
 #/ exceptions in `.golangci.yml` up to date.
-#/ `script/generate.sh --check` checks that the generated files are up to date.
+#/ `script/generate.sh --check` checks that the generated files, the go.mod files
+#/ and the linter exceptions are up to date, without writing anything.
 
 set -e
 
@@ -32,4 +33,10 @@ for dir in $MOD_DIRS; do
   )
 done
 
-script/run-check-structfield-settings.sh -fix
+if [ "$CHECK_MODE" = "1" ]; then
+  # Report the stale exceptions instead of repairing them, so that the check fails
+  # and the tree is left alone.
+  script/run-check-structfield-settings.sh
+else
+  script/run-check-structfield-settings.sh -fix
+fi

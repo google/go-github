@@ -11,7 +11,6 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 func TestTeamsService_ListTeams(t *testing.T) {
@@ -276,7 +275,7 @@ func TestTeamsService_UpdateTeamByID_RemoveParent(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, input, cmpopts.IgnoreFields(UpdateTeamRequest{}, "RemoveParentTeam"))
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -339,7 +338,7 @@ func TestTeamsService_UpdateTeamBySlug_RemoveParent(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, input, cmpopts.IgnoreFields(UpdateTeamRequest{}, "RemoveParentTeam"))
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -738,28 +737,28 @@ func TestTeamsService_AddTeamRepoByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamRepoOptions{Permission: "admin"}
+	input := AddTeamRepoRequest{Permission: new("admin")}
 
 	mux.HandleFunc("/organizations/1/team/1/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
-	_, err := client.Teams.AddTeamRepoByID(ctx, 1, 1, "owner", "repo", opt)
+	_, err := client.Teams.AddTeamRepoByID(ctx, 1, 1, "owner", "repo", input)
 	if err != nil {
 		t.Errorf("Teams.AddTeamRepoByID returned error: %v", err)
 	}
 
 	const methodName = "AddTeamRepoByID"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Teams.AddTeamRepoByID(ctx, 1, 1, "\n", "\n", opt)
+		_, err = client.Teams.AddTeamRepoByID(ctx, 1, 1, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Teams.AddTeamRepoByID(ctx, 1, 1, "owner", "repo", opt)
+		return client.Teams.AddTeamRepoByID(ctx, 1, 1, "owner", "repo", input)
 	})
 }
 
@@ -767,28 +766,28 @@ func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamRepoOptions{Permission: "admin"}
+	input := AddTeamRepoRequest{Permission: new("admin")}
 
 	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
-	_, err := client.Teams.AddTeamRepoBySlug(ctx, "org", "slug", "owner", "repo", opt)
+	_, err := client.Teams.AddTeamRepoBySlug(ctx, "org", "slug", "owner", "repo", input)
 	if err != nil {
 		t.Errorf("Teams.AddTeamRepoBySlug returned error: %v", err)
 	}
 
 	const methodName = "AddTeamRepoBySlug"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Teams.AddTeamRepoBySlug(ctx, "\n", "\n", "\n", "\n", opt)
+		_, err = client.Teams.AddTeamRepoBySlug(ctx, "\n", "\n", "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Teams.AddTeamRepoBySlug(ctx, "org", "slug", "owner", "repo", opt)
+		return client.Teams.AddTeamRepoBySlug(ctx, "org", "slug", "owner", "repo", input)
 	})
 }
 
@@ -802,7 +801,7 @@ func TestTeamsService_AddTeamRepoByID_noAccess(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Teams.AddTeamRepoByID(ctx, 1, 1, "owner", "repo", nil)
+	_, err := client.Teams.AddTeamRepoByID(ctx, 1, 1, "owner", "repo", AddTeamRepoRequest{})
 	if err == nil {
 		t.Error("Expected error to be returned")
 	}
@@ -818,7 +817,7 @@ func TestTeamsService_AddTeamRepoBySlug_noAccess(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Teams.AddTeamRepoBySlug(ctx, "org", "slug", "owner", "repo", nil)
+	_, err := client.Teams.AddTeamRepoBySlug(ctx, "org", "slug", "owner", "repo", AddTeamRepoRequest{})
 	if err == nil {
 		t.Error("Expected error to be returned")
 	}
@@ -829,7 +828,7 @@ func TestTeamsService_AddTeamRepoByID_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, err := client.Teams.AddTeamRepoByID(ctx, 1, 1, "%", "r", nil)
+	_, err := client.Teams.AddTeamRepoByID(ctx, 1, 1, "%", "r", AddTeamRepoRequest{})
 	testURLParseError(t, err)
 }
 
@@ -838,7 +837,7 @@ func TestTeamsService_AddTeamRepoBySlug_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, err := client.Teams.AddTeamRepoBySlug(ctx, "o", "s", "%", "r", nil)
+	_, err := client.Teams.AddTeamRepoBySlug(ctx, "o", "s", "%", "r", AddTeamRepoRequest{})
 	testURLParseError(t, err)
 }
 
@@ -1092,31 +1091,31 @@ func TestTeamsService_AddTeamProjectByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamProjectOptions{
+	input := AddTeamProjectRequest{
 		Permission: new("admin"),
 	}
 
 	mux.HandleFunc("/organizations/1/team/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
-	_, err := client.Teams.AddTeamProjectByID(ctx, 1, 1, 1, opt)
+	_, err := client.Teams.AddTeamProjectByID(ctx, 1, 1, 1, input)
 	if err != nil {
 		t.Errorf("Teams.AddTeamProjectByID returned error: %v", err)
 	}
 
 	const methodName = "AddTeamProjectByID"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Teams.AddTeamProjectByID(ctx, -1, -1, -1, opt)
+		_, err = client.Teams.AddTeamProjectByID(ctx, -1, -1, -1, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Teams.AddTeamProjectByID(ctx, 1, 1, 1, opt)
+		return client.Teams.AddTeamProjectByID(ctx, 1, 1, 1, input)
 	})
 }
 
@@ -1124,31 +1123,31 @@ func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamProjectOptions{
+	input := AddTeamProjectRequest{
 		Permission: new("admin"),
 	}
 
 	mux.HandleFunc("/orgs/o/teams/s/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
-	_, err := client.Teams.AddTeamProjectBySlug(ctx, "o", "s", 1, opt)
+	_, err := client.Teams.AddTeamProjectBySlug(ctx, "o", "s", 1, input)
 	if err != nil {
 		t.Errorf("Teams.AddTeamProjectBySlug returned error: %v", err)
 	}
 
 	const methodName = "AddTeamProjectBySlug"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Teams.AddTeamProjectBySlug(ctx, "\n", "\n", -1, opt)
+		_, err = client.Teams.AddTeamProjectBySlug(ctx, "\n", "\n", -1, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Teams.AddTeamProjectBySlug(ctx, "o", "s", 1, opt)
+		return client.Teams.AddTeamProjectBySlug(ctx, "o", "s", 1, input)
 	})
 }
 

@@ -14,7 +14,7 @@ import (
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28
 type ActionsPermissionsRepository struct {
-	Enabled            *bool   `json:"enabled,omitempty"`
+	Enabled            bool    `json:"enabled"`
 	AllowedActions     *string `json:"allowed_actions,omitempty"`
 	SelectedActionsURL *string `json:"selected_actions_url,omitempty"`
 	SHAPinningRequired *bool   `json:"sha_pinning_required,omitempty"`

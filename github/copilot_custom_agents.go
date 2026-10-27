@@ -17,8 +17,8 @@ type CopilotCustomAgent struct {
 	URL      *string `json:"url,omitempty"`
 }
 
-// EnterpriseCustomAgents represents the list of custom agents for an enterprise.
-type EnterpriseCustomAgents struct {
+// CopilotEnterpriseCustomAgents represents the list of custom agents for an enterprise.
+type CopilotEnterpriseCustomAgents struct {
 	CustomAgents []*CopilotCustomAgent `json:"custom_agents"`
 }
 
@@ -68,7 +68,7 @@ type SetCopilotCustomAgentsSourceRequest struct {
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-custom-agents?apiVersion=2022-11-28#get-custom-agents-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/custom-agents
-func (s *CopilotService) ListEnterpriseCustomAgents(ctx context.Context, enterprise string, opts *ListOptions) (*EnterpriseCustomAgents, *Response, error) {
+func (s *CopilotService) ListEnterpriseCustomAgents(ctx context.Context, enterprise string, opts *ListOptions) (*CopilotEnterpriseCustomAgents, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/copilot/custom-agents", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -80,7 +80,7 @@ func (s *CopilotService) ListEnterpriseCustomAgents(ctx context.Context, enterpr
 		return nil, nil, err
 	}
 
-	var agents *EnterpriseCustomAgents
+	var agents *CopilotEnterpriseCustomAgents
 	resp, err := s.client.Do(req, &agents)
 	if err != nil {
 		return nil, resp, err

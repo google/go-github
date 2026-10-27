@@ -1,0 +1,285 @@
+{
+  "paths": {
+    "/repos/{owner}/{repo}/issues/{number}/comments": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/create-comment"}
+            }
+          }
+        }
+      }
+    },
+    "/repos/{owner}/{repo}/issues/comments/{comment_id}": {
+      "patch": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/update-comment"}
+            }
+          }
+        }
+      }
+    },
+    "/repos/{owner}/{repo}/issues/{number}/dual": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/dual-required"}
+            }
+          }
+        }
+      },
+      "patch": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/dual-optional"}
+            }
+          }
+        }
+      },
+      "delete": {
+        "responses": {}
+      }
+    },
+    "/orgs/{org}/actions/runner-groups": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/create-runner-group"}
+            }
+          }
+        }
+      }
+    },
+    "/orgs/{org}/actions/runner-groups/{group_id}": {
+      "patch": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/update-runner-group"}
+            }
+          }
+        }
+      }
+    },
+    "/orgs/{org}/nullable": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/nullable"}
+            }
+          }
+        }
+      }
+    },
+    "/orgs/{org}/value-type": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/value-type"}
+            }
+          }
+        }
+      }
+    },
+    "/orgs/{org}/struct-type": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/struct-type"}
+            }
+          }
+        }
+      }
+    },
+    "/orgs/{org}/allof": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/allof"}
+            }
+          }
+        }
+      }
+    },
+    "/orgs/{org}/oneof": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/oneof"}
+            }
+          }
+        }
+      }
+    },
+    "/orgs/{org}/missing": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/missing"}
+            }
+          }
+        }
+      }
+    },
+    "/orgs/{org}/shared": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/shared-org"}
+            }
+          }
+        }
+      }
+    },
+    "/repos/{owner}/{repo}/shared": {
+      "patch": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/shared-repo"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "create-comment": {
+        "type": "object",
+        "required": ["body"],
+        "properties": {
+          "body": {"type": "string"}
+        }
+      },
+      "update-comment": {
+        "type": "object",
+        "properties": {
+          "body": {"type": "string"}
+        }
+      },
+      "dual-required": {
+        "type": "object",
+        "required": ["body"],
+        "properties": {
+          "body": {"type": "string"}
+        }
+      },
+      "dual-optional": {
+        "type": "object",
+        "properties": {
+          "body": {"type": "string"}
+        }
+      },
+      "create-runner-group": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {"type": "string"},
+          "visibility": {"type": "string"},
+          "selected_repository_ids": {"type": "array", "items": {"type": "integer"}},
+          "response_only": {"type": "string", "readOnly": true}
+        }
+      },
+      "update-runner-group": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {"type": "string"}
+        }
+      },
+      "nullable": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {"type": "string", "nullable": true}
+        }
+      },
+      "value-type": {
+        "type": "object",
+        "properties": {
+          "count": {"type": "integer"}
+        }
+      },
+      "struct-type": {
+        "type": "object",
+        "properties": {
+          "inner": {"$ref": "#/components/schemas/inner-config"}
+        }
+      },
+      "inner-config": {
+        "type": "object",
+        "properties": {
+          "enabled": {"type": "boolean"}
+        }
+      },
+      "allof": {
+        "allOf": [
+          {"$ref": "#/components/schemas/allof-base"},
+          {"type": "object", "properties": {"extra": {"type": "string"}}}
+        ]
+      },
+      "allof-base": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {"type": "string"}
+        }
+      },
+      "oneof": {
+        "oneOf": [
+          {
+            "required": ["kind", "kind_tag", "size"],
+            "properties": {
+              "kind": {"type": "string"},
+              "kind_tag": {"type": "string"},
+              "size": {"type": "integer"}
+            }
+          },
+          {
+            "required": ["kind", "kind_tag"],
+            "properties": {
+              "kind": {"type": "string"},
+              "kind_tag": {"type": "string"}
+            }
+          }
+        ]
+      },
+      "missing": {
+        "type": "object",
+        "required": ["required_thing"],
+        "properties": {
+          "required_thing": {"type": "string"},
+          "name": {"type": "string"}
+        }
+      },
+      "shared-org": {
+        "type": "object",
+        "properties": {
+          "code": {"type": "string", "readOnly": true}
+        }
+      },
+      "shared-repo": {
+        "type": "object",
+        "required": ["name", "code"],
+        "properties": {
+          "name": {"type": "string"},
+          "code": {"type": "string"}
+        }
+      }
+    }
+  }
+}

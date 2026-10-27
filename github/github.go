@@ -13,6 +13,7 @@ package github
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -27,10 +28,11 @@ import (
 	"time"
 
 	"github.com/google/go-querystring/query"
+	"golang.org/x/oauth2"
 )
 
 const (
-	Version = "v91.0.0"
+	Version = "v93.0.0"
 
 	HeaderRateLimit     = "X-Ratelimit-Limit"
 	HeaderRateRemaining = "X-Ratelimit-Remaining"
@@ -69,7 +71,7 @@ const (
 	// After some time, specific media types will be promoted (to a "stable" state).
 	// From then on, the preview headers are not required anymore to activate the additional
 	// feature on GitHub.com's API. However, this API header might still be needed for users
-	// to run a GitHub Enterprise Server on-premise.
+	// to run a GitHub Enterprise Server on-premises.
 	// It's not uncommon for GitHub Enterprise Server customers to run older versions which
 	// would probably rely on the preview headers for some time.
 	// While the header promotion is going out for GitHub.com, it may be some time before it
@@ -163,10 +165,39 @@ const (
 // segment, which could allow path traversal attacks.
 var ErrPathForbidden = errors.New("path must not contain '..' due to auth vulnerability issue")
 
+// conditionalAuthTransport is an http.RoundTripper that conditionally
+// uses an auth transport for URLs that are checked by a given function.
+type conditionalAuthTransport struct {
+	baseTransport    http.RoundTripper
+	authTransport    http.RoundTripper
+	checkURLAuthFunc func(url *url.URL) bool
+}
+
+// RoundTrip implements the http.RoundTripper interface for conditionalAuthTransport.
+func (t *conditionalAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	// Check if the URL should be authenticated
+	if t.checkURLAuthFunc(req.URL) {
+		// Use the auth transport for URLs that match the pattern
+		return t.authTransport.RoundTrip(req)
+	}
+
+	// Don't use the auth transport for URLs that don't match the pattern
+	return t.baseTransport.RoundTrip(req)
+}
+
 // A Client manages communication with the GitHub API.
 type Client struct {
-	client                *http.Client // HTTP client used to communicate with the API.
-	clientIgnoreRedirects *http.Client // HTTP client used to communicate with the API on endpoints where we don't want to follow redirects.
+	client *http.Client // HTTP client used to communicate with the API.
+
+	// tokenSource is the token source configured by [WithAuthToken],
+	// [WithBasicAuth] or [WithTokenSource], used to obtain access tokens for
+	// authenticated requests.
+	tokenSource oauth2.TokenSource
+
+	// baseTransport is the transport the credential wrapper was installed on
+	// top of, so that [Client.Clone] can rebase onto it rather than layering a
+	// second wrapper over the first.
+	baseTransport http.RoundTripper
 
 	// Base URL for API requests. Defaults to the public GitHub API, but can be
 	// set to a domain endpoint to use with GitHub Enterprise. baseURL should
@@ -196,10 +227,10 @@ type Client struct {
 	secondaryRateLimitReset time.Time        // Secondary rate limit reset for the client as determined by the most recent API calls.
 
 	// If specified, Client will block requests for at most this duration in case of reaching a secondary
-	// rate limit
+	// rate limit.
 	maxSecondaryRateLimitRetryAfterDuration time.Duration
 
-	// Whether to respect rate limit headers on endpoints that return 302 redirections to artifacts
+	// Whether to respect rate limit headers on endpoints that return 302 redirections to artifacts.
 	rateLimitRedirectionalEndpoints bool
 
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
@@ -209,6 +240,7 @@ type Client struct {
 	Activity           *ActivityService
 	Admin              *AdminService
 	AgentTasks         *AgentTasksService
+	Agents             *AgentsService
 	Apps               *AppsService
 	Authorizations     *AuthorizationsService
 	Billing            *BillingService
@@ -256,8 +288,10 @@ type service struct {
 }
 
 // Client returns the http.Client used by this GitHub client.
-// This should only be used for requests to the GitHub API because
-// request headers will contain an authorization token.
+// The token source configured by [WithAuthToken], [WithBasicAuth] or
+// [WithTokenSource] is attached only to requests to this client's configured
+// API and upload origins, so the returned client may also be used for requests
+// to other hosts without leaking the token.
 func (c *Client) Client() *http.Client {
 	clientCopy := *c.client
 	return &clientCopy
@@ -351,14 +385,13 @@ var errUninitialized = errors.New("client is not initialized")
 
 // clientOptions holds the configuration options for a Client.
 type clientOptions struct {
-	httpClient                              *http.Client
 	transport                               http.RoundTripper
 	timeout                                 *time.Duration
 	apiVersionMin                           *string
 	apiVersionMax                           *string
 	userAgent                               *string
 	envProxy                                bool
-	token                                   *string
+	tokenSource                             oauth2.TokenSource
 	baseURL                                 *url.URL
 	uploadURL                               *url.URL
 	disableRateLimitCheck                   bool
@@ -371,23 +404,10 @@ type clientOptions struct {
 // to a Client.
 type ClientOptionsFunc func(*clientOptions) error
 
-// WithHTTPClient returns a ClientOptionsFunc that sets the http.Client
-// for a Client. If not set, a default http.Client will be used.
-func WithHTTPClient(httpClient *http.Client) ClientOptionsFunc {
-	return func(o *clientOptions) error {
-		if httpClient == nil {
-			return errors.New("http client must not be nil")
-		}
-
-		httpClient := *httpClient
-		o.httpClient = &httpClient
-		return nil
-	}
-}
-
 // WithTransport returns a ClientOptionsFunc that sets the http.RoundTripper
-// for a Client. This overrides the transport set by [WithHTTPClient]. If not
-// set and no HTTP client is provided, the default http.RoundTripper will be used.
+// for a Client. If not set, the default http.RoundTripper will be used.
+// Do not use this to authenticate requests; use [WithTokenSource],
+// [WithBasicAuth] or [WithAuthToken] instead.
 func WithTransport(transport http.RoundTripper) ClientOptionsFunc {
 	return func(o *clientOptions) error {
 		if transport == nil {
@@ -400,8 +420,7 @@ func WithTransport(transport http.RoundTripper) ClientOptionsFunc {
 }
 
 // WithTimeout returns a ClientOptionsFunc that sets the timeout for a Client.
-// This overrides the timeout set by [WithHTTPClient]. If not set and no HTTP
-// client is provided, the default http.Client with no timeout will be used.
+// If not set, the default http.Client with no timeout will be used.
 // It is recommended to provide a timeout for production environments.
 func WithTimeout(timeout time.Duration) ClientOptionsFunc {
 	return func(o *clientOptions) error {
@@ -434,15 +453,44 @@ func WithEnvProxy() ClientOptionsFunc {
 	}
 }
 
-// WithAuthToken returns a ClientOptionsFunc that sets the authentication token
-// for a Client. If not set, the client will make unauthenticated requests.
+// WithAuthToken returns a ClientOptionsFunc that sets the token source
+// for a Client to use the provided authentication token.
 func WithAuthToken(token string) ClientOptionsFunc {
 	return func(o *clientOptions) error {
 		if token == "" {
 			return errors.New("token must not be empty")
 		}
 
-		o.token = &token
+		o.tokenSource = oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
+		return nil
+	}
+}
+
+// WithBasicAuth returns a ClientOptionsFunc that sets the token source
+// for a Client to use basic authentication with the provided username and password.
+func WithBasicAuth(username, password string) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		if username == "" || password == "" {
+			return errors.New("username and password must not be empty")
+		}
+
+		creds := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
+
+		o.tokenSource = oauth2.StaticTokenSource(&oauth2.Token{TokenType: "Basic", AccessToken: creds})
+		return nil
+	}
+}
+
+// WithTokenSource returns a ClientOptionsFunc that sets the token source
+// for a Client. If a token source is not set, the client will operate
+// unauthenticated.
+func WithTokenSource(tokenSource oauth2.TokenSource) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		if tokenSource == nil {
+			return errors.New("tokenSource must not be nil")
+		}
+
+		o.tokenSource = oauth2.ReuseTokenSource(nil, tokenSource)
 		return nil
 	}
 }
@@ -546,13 +594,11 @@ func WithMaxSecondaryRateLimitRetryAfterDuration(duration time.Duration) ClientO
 // For GitHub Enterprise, use [WithEnterpriseURLs] to set the base and upload
 // URLs.
 //
-// To make authenticated requests, use [WithAuthToken] or [WithHTTPClient] to
-// pass in a [http.Client] that performs authentication
-// (e.g., using golang.org/x/oauth2).
+// To make authenticated requests, use [WithAuthToken], [WithBasicAuth] or
+// [WithTokenSource] to provide a token source.
 //
 // For production usage it is recommended to provide a timeout using
-// [WithTimeout] or by providing a custom [http.Client] with an appropriate
-// timeout using [WithHTTPClient].
+// [WithTimeout].
 func NewClient(opts ...ClientOptionsFunc) (*Client, error) {
 	o := clientOptions{}
 	for _, opt := range opts {
@@ -571,12 +617,7 @@ func newClient(opts clientOptions) (*Client, error) {
 		apiVersionDefault: api20221128,
 		apiVersionMin:     api20221128,
 		apiVersionMax:     api20260310,
-	}
-
-	if opts.httpClient != nil {
-		c.client = opts.httpClient
-	} else {
-		c.client = &http.Client{}
+		client:            &http.Client{},
 	}
 
 	if opts.transport != nil {
@@ -603,23 +644,25 @@ func newClient(opts clientOptions) (*Client, error) {
 		c.client.Transport = t2
 	}
 
-	if opts.token != nil {
-		transport := c.client.Transport
-		if transport == nil {
-			transport = http.DefaultTransport
-		}
-		c.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
-			req = req.Clone(req.Context())
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", *opts.token))
-			return transport.RoundTrip(req)
-		})
-	}
+	c.baseTransport = c.client.Transport
 
-	c.clientIgnoreRedirects = &http.Client{
-		Transport:     c.client.Transport,
-		Timeout:       c.client.Timeout,
-		Jar:           c.client.Jar,
-		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
+	if opts.tokenSource != nil {
+		if c.baseTransport == nil {
+			c.baseTransport = http.DefaultTransport
+		}
+
+		c.tokenSource = opts.tokenSource
+
+		t := &conditionalAuthTransport{
+			baseTransport: c.baseTransport,
+			authTransport: &oauth2.Transport{
+				Source: c.tokenSource,
+				Base:   c.baseTransport,
+			},
+			checkURLAuthFunc: c.shouldAuthorizeRequest,
+		}
+
+		c.client.Transport = t
 	}
 
 	if opts.apiVersionMin != nil {
@@ -663,6 +706,7 @@ func newClient(opts clientOptions) (*Client, error) {
 	c.Activity = (*ActivityService)(&c.common)
 	c.Admin = (*AdminService)(&c.common)
 	c.AgentTasks = (*AgentTasksService)(&c.common)
+	c.Agents = (*AgentsService)(&c.common)
 	c.Apps = (*AppsService)(&c.common)
 	c.Authorizations = (*AuthorizationsService)(&c.common)
 	c.Billing = (*BillingService)(&c.common)
@@ -707,6 +751,107 @@ func newClient(opts clientOptions) (*Client, error) {
 	return c, nil
 }
 
+// A request's destination is governed by two rules, and they deliberately differ
+// because a credential and a payload fail in opposite ways.
+//
+// Credentials — the token source configured by [WithAuthToken], [WithBasicAuth]
+// or [WithTokenSource] — are sent only to origins the caller
+// has configured. Any other destination, including a redirect hop, goes out
+// with no credentials attached. Such a request is never rejected and the
+// credentials are never forwarded: it is simply sent unauthenticated, so that
+// a caller cannot leak a token by handing the client a URL whose host it does
+// not control. Withholding a credential is safe to do silently because the
+// request can still succeed without it — a pre-signed download URL handed back
+// by the API is the ordinary case.
+//
+// A payload cannot be withheld that way, because a request whose body is dropped
+// cannot succeed at all, and the caller would be told a request succeeded when
+// nothing was stored. The rule for a body is therefore absolute: the two
+// constructors that build one — [Client.NewUploadRequest] and
+// [Client.NewFormRequest] — refuse to aim it at an origin this client was not
+// configured for, so the caller's bytes are never sent to a host the caller did
+// not choose. See [ErrUntrustedDestination].
+//
+// Within a Client both rules read the same two configured origins, BaseURL and
+// UploadURL, which is where [WithEnterpriseURLs] and [WithURLs] put them; a
+// GitHub Enterprise or proxy deployment whose upload host differs from its API
+// host must therefore configure both. sameOrigin is the one predicate behind
+// both rules. Every place that decides whether a destination may receive
+// credentials — [WithAuthToken], [WithBasicAuth], [WithTokenSource], and
+// the redirect guards — must use it, so the answer cannot differ depending on
+// which code path a request happens to take.
+
+// ErrUntrustedDestination is returned by [Client.NewUploadRequest] and
+// [Client.NewFormRequest] when a request they build would send its body to an
+// origin this client was not configured for.
+//
+// The URL for such a request is routinely read out of an API response — a
+// release's UploadURL is the usual case — so the host in one is chosen by
+// whoever answered the request rather than by the caller. A response naming a
+// foreign host must not be able to take the caller's bytes, and an error is the
+// only safe answer: sending the payload unauthenticated, the way a credential is
+// withheld, would report success for a request that never reached GitHub.
+//
+// Configure the destination with [WithURLs] or [WithEnterpriseURLs] if a request
+// legitimately belongs on a host other than BaseURL or UploadURL.
+var ErrUntrustedDestination = errors.New("refusing to send a request body to a destination the client is not configured for")
+
+// sameOrigin reports whether u and base share an origin: the same scheme, the
+// same hostname, and the same port once the scheme's default port is implied. A
+// nil argument never matches.
+func sameOrigin(u, base *url.URL) bool {
+	if u == nil || base == nil {
+		return false
+	}
+
+	return strings.EqualFold(u.Scheme, base.Scheme) &&
+		strings.EqualFold(u.Hostname(), base.Hostname()) &&
+		normalizedPort(u) == normalizedPort(base)
+}
+
+// normalizedPort returns u's explicit port, or the default port for u's scheme
+// so that "https://ghe.example.com" and "https://ghe.example.com:443" compare
+// equal. It returns "" for a scheme with no default port.
+func normalizedPort(u *url.URL) string {
+	if port := u.Port(); port != "" {
+		return port
+	}
+
+	switch strings.ToLower(u.Scheme) {
+	case "http":
+		return "80"
+	case "https":
+		return "443"
+	default:
+		return ""
+	}
+}
+
+// shouldAuthorizeRequest reports whether the credentials configured on c may be
+// sent to u. The client's own origins are read here, at request time, rather
+// than captured when the wrapper was installed: GitHub Enterprise installs and
+// test setups assign baseURL/uploadURL directly, and the rest of the request
+// plumbing (NewRequest, BaseURL) reads them the same way.
+func (c *Client) shouldAuthorizeRequest(u *url.URL) bool {
+	return sameOrigin(u, c.baseURL) || sameOrigin(u, c.uploadURL)
+}
+
+// checkBodyDestination returns [ErrUntrustedDestination] when u is not an origin
+// this client may send a request body to.
+//
+// Such a request carries the caller's payload to a URL that a response usually
+// chose, and unlike a credential a body cannot be withheld and then have the
+// request still mean anything. So the destination is refused outright rather
+// than quietly sent unauthenticated, and the refusal happens where the request
+// is built, before any byte of the body is written.
+func (c *Client) checkBodyDestination(u *url.URL) error {
+	if c.shouldAuthorizeRequest(u) {
+		return nil
+	}
+
+	return fmt.Errorf("%w: %v", ErrUntrustedDestination, u.Redacted())
+}
+
 // UserAgent returns the User-Agent header value for the client.
 func (c *Client) UserAgent() string {
 	return c.userAgent
@@ -734,18 +879,23 @@ func (c *Client) UploadURL() string {
 // the same rate limit information as the original client, but it is not
 // updated when the original client's rate limit information is updated.
 // The returned client is independent of the original client and can be
-// modified without affecting the original client.
+// modified without affecting the original client. Any token configured by
+// [WithAuthToken], [WithBasicAuth] or [WithTokenSource] carries over to the
+// clone, and is re-scoped to the clone's own API and upload origins.
 func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 	if c.client == nil {
 		return nil, errUninitialized
 	}
 
 	o := clientOptions{
+		transport:                               c.baseTransport,
+		timeout:                                 &c.client.Timeout,
 		apiVersionMin:                           &c.apiVersionMin,
 		apiVersionMax:                           &c.apiVersionMax,
 		userAgent:                               &c.userAgent,
 		baseURL:                                 new(*c.baseURL),
 		uploadURL:                               new(*c.uploadURL),
+		tokenSource:                             c.tokenSource,
 		disableRateLimitCheck:                   c.disableRateLimitCheck,
 		rateLimitRedirectionalEndpoints:         c.rateLimitRedirectionalEndpoints,
 		maxSecondaryRateLimitRetryAfterDuration: &c.maxSecondaryRateLimitRetryAfterDuration,
@@ -758,15 +908,6 @@ func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 	for _, opt := range opts {
 		if err := opt(&o); err != nil {
 			return nil, err
-		}
-	}
-
-	if o.httpClient == nil {
-		o.httpClient = &http.Client{
-			Transport:     c.client.Transport,
-			CheckRedirect: c.client.CheckRedirect,
-			Jar:           c.client.Jar,
-			Timeout:       c.client.Timeout,
 		}
 	}
 
@@ -876,6 +1017,11 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body any
 // in which case it is resolved relative to the BaseURL of the Client.
 // Relative URLs should always be specified without a preceding slash.
 // Body is sent with Content-Type: application/x-www-form-urlencoded.
+//
+// An absolute urlStr replaces the BaseURL, so the request is refused with
+// [ErrUntrustedDestination] unless it targets an origin this Client was
+// configured for. This constructor carries a body, and a body cannot be withheld
+// the way a credential can: see the destination rules on [ErrUntrustedDestination].
 func (c *Client) NewFormRequest(ctx context.Context, urlStr string, body io.Reader, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.baseURL.Path, "/") {
 		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.baseURL)
@@ -887,6 +1033,14 @@ func (c *Client) NewFormRequest(ctx context.Context, urlStr string, body io.Read
 
 	u, err := c.baseURL.Parse(urlStr)
 	if err != nil {
+		return nil, err
+	}
+
+	// The same gate as NewUploadRequest, for the same reason: this builds a
+	// request that carries the caller's bytes, and an absolute urlStr is a
+	// destination a response could have supplied. Today's only caller passes a
+	// relative path, so this is a guard against the next one rather than a fix.
+	if err := c.checkBodyDestination(u); err != nil {
 		return nil, err
 	}
 
@@ -929,6 +1083,13 @@ func checkURLPathTraversal(urlStr string) error {
 // NewUploadRequest creates an upload request. A relative URL can be provided in
 // urlStr, in which case it is resolved relative to the UploadURL of the Client.
 // Relative URLs should always be specified without a preceding slash.
+//
+// An absolute urlStr replaces the Client's UploadURL, and the host in one of
+// those is usually chosen by an API response rather than by the caller — a
+// release's UploadURL is the usual case. The request is therefore refused with
+// [ErrUntrustedDestination] unless it targets an origin this Client was
+// configured for, so that a response cannot redirect the caller's bytes to a
+// host the caller did not choose.
 func (c *Client) NewUploadRequest(ctx context.Context, urlStr string, reader io.Reader, size int64, mediaType string, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.uploadURL.Path, "/") {
 		return nil, fmt.Errorf("uploadURL must have a trailing slash, but %q does not", c.uploadURL)
@@ -940,6 +1101,13 @@ func (c *Client) NewUploadRequest(ctx context.Context, urlStr string, reader io.
 
 	u, err := c.uploadURL.Parse(urlStr)
 	if err != nil {
+		return nil, err
+	}
+
+	// The same gate as NewFormRequest, for the same reason: this builds a
+	// request that carries the caller's bytes, and an absolute urlStr is a
+	// destination a response could have supplied.
+	if err := c.checkBodyDestination(u); err != nil {
 		return nil, err
 	}
 
@@ -1250,7 +1418,7 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 	rateLimitCategory := CoreCategory
 
 	if !c.disableRateLimitCheck {
-		rateLimitCategory = GetRateLimitCategory(req.Method, req.URL.Path)
+		rateLimitCategory = GetRateLimitCategory(req.Method, c.apiPath(req.URL))
 
 		if bypass := ctx.Value(BypassRateLimitCheck); bypass == nil {
 			// If we've hit rate limit, don't make further requests before Reset time.
@@ -1288,7 +1456,7 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		// If the error type is *url.Error, sanitize its URL before returning.
 		if e, ok := errors.AsType[*url.Error](err); ok {
 			if url, err := url.Parse(e.URL); err == nil {
-				e.URL = sanitizeURL(url).String()
+				e.URL = SanitizeURL(url).String()
 				return response, e
 			}
 		}
@@ -1327,14 +1495,25 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 			err = aerr
 		}
 
-		var rateLimitError *RateLimitError
-		if errors.As(err, &rateLimitError) &&
+		if rlErr, ok := errors.AsType[*RateLimitError](err); ok &&
 			ctx.Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
-			if err := sleepUntilResetWithBuffer(ctx, rateLimitError.Rate.Reset.Time); err != nil {
+			if req.Body != nil && req.Body != http.NoBody && req.GetBody == nil {
 				return response, err
 			}
+
+			if err := sleepUntilResetWithBuffer(ctx, rlErr.Rate.Reset.Time); err != nil {
+				return response, err
+			}
+
 			// retry the request now the rate limit should have been reset
 			newReq := req.Clone(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, nil))
+			if req.GetBody != nil {
+				body, err := req.GetBody()
+				if err != nil {
+					return response, err
+				}
+				newReq.Body = body
+			}
 			return c.bareDo(caller, newReq)
 		}
 
@@ -1353,6 +1532,20 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 	return response, err
 }
 
+// apiPath returns the path of u relative to the client's BaseURL, keeping the
+// leading slash, so that "/api/v3/search/code" on a GitHub Enterprise Server
+// client becomes "/search/code". Paths outside BaseURL are returned unchanged.
+func (c *Client) apiPath(u *url.URL) string {
+	if c.baseURL == nil {
+		return u.Path
+	}
+	prefix := strings.TrimSuffix(c.baseURL.Path, "/")
+	if path, ok := strings.CutPrefix(u.Path, prefix); ok && strings.HasPrefix(path, "/") {
+		return path
+	}
+	return u.Path
+}
+
 // BareDo sends an API request and lets you handle the api response. If an error
 // or API Error occurs, the error will contain more information. Otherwise, you
 // are supposed to read and close the response's Body. If rate limit is exceeded
@@ -1366,7 +1559,14 @@ func (c *Client) BareDo(req *http.Request) (*Response, error) {
 // redirection code returned by the API. If a redirection is returned by the api, bareDoIgnoreRedirects
 // returns a *RedirectionError.
 func (c *Client) bareDoIgnoreRedirects(req *http.Request) (*Response, error) {
-	return c.bareDo(c.clientIgnoreRedirects, req)
+	cc := &http.Client{
+		Transport:     c.client.Transport,
+		Timeout:       c.client.Timeout,
+		Jar:           c.client.Jar,
+		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
+	}
+
+	return c.bareDo(cc, req)
 }
 
 var errInvalidLocation = errors.New("invalid or empty Location header in redirection response")
@@ -1393,10 +1593,12 @@ func (c *Client) bareDoUntilFound(req *http.Request, maxRedirects int) (*url.URL
 					return nil, nil, errInvalidLocation
 				}
 				newURL := c.baseURL.ResolveReference(rerr.Location)
-				// Refuse to follow a permanent redirect to a different host:
-				// req.Clone preserves Authorization headers added by the auth
-				// transport, so a cross-host target would leak credentials.
-				if newURL.Host != c.baseURL.Host {
+				// Refuse to follow a permanent redirect outside the origins
+				// this client may send credentials to: the auth transport
+				// attaches them on every hop, so a cross-host target would
+				// leak them. This uses the same predicate as the transport so
+				// that the two cannot disagree about which origin is allowed.
+				if !c.shouldAuthorizeRequest(newURL) {
 					return nil, response, fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.baseURL.Host, newURL.Host)
 				}
 				newRequest := req.Clone(req.Context())
@@ -1556,6 +1758,35 @@ type ErrorResponse struct {
 	DocumentationURL string `json:"documentation_url,omitempty"`
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface.
+func (r *ErrorResponse) UnmarshalJSON(data []byte) error {
+	type aliasErrorResponse ErrorResponse // avoid infinite recursion by using type alias.
+	response := struct {
+		Errors json.RawMessage `json:"errors"`
+		*aliasErrorResponse
+	}{
+		aliasErrorResponse: (*aliasErrorResponse)(r),
+	}
+
+	if err := json.Unmarshal(data, &response); err != nil {
+		return err
+	}
+	if len(response.Errors) == 0 || string(response.Errors) == "null" {
+		return nil
+	}
+	if err := json.Unmarshal(response.Errors, &r.Errors); err == nil {
+		return nil
+	}
+
+	var message string
+	if err := json.Unmarshal(response.Errors, &message); err != nil {
+		return err
+	}
+	//nolint:sliceofpointers
+	r.Errors = []Error{{Message: message}}
+	return nil
+}
+
 // ErrorBlock contains a further explanation for the reason of an error.
 // See https://developer.github.com/changes/2016-03-17-the-451-status-code-is-now-supported/
 // for more information.
@@ -1567,7 +1798,7 @@ type ErrorBlock struct {
 func (r *ErrorResponse) Error() string {
 	if r.Response != nil && r.Response.Request != nil {
 		return fmt.Sprintf("%v %v: %v %v %+v",
-			r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
+			r.Response.Request.Method, SanitizeURL(r.Response.Request.URL),
 			r.Response.StatusCode, r.Message, r.Errors)
 	}
 
@@ -1639,7 +1870,7 @@ type RateLimitError struct {
 
 func (r *RateLimitError) Error() string {
 	return fmt.Sprintf("%v %v: %v %v %v",
-		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
+		r.Response.Request.Method, SanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode, r.Message, formatRateReset(time.Until(r.Rate.Reset.Time)))
 }
 
@@ -1697,7 +1928,7 @@ func (r *AbuseRateLimitError) Error() string {
 		retryInfo = fmt.Sprintf(" [retry after %v]", r.RetryAfter.Round(time.Second))
 	}
 	return fmt.Sprintf("%v %v: %v %v%v",
-		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
+		r.Response.Request.Method, SanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode, r.Message, retryInfo)
 }
 
@@ -1738,8 +1969,8 @@ type RedirectionError struct {
 
 func (r *RedirectionError) Error() string {
 	return fmt.Sprintf("%v %v: %v location %v",
-		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
-		r.StatusCode, sanitizeURL(r.Location))
+		r.Response.Request.Method, SanitizeURL(r.Response.Request.URL),
+		r.StatusCode, SanitizeURL(r.Location))
 }
 
 // Is returns whether the provided error equals this error.
@@ -1756,13 +1987,16 @@ func (r *RedirectionError) Is(target error) bool {
 
 var sensitiveParams = []string{"client_secret", "access_token", "token"}
 
-// sanitizeURL redacts sensitive parameters from the URL which may be
-// exposed to the user.
-func sanitizeURL(uri *url.URL) *url.URL {
+// SanitizeURL returns a copy of uri with userinfo removed and sensitive query
+// parameters redacted. It is safe to expose the result to users or to record
+// it in telemetry because the input URL is not modified.
+func SanitizeURL(uri *url.URL) *url.URL {
 	if uri == nil {
 		return nil
 	}
-	params := uri.Query()
+	sanitized := *uri
+	sanitized.User = nil
+	params := sanitized.Query()
 	var redacted bool
 	for _, p := range sensitiveParams {
 		if len(params.Get(p)) > 0 {
@@ -1771,9 +2005,9 @@ func sanitizeURL(uri *url.URL) *url.URL {
 		}
 	}
 	if redacted {
-		uri.RawQuery = params.Encode()
+		sanitized.RawQuery = params.Encode()
 	}
-	return uri
+	return &sanitized
 }
 
 /*
@@ -1992,9 +2226,10 @@ func GetRateLimitCategory(method, path string) RateLimitCategory {
 	case strings.HasSuffix(path, "/audit-log"):
 		return AuditLogCategory
 
-	// https://docs.github.com/rest/dependency-graph/sboms?apiVersion=2022-11-28#export-a-software-bill-of-materials-sbom-for-a-repository
+	// https://docs.github.com/rest/dependency-graph/sboms?apiVersion=2022-11-28
 	case strings.HasPrefix(path, "/repos/") &&
-		strings.HasSuffix(path, "/dependency-graph/sbom"):
+		(strings.HasSuffix(path, "/dependency-graph/sbom") ||
+			strings.HasSuffix(path, "/dependency-graph/sbom/generate-report")):
 		return DependencySBOMCategory
 	}
 }
@@ -2004,117 +2239,6 @@ func GetRateLimitCategory(method, path string) RateLimitCategory {
 // Deprecated: Use RateLimitService.Get instead.
 func (c *Client) RateLimits(ctx context.Context) (*RateLimits, *Response, error) {
 	return c.RateLimit.Get(ctx)
-}
-
-func setCredentialsAsHeaders(req *http.Request, id, secret string) *http.Request {
-	// To set extra headers, we must make a copy of the Request so
-	// that we don't modify the Request we were given. This is required by the
-	// specification of http.RoundTripper.
-	//
-	// Since we are going to modify only req.Header here, we only need a deep copy
-	// of req.Header.
-	convertedRequest := *req
-	convertedRequest.Header = make(http.Header, len(req.Header))
-
-	for k, s := range req.Header {
-		convertedRequest.Header[k] = append([]string(nil), s...)
-	}
-	convertedRequest.SetBasicAuth(id, secret)
-	return &convertedRequest
-}
-
-/*
-UnauthenticatedRateLimitedTransport allows you to make unauthenticated calls
-that need to use a higher rate limit associated with your OAuth application.
-
-	t := &github.UnauthenticatedRateLimitedTransport{
-		ClientID:     "your app's client ID",
-		ClientSecret: "your app's client secret",
-	}
-	client := github.NewClient(t.Client())
-
-This will add the client id and secret as a base64-encoded string in the format
-ClientID:ClientSecret and apply it as an "Authorization": "Basic" header.
-
-See https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#primary-rate-limit-for-oauth-apps
-for more information.
-*/
-type UnauthenticatedRateLimitedTransport struct {
-	// ClientID is the GitHub OAuth client ID of the current application, which
-	// can be found by selecting its entry in the list at
-	// https://github.com/settings/applications.
-	ClientID string
-
-	// ClientSecret is the GitHub OAuth client secret of the current
-	// application.
-	ClientSecret string
-
-	// Transport is the underlying HTTP transport to use when making requests.
-	// It will default to http.DefaultTransport if nil.
-	Transport http.RoundTripper
-}
-
-// RoundTrip implements the RoundTripper interface.
-func (t *UnauthenticatedRateLimitedTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	if t.ClientID == "" {
-		return nil, errors.New("t.ClientID is empty")
-	}
-	if t.ClientSecret == "" {
-		return nil, errors.New("t.ClientSecret is empty")
-	}
-
-	req2 := setCredentialsAsHeaders(req, t.ClientID, t.ClientSecret)
-	// Make the HTTP request.
-	return t.transport().RoundTrip(req2)
-}
-
-// Client returns an *http.Client that makes requests which are subject to the
-// rate limit of your OAuth application.
-func (t *UnauthenticatedRateLimitedTransport) Client() *http.Client {
-	return &http.Client{Transport: t}
-}
-
-func (t *UnauthenticatedRateLimitedTransport) transport() http.RoundTripper {
-	if t.Transport != nil {
-		return t.Transport
-	}
-	return http.DefaultTransport
-}
-
-// BasicAuthTransport is an http.RoundTripper that authenticates all requests
-// using HTTP Basic Authentication with the provided username and password. It
-// additionally supports users who have two-factor authentication enabled on
-// their GitHub account.
-type BasicAuthTransport struct {
-	Username string // GitHub username
-	Password string // GitHub password
-	OTP      string // one-time password for users with two-factor auth enabled
-
-	// Transport is the underlying HTTP transport to use when making requests.
-	// It will default to http.DefaultTransport if nil.
-	Transport http.RoundTripper
-}
-
-// RoundTrip implements the RoundTripper interface.
-func (t *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	req2 := setCredentialsAsHeaders(req, t.Username, t.Password)
-	if t.OTP != "" {
-		req2.Header.Set(headerOTP, t.OTP)
-	}
-	return t.transport().RoundTrip(req2)
-}
-
-// Client returns an *http.Client that makes requests that are authenticated
-// using HTTP Basic Authentication.
-func (t *BasicAuthTransport) Client() *http.Client {
-	return &http.Client{Transport: t}
-}
-
-func (t *BasicAuthTransport) transport() http.RoundTripper {
-	if t.Transport != nil {
-		return t.Transport
-	}
-	return http.DefaultTransport
 }
 
 // formatRateReset formats d to look like "[rate reset in 2s]" or
@@ -2187,11 +2311,11 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 	return resp, err
 }
 
-// checkRedirectHost returns an error if the redirect target is on a different
-// host than the client's configured BaseURL. This prevents credentials attached
-// by the auth transport from being sent to an attacker-controlled host when a
-// compromised or malicious API response returns a cross-origin Location header.
-// An empty Location is also rejected.
+// checkRedirectHost returns an error if the redirect target is outside the
+// origins this client may send credentials to. The auth transport attaches
+// credentials on every hop, so a cross-origin Location header would otherwise
+// carry them to a host the caller never configured, when a compromised or
+// malicious API response supplies one. An empty Location is also rejected.
 func (c *Client) checkRedirectHost(location string) error {
 	if location == "" {
 		return errInvalidLocation
@@ -2202,7 +2326,7 @@ func (c *Client) checkRedirectHost(location string) error {
 	}
 	// Resolve relative locations against BaseURL so relative paths are allowed.
 	target = c.baseURL.ResolveReference(target)
-	if target.Host != c.baseURL.Host {
+	if !c.shouldAuthorizeRequest(target) {
 		return fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.baseURL.Host, target.Host)
 	}
 	return nil

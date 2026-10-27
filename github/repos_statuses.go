@@ -36,6 +36,11 @@ type RepoStatus struct {
 	Creator   *User      `json:"creator,omitempty"`
 	CreatedAt *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+
+	// Required indicates whether this status is required for merging. Only
+	// populated in combined status responses; nil means the API did not include
+	// the field (e.g. when not part of a branch-protection rule).
+	Required *bool `json:"required,omitempty"`
 }
 
 func (r RepoStatus) String() string {

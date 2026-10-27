@@ -403,6 +403,7 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 		call       func(context.Context, *Client) (*PublicKey, *Response, error)
 		badCall    func(context.Context, *Client) (*PublicKey, *Response, error)
 		methodName string
+		wantURL    string
 	}
 
 	tests := []*test{
@@ -411,20 +412,21 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 			handleFunc: func(mux *http.ServeMux) {
 				mux.HandleFunc("/user/codespaces/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "GET")
-					fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
+					fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234","id":1,"url":"https://api.github.com/user/codespaces/secrets/public-key","title":"title","created_at":`+referenceTimeStr+`}`)
 				})
 			},
 			call: func(ctx context.Context, client *Client) (*PublicKey, *Response, error) {
 				return client.Codespaces.GetUserPublicKey(ctx)
 			},
 			methodName: "GetUserPublicKey",
+			wantURL:    "https://api.github.com/user/codespaces/secrets/public-key",
 		},
 		{
 			name: "Org",
 			handleFunc: func(mux *http.ServeMux) {
 				mux.HandleFunc("/orgs/o/codespaces/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "GET")
-					fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
+					fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234","id":1,"url":"https://api.github.com/orgs/o/codespaces/secrets/public-key","title":"title","created_at":`+referenceTimeStr+`}`)
 				})
 			},
 			call: func(ctx context.Context, client *Client) (*PublicKey, *Response, error) {
@@ -434,13 +436,14 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 				return client.Codespaces.GetOrgPublicKey(ctx, "\n")
 			},
 			methodName: "GetOrgPublicKey",
+			wantURL:    "https://api.github.com/orgs/o/codespaces/secrets/public-key",
 		},
 		{
 			name: "Repo",
 			handleFunc: func(mux *http.ServeMux) {
 				mux.HandleFunc("/repos/o/r/codespaces/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "GET")
-					fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
+					fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234","id":1,"url":"https://api.github.com/repos/o/r/codespaces/secrets/public-key","title":"title","created_at":`+referenceTimeStr+`}`)
 				})
 			},
 			call: func(ctx context.Context, client *Client) (*PublicKey, *Response, error) {
@@ -450,6 +453,7 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 				return client.Codespaces.GetRepoPublicKey(ctx, "\n", "\n")
 			},
 			methodName: "GetRepoPublicKey",
+			wantURL:    "https://api.github.com/repos/o/r/codespaces/secrets/public-key",
 		},
 	}
 
@@ -466,7 +470,14 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 				t.Errorf("Codespaces.%v returned error: %v", tt.methodName, err)
 			}
 
-			want := &PublicKey{KeyID: new("1234"), Key: new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+			want := &PublicKey{
+				KeyID:     new("1234"),
+				Key:       new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"),
+				ID:        new(int64(1)),
+				URL:       new(tt.wantURL),
+				Title:     new("title"),
+				CreatedAt: &referenceTimestamp,
+			}
 			if !cmp.Equal(key, want) {
 				t.Errorf("Codespaces.%v returned %+v, want %+v", tt.methodName, key, want)
 			}

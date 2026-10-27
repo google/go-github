@@ -13,7 +13,7 @@ import (
 // EnterpriseCustomPropertySchema represents the schema response for GetEnterpriseCustomPropertiesSchema.
 type EnterpriseCustomPropertySchema struct {
 	// An ordered list of the custom property defined in the enterprise.
-	Properties []*CustomProperty `json:"properties,omitempty"`
+	Properties []*CustomProperty `json:"properties"`
 }
 
 // EnterpriseCustomPropertiesValues represents the custom properties values for an organization within an enterprise.
@@ -29,8 +29,8 @@ type EnterpriseCustomPropertiesValues struct {
 // EnterpriseCustomPropertyValuesRequest represents the request to update custom property values for organizations within an enterprise.
 type EnterpriseCustomPropertyValuesRequest struct {
 	// The names of organizations that the custom property values will be applied to.
-	// OrganizationLogin specifies the organization name when updating multiple organizations.
-	OrganizationLogin []string `json:"organization_login"`
+	// OrganizationLogins specifies the organization names when updating multiple organizations.
+	OrganizationLogins []string `json:"organization_logins"`
 	// List of custom property names and associated values to apply to the organizations.
 	Properties []*CustomPropertyValue `json:"properties"`
 }

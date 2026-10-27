@@ -54,9 +54,11 @@ type Issue struct {
 	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
 	// Use the Issues REST API endpoint to retrieve this information.
 	// See: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#get-an-issue
-	AuthorAssociation        *string                   `json:"author_association,omitempty"`
-	User                     *User                     `json:"user,omitempty"`
-	Labels                   []*Label                  `json:"labels,omitempty"`
+	AuthorAssociation *string  `json:"author_association,omitempty"`
+	User              *User    `json:"user,omitempty"`
+	Labels            []*Label `json:"labels,omitempty"`
+	// Deprecated: GitHub REST API version 2026-03-10 removed the singular assignee field.
+	// Use Assignees instead.
 	Assignee                 *User                     `json:"assignee,omitempty"`
 	Comments                 *int                      `json:"comments,omitempty"`
 	ClosedAt                 *Timestamp                `json:"closed_at,omitempty"`
@@ -541,13 +543,12 @@ func (s *IssuesService) RemoveMilestone(ctx context.Context, owner, repo string,
 	return i, resp, nil
 }
 
-// LockIssueOptions specifies the optional parameters to the
-// IssuesService.Lock method.
-type LockIssueOptions struct {
+// LockIssueRequest represents a request to lock an issue.
+type LockIssueRequest struct {
 	// LockReason specifies the reason to lock this issue.
 	// Providing a lock reason can help make it clearer to contributors why an issue
 	// was locked. Possible values are: "off-topic", "too heated", "resolved", and "spam".
-	LockReason string `json:"lock_reason,omitempty"`
+	LockReason *string `json:"lock_reason,omitempty"`
 }
 
 // Lock an issue's conversation.
@@ -555,7 +556,7 @@ type LockIssueOptions struct {
 // GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#lock-an-issue
 //
 //meta:operation PUT /repos/{owner}/{repo}/issues/{issue_number}/lock
-func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int, body *LockIssueOptions) (*Response, error) {
+func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int, body LockIssueRequest) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/lock", owner, repo, number)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {

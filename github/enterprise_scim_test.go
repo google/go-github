@@ -77,9 +77,9 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 				LastModified: &Timestamp{referenceTime},
 				Location:     new("https://api.github.com/scim/v2/enterprises/ee/Groups/914a"),
 			},
-			DisplayName: new("gn1"),
+			DisplayName: "gn1",
 			Schemas:     []string{SCIMSchemasURINamespacesGroups},
-			ExternalID:  new("de88"),
+			ExternalID:  "de88",
 			Members: []*SCIMEnterpriseDisplayReference{{
 				Value:   "e7f9",
 				Ref:     new("https://api.github.com/scim/v2/enterprises/ee/Users/e7f9"),
@@ -98,7 +98,7 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		got, resp, err := client.Enterprise.ListProvisionedSCIMGroups(ctx, "ee", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -206,7 +206,7 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		got, resp, err := client.Enterprise.ListProvisionedSCIMUsers(ctx, "ee", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -221,8 +221,8 @@ func TestEnterpriseService_SetProvisionedSCIMGroup(t *testing.T) {
 
 	input := SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ExternalID:  new("8aa1"),
-		DisplayName: new("dn"),
+		ExternalID:  "8aa1",
+		DisplayName: "dn",
 	}
 
 	mux.HandleFunc("/scim/v2/enterprises/ee/Groups/abcd", func(w http.ResponseWriter, r *http.Request) {
@@ -246,8 +246,8 @@ func TestEnterpriseService_SetProvisionedSCIMGroup(t *testing.T) {
 	want := &SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
 		ID:          new("abcd"),
-		ExternalID:  new("8aa1"),
-		DisplayName: new("dn"),
+		ExternalID:  "8aa1",
+		DisplayName: "dn",
 		Meta: &SCIMEnterpriseMeta{
 			ResourceType: "Group",
 			Created:      &Timestamp{referenceTime},
@@ -271,7 +271,7 @@ func TestEnterpriseService_SetProvisionedSCIMGroup(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		got, resp, err := client.Enterprise.SetProvisionedSCIMGroup(ctx, "ee", "abcd", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -357,7 +357,7 @@ func TestEnterpriseService_SetProvisionedSCIMUser(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		got, resp, err := client.Enterprise.SetProvisionedSCIMUser(ctx, "ee", "7fce", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -405,8 +405,8 @@ func TestEnterpriseService_UpdateSCIMGroupAttribute(t *testing.T) {
 	want := &SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
 		ID:          new("abcd"),
-		ExternalID:  new("8aa1"),
-		DisplayName: new("Employees"),
+		ExternalID:  "8aa1",
+		DisplayName: "Employees",
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "879d",
 			Ref:     new("https://api.github.localhost/scim/v2/enterprises/ee/Users/879d"),
@@ -435,7 +435,7 @@ func TestEnterpriseService_UpdateSCIMGroupAttribute(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		got, resp, err := client.Enterprise.UpdateSCIMGroupAttribute(ctx, "ee", "abcd", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -541,7 +541,7 @@ func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		got, resp, err := client.Enterprise.UpdateSCIMUserAttribute(ctx, "ee", "7fce", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -556,8 +556,8 @@ func TestEnterpriseService_ProvisionSCIMGroup(t *testing.T) {
 
 	input := SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ExternalID:  new("8aa1"),
-		DisplayName: new("dn"),
+		ExternalID:  "8aa1",
+		DisplayName: "dn",
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "879d",
 			Display: new("d1"),
@@ -600,8 +600,8 @@ func TestEnterpriseService_ProvisionSCIMGroup(t *testing.T) {
 	want := &SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
 		ID:          new("abcd"),
-		ExternalID:  new("8aa1"),
-		DisplayName: new("dn"),
+		ExternalID:  "8aa1",
+		DisplayName: "dn",
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "879d",
 			Ref:     new("https://api.github.localhost/scim/v2/enterprises/ee/Users/879d"),
@@ -634,7 +634,7 @@ func TestEnterpriseService_ProvisionSCIMGroup(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		got, resp, err := client.Enterprise.ProvisionSCIMGroup(ctx, "ee", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -747,7 +747,7 @@ func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		got, resp, err := client.Enterprise.ProvisionSCIMUser(ctx, "ee", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -799,9 +799,9 @@ func TestEnterpriseService_GetProvisionedSCIMGroup(t *testing.T) {
 			LastModified: &Timestamp{referenceTime},
 			Location:     new("https://api.github.com/scim/v2/enterprises/ee/Groups/914a"),
 		},
-		DisplayName: new("gn1"),
+		DisplayName: "gn1",
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ExternalID:  new("de88"),
+		ExternalID:  "de88",
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "e7f9",
 			Ref:     new("https://api.github.com/scim/v2/enterprises/ee/Users/e7f9"),
@@ -819,7 +819,7 @@ func TestEnterpriseService_GetProvisionedSCIMGroup(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		got, resp, err := client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "914a", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -903,7 +903,7 @@ func TestEnterpriseService_GetProvisionedSCIMUser(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		got, resp, err := client.Enterprise.GetProvisionedSCIMUser(ctx, "ee", "5fc0")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -934,7 +934,7 @@ func TestEnterpriseService_DeleteSCIMGroup(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		return client.Enterprise.DeleteSCIMGroup(ctx, "ee", "abcd")
 	})
 }
@@ -961,7 +961,7 @@ func TestEnterpriseService_DeleteSCIMUser(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
 		return client.Enterprise.DeleteSCIMUser(ctx, "ee", "7fce")
 	})
 }

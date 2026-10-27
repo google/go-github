@@ -1,8 +1,9 @@
-module github.com/google/go-github/v91
+module github.com/google/go-github/v93
 
 go 1.26.0
 
 require (
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-querystring v1.2.0
+	golang.org/x/oauth2 v0.37.0
 )

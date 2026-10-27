@@ -71,6 +71,18 @@ func TestPublicKey_UnmarshalJSON(t *testing.T) {
 			wantPublicKey: PublicKey{Key: new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
 			wantErr:       false,
 		},
+		"Full": {
+			data: []byte(`{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234","id":1,"url":"https://api.github.com/repos/o/r/actions/secrets/public-key","title":"title","created_at":` + referenceTimeStr + `}`),
+			wantPublicKey: PublicKey{
+				KeyID:     new("1234"),
+				Key:       new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"),
+				ID:        new(int64(1)),
+				URL:       new("https://api.github.com/repos/o/r/actions/secrets/public-key"),
+				Title:     new("title"),
+				CreatedAt: &referenceTimestamp,
+			},
+			wantErr: false,
+		},
 	}
 
 	for name, tt := range testCases {
@@ -97,7 +109,7 @@ func TestActionsService_GetRepoPublicKey(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
+		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234","id":1,"url":"https://api.github.com/repos/o/r/actions/secrets/public-key","title":"title","created_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -106,7 +118,14 @@ func TestActionsService_GetRepoPublicKey(t *testing.T) {
 		t.Errorf("Actions.GetRepoPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: new("1234"), Key: new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{
+		KeyID:     new("1234"),
+		Key:       new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"),
+		ID:        new(int64(1)),
+		URL:       new("https://api.github.com/repos/o/r/actions/secrets/public-key"),
+		Title:     new("title"),
+		CreatedAt: &referenceTimestamp,
+	}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Actions.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
@@ -779,6 +798,39 @@ func TestActionsService_ListEnvSecrets(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestActionsService_ListEnvSecrets_EscapeEnv(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		env        string
+		escapedEnv string
+	}{
+		{env: "staging", escapedEnv: "staging"},
+		{env: "team/staging", escapedEnv: "team%2Fstaging"},
+	} {
+		t.Run(tt.env, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+
+			mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				if got, want := r.URL.EscapedPath(), "/repos/o/repo/environments/"+tt.escapedEnv+"/secrets"; got != want {
+					t.Errorf("Request path = %q, want %q", got, want)
+				}
+				if got, want := r.URL.Path, "/repos/o/repo/environments/"+tt.env+"/secrets"; got != want {
+					t.Errorf("Decoded request path = %q, want %q", got, want)
+				}
+				fmt.Fprint(w, `{"total_count":0,"secrets":[]}`)
+			})
+
+			ctx := t.Context()
+			_, _, err := client.Actions.ListEnvSecrets(ctx, "o", "repo", tt.env, nil)
+			if err != nil {
+				t.Fatalf("Actions.ListEnvSecrets returned error: %v", err)
+			}
+		})
+	}
 }
 
 func TestActionsService_GetEnvSecret(t *testing.T) {

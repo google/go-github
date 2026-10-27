@@ -94,7 +94,7 @@ func (m Enterprise) String() string {
 
 // UpdateUserLDAPMapping updates the mapping between a GitHub user and an LDAP user.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/ldap#update-ldap-mapping-for-a-user
+// GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/ldap#update-ldap-mapping-for-a-user
 //
 //meta:operation PATCH /admin/ldap/users/{username}/mapping
 func (s *AdminService) UpdateUserLDAPMapping(ctx context.Context, user string, body UpdateUserLDAPMappingRequest) (*UserLDAPMapping, *Response, error) {
@@ -115,7 +115,7 @@ func (s *AdminService) UpdateUserLDAPMapping(ctx context.Context, user string, b
 
 // UpdateTeamLDAPMapping updates the mapping between a GitHub team and an LDAP group.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/ldap#update-ldap-mapping-for-a-team
+// GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/ldap#update-ldap-mapping-for-a-team
 //
 //meta:operation PATCH /admin/ldap/teams/{team_id}/mapping
 func (s *AdminService) UpdateTeamLDAPMapping(ctx context.Context, teamID int64, body UpdateTeamLDAPMappingRequest) (*TeamLDAPMapping, *Response, error) {

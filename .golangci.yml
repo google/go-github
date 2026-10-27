@@ -185,7 +185,7 @@ linters:
       extraneousnew:
         type: module
         description: Reports problematic usage of 'new' or '&SomeStruct{}' when a more idiomatic 'var' pointer would be more appropriate.
-        original-url: github.com/google/go-github/v91/tools/extraneousnew
+        original-url: github.com/google/go-github/v93/tools/extraneousnew
         settings:
           ignored-methods:
             - RateLimitService.Get
@@ -193,30 +193,22 @@ linters:
       fmtpercentv:
         type: module
         description: Reports usage of %d or %s in format strings.
-        original-url: github.com/google/go-github/v91/tools/fmtpercentv
+        original-url: github.com/google/go-github/v93/tools/fmtpercentv
       paramcheck:
         type: module
         description: Reports parameter naming and type convention issues.
-        original-url: github.com/google/go-github/v91/tools/paramcheck
+        original-url: github.com/google/go-github/v93/tools/paramcheck
         settings:
           # Body type names exempt from the "pass by value, not by pointer" rule.
           # TODO: fix and remove these exceptions.
           body-allowed-pointer-types:
-            - AddProjectItemOptions
             - AuthorizationRequest
-            - CodeScanningAlertState
-            - CodespaceCreateForUserOptions
             - ConfigApplyOptions
             - ConfigSettings
-            - CreateCodespaceOptions
-            - CreateOrUpdateIssueTypesOptions
-            - CreateOrgInvitationOptions
             - CreateUpdateEnvironment
             - CreateWorkflowDispatchEventRequest
             - CustomDeploymentProtectionRuleRequest
             - CustomProperty
-            - DependabotAlertState
-            - DependencyGraphSnapshot
             - EncryptedSecret
             - EnterpriseSecurityAnalysisSettings
             - Hook
@@ -224,73 +216,42 @@ linters:
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
             - IssueImportRequest
-            - LockIssueOptions
             - MaintenanceOptions
             - Organization
             - PagesUpdate
             - PagesUpdateWithoutCNAME
             - ProtectionRequest
-            - PublishCodespaceOptions
-            - PullRequestBranchUpdateOptions
             - PullRequestReviewRequest
             - PullRequestReviewsEnforcementUpdate
             - Repository
-            - RepositoryAddCollaboratorOptions
             - RepositoryContentFileOptions
-            - RepositoryCreateForkOptions
             - RequiredStatusChecksRequest
             - SCIMUserAttributes
-            - SecretScanningAlertUpdateOptions
-            - SecretScanningPatternConfigsUpdateOptions
             - SourceImportAuthor
             - Subscription
-            - TeamAddTeamMembershipOptions
-            - TeamAddTeamRepoOptions
-            - TeamProjectOptions
-            - UpdateCodespaceOptions
             - UpdateDefaultSetupConfigurationOptions
-            - UpdateProjectItemOptions
-            - UserSuspendOptions
             - WorkflowsPermissionsOpt
           # Body type names exempt from the "Options" suffix rule.
           # TODO: fix and remove these exceptions.
           body-allowed-wrong-names:
-            - AddProjectItemOptions
             - CheckSuitePreferenceOptions
-            - CodespaceCreateForUserOptions
             - ConfigApplyOptions
             - CreateCheckRunOptions
             - CreateCheckSuiteOptions
-            - CreateCodespaceOptions
-            - CreateOrUpdateIssueTypesOptions
-            - CreateOrgInvitationOptions
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
-            - LockIssueOptions
             - MaintenanceOptions
-            - PublishCodespaceOptions
-            - PullRequestBranchUpdateOptions
-            - RepositoryAddCollaboratorOptions
             - RepositoryContentFileOptions
-            - RepositoryCreateForkOptions
-            - SecretScanningAlertUpdateOptions
-            - SecretScanningPatternConfigsUpdateOptions
-            - TeamAddTeamMembershipOptions
-            - TeamAddTeamRepoOptions
-            - TeamProjectOptions
             - UpdateCheckRunOptions
-            - UpdateCodespaceOptions
             - UpdateDefaultSetupConfigurationOptions
-            - UpdateProjectItemOptions
-            - UserSuspendOptions
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
-        original-url: github.com/google/go-github/v91/tools/sliceofpointers
+        original-url: github.com/google/go-github/v93/tools/sliceofpointers
       structfield:
         type: module
         description: Reports mismatches between Go field and JSON, URL tag names and types.
-        original-url: github.com/google/go-github/v91/tools/structfield
+        original-url: github.com/google/go-github/v93/tools/structfield
         settings:
           allowed-tag-names:
             - ActionsCacheUsageList.RepoCacheUsage # TODO: RepoCacheUsages ?
@@ -303,8 +264,6 @@ linters:
             - CommitAuthor.Login
             - CommitsSearchResult.Commits
             - CommitsSearchResult.Total
-            - CreateOrgInvitationOptions.TeamID # TODO: TeamIDs
-            - DependencyGraphSnapshot.Sha # TODO: SHA
             - Discussion.DiscussionCategory # TODO: Category ?
             - EditOwner.OwnerInfo
             - EnterpriseLicensedUsers.GithubComSamlNameID # TODO: GithubComSAMLNameID
@@ -362,6 +321,7 @@ linters:
             - ActionsCacheListOptions.Key
             - ActionsCacheListOptions.Ref
             - ActionsCacheListOptions.Sort
+            - ActionsPolicyListOptions.HasParents
             - ActiveCommittersListOptions.AdvancedSecurityProduct
             - AnalysesListOptions.Ref
             - AnalysesListOptions.SarifID
@@ -371,10 +331,6 @@ linters:
             - CommitsListOptions.Since # TODO: Repositories
             - CommitsListOptions.Until # TODO: Repositories
             - ConfigApplyEventsOptions.LastRequestID
-            - CreateTag.Message # TODO: Git
-            - CreateTag.Object # TODO: Git
-            - CreateTag.Tag # TODO: Git
-            - CreateTag.Type # TODO: Git
             - DismissalRestrictionsRequest.Apps # TODO: Repositories
             - DismissalRestrictionsRequest.Teams # TODO: Repositories
             - DismissalRestrictionsRequest.Users # TODO: Repositories
@@ -438,7 +394,6 @@ linters:
             - ListSCIMProvisionedIdentitiesOptions.Filter
             - ListSCIMProvisionedIdentitiesOptions.StartIndex
             - ListUserIssuesOptions.Since
-            - LockIssueOptions.LockReason # TODO: Issues
             - MarketplacePlan.Bullets # TODO: Marketplaces
             - NodeQueryOptions.ClusterRoles
             - NodeQueryOptions.UUID
@@ -455,18 +410,12 @@ linters:
             - PremiumRequestUsageReportOptions.Year
             - PullRequestListCommentsOptions.Since # TODO: PullRequests
             - Rate.Resource # TODO: Common
-            - RepositoryAddCollaboratorOptions.Permission # TODO: Repositories
-            - RepositoryCreateForkOptions.DefaultBranchOnly # TODO: Repositories
-            - RepositoryCreateForkOptions.Name # TODO: Repositories
-            - RepositoryCreateForkOptions.Organization # TODO: Repositories
             - RepositoryListRulesetsOptions.IncludesParents
             - RequiredStatusChecks.Checks # TODO: Repositories
             - RequiredStatusChecks.Contexts # TODO: Repositories
             - SearchOptions.AdvancedSearch
             - Secret.SelectedRepositoriesURL # TODO: Actions
             - Secret.Visibility # TODO: Actions
-            - TeamAddTeamMembershipOptions.Role # TODO: Teams
-            - TeamAddTeamRepoOptions.Permission # TODO: Teams
             - UpdateRuleParameters.UpdateAllowsFetchAndMerge # TODO: Rules
             - UsageReportOptions.Day
             - UsageReportOptions.Hour
@@ -524,4 +473,7 @@ formatters:
     - gofumpt
   settings:
     gofumpt:
-      extra-rules: true
+      extra:
+        group-params: true
+        clothe-returns: true
+        balance-calls: true

@@ -18,7 +18,7 @@ import (
 	"github.com/gofri/go-github-ratelimit/v2/github_ratelimit"
 	"github.com/gofri/go-github-ratelimit/v2/github_ratelimit/github_primary_ratelimit"
 	"github.com/gofri/go-github-ratelimit/v2/github_ratelimit/github_secondary_ratelimit"
-	"github.com/google/go-github/v91/github"
+	"github.com/google/go-github/v93/github"
 )
 
 func main() {
@@ -35,10 +35,10 @@ func main() {
 		}),
 	)
 
-	paginator := githubpagination.NewClient(rateLimiter,
+	paginator := githubpagination.New(rateLimiter,
 		githubpagination.WithPerPage(100), // default to 100 results per page
 	)
-	client, err := github.NewClient(github.WithHTTPClient(paginator))
+	client, err := github.NewClient(github.WithTransport(paginator))
 	if err != nil {
 		log.Fatalf("Error creating GitHub client: %v", err)
 	}

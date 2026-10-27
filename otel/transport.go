@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/google/go-github/v91/github"
+	"github.com/google/go-github/v93/github"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
@@ -22,7 +22,7 @@ import (
 
 const (
 	// instrumentationName is the name of this instrumentation package.
-	instrumentationName = "github.com/google/go-github/v91/otel"
+	instrumentationName = "github.com/google/go-github/v93/otel"
 )
 
 // Transport is an http.RoundTripper that instrument requests with OpenTelemetry.
@@ -61,7 +61,7 @@ func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	// Inject Attributes
 	span.SetAttributes(
 		attribute.String("http.method", req.Method),
-		attribute.String("http.url", req.URL.String()),
+		attribute.String("http.url", github.SanitizeURL(req.URL).String()),
 		attribute.String("http.host", req.URL.Host),
 	)
 

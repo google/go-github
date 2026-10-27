@@ -7,10 +7,167 @@ package github
 
 import (
 	"encoding/json"
+	"math"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
+
+func TestCodeCoverageRuleRoundTrip(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name   string
+		params CodeCoverageRuleParameters
+		json   string
+	}{
+		{
+			"fractional_thresholds",
+			CodeCoverageRuleParameters{MaxCoverageDrop: new(2.5), MinimumCoverage: new(80.5)},
+			`{"max_coverage_drop":2.5,"minimum_coverage":80.5}`,
+		},
+		{
+			"minimum_only",
+			CodeCoverageRuleParameters{MinimumCoverage: new(80.5)},
+			`{"minimum_coverage":80.5}`,
+		},
+		{
+			"no_coverage_drop",
+			CodeCoverageRuleParameters{MaxCoverageDrop: new(0.0)},
+			`{"max_coverage_drop":0}`,
+		},
+		{
+			"zero_thresholds",
+			CodeCoverageRuleParameters{MaxCoverageDrop: new(0.0), MinimumCoverage: new(0.0)},
+			`{"max_coverage_drop":0,"minimum_coverage":0}`,
+		},
+		{
+			"empty_parameters",
+			CodeCoverageRuleParameters{},
+			`{}`,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			ruleJSON := `{"type":"code_coverage","parameters":` + tt.json + `}`
+			testJSONMarshal(t, &RepositoryRule{
+				Type:       RulesetRuleTypeCodeCoverage,
+				Parameters: &tt.params,
+			}, ruleJSON)
+			testJSONMarshal(t, &RepositoryRulesetRules{CodeCoverage: &tt.params}, `[`+ruleJSON+`]`)
+		})
+	}
+
+	t.Run("missing_parameters", func(t *testing.T) {
+		t.Parallel()
+		testJSONUnmarshalOnly(t, &RepositoryRule{
+			Type:       RulesetRuleTypeCodeCoverage,
+			Parameters: &CodeCoverageRuleParameters{},
+		}, `{"type":"code_coverage"}`)
+		testJSONUnmarshalOnly(t, &RepositoryRulesetRules{
+			CodeCoverage: &CodeCoverageRuleParameters{},
+		}, `[{"type":"code_coverage"}]`)
+	})
+}
+
+func TestCodeCoverageRuleInvalidParameters(t *testing.T) {
+	t.Parallel()
+	for _, params := range []string{
+		`{"max_coverage_drop":"invalid"}`,
+		`{"minimum_coverage":"invalid"}`,
+		`"not_an_object"`,
+	} {
+		t.Run(params, func(t *testing.T) {
+			t.Parallel()
+			data := `{"type":"code_coverage","parameters":` + params + `}`
+			if err := json.Unmarshal([]byte(data), &RepositoryRule{}); err == nil {
+				t.Errorf("Expected error unmarshaling %q, got nil", data)
+			}
+			if err := json.Unmarshal([]byte(`[`+data+`]`), &RepositoryRulesetRules{}); err == nil {
+				t.Errorf("Expected error unmarshaling [%v], got nil", data)
+			}
+		})
+	}
+}
+
+func TestRepositoryRulesetRules_CodeCoverageMarshalError(t *testing.T) {
+	t.Parallel()
+	rules := &RepositoryRulesetRules{
+		CodeCoverage: &CodeCoverageRuleParameters{MinimumCoverage: new(math.NaN())},
+	}
+	if _, err := json.Marshal(rules); err == nil {
+		t.Error("Expected error marshaling a NaN coverage threshold, got nil")
+	}
+}
+
+func TestCodeQualityRuleRoundTrip(t *testing.T) {
+	t.Parallel()
+	for _, severity := range []CodeQualitySeverity{
+		CodeQualitySeverityErrors,
+		CodeQualitySeverityWarnings,
+		CodeQualitySeverityNotes,
+		CodeQualitySeverityAll,
+	} {
+		t.Run(string(severity), func(t *testing.T) {
+			t.Parallel()
+			params := CodeQualityRuleParameters{Severity: severity}
+			ruleJSON := `{"type":"code_quality","parameters":{"severity":"` + string(severity) + `"}}`
+			testJSONMarshal(t, &RepositoryRule{
+				Type:       RulesetRuleTypeCodeQuality,
+				Parameters: &params,
+			}, ruleJSON)
+			testJSONMarshal(t, &RepositoryRulesetRules{CodeQuality: &params}, `[`+ruleJSON+`]`)
+		})
+	}
+
+	t.Run("missing_parameters", func(t *testing.T) {
+		t.Parallel()
+		testJSONUnmarshalOnly(t, &RepositoryRule{
+			Type:       RulesetRuleTypeCodeQuality,
+			Parameters: &CodeQualityRuleParameters{},
+		}, `{"type":"code_quality"}`)
+		testJSONUnmarshalOnly(t, &RepositoryRulesetRules{
+			CodeQuality: &CodeQualityRuleParameters{},
+		}, `[{"type":"code_quality"}]`)
+		testJSONUnmarshalOnly(t, &BranchRules{
+			CodeQuality: []*CodeQualityBranchRule{{
+				BranchRuleMetadata: BranchRuleMetadata{RulesetSourceType: RulesetSourceTypeRepository, RulesetSource: "test/test", RulesetID: 1},
+			}},
+		}, `[{"type":"code_quality","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1}]`)
+	})
+}
+
+func TestBranchRules_CodeQuality(t *testing.T) {
+	t.Parallel()
+	testJSONUnmarshalOnly(t, &BranchRules{
+		CodeQuality: []*CodeQualityBranchRule{{
+			BranchRuleMetadata: BranchRuleMetadata{RulesetSourceType: RulesetSourceTypeOrganization, RulesetSource: "test", RulesetID: 2},
+			Parameters:         CodeQualityRuleParameters{Severity: CodeQualitySeverityErrors},
+		}},
+	}, `[{"type":"code_quality","ruleset_source_type":"Organization","ruleset_source":"test","ruleset_id":2,"parameters":{"severity":"errors"}}]`)
+}
+
+func TestCodeQualityRuleInvalidParameters(t *testing.T) {
+	t.Parallel()
+	for _, params := range []string{
+		`{"severity":1}`,
+		`"not_an_object"`,
+	} {
+		t.Run(params, func(t *testing.T) {
+			t.Parallel()
+			data := `{"type":"code_quality","parameters":` + params + `}`
+			if err := json.Unmarshal([]byte(data), &RepositoryRule{}); err == nil {
+				t.Errorf("Expected error unmarshaling %q into RepositoryRule, got nil", data)
+			}
+			if err := json.Unmarshal([]byte(`[`+data+`]`), &RepositoryRulesetRules{}); err == nil {
+				t.Errorf("Expected error unmarshaling [%v] into RepositoryRulesetRules, got nil", data)
+			}
+			if err := json.Unmarshal([]byte(`[`+data+`]`), &BranchRules{}); err == nil {
+				t.Errorf("Expected error unmarshaling [%v] into BranchRules, got nil", data)
+			}
+		})
+	}
+}
 
 func TestRepositoryRulesetRules(t *testing.T) {
 	t.Parallel()
@@ -55,11 +212,12 @@ func TestRepositoryRulesetRules(t *testing.T) {
 				},
 				RequiredSignatures: &EmptyRuleParameters{},
 				PullRequest: &PullRequestRuleParameters{
-					DismissStaleReviewsOnPush:      true,
-					RequireCodeOwnerReview:         true,
-					RequireLastPushApproval:        true,
-					RequiredApprovingReviewCount:   2,
-					RequiredReviewThreadResolution: true,
+					DismissStaleReviewsOnPush:                  true,
+					RequireCodeOwnerReview:                     true,
+					RequireExtraApprovalForUnattributedChanges: true,
+					RequireLastPushApproval:                    true,
+					RequiredApprovingReviewCount:               2,
+					RequiredReviewThreadResolution:             true,
 				},
 				RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 					RequiredStatusChecks: []*RuleStatusCheck{
@@ -127,7 +285,7 @@ func TestRepositoryRulesetRules(t *testing.T) {
 				RepositoryTransfer:   &EmptyRuleParameters{},
 				RepositoryVisibility: &RepositoryVisibilityRuleParameters{Internal: false, Private: false, Public: false},
 			},
-			`[{"type":"creation"},{"type":"update"},{"type":"deletion"},{"type":"required_linear_history"},{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures"},{"type":"pull_request","parameters":{"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","parameters":{"required_status_checks":[{"context":"test1"},{"context":"test2"}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward"},{"type":"commit_message_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","parameters":{"max_file_size":1024}},{"type":"workflows","parameters":{"workflows":[{"path":".github/workflows/test1.yaml"},{"path":".github/workflows/test2.yaml"}]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}},{"type":"copilot_code_review","parameters":{"review_on_push":true,"review_draft_pull_requests":false}},{"type":"repository_create"},{"type":"repository_delete"},{"type":"repository_name","parameters":{"negate":false,"pattern":"^test-.+"}},{"type":"repository_transfer"},{"type":"repository_visibility","parameters":{"internal":false,"private":false,"public":false}}]`,
+			`[{"type":"creation"},{"type":"update"},{"type":"deletion"},{"type":"required_linear_history"},{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures"},{"type":"pull_request","parameters":{"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_extra_approval_for_unattributed_changes":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","parameters":{"required_status_checks":[{"context":"test1"},{"context":"test2"}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward"},{"type":"commit_message_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","parameters":{"max_file_size":1024}},{"type":"workflows","parameters":{"workflows":[{"path":".github/workflows/test1.yaml"},{"path":".github/workflows/test2.yaml"}]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}},{"type":"copilot_code_review","parameters":{"review_on_push":true,"review_draft_pull_requests":false}},{"type":"repository_create"},{"type":"repository_delete"},{"type":"repository_name","parameters":{"negate":false,"pattern":"^test-.+"}},{"type":"repository_transfer"},{"type":"repository_visibility","parameters":{"internal":false,"private":false,"public":false}}]`,
 		},
 		{
 			"all_rules_with_all_params",
@@ -154,11 +312,12 @@ func TestRepositoryRulesetRules(t *testing.T) {
 						PullRequestMergeMethodSquash,
 						PullRequestMergeMethodRebase,
 					},
-					DismissStaleReviewsOnPush:      true,
-					RequireCodeOwnerReview:         true,
-					RequireLastPushApproval:        true,
-					RequiredApprovingReviewCount:   2,
-					RequiredReviewThreadResolution: true,
+					DismissStaleReviewsOnPush:                  true,
+					RequireCodeOwnerReview:                     true,
+					RequireExtraApprovalForUnattributedChanges: true,
+					RequireLastPushApproval:                    true,
+					RequiredApprovingReviewCount:               2,
+					RequiredReviewThreadResolution:             true,
 				},
 				RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 					DoNotEnforceOnCreate: new(true),
@@ -248,7 +407,7 @@ func TestRepositoryRulesetRules(t *testing.T) {
 				RepositoryTransfer:   &EmptyRuleParameters{},
 				RepositoryVisibility: &RepositoryVisibilityRuleParameters{Internal: false, Private: false, Public: false},
 			},
-			`[{"type":"creation"},{"type":"update","parameters":{"update_allows_fetch_and_merge":true}},{"type":"deletion"},{"type":"required_linear_history"},{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures"},{"type":"pull_request","parameters":{"allowed_merge_methods":["squash","rebase"],"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","parameters":{"do_not_enforce_on_create":true,"required_status_checks":[{"context":"test1","integration_id":1},{"context":"test2","integration_id":2}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward"},{"type":"commit_message_pattern","parameters":{"name":"cmp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","parameters":{"name":"caep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","parameters":{"name":"cep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","parameters":{"name":"bp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","parameters":{"name":"tp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","parameters":{"max_file_size":1024}},{"type":"workflows","parameters":{"do_not_enforce_on_create":true,"workflows":[{"path":".github/workflows/test1.yaml","ref":"main","repository_id":1,"sha":"aaaa"},{"path":".github/workflows/test2.yaml","ref":"main","repository_id":2,"sha":"bbbb"}]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}},{"type":"copilot_code_review","parameters":{"review_on_push":true,"review_draft_pull_requests":false}},{"type":"repository_create"},{"type":"repository_delete"},{"type":"repository_name","parameters":{"negate":false,"pattern":"^test-.+"}},{"type":"repository_transfer"},{"type":"repository_visibility","parameters":{"internal":false,"private":false,"public":false}}]`,
+			`[{"type":"creation"},{"type":"update","parameters":{"update_allows_fetch_and_merge":true}},{"type":"deletion"},{"type":"required_linear_history"},{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures"},{"type":"pull_request","parameters":{"allowed_merge_methods":["squash","rebase"],"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_extra_approval_for_unattributed_changes":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","parameters":{"do_not_enforce_on_create":true,"required_status_checks":[{"context":"test1","integration_id":1},{"context":"test2","integration_id":2}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward"},{"type":"commit_message_pattern","parameters":{"name":"cmp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","parameters":{"name":"caep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","parameters":{"name":"cep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","parameters":{"name":"bp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","parameters":{"name":"tp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","parameters":{"max_file_size":1024}},{"type":"workflows","parameters":{"do_not_enforce_on_create":true,"workflows":[{"path":".github/workflows/test1.yaml","ref":"main","repository_id":1,"sha":"aaaa"},{"path":".github/workflows/test2.yaml","ref":"main","repository_id":2,"sha":"bbbb"}]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}},{"type":"copilot_code_review","parameters":{"review_on_push":true,"review_draft_pull_requests":false}},{"type":"repository_create"},{"type":"repository_delete"},{"type":"repository_name","parameters":{"negate":false,"pattern":"^test-.+"}},{"type":"repository_transfer"},{"type":"repository_visibility","parameters":{"internal":false,"private":false,"public":false}}]`,
 		},
 	}
 
@@ -444,11 +603,12 @@ func TestBranchRules(t *testing.T) {
 								PullRequestMergeMethodSquash,
 								PullRequestMergeMethodRebase,
 							},
-							DismissStaleReviewsOnPush:      true,
-							RequireCodeOwnerReview:         true,
-							RequireLastPushApproval:        true,
-							RequiredApprovingReviewCount:   2,
-							RequiredReviewThreadResolution: true,
+							DismissStaleReviewsOnPush:                  true,
+							RequireCodeOwnerReview:                     true,
+							RequireExtraApprovalForUnattributedChanges: true,
+							RequireLastPushApproval:                    true,
+							RequiredApprovingReviewCount:               2,
+							RequiredReviewThreadResolution:             true,
 						},
 					},
 				},
@@ -658,7 +818,7 @@ func TestBranchRules(t *testing.T) {
 					},
 				},
 			},
-			`[{"type":"creation","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"update","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"update_allows_fetch_and_merge":true}},{"type":"deletion","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"required_linear_history","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"merge_queue","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"pull_request","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"allowed_merge_methods":["squash","rebase"],"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"do_not_enforce_on_create":true,"required_status_checks":[{"context":"test1","integration_id":1},{"context":"test2","integration_id":2}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"commit_message_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"cmp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"caep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"cep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"bp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"tp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"max_file_size":1024}},{"type":"workflows","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"do_not_enforce_on_create":true,"workflows":[{"path":".github/workflows/test1.yaml","ref":"main","repository_id":1,"sha":"aaaa"},{"path":".github/workflows/test2.yaml","ref":"main","repository_id":2,"sha":"bbbb"}]}},{"type":"code_scanning","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}},{"type":"copilot_code_review","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"review_on_push":true,"review_draft_pull_requests":false}}]`,
+			`[{"type":"creation","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"update","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"update_allows_fetch_and_merge":true}},{"type":"deletion","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"required_linear_history","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"merge_queue","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"pull_request","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"allowed_merge_methods":["squash","rebase"],"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_extra_approval_for_unattributed_changes":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"do_not_enforce_on_create":true,"required_status_checks":[{"context":"test1","integration_id":1},{"context":"test2","integration_id":2}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"commit_message_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"cmp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"caep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"cep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"bp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"tp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"max_file_size":1024}},{"type":"workflows","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"do_not_enforce_on_create":true,"workflows":[{"path":".github/workflows/test1.yaml","ref":"main","repository_id":1,"sha":"aaaa"},{"path":".github/workflows/test2.yaml","ref":"main","repository_id":2,"sha":"bbbb"}]}},{"type":"code_scanning","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}},{"type":"copilot_code_review","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"review_on_push":true,"review_draft_pull_requests":false}}]`,
 		},
 	}
 
@@ -798,14 +958,15 @@ func TestRepositoryRule(t *testing.T) {
 						PullRequestMergeMethodSquash,
 						PullRequestMergeMethodRebase,
 					},
-					DismissStaleReviewsOnPush:      true,
-					RequireCodeOwnerReview:         true,
-					RequireLastPushApproval:        true,
-					RequiredApprovingReviewCount:   2,
-					RequiredReviewThreadResolution: true,
+					DismissStaleReviewsOnPush:                  true,
+					RequireCodeOwnerReview:                     true,
+					RequireExtraApprovalForUnattributedChanges: true,
+					RequireLastPushApproval:                    true,
+					RequiredApprovingReviewCount:               2,
+					RequiredReviewThreadResolution:             true,
 				},
 			},
-			`{"type":"pull_request","parameters":{"allowed_merge_methods":["squash","rebase"],"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}}`,
+			`{"type":"pull_request","parameters":{"allowed_merge_methods":["squash","rebase"],"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_extra_approval_for_unattributed_changes":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}}`,
 		},
 		{
 			"pull_request_with_required_reviewers",
@@ -817,11 +978,12 @@ func TestRepositoryRule(t *testing.T) {
 						PullRequestMergeMethodSquash,
 						PullRequestMergeMethodRebase,
 					},
-					DismissStaleReviewsOnPush:      false,
-					RequireCodeOwnerReview:         false,
-					RequireLastPushApproval:        false,
-					RequiredApprovingReviewCount:   0,
-					RequiredReviewThreadResolution: false,
+					DismissStaleReviewsOnPush:                  false,
+					RequireCodeOwnerReview:                     false,
+					RequireExtraApprovalForUnattributedChanges: false,
+					RequireLastPushApproval:                    false,
+					RequiredApprovingReviewCount:               0,
+					RequiredReviewThreadResolution:             false,
 					RequiredReviewers: []*RulesetRequiredReviewer{
 						{
 							MinimumApprovals: new(1),
@@ -834,7 +996,43 @@ func TestRepositoryRule(t *testing.T) {
 					},
 				},
 			},
-			`{"type":"pull_request","parameters":{"allowed_merge_methods":["merge","squash","rebase"],"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":0,"required_reviewers":[{"minimum_approvals":1,"file_patterns":["*"],"reviewer":{"id":123456,"type":"Team"}}],"required_review_thread_resolution":false}}`,
+			`{"type":"pull_request","parameters":{"allowed_merge_methods":["merge","squash","rebase"],"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_extra_approval_for_unattributed_changes":false,"require_last_push_approval":false,"required_approving_review_count":0,"required_reviewers":[{"minimum_approvals":1,"file_patterns":["*"],"reviewer":{"id":123456,"type":"Team"}}],"required_review_thread_resolution":false}}`,
+		},
+		{
+			"pull_request_with_dismissal_restriction",
+			&RepositoryRule{
+				Type: RulesetRuleTypePullRequest,
+				Parameters: &PullRequestRuleParameters{
+					DismissalRestriction: &DismissalRestriction{
+						AllowedActors: []*DismissalRestrictionActor{
+							{ID: 123456, Type: DismissalRestrictionActorTypeTeam},
+							{ID: 5, Type: DismissalRestrictionActorTypeRepositoryRole},
+						},
+						Enabled: true,
+					},
+					DismissStaleReviewsOnPush:      false,
+					RequireCodeOwnerReview:         false,
+					RequireLastPushApproval:        false,
+					RequiredApprovingReviewCount:   1,
+					RequiredReviewThreadResolution: false,
+				},
+			},
+			`{"type":"pull_request","parameters":{"dismissal_restriction":{"allowed_actors":[{"id":123456,"type":"Team"},{"id":5,"type":"RepositoryRole"}],"enabled":true},"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":1,"required_review_thread_resolution":false}}`,
+		},
+		{
+			"pull_request_with_dismissal_restricted_to_nobody",
+			&RepositoryRule{
+				Type: RulesetRuleTypePullRequest,
+				Parameters: &PullRequestRuleParameters{
+					DismissalRestriction:           &DismissalRestriction{Enabled: true},
+					DismissStaleReviewsOnPush:      false,
+					RequireCodeOwnerReview:         false,
+					RequireLastPushApproval:        false,
+					RequiredApprovingReviewCount:   1,
+					RequiredReviewThreadResolution: false,
+				},
+			},
+			`{"type":"pull_request","parameters":{"dismissal_restriction":{"enabled":true},"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":1,"required_review_thread_resolution":false}}`,
 		},
 		{
 			"pull_request_string_id",
@@ -846,11 +1044,12 @@ func TestRepositoryRule(t *testing.T) {
 						PullRequestMergeMethodSquash,
 						PullRequestMergeMethodRebase,
 					},
-					DismissStaleReviewsOnPush:      false,
-					RequireCodeOwnerReview:         false,
-					RequireLastPushApproval:        false,
-					RequiredApprovingReviewCount:   0,
-					RequiredReviewThreadResolution: false,
+					DismissStaleReviewsOnPush:                  false,
+					RequireCodeOwnerReview:                     false,
+					RequireExtraApprovalForUnattributedChanges: false,
+					RequireLastPushApproval:                    false,
+					RequiredApprovingReviewCount:               0,
+					RequiredReviewThreadResolution:             false,
 					RequiredReviewers: []*RulesetRequiredReviewer{
 						{
 							MinimumApprovals: new(1),
@@ -863,7 +1062,7 @@ func TestRepositoryRule(t *testing.T) {
 					},
 				},
 			},
-			`{"type":"pull_request","parameters":{"allowed_merge_methods":["merge","squash","rebase"],"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":0,"required_reviewers":[{"minimum_approvals":1,"file_patterns":["*"],"reviewer":{"id":"123456","type":"Team"}}],"required_review_thread_resolution":false}}`,
+			`{"type":"pull_request","parameters":{"allowed_merge_methods":["merge","squash","rebase"],"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_extra_approval_for_unattributed_changes":false,"require_last_push_approval":false,"required_approving_review_count":0,"required_reviewers":[{"minimum_approvals":1,"file_patterns":["*"],"reviewer":{"id":"123456","type":"Team"}}],"required_review_thread_resolution":false}}`,
 		},
 		{
 			"required_status_checks",

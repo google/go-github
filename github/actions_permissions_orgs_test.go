@@ -27,7 +27,7 @@ func TestActionsService_GetActionsPermissions(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.GetActionsPermissions returned error: %v", err)
 	}
-	want := &ActionsPermissions{EnabledRepositories: new("all"), AllowedActions: new("all"), SHAPinningRequired: new(true)}
+	want := &ActionsPermissions{EnabledRepositories: "all", AllowedActions: new("all"), SHAPinningRequired: new(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Actions.GetActionsPermissions returned %+v, want %+v", org, want)
 	}
@@ -51,7 +51,7 @@ func TestActionsService_UpdateActionsPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsPermissions{EnabledRepositories: new("all"), AllowedActions: new("selected"), SHAPinningRequired: new(true)}
+	input := &ActionsPermissions{EnabledRepositories: "all", AllowedActions: new("selected"), SHAPinningRequired: new(true)}
 
 	mux.HandleFunc("/orgs/o/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -65,7 +65,7 @@ func TestActionsService_UpdateActionsPermissions(t *testing.T) {
 		t.Errorf("Actions.UpdateActionsPermissions returned error: %v", err)
 	}
 
-	want := &ActionsPermissions{EnabledRepositories: new("all"), AllowedActions: new("selected"), SHAPinningRequired: new(true)}
+	want := &ActionsPermissions{EnabledRepositories: "all", AllowedActions: new("selected"), SHAPinningRequired: new(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Actions.UpdateActionsPermissions returned %+v, want %+v", org, want)
 	}
@@ -510,7 +510,7 @@ func TestActionsService_UpdateArtifactAndLogRetentionPeriodInOrganization(t *tes
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ArtifactPeriodOpt{Days: new(90)}
+	input := &ArtifactPeriodOpt{Days: 90}
 
 	mux.HandleFunc("/orgs/o/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -580,7 +580,7 @@ func TestActionsService_UpdateSelfHostedRunnersSettingsInOrganization(t *testing
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SelfHostedRunnersSettingsOrganizationOpt{EnabledRepositories: new("selected")}
+	input := &SelfHostedRunnersSettingsOrganizationOpt{EnabledRepositories: "selected"}
 
 	mux.HandleFunc("/orgs/o/actions/permissions/self-hosted-runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")

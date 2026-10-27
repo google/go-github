@@ -46,7 +46,7 @@ func TestActionsAllowed_String(t *testing.T) {
 func TestActionsPermissions_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsPermissions{
-		EnabledRepositories: new(""),
+		EnabledRepositories: "",
 		AllowedActions:      new(""),
 		SelectedActionsURL:  new(""),
 		SHAPinningRequired:  new(false),
@@ -60,7 +60,7 @@ func TestActionsPermissions_String(t *testing.T) {
 func TestActionsPermissionsEnterprise_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsPermissionsEnterprise{
-		EnabledOrganizations: new(""),
+		EnabledOrganizations: "",
 		AllowedActions:       new(""),
 		SelectedActionsURL:   new(""),
 	}
@@ -73,7 +73,7 @@ func TestActionsPermissionsEnterprise_String(t *testing.T) {
 func TestActionsPermissionsRepository_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsPermissionsRepository{
-		Enabled:            new(false),
+		Enabled:            false,
 		AllowedActions:     new(""),
 		SelectedActionsURL: new(""),
 		SHAPinningRequired: new(false),
@@ -508,6 +508,42 @@ func TestContributorStats_String(t *testing.T) {
 	}
 }
 
+func TestCreateRepositoryRequest_String(t *testing.T) {
+	t.Parallel()
+	v := CreateRepositoryRequest{
+		Name:                      "",
+		Description:               new(""),
+		Homepage:                  new(""),
+		Private:                   new(false),
+		Visibility:                new(""),
+		HasIssues:                 new(false),
+		HasProjects:               new(false),
+		HasWiki:                   new(false),
+		HasDiscussions:            new(false),
+		IsTemplate:                new(false),
+		TeamID:                    new(int64(0)),
+		AutoInit:                  new(false),
+		GitignoreTemplate:         new(""),
+		LicenseTemplate:           new(""),
+		AllowSquashMerge:          new(false),
+		AllowMergeCommit:          new(false),
+		AllowRebaseMerge:          new(false),
+		AllowUpdateBranch:         new(false),
+		AllowAutoMerge:            new(false),
+		AllowForking:              new(false),
+		DeleteBranchOnMerge:       new(false),
+		UseSquashPRTitleAsDefault: new(false),
+		SquashMergeCommitTitle:    new(""),
+		SquashMergeCommitMessage:  new(""),
+		MergeCommitTitle:          new(""),
+		MergeCommitMessage:        new(""),
+	}
+	want := `github.CreateRepositoryRequest{Name:"", Description:"", Homepage:"", Private:false, Visibility:"", HasIssues:false, HasProjects:false, HasWiki:false, HasDiscussions:false, IsTemplate:false, TeamID:0, AutoInit:false, GitignoreTemplate:"", LicenseTemplate:"", AllowSquashMerge:false, AllowMergeCommit:false, AllowRebaseMerge:false, AllowUpdateBranch:false, AllowAutoMerge:false, AllowForking:false, DeleteBranchOnMerge:false, UseSquashPRTitleAsDefault:false, SquashMergeCommitTitle:"", SquashMergeCommitMessage:"", MergeCommitTitle:"", MergeCommitMessage:""}`
+	if got := v.String(); got != want {
+		t.Errorf("CreateRepositoryRequest.String = %v, want %v", got, want)
+	}
+}
+
 func TestCreateTeamRequest_String(t *testing.T) {
 	t.Parallel()
 	v := CreateTeamRequest{
@@ -520,8 +556,9 @@ func TestCreateTeamRequest_String(t *testing.T) {
 		Permission:          new(""),
 		ParentTeamID:        new(int64(0)),
 		ParentTeamSlug:      new(""),
+		LDAPDN:              new(""),
 	}
-	want := `github.CreateTeamRequest{Name:"", Description:"", Maintainers:[""], RepoNames:[""], Privacy:"", NotificationSetting:"", Permission:"", ParentTeamID:0, ParentTeamSlug:""}`
+	want := `github.CreateTeamRequest{Name:"", Description:"", Maintainers:[""], RepoNames:[""], Privacy:"", NotificationSetting:"", Permission:"", ParentTeamID:0, ParentTeamSlug:"", LDAPDN:""}`
 	if got := v.String(); got != want {
 		t.Errorf("CreateTeamRequest.String = %v, want %v", got, want)
 	}
@@ -1951,8 +1988,9 @@ func TestRepoStatus_String(t *testing.T) {
 		Creator:     &User{},
 		CreatedAt:   &Timestamp{},
 		UpdatedAt:   &Timestamp{},
+		Required:    new(false),
 	}
-	want := `github.RepoStatus{ID:0, NodeID:"", URL:"", State:"", TargetURL:"", Description:"", Context:"", AvatarURL:"", Creator:github.User{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.RepoStatus{ID:0, NodeID:"", URL:"", State:"", TargetURL:"", Description:"", Context:"", AvatarURL:"", Creator:github.User{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Required:false}`
 	if got := v.String(); got != want {
 		t.Errorf("RepoStatus.String = %v, want %v", got, want)
 	}
@@ -2274,7 +2312,7 @@ func TestSecurityAndAnalysis_String(t *testing.T) {
 func TestSelfHostRunnerPermissionsEnterprise_String(t *testing.T) {
 	t.Parallel()
 	v := SelfHostRunnerPermissionsEnterprise{
-		DisableSelfHostedRunnersForAllOrgs: new(false),
+		DisableSelfHostedRunnersForAllOrgs: false,
 	}
 	want := `github.SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs:false}`
 	if got := v.String(); got != want {

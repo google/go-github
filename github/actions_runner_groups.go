@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 )
 
@@ -35,7 +36,7 @@ type RunnerGroups struct {
 
 // CreateRunnerGroupRequest represents a request to create a Runner group for an organization.
 type CreateRunnerGroupRequest struct {
-	Name       *string `json:"name,omitempty"`
+	Name       string  `json:"name"`
 	Visibility *string `json:"visibility,omitempty"`
 	// List of repository IDs that can access the runner group.
 	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
@@ -53,12 +54,30 @@ type CreateRunnerGroupRequest struct {
 
 // UpdateRunnerGroupRequest represents a request to update a Runner group for an organization.
 type UpdateRunnerGroupRequest struct {
-	Name                     *string  `json:"name,omitempty"`
+	Name                     string   `json:"name"`
 	Visibility               *string  `json:"visibility,omitempty"`
 	AllowsPublicRepositories *bool    `json:"allows_public_repositories,omitempty"`
 	RestrictedToWorkflows    *bool    `json:"restricted_to_workflows,omitempty"`
 	SelectedWorkflows        []string `json:"selected_workflows,omitempty"`
 	NetworkConfigurationID   *string  `json:"network_configuration_id,omitempty"`
+
+	// If true, send a null network_configuration_id to remove the network configuration.
+	// This takes precedence over NetworkConfigurationID.
+	RemoveNetworkConfiguration bool `json:"-"`
+}
+
+// MarshalJSON implements the json.Marshaler interface.
+func (r UpdateRunnerGroupRequest) MarshalJSON() ([]byte, error) {
+	type alias UpdateRunnerGroupRequest
+	if !r.RemoveNetworkConfiguration {
+		return json.Marshal(alias(r))
+	}
+	return json.Marshal(&struct {
+		alias
+		NetworkConfigurationID *string `json:"network_configuration_id"`
+	}{
+		alias: alias(r),
+	})
 }
 
 // SetRepoAccessRunnerGroupRequest represents a request to replace the list of repositories
