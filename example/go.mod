@@ -6,6 +6,7 @@ require (
 	github.com/ProtonMail/go-crypto v1.5.2
 	github.com/gofri/go-github-pagination v1.0.1
 	github.com/gofri/go-github-ratelimit/v2 v2.0.2
+	github.com/golang/snappy v1.0.0
 	github.com/google/go-github/otel/v93 v93.0.0
 	github.com/google/go-github/v93 v93.0.0
 	github.com/jferrl/go-githubauth v1.9.1

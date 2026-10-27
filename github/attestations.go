@@ -17,6 +17,8 @@ type Attestation struct {
 	// The attestation's Sigstore Bundle.
 	// Refer to the sigstore bundle specification for more info:
 	// https://github.com/sigstore/protobuf-specs/blob/main/protos/sigstore_bundle.proto
+	//
+	// Deprecated: GitHub REST API version 2026-03-10 removes this field from attestation list responses. Use BundleURL instead.
 	Bundle json.RawMessage `json:"bundle,omitempty"`
 	// The download URL for the attestation's Sigstore Bundle.
 	BundleURL *string `json:"bundle_url,omitempty"`
