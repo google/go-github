@@ -25,12 +25,12 @@ func TestCopilotService_ListEnterpriseCustomAgents(t *testing.T) {
 				{
 					"name": "performance-optimizer",
 					"file_path": "agents/performance-optimizer.agent.md",
-					"url": "https://github.com/octo-org/.github-private/blob/main/agents/performance-optimizer.agent.md"
+					"url": "https://example.com/octo-org/.github-private/blob/main/agents/performance-optimizer.agent.md"
 				},
 				{
 					"name": "security-reviewer",
 					"file_path": "agents/security-reviewer.agent.md",
-					"url": "https://github.com/octo-org/.github-private/blob/main/agents/security-reviewer.agent.md"
+					"url": "https://example.com/octo-org/.github-private/blob/main/agents/security-reviewer.agent.md"
 				}
 			]
 		}`)
@@ -48,12 +48,12 @@ func TestCopilotService_ListEnterpriseCustomAgents(t *testing.T) {
 			{
 				Name:     new("performance-optimizer"),
 				FilePath: new("agents/performance-optimizer.agent.md"),
-				URL:      new("https://github.com/octo-org/.github-private/blob/main/agents/performance-optimizer.agent.md"),
+				URL:      new("https://example.com/octo-org/.github-private/blob/main/agents/performance-optimizer.agent.md"),
 			},
 			{
 				Name:     new("security-reviewer"),
 				FilePath: new("agents/security-reviewer.agent.md"),
-				URL:      new("https://github.com/octo-org/.github-private/blob/main/agents/security-reviewer.agent.md"),
+				URL:      new("https://example.com/octo-org/.github-private/blob/main/agents/security-reviewer.agent.md"),
 			},
 		},
 	}
@@ -189,7 +189,7 @@ func TestCopilotService_SetEnterpriseCustomAgentsSource(t *testing.T) {
 			"organization": {
 				"id": 123,
 				"login": "octo-org",
-				"avatar_url": "https://github.com/images/error/octocat_happy.gif"
+				"avatar_url": "https://example.com/images/error/octocat_happy.gif"
 			},
 			"repository": {
 				"id": 2,
@@ -214,7 +214,7 @@ func TestCopilotService_SetEnterpriseCustomAgentsSource(t *testing.T) {
 		Organization: &CopilotCustomAgentsSourceOrganization{
 			ID:        new(int64(123)),
 			Login:     new("octo-org"),
-			AvatarURL: new("https://github.com/images/error/octocat_happy.gif"),
+			AvatarURL: new("https://example.com/images/error/octocat_happy.gif"),
 		},
 		Repository: &CopilotCustomAgentsSourceRepository{
 			ID:       new(int64(2)),
