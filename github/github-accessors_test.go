@@ -5717,6 +5717,168 @@ func TestBypassReviewer_GetSecurityConfigurationID(tt *testing.T) {
 	b.GetSecurityConfigurationID()
 }
 
+func TestCampaign_GetAlertStats(tt *testing.T) {
+	tt.Parallel()
+	c := &Campaign{}
+	c.GetAlertStats()
+	c = nil
+	c.GetAlertStats()
+}
+
+func TestCampaign_GetClosedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	c := &Campaign{ClosedAt: &zeroValue}
+	c.GetClosedAt()
+	c = &Campaign{}
+	c.GetClosedAt()
+	c = nil
+	c.GetClosedAt()
+}
+
+func TestCampaign_GetContactLink(tt *testing.T) {
+	tt.Parallel()
+	c := &Campaign{}
+	c.GetContactLink()
+	c = nil
+	c.GetContactLink()
+}
+
+func TestCampaign_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	c := &Campaign{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
+func TestCampaign_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	c := &Campaign{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCampaign_GetEndsAt(tt *testing.T) {
+	tt.Parallel()
+	c := &Campaign{}
+	c.GetEndsAt()
+	c = nil
+	c.GetEndsAt()
+}
+
+func TestCampaign_GetManagers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	c := &Campaign{Managers: zeroValue}
+	c.GetManagers()
+	c = &Campaign{}
+	c.GetManagers()
+	c = nil
+	c.GetManagers()
+}
+
+func TestCampaign_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &Campaign{Name: &zeroValue}
+	c.GetName()
+	c = &Campaign{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCampaign_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	c := &Campaign{}
+	c.GetNumber()
+	c = nil
+	c.GetNumber()
+}
+
+func TestCampaign_GetPublishedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	c := &Campaign{PublishedAt: &zeroValue}
+	c.GetPublishedAt()
+	c = &Campaign{}
+	c.GetPublishedAt()
+	c = nil
+	c.GetPublishedAt()
+}
+
+func TestCampaign_GetState(tt *testing.T) {
+	tt.Parallel()
+	c := &Campaign{}
+	c.GetState()
+	c = nil
+	c.GetState()
+}
+
+func TestCampaign_GetTeamManagers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Team{}
+	c := &Campaign{TeamManagers: zeroValue}
+	c.GetTeamManagers()
+	c = &Campaign{}
+	c.GetTeamManagers()
+	c = nil
+	c.GetTeamManagers()
+}
+
+func TestCampaign_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	c := &Campaign{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
+}
+
+func TestCampaignAlertStats_GetClosedCount(tt *testing.T) {
+	tt.Parallel()
+	c := &CampaignAlertStats{}
+	c.GetClosedCount()
+	c = nil
+	c.GetClosedCount()
+}
+
+func TestCampaignAlertStats_GetInProgressCount(tt *testing.T) {
+	tt.Parallel()
+	c := &CampaignAlertStats{}
+	c.GetInProgressCount()
+	c = nil
+	c.GetInProgressCount()
+}
+
+func TestCampaignAlertStats_GetOpenCount(tt *testing.T) {
+	tt.Parallel()
+	c := &CampaignAlertStats{}
+	c.GetOpenCount()
+	c = nil
+	c.GetOpenCount()
+}
+
+func TestCampaignCodeScanningAlert_GetAlertNumbers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	c := &CampaignCodeScanningAlert{AlertNumbers: zeroValue}
+	c.GetAlertNumbers()
+	c = &CampaignCodeScanningAlert{}
+	c.GetAlertNumbers()
+	c = nil
+	c.GetAlertNumbers()
+}
+
+func TestCampaignCodeScanningAlert_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	c := &CampaignCodeScanningAlert{}
+	c.GetRepositoryID()
+	c = nil
+	c.GetRepositoryID()
+}
+
 func TestCheckRun_GetApp(tt *testing.T) {
 	tt.Parallel()
 	c := &CheckRun{}
@@ -15621,6 +15783,85 @@ func TestCreateAutolinkRequest_GetURLTemplate(tt *testing.T) {
 	c.GetURLTemplate()
 	c = nil
 	c.GetURLTemplate()
+}
+
+func TestCreateCampaignRequest_GetCodeScanningAlerts(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CampaignCodeScanningAlert{}
+	c := &CreateCampaignRequest{CodeScanningAlerts: zeroValue}
+	c.GetCodeScanningAlerts()
+	c = &CreateCampaignRequest{}
+	c.GetCodeScanningAlerts()
+	c = nil
+	c.GetCodeScanningAlerts()
+}
+
+func TestCreateCampaignRequest_GetContactLink(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCampaignRequest{ContactLink: &zeroValue}
+	c.GetContactLink()
+	c = &CreateCampaignRequest{}
+	c.GetContactLink()
+	c = nil
+	c.GetContactLink()
+}
+
+func TestCreateCampaignRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCampaignRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateCampaignRequest_GetEndsAt(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCampaignRequest{}
+	c.GetEndsAt()
+	c = nil
+	c.GetEndsAt()
+}
+
+func TestCreateCampaignRequest_GetGenerateIssues(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateCampaignRequest{GenerateIssues: &zeroValue}
+	c.GetGenerateIssues()
+	c = &CreateCampaignRequest{}
+	c.GetGenerateIssues()
+	c = nil
+	c.GetGenerateIssues()
+}
+
+func TestCreateCampaignRequest_GetManagers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateCampaignRequest{Managers: zeroValue}
+	c.GetManagers()
+	c = &CreateCampaignRequest{}
+	c.GetManagers()
+	c = nil
+	c.GetManagers()
+}
+
+func TestCreateCampaignRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCampaignRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateCampaignRequest_GetTeamManagers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateCampaignRequest{TeamManagers: zeroValue}
+	c.GetTeamManagers()
+	c = &CreateCampaignRequest{}
+	c.GetTeamManagers()
+	c = nil
+	c.GetTeamManagers()
 }
 
 func TestCreateCheckRunOptions_GetActions(tt *testing.T) {
@@ -31465,6 +31706,30 @@ func TestListArtifactsOptions_GetName(tt *testing.T) {
 	l.GetName()
 	l = nil
 	l.GetName()
+}
+
+func TestListCampaignsOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCampaignsOptions{}
+	l.GetDirection()
+	l = nil
+	l.GetDirection()
+}
+
+func TestListCampaignsOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCampaignsOptions{}
+	l.GetSort()
+	l = nil
+	l.GetSort()
+}
+
+func TestListCampaignsOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCampaignsOptions{}
+	l.GetState()
+	l = nil
+	l.GetState()
 }
 
 func TestListCheckRunsOptions_GetAppID(tt *testing.T) {
@@ -58252,6 +58517,83 @@ func TestUpdateBranchRule_GetParameters(tt *testing.T) {
 	u.GetParameters()
 	u = nil
 	u.GetParameters()
+}
+
+func TestUpdateCampaignRequest_GetContactLink(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCampaignRequest{ContactLink: &zeroValue}
+	u.GetContactLink()
+	u = &UpdateCampaignRequest{}
+	u.GetContactLink()
+	u = nil
+	u.GetContactLink()
+}
+
+func TestUpdateCampaignRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCampaignRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateCampaignRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateCampaignRequest_GetEndsAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	u := &UpdateCampaignRequest{EndsAt: &zeroValue}
+	u.GetEndsAt()
+	u = &UpdateCampaignRequest{}
+	u.GetEndsAt()
+	u = nil
+	u.GetEndsAt()
+}
+
+func TestUpdateCampaignRequest_GetManagers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateCampaignRequest{Managers: zeroValue}
+	u.GetManagers()
+	u = &UpdateCampaignRequest{}
+	u.GetManagers()
+	u = nil
+	u.GetManagers()
+}
+
+func TestUpdateCampaignRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCampaignRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateCampaignRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateCampaignRequest_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCampaignRequest{State: &zeroValue}
+	u.GetState()
+	u = &UpdateCampaignRequest{}
+	u.GetState()
+	u = nil
+	u.GetState()
+}
+
+func TestUpdateCampaignRequest_GetTeamManagers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateCampaignRequest{TeamManagers: zeroValue}
+	u.GetTeamManagers()
+	u = &UpdateCampaignRequest{}
+	u.GetTeamManagers()
+	u = nil
+	u.GetTeamManagers()
 }
 
 func TestUpdateCheckRunOptions_GetActions(tt *testing.T) {
