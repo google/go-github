@@ -79,8 +79,9 @@ func (w WorkflowsPermissions) String() string {
 	return Stringify(w)
 }
 
-// WorkflowsPermissionsOpt specifies options for editing workflows permissions in a repository.
-type WorkflowsPermissionsOpt struct {
+// WorkflowsPermissionsRequest specifies fork pull request workflow settings
+// for a repository, organization, or enterprise.
+type WorkflowsPermissionsRequest struct {
 	RunWorkflowsFromForkPullRequests  bool  `json:"run_workflows_from_fork_pull_requests"`
 	SendWriteTokensToWorkflows        *bool `json:"send_write_tokens_to_workflows,omitempty"`
 	SendSecretsAndVariables           *bool `json:"send_secrets_and_variables,omitempty"`

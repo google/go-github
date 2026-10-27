@@ -785,7 +785,7 @@ func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(t 
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &WorkflowsPermissionsOpt{
+	input := WorkflowsPermissionsRequest{
 		RunWorkflowsFromForkPullRequests: true,
 		SendWriteTokensToWorkflows:       new(false),
 		SendSecretsAndVariables:          new(true),

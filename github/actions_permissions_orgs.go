@@ -478,7 +478,7 @@ func (s *ActionsService) GetPrivateRepoForkPRWorkflowSettingsInOrganization(ctx 
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-private-repo-fork-pr-workflow-settings-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/fork-pr-workflows-private-repos
-func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(ctx context.Context, org string, body *WorkflowsPermissionsOpt) (*Response, error) {
+func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(ctx context.Context, org string, body WorkflowsPermissionsRequest) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-workflows-private-repos", org)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {

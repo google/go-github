@@ -50415,7 +50415,7 @@ func (w *WorkflowsPermissions) GetSendWriteTokensToWorkflows() bool {
 }
 
 // GetRequireApprovalForForkPRWorkflows returns the RequireApprovalForForkPRWorkflows field if it's non-nil, zero value otherwise.
-func (w *WorkflowsPermissionsOpt) GetRequireApprovalForForkPRWorkflows() bool {
+func (w *WorkflowsPermissionsRequest) GetRequireApprovalForForkPRWorkflows() bool {
 	if w == nil || w.RequireApprovalForForkPRWorkflows == nil {
 		return false
 	}
@@ -50423,7 +50423,7 @@ func (w *WorkflowsPermissionsOpt) GetRequireApprovalForForkPRWorkflows() bool {
 }
 
 // GetRunWorkflowsFromForkPullRequests returns the RunWorkflowsFromForkPullRequests field.
-func (w *WorkflowsPermissionsOpt) GetRunWorkflowsFromForkPullRequests() bool {
+func (w *WorkflowsPermissionsRequest) GetRunWorkflowsFromForkPullRequests() bool {
 	if w == nil {
 		return false
 	}
@@ -50431,7 +50431,7 @@ func (w *WorkflowsPermissionsOpt) GetRunWorkflowsFromForkPullRequests() bool {
 }
 
 // GetSendSecretsAndVariables returns the SendSecretsAndVariables field if it's non-nil, zero value otherwise.
-func (w *WorkflowsPermissionsOpt) GetSendSecretsAndVariables() bool {
+func (w *WorkflowsPermissionsRequest) GetSendSecretsAndVariables() bool {
 	if w == nil || w.SendSecretsAndVariables == nil {
 		return false
 	}
@@ -50439,7 +50439,7 @@ func (w *WorkflowsPermissionsOpt) GetSendSecretsAndVariables() bool {
 }
 
 // GetSendWriteTokensToWorkflows returns the SendWriteTokensToWorkflows field if it's non-nil, zero value otherwise.
-func (w *WorkflowsPermissionsOpt) GetSendWriteTokensToWorkflows() bool {
+func (w *WorkflowsPermissionsRequest) GetSendWriteTokensToWorkflows() bool {
 	if w == nil || w.SendWriteTokensToWorkflows == nil {
 		return false
 	}
