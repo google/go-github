@@ -97,6 +97,41 @@ func TestIssuesService_ListArtifacts_Pages(t *testing.T) {
 	}
 }
 
+func TestIssuesService_ListArtifactsIter_LinkPagination(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	requests := 0
+	mux.HandleFunc("/repos/o/r/issues/42/artifacts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		requests++
+		query := values{"per_page": "2", "type": "link"}
+		if requests == 1 {
+			query["page"] = "1"
+			w.Header().Set("Link", `<https://api.github.com/repos/o/r/issues/42/artifacts?page=2&per_page=2&type=link>; rel="next"`)
+			fmt.Fprint(w, `[{"id":9001,"number":1,"type":"link","name":"One"},{"id":9002,"number":2,"type":"link","name":"Two"}]`)
+		} else {
+			query["page"] = "2"
+			fmt.Fprint(w, `[{"id":9003,"number":3,"type":"link","name":"Three"}]`)
+		}
+		testFormValues(t, r, query)
+	})
+
+	opts := &IssueArtifactListOptions{Type: "link", ListOptions: ListOptions{Page: 1, PerPage: 2}}
+	var got []*IssueArtifact
+	for artifact, err := range client.Issues.ListArtifactsIter(t.Context(), "o", "r", 42, opts) {
+		if err != nil {
+			t.Fatalf("ListArtifactsIter returned error: %v", err)
+		}
+		got = append(got, artifact)
+	}
+	if len(got) != 3 || requests != 2 {
+		t.Fatalf("ListArtifactsIter returned %d artifacts in %d requests; want 3 in 2 requests", len(got), requests)
+	}
+	if opts.Page != 1 || opts.PerPage != 2 || opts.Type != "link" {
+		t.Errorf("ListArtifactsIter mutated options: %+v", opts)
+	}
+}
+
 func TestIssuesService_GetArtifact(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

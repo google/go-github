@@ -325,11 +325,6 @@ func (t *templateData) processMethods(f *ast.File) error {
 			continue
 		}
 
-		// Issue artifact lists have no Link headers for the iterator to follow.
-		if methodKey == "IssuesService.ListArtifacts" {
-			continue
-		}
-
 		if fd.Type.Results == nil || len(fd.Type.Results.List) != 3 {
 			continue
 		}

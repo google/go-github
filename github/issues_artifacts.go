@@ -78,12 +78,11 @@ type UpdateIssueArtifactRequest struct {
 	Body *string `json:"body,omitempty"`
 }
 
-// ListArtifacts lists one page of artifacts attached to an issue.
+// ListArtifacts lists artifacts attached to an issue.
 //
-// This endpoint does not return pagination links, so Response.NextPage is not
-// available. To retrieve all artifacts, set PerPage and request successive pages
-// until a page contains fewer than PerPage artifacts. An exactly full final page
-// requires a subsequent empty request. Offset pagination has no snapshot guarantee.
+// The response uses standard Link headers for pagination, which are exposed
+// through Response and supported by ListArtifactsIter. Offset pagination has
+// no snapshot guarantee.
 //
 // Note: ListArtifacts uses the undocumented GitHub API endpoint "GET /repos/{owner}/{repo}/issues/{issue_number}/artifacts".
 //
