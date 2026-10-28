@@ -73,7 +73,7 @@ type PullRequest struct {
 	MergeableState      *string `json:"mergeable_state,omitempty"`
 	Rebaseable          *bool   `json:"rebaseable,omitempty"`
 	MergedBy            *User   `json:"merged_by,omitempty"`
-	MergeCommitSHA      *string `json:"merge_commit_sha,omitempty"` // Deprecated: Removed from REST API responses in API version 2026-03-10.
+	MergeCommitSHA      *string `json:"merge_commit_sha,omitempty"` // Deprecated: GitHub REST API version 2026-03-10 removes the MergeCommitSHA field.
 	Comments            *int    `json:"comments,omitempty"`
 	Commits             *int    `json:"commits,omitempty"`
 	Additions           *int    `json:"additions,omitempty"`
