@@ -5033,6 +5033,23 @@ func TestNormalizedPort(t *testing.T) {
 	}
 }
 
+func TestClient_statelessInstallationToken(t *testing.T) {
+	t.Parallel()
+	server, auth := authRecorderServer(t)
+
+	token := statelessInstallationToken()
+	client := mustNewClient(t, WithAuthToken(token), WithURLs(&server.URL, &server.URL))
+
+	req, err := client.NewRequest(t.Context(), "GET", server.URL, nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+	if _, err := client.Do(req, nil); err != nil {
+		t.Fatalf("Do returned error: %v", err)
+	}
+	assertRecordedAuthHeader(t, auth, "Bearer "+token)
+}
+
 // TestClient_tokenOriginScope is the policy's end-to-end guarantee on the
 // default client: a [WithAuthToken] token reaches the client's configured API
 // and upload origins, and no other destination.

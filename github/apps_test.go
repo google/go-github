@@ -8,6 +8,7 @@ package github
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -446,6 +447,35 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+// statelessInstallationToken returns a token in the stateless ghs_APPID_JWT
+// format of GitHub App installation tokens, which are about 520 characters long
+// instead of the 40 characters of the legacy format.
+func statelessInstallationToken() string {
+	return "ghs_12345_" + strings.Repeat("h", 36) + "." + strings.Repeat("p", 386) + "." + strings.Repeat("s", 86)
+}
+
+func TestAppsService_CreateInstallationTokenStateless(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	token := statelessInstallationToken()
+	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprintf(w, `{"token":%q}`, token)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Apps.CreateInstallationToken(ctx, 1, nil)
+	if err != nil {
+		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
+	}
+
+	want := &InstallationToken{Token: new(token)}
+	if !cmp.Equal(got, want) {
+		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", got, want)
+	}
 }
 
 func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
