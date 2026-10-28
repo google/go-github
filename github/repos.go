@@ -71,7 +71,7 @@ type Repository struct {
 	AllowForking              *bool                  `json:"allow_forking,omitempty"`
 	WebCommitSignoffRequired  *bool                  `json:"web_commit_signoff_required,omitempty"`
 	DeleteBranchOnMerge       *bool                  `json:"delete_branch_on_merge,omitempty"`
-	UseSquashPRTitleAsDefault *bool                  `json:"use_squash_pr_title_as_default,omitempty"` // Deprecated: Removed in API version 2026-03-10. Use SquashMergeCommitTitle instead.
+	UseSquashPRTitleAsDefault *bool                  `json:"use_squash_pr_title_as_default,omitempty"` // Deprecated: GitHub REST API version 2026-03-10 removes the UseSquashPRTitleAsDefault field. Use SquashMergeCommitTitle instead.
 	SquashMergeCommitTitle    *string                `json:"squash_merge_commit_title,omitempty"`      // Can be one of: "PR_TITLE", "COMMIT_OR_PR_TITLE"
 	SquashMergeCommitMessage  *string                `json:"squash_merge_commit_message,omitempty"`    // Can be one of: "PR_BODY", "COMMIT_MESSAGES", "BLANK"
 	MergeCommitTitle          *string                `json:"merge_commit_title,omitempty"`             // Can be one of: "PR_TITLE", "MERGE_MESSAGE"
@@ -90,7 +90,7 @@ type Repository struct {
 	HasWiki                   *bool   `json:"has_wiki,omitempty"`
 	HasPages                  *bool   `json:"has_pages,omitempty"`
 	HasProjects               *bool   `json:"has_projects,omitempty"`
-	HasDownloads              *bool   `json:"has_downloads,omitempty"` // Deprecated: Removed in API version 2026-03-10.
+	HasDownloads              *bool   `json:"has_downloads,omitempty"` // Deprecated: GitHub REST API version 2026-03-10 removes the HasDownloads field.
 	HasDiscussions            *bool   `json:"has_discussions,omitempty"`
 	HasPullRequests           *bool   `json:"has_pull_requests,omitempty"`
 	PullRequestCreationPolicy *string `json:"pull_request_creation_policy,omitempty"` // Can be one of: "all", "collaborators_only"
@@ -529,7 +529,7 @@ type CreateRepositoryRequest struct {
 	AllowAutoMerge            *bool          `json:"allow_auto_merge,omitempty"`
 	AllowForking              *bool          `json:"allow_forking,omitempty"`
 	DeleteBranchOnMerge       *bool          `json:"delete_branch_on_merge,omitempty"`
-	UseSquashPRTitleAsDefault *bool          `json:"use_squash_pr_title_as_default,omitempty"` // Deprecated: Removed in API version 2026-03-10. Use SquashMergeCommitTitle instead.
+	UseSquashPRTitleAsDefault *bool          `json:"use_squash_pr_title_as_default,omitempty"` // Deprecated: GitHub REST API version 2026-03-10 removes the UseSquashPRTitleAsDefault field. Use SquashMergeCommitTitle instead.
 	SquashMergeCommitTitle    *string        `json:"squash_merge_commit_title,omitempty"`
 	SquashMergeCommitMessage  *string        `json:"squash_merge_commit_message,omitempty"`
 	MergeCommitTitle          *string        `json:"merge_commit_title,omitempty"`
