@@ -182,7 +182,7 @@ func (s *RepositoriesService) GetPrivateRepoForkPRWorkflowSettings(ctx context.C
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-private-repo-fork-pr-workflow-settings-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-workflows-private-repos
-func (s *RepositoriesService) UpdatePrivateRepoForkPRWorkflowSettings(ctx context.Context, owner, repo string, body *WorkflowsPermissionsOpt) (*Response, error) {
+func (s *RepositoriesService) UpdatePrivateRepoForkPRWorkflowSettings(ctx context.Context, owner, repo string, body WorkflowsPermissionsRequest) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/fork-pr-workflows-private-repos", owner, repo)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
