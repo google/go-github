@@ -63048,42 +63048,42 @@ func TestWorkflowsPermissions_GetSendWriteTokensToWorkflows(tt *testing.T) {
 	w.GetSendWriteTokensToWorkflows()
 }
 
-func TestWorkflowsPermissionsOpt_GetRequireApprovalForForkPRWorkflows(tt *testing.T) {
+func TestWorkflowsPermissionsRequest_GetRequireApprovalForForkPRWorkflows(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	w := &WorkflowsPermissionsOpt{RequireApprovalForForkPRWorkflows: &zeroValue}
+	w := &WorkflowsPermissionsRequest{RequireApprovalForForkPRWorkflows: &zeroValue}
 	w.GetRequireApprovalForForkPRWorkflows()
-	w = &WorkflowsPermissionsOpt{}
+	w = &WorkflowsPermissionsRequest{}
 	w.GetRequireApprovalForForkPRWorkflows()
 	w = nil
 	w.GetRequireApprovalForForkPRWorkflows()
 }
 
-func TestWorkflowsPermissionsOpt_GetRunWorkflowsFromForkPullRequests(tt *testing.T) {
+func TestWorkflowsPermissionsRequest_GetRunWorkflowsFromForkPullRequests(tt *testing.T) {
 	tt.Parallel()
-	w := &WorkflowsPermissionsOpt{}
+	w := &WorkflowsPermissionsRequest{}
 	w.GetRunWorkflowsFromForkPullRequests()
 	w = nil
 	w.GetRunWorkflowsFromForkPullRequests()
 }
 
-func TestWorkflowsPermissionsOpt_GetSendSecretsAndVariables(tt *testing.T) {
+func TestWorkflowsPermissionsRequest_GetSendSecretsAndVariables(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	w := &WorkflowsPermissionsOpt{SendSecretsAndVariables: &zeroValue}
+	w := &WorkflowsPermissionsRequest{SendSecretsAndVariables: &zeroValue}
 	w.GetSendSecretsAndVariables()
-	w = &WorkflowsPermissionsOpt{}
+	w = &WorkflowsPermissionsRequest{}
 	w.GetSendSecretsAndVariables()
 	w = nil
 	w.GetSendSecretsAndVariables()
 }
 
-func TestWorkflowsPermissionsOpt_GetSendWriteTokensToWorkflows(tt *testing.T) {
+func TestWorkflowsPermissionsRequest_GetSendWriteTokensToWorkflows(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	w := &WorkflowsPermissionsOpt{SendWriteTokensToWorkflows: &zeroValue}
+	w := &WorkflowsPermissionsRequest{SendWriteTokensToWorkflows: &zeroValue}
 	w.GetSendWriteTokensToWorkflows()
-	w = &WorkflowsPermissionsOpt{}
+	w = &WorkflowsPermissionsRequest{}
 	w.GetSendWriteTokensToWorkflows()
 	w = nil
 	w.GetSendWriteTokensToWorkflows()
