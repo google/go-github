@@ -2282,7 +2282,7 @@ func sleepUntilResetWithBuffer(ctx context.Context, reset time.Time) error {
 
 // When using roundTripWithOptionalFollowRedirect, note that it
 // is the responsibility of the caller to close the response body.
-func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, maxRedirects int, opts ...RequestOption) (*http.Response, error) {
+func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, maxRedirects int) (*http.Response, error) {
 	// http.Client.Timeout is applied by http.Client.Do, which this helper deliberately
 	// does not use: it calls the transport directly so the first 301/302 response can be
 	// inspected instead of being followed or surfaced. That skipped the timeout, so a
@@ -2301,7 +2301,7 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 				cancel()
 			}
 		}()
-		resp, err := c.roundTripFollowingRedirect(ctx, u, maxRedirects, opts...)
+		resp, err := c.roundTripFollowingRedirect(ctx, u, maxRedirects)
 		if err != nil {
 			return nil, err
 		}
@@ -2311,7 +2311,7 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 		}
 		return resp, nil
 	}
-	return c.roundTripFollowingRedirect(ctx, u, maxRedirects, opts...)
+	return c.roundTripFollowingRedirect(ctx, u, maxRedirects)
 }
 
 // cancelOnCloseBody releases the timeout attached by
@@ -2332,8 +2332,8 @@ func (b *cancelOnCloseBody) Close() error {
 // roundTripWithOptionalFollowRedirect, following at most maxRedirects same-origin
 // redirects. The deadline, when one applies, is attached by the caller so it spans
 // every hop.
-func (c *Client) roundTripFollowingRedirect(ctx context.Context, u string, maxRedirects int, opts ...RequestOption) (*http.Response, error) {
-	req, err := c.NewRequest(ctx, "GET", u, nil, opts...)
+func (c *Client) roundTripFollowingRedirect(ctx context.Context, u string, maxRedirects int) (*http.Response, error) {
+	req, err := c.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2356,7 +2356,7 @@ func (c *Client) roundTripFollowingRedirect(ctx context.Context, u string, maxRe
 		if err := c.checkRedirectHost(u); err != nil {
 			return nil, err
 		}
-		resp, err = c.roundTripFollowingRedirect(ctx, u, maxRedirects-1, opts...)
+		resp, err = c.roundTripFollowingRedirect(ctx, u, maxRedirects-1)
 	}
 	return resp, err
 }
