@@ -4073,6 +4073,52 @@ func TestRoundTripWithOptionalFollowRedirect_HonorsClientTimeout(t *testing.T) {
 	}
 }
 
+// TestRoundTripWithOptionalFollowRedirect_ReleaseTimeoutOnClose pins the other
+// half of the http.Client.Timeout contract: on a successful response the
+// deadline has to outlive the call, because the caller still has a body to
+// read, and it has to be released when that body is closed so the timer does
+// not leak.
+func TestRoundTripWithOptionalFollowRedirect_ReleaseTimeoutOnClose(t *testing.T) {
+	t.Parallel()
+
+	var reqCtx context.Context
+	client, _, _ := setup(t)
+	client.client.Timeout = time.Hour
+	client.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+		reqCtx = req.Context()
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Header:     http.Header{},
+			Body:       io.NopCloser(strings.NewReader("payload")),
+			Request:    req,
+		}, nil
+	})
+
+	resp, err := client.roundTripWithOptionalFollowRedirect(t.Context(), "archive", 0)
+	if err != nil {
+		t.Fatalf("roundTripWithOptionalFollowRedirect returned error: %v", err)
+	}
+	if reqCtx == nil {
+		t.Fatal("the transport never saw a request context")
+	}
+	if err := reqCtx.Err(); err != nil {
+		t.Fatalf("the request context ended before the body was closed: %v", err)
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("reading the response body returned error: %v", err)
+	}
+	if got, want := string(body), "payload"; got != want {
+		t.Errorf("got body %q, want %q", got, want)
+	}
+	if err := resp.Body.Close(); err != nil {
+		t.Fatalf("closing the response body returned error: %v", err)
+	}
+	if err := reqCtx.Err(); !errors.Is(err, context.Canceled) {
+		t.Errorf("the request context was not cancelled when the body was closed: err = %v", err)
+	}
+}
+
 // TestRoundTripWithOptionalFollowRedirect_TimeoutCoversAllRedirects pins the
 // http.Client.Timeout contract - the deadline spans the whole request, not one
 // hop - by checking that every transport call in a redirect chain shares one
