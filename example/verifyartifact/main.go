@@ -15,9 +15,12 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"log"
+	"net/http"
 	"os"
 
+	"github.com/golang/snappy"
 	"github.com/google/go-github/v93/github"
 	"github.com/sigstore/sigstore-go/pkg/bundle"
 	"github.com/sigstore/sigstore-go/pkg/root"
@@ -107,15 +110,53 @@ func main() {
 
 	var b *bundle.Bundle
 	for _, attestation := range attestations.Attestations {
-		if err := json.Unmarshal(attestation.Bundle, &b); err != nil {
+		bundleJSON, err := getAttestationBundle(ctx, attestation)
+		if err != nil {
 			log.Fatal(err)
 		}
 
-		err := runVerification(sev, pb, b)
+		if err := json.Unmarshal(bundleJSON, &b); err != nil {
+			log.Fatal(err)
+		}
+
+		err = runVerification(sev, pb, b)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
+}
+
+// getAttestationBundle returns the Sigstore bundle of the attestation.
+// GitHub returns a bundle_url pointing to a snappy-compressed bundle instead of
+// embedding the bundle in the response.
+func getAttestationBundle(ctx context.Context, attestation *github.Attestation) ([]byte, error) {
+	bundleURL := attestation.GetBundleURL()
+	if bundleURL == "" {
+		return attestation.Bundle, nil //nolint:staticcheck // Fall back to the embedded bundle of older responses.
+	}
+
+	// The bundle URL does not need the GitHub token, so it is fetched with the default client.
+	req, err := http.NewRequestWithContext(ctx, "GET", bundleURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to fetch attestation bundle: %v", resp.Status)
+	}
+
+	compressed, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return snappy.Decode(nil, compressed)
 }
 
 func getTrustedMaterial() (root.TrustedMaterialCollection, error) {

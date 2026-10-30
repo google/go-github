@@ -6,6 +6,7 @@ require (
 	github.com/ProtonMail/go-crypto v1.5.2
 	github.com/gofri/go-github-pagination v1.0.1
 	github.com/gofri/go-github-ratelimit/v2 v2.0.2
+	github.com/golang/snappy v1.0.0
 	github.com/google/go-github/otel/v93 v93.0.0
 	github.com/google/go-github/v93 v93.0.0
 	github.com/jferrl/go-githubauth v1.9.1
@@ -79,7 +80,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.47.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/mod v0.41.0 // indirect
-	golang.org/x/net v0.60.0 // indirect
+	golang.org/x/net v0.62.0 // indirect
 	golang.org/x/oauth2 v0.37.0 // indirect
 	golang.org/x/sync v0.24.0 // indirect
 	golang.org/x/sys v0.49.0 // indirect

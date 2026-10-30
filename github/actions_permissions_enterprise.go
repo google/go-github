@@ -366,7 +366,7 @@ func (s *ActionsService) GetPrivateRepoForkPRWorkflowSettingsInEnterprise(ctx co
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions?apiVersion=2022-11-28#set-private-repo-fork-pr-workflow-settings-for-an-enterprise
 //
 //meta:operation PUT /enterprises/{enterprise}/actions/permissions/fork-pr-workflows-private-repos
-func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(ctx context.Context, enterprise string, body *WorkflowsPermissionsOpt) (*Response, error) {
+func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(ctx context.Context, enterprise string, body WorkflowsPermissionsRequest) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/fork-pr-workflows-private-repos", enterprise)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
