@@ -661,9 +661,12 @@ func (s *CodeScanningService) GetDefaultSetupConfiguration(ctx context.Context, 
 // UpdateDefaultSetupConfigurationOptions specifies parameters to the CodeScanningService.UpdateDefaultSetupConfiguration
 // method.
 type UpdateDefaultSetupConfigurationOptions struct {
-	State      *string  `json:"state,omitempty"`
-	QuerySuite *string  `json:"query_suite,omitempty"`
-	Languages  []string `json:"languages,omitzero"`
+	State       *string  `json:"state,omitempty"`
+	RunnerType  *string  `json:"runner_type,omitempty"`
+	RunnerLabel *string  `json:"runner_label,omitempty"`
+	QuerySuite  *string  `json:"query_suite,omitempty"`
+	ThreatModel *string  `json:"threat_model,omitempty"`
+	Languages   []string `json:"languages,omitzero"`
 }
 
 // UpdateDefaultSetupConfigurationResponse represents a response from updating a code scanning default setup configuration.

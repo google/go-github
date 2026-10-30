@@ -47118,12 +47118,36 @@ func (u *UpdateDefaultSetupConfigurationOptions) GetQuerySuite() string {
 	return *u.QuerySuite
 }
 
+// GetRunnerLabel returns the RunnerLabel field if it's non-nil, zero value otherwise.
+func (u *UpdateDefaultSetupConfigurationOptions) GetRunnerLabel() string {
+	if u == nil || u.RunnerLabel == nil {
+		return ""
+	}
+	return *u.RunnerLabel
+}
+
+// GetRunnerType returns the RunnerType field if it's non-nil, zero value otherwise.
+func (u *UpdateDefaultSetupConfigurationOptions) GetRunnerType() string {
+	if u == nil || u.RunnerType == nil {
+		return ""
+	}
+	return *u.RunnerType
+}
+
 // GetState returns the State field if it's non-nil, zero value otherwise.
 func (u *UpdateDefaultSetupConfigurationOptions) GetState() string {
 	if u == nil || u.State == nil {
 		return ""
 	}
 	return *u.State
+}
+
+// GetThreatModel returns the ThreatModel field if it's non-nil, zero value otherwise.
+func (u *UpdateDefaultSetupConfigurationOptions) GetThreatModel() string {
+	if u == nil || u.ThreatModel == nil {
+		return ""
+	}
+	return *u.ThreatModel
 }
 
 // GetRunID returns the RunID field if it's non-nil, zero value otherwise.

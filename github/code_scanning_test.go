@@ -1476,9 +1476,12 @@ func TestCodeScanningService_UpdateDefaultSetupConfiguration(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	options := &UpdateDefaultSetupConfigurationOptions{
-		State:      new("configured"),
-		Languages:  []string{"go"},
-		QuerySuite: new("default"),
+		State:       new("configured"),
+		RunnerType:  new("labeled"),
+		RunnerLabel: new("code-scanning"),
+		QuerySuite:  new("default"),
+		ThreatModel: new("remote_and_local"),
+		Languages:   []string{"go"},
 	}
 
 	mux.HandleFunc("/repos/o/r/code-scanning/default-setup", func(w http.ResponseWriter, r *http.Request) {

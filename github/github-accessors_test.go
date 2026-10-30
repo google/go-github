@@ -58777,6 +58777,28 @@ func TestUpdateDefaultSetupConfigurationOptions_GetQuerySuite(tt *testing.T) {
 	u.GetQuerySuite()
 }
 
+func TestUpdateDefaultSetupConfigurationOptions_GetRunnerLabel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateDefaultSetupConfigurationOptions{RunnerLabel: &zeroValue}
+	u.GetRunnerLabel()
+	u = &UpdateDefaultSetupConfigurationOptions{}
+	u.GetRunnerLabel()
+	u = nil
+	u.GetRunnerLabel()
+}
+
+func TestUpdateDefaultSetupConfigurationOptions_GetRunnerType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateDefaultSetupConfigurationOptions{RunnerType: &zeroValue}
+	u.GetRunnerType()
+	u = &UpdateDefaultSetupConfigurationOptions{}
+	u.GetRunnerType()
+	u = nil
+	u.GetRunnerType()
+}
+
 func TestUpdateDefaultSetupConfigurationOptions_GetState(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -58786,6 +58808,17 @@ func TestUpdateDefaultSetupConfigurationOptions_GetState(tt *testing.T) {
 	u.GetState()
 	u = nil
 	u.GetState()
+}
+
+func TestUpdateDefaultSetupConfigurationOptions_GetThreatModel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateDefaultSetupConfigurationOptions{ThreatModel: &zeroValue}
+	u.GetThreatModel()
+	u = &UpdateDefaultSetupConfigurationOptions{}
+	u.GetThreatModel()
+	u = nil
+	u.GetThreatModel()
 }
 
 func TestUpdateDefaultSetupConfigurationResponse_GetRunID(tt *testing.T) {
