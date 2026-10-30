@@ -68,11 +68,6 @@ operations:
     documentation_url: https://gist.github.com/jonmagic/5282384165e0f86ef105#start-an-issue-import
   - name: GET /repos/{owner}/{repo}/import/issues/{issue_number}
     documentation_url: https://gist.github.com/jonmagic/5282384165e0f86ef105#import-status-request
-  - name: GET /repos/{owner}/{repo}/issues/{issue_number}/artifacts
-  - name: POST /repos/{owner}/{repo}/issues/{issue_number}/artifacts
-  - name: DELETE /repos/{owner}/{repo}/issues/{issue_number}/artifacts/{artifact_number}
-  - name: GET /repos/{owner}/{repo}/issues/{issue_number}/artifacts/{artifact_number}
-  - name: PATCH /repos/{owner}/{repo}/issues/{issue_number}/artifacts/{artifact_number}
   - name: GET /repositories/{repository_id}
   - name: GET /repositories/{repository_id}/installation
   - name: GET /users/{username}/settings/billing/packages

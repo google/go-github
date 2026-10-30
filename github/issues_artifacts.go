@@ -84,7 +84,7 @@ type UpdateIssueArtifactRequest struct {
 // through Response and supported by ListArtifactsIter. Offset pagination has
 // no snapshot guarantee.
 //
-// Note: ListArtifacts uses the undocumented GitHub API endpoint "GET /repos/{owner}/{repo}/issues/{issue_number}/artifacts".
+// GitHub API docs: https://docs.github.com/rest/issues/artifacts?apiVersion=2022-11-28#list-issue-artifacts
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/artifacts
 func (s *IssuesService) ListArtifacts(ctx context.Context, owner, repo string, issueNumber int, opts *IssueArtifactListOptions) ([]*IssueArtifact, *Response, error) {
@@ -110,7 +110,7 @@ func (s *IssuesService) ListArtifacts(ctx context.Context, owner, repo string, i
 
 // GetArtifact gets an artifact and its edit history using its issue-scoped number.
 //
-// Note: GetArtifact uses the undocumented GitHub API endpoint "GET /repos/{owner}/{repo}/issues/{issue_number}/artifacts/{artifact_number}".
+// GitHub API docs: https://docs.github.com/rest/issues/artifacts?apiVersion=2022-11-28#get-an-issue-artifact
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/artifacts/{artifact_number}
 func (s *IssuesService) GetArtifact(ctx context.Context, owner, repo string, issueNumber, artifactNumber int) (*IssueArtifactWithVersions, *Response, error) {
@@ -131,7 +131,7 @@ func (s *IssuesService) GetArtifact(ctx context.Context, owner, repo string, iss
 
 // CreateArtifact creates an artifact attached to an issue.
 //
-// Note: CreateArtifact uses the undocumented GitHub API endpoint "POST /repos/{owner}/{repo}/issues/{issue_number}/artifacts".
+// GitHub API docs: https://docs.github.com/rest/issues/artifacts?apiVersion=2022-11-28#create-an-issue-artifact
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/artifacts
 func (s *IssuesService) CreateArtifact(ctx context.Context, owner, repo string, issueNumber int, body CreateIssueArtifactRequest) (*IssueArtifact, *Response, error) {
@@ -152,7 +152,7 @@ func (s *IssuesService) CreateArtifact(ctx context.Context, owner, repo string, 
 
 // UpdateArtifact updates an artifact using its issue-scoped number.
 //
-// Note: UpdateArtifact uses the undocumented GitHub API endpoint "PATCH /repos/{owner}/{repo}/issues/{issue_number}/artifacts/{artifact_number}".
+// GitHub API docs: https://docs.github.com/rest/issues/artifacts?apiVersion=2022-11-28#update-an-issue-artifact
 //
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}/artifacts/{artifact_number}
 func (s *IssuesService) UpdateArtifact(ctx context.Context, owner, repo string, issueNumber, artifactNumber int, body UpdateIssueArtifactRequest) (*IssueArtifact, *Response, error) {
@@ -173,7 +173,7 @@ func (s *IssuesService) UpdateArtifact(ctx context.Context, owner, repo string, 
 
 // DeleteArtifact deletes an artifact using its issue-scoped number.
 //
-// Note: DeleteArtifact uses the undocumented GitHub API endpoint "DELETE /repos/{owner}/{repo}/issues/{issue_number}/artifacts/{artifact_number}".
+// GitHub API docs: https://docs.github.com/rest/issues/artifacts?apiVersion=2022-11-28#delete-an-issue-artifact
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/artifacts/{artifact_number}
 func (s *IssuesService) DeleteArtifact(ctx context.Context, owner, repo string, issueNumber, artifactNumber int) (*Response, error) {
