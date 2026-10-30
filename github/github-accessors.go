@@ -48126,6 +48126,22 @@ func (u *UpdateTeamRequest) GetRemoveParentTeam() bool {
 	return u.RemoveParentTeam
 }
 
+// GetExpiry returns the Expiry field if it's non-nil, zero value otherwise.
+func (u *UpdateUserInteractionRestrictionsRequest) GetExpiry() string {
+	if u == nil || u.Expiry == nil {
+		return ""
+	}
+	return *u.Expiry
+}
+
+// GetLimit returns the Limit field.
+func (u *UpdateUserInteractionRestrictionsRequest) GetLimit() string {
+	if u == nil {
+		return ""
+	}
+	return u.Limit
+}
+
 // GetLDAPDN returns the LDAPDN field.
 func (u *UpdateUserLDAPMappingRequest) GetLDAPDN() string {
 	if u == nil {

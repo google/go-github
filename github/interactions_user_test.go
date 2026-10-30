@@ -13,30 +13,29 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestInteractionsService_GetRestrictionsForAuthenticatedUser(t *testing.T) {
+func TestInteractionsService_GetRestrictionsForUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeInteractionRestrictionsPreview)
 		fmt.Fprint(w, `{"origin":"user"}`)
 	})
 
 	ctx := t.Context()
-	userInteractions, _, err := client.Interactions.GetRestrictionsForAuthenticatedUser(ctx)
+	userInteractions, _, err := client.Interactions.GetRestrictionsForUser(ctx)
 	if err != nil {
-		t.Errorf("Interactions.GetRestrictionsForAuthenticatedUser returned error: %v", err)
+		t.Errorf("Interactions.GetRestrictionsForUser returned error: %v", err)
 	}
 
 	want := &InteractionRestriction{Origin: new("user")}
 	if !cmp.Equal(userInteractions, want) {
-		t.Errorf("Interactions.GetRestrictionsForAuthenticatedUser returned %+v, want %+v", userInteractions, want)
+		t.Errorf("Interactions.GetRestrictionsForUser returned %+v, want %+v", userInteractions, want)
 	}
 
-	const methodName = "GetRestrictionsForAuthenticatedUser"
+	const methodName = "GetRestrictionsForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Interactions.GetRestrictionsForAuthenticatedUser(ctx)
+		got, resp, err := client.Interactions.GetRestrictionsForUser(ctx)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -44,33 +43,35 @@ func TestInteractionsService_GetRestrictionsForAuthenticatedUser(t *testing.T) {
 	})
 }
 
-func TestInteractionsService_UpdateRestrictionsForAuthenticatedUser(t *testing.T) {
+func TestInteractionsService_UpdateRestrictionsForUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &InteractionRestriction{Limit: new("existing_users")}
+	input := UpdateUserInteractionRestrictionsRequest{
+		Limit:  "collaborators_only",
+		Expiry: new("one_month"),
+	}
 
 	mux.HandleFunc("/user/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeInteractionRestrictionsPreview)
 		testJSONBody(t, r, input)
-		fmt.Fprint(w, `{"origin":"user"}`)
+		fmt.Fprint(w, `{"limit":"collaborators_only","origin":"user"}`)
 	})
 
 	ctx := t.Context()
-	userInteractions, _, err := client.Interactions.UpdateRestrictionsForAuthenticatedUser(ctx, input.GetLimit())
+	userInteractions, _, err := client.Interactions.UpdateRestrictionsForUser(ctx, input)
 	if err != nil {
-		t.Errorf("Interactions.UpdateRestrictionsForAuthenticatedUser returned error: %v", err)
+		t.Errorf("Interactions.UpdateRestrictionsForUser returned error: %v", err)
 	}
 
-	want := &InteractionRestriction{Origin: new("user")}
+	want := &InteractionRestriction{Limit: new("collaborators_only"), Origin: new("user")}
 	if !cmp.Equal(userInteractions, want) {
-		t.Errorf("Interactions.UpdateRestrictionsForAuthenticatedUser returned %+v, want %+v", userInteractions, want)
+		t.Errorf("Interactions.UpdateRestrictionsForUser returned %+v, want %+v", userInteractions, want)
 	}
 
-	const methodName = "UpdateRestrictionsForAuthenticatedUser"
+	const methodName = "UpdateRestrictionsForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Interactions.UpdateRestrictionsForAuthenticatedUser(ctx, input.GetLimit())
+		got, resp, err := client.Interactions.UpdateRestrictionsForUser(ctx, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -78,23 +79,22 @@ func TestInteractionsService_UpdateRestrictionsForAuthenticatedUser(t *testing.T
 	})
 }
 
-func TestInteractionsService_RemoveRestrictionsFromAuthenticatedUser(t *testing.T) {
+func TestInteractionsService_RemoveRestrictionsFromUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/interaction-limits", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeInteractionRestrictionsPreview)
 	})
 
 	ctx := t.Context()
-	_, err := client.Interactions.RemoveRestrictionsFromAuthenticatedUser(ctx)
+	_, err := client.Interactions.RemoveRestrictionsFromUser(ctx)
 	if err != nil {
-		t.Errorf("Interactions.RemoveRestrictionsFromAuthenticatedUser returned error: %v", err)
+		t.Errorf("Interactions.RemoveRestrictionsFromUser returned error: %v", err)
 	}
 
-	const methodName = "RemoveRestrictionsFromAuthenticatedUser"
+	const methodName = "RemoveRestrictionsFromUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Interactions.RemoveRestrictionsFromAuthenticatedUser(ctx)
+		return client.Interactions.RemoveRestrictionsFromUser(ctx)
 	})
 }

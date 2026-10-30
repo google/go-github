@@ -60103,6 +60103,25 @@ func TestUpdateTeamRequest_GetRemoveParentTeam(tt *testing.T) {
 	u.GetRemoveParentTeam()
 }
 
+func TestUpdateUserInteractionRestrictionsRequest_GetExpiry(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateUserInteractionRestrictionsRequest{Expiry: &zeroValue}
+	u.GetExpiry()
+	u = &UpdateUserInteractionRestrictionsRequest{}
+	u.GetExpiry()
+	u = nil
+	u.GetExpiry()
+}
+
+func TestUpdateUserInteractionRestrictionsRequest_GetLimit(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateUserInteractionRestrictionsRequest{}
+	u.GetLimit()
+	u = nil
+	u.GetLimit()
+}
+
 func TestUpdateUserLDAPMappingRequest_GetLDAPDN(tt *testing.T) {
 	tt.Parallel()
 	u := &UpdateUserLDAPMappingRequest{}
