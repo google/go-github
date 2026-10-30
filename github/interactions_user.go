@@ -23,13 +23,13 @@ type UpdateUserInteractionRestrictionsRequest struct {
 	Expiry *string `json:"expiry,omitempty"`
 }
 
-// GetRestrictionsForUser fetches the interaction restrictions
+// GetUserRestrictions fetches the interaction restrictions
 // for the authenticated user's public repositories.
 //
 // GitHub API docs: https://docs.github.com/rest/interactions/user?apiVersion=2022-11-28#get-interaction-restrictions-for-your-public-repositories
 //
 //meta:operation GET /user/interaction-limits
-func (s *InteractionsService) GetRestrictionsForUser(ctx context.Context) (*InteractionRestriction, *Response, error) {
+func (s *InteractionsService) GetUserRestrictions(ctx context.Context) (*InteractionRestriction, *Response, error) {
 	u := "user/interaction-limits"
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
@@ -45,13 +45,13 @@ func (s *InteractionsService) GetRestrictionsForUser(ctx context.Context) (*Inte
 	return userInteractions, resp, nil
 }
 
-// UpdateRestrictionsForUser adds or updates the interaction restrictions
+// UpdateUserRestrictions adds or updates the interaction restrictions
 // for the authenticated user's public repositories.
 //
 // GitHub API docs: https://docs.github.com/rest/interactions/user?apiVersion=2022-11-28#set-interaction-restrictions-for-your-public-repositories
 //
 //meta:operation PUT /user/interaction-limits
-func (s *InteractionsService) UpdateRestrictionsForUser(ctx context.Context, body UpdateUserInteractionRestrictionsRequest) (*InteractionRestriction, *Response, error) {
+func (s *InteractionsService) UpdateUserRestrictions(ctx context.Context, body UpdateUserInteractionRestrictionsRequest) (*InteractionRestriction, *Response, error) {
 	u := "user/interaction-limits"
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
@@ -67,13 +67,13 @@ func (s *InteractionsService) UpdateRestrictionsForUser(ctx context.Context, bod
 	return userInteractions, resp, nil
 }
 
-// RemoveRestrictionsFromUser removes the interaction restrictions
+// RemoveUserRestrictions removes the interaction restrictions
 // from the authenticated user's public repositories.
 //
 // GitHub API docs: https://docs.github.com/rest/interactions/user?apiVersion=2022-11-28#remove-interaction-restrictions-from-your-public-repositories
 //
 //meta:operation DELETE /user/interaction-limits
-func (s *InteractionsService) RemoveRestrictionsFromUser(ctx context.Context) (*Response, error) {
+func (s *InteractionsService) RemoveUserRestrictions(ctx context.Context) (*Response, error) {
 	u := "user/interaction-limits"
 	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {

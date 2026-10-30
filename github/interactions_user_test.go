@@ -13,7 +13,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestInteractionsService_GetRestrictionsForUser(t *testing.T) {
+func TestInteractionsService_GetUserRestrictions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -23,19 +23,19 @@ func TestInteractionsService_GetRestrictionsForUser(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	userInteractions, _, err := client.Interactions.GetRestrictionsForUser(ctx)
+	userInteractions, _, err := client.Interactions.GetUserRestrictions(ctx)
 	if err != nil {
-		t.Errorf("Interactions.GetRestrictionsForUser returned error: %v", err)
+		t.Errorf("Interactions.GetUserRestrictions returned error: %v", err)
 	}
 
 	want := &InteractionRestriction{Origin: new("user")}
 	if !cmp.Equal(userInteractions, want) {
-		t.Errorf("Interactions.GetRestrictionsForUser returned %+v, want %+v", userInteractions, want)
+		t.Errorf("Interactions.GetUserRestrictions returned %+v, want %+v", userInteractions, want)
 	}
 
-	const methodName = "GetRestrictionsForUser"
+	const methodName = "GetUserRestrictions"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Interactions.GetRestrictionsForUser(ctx)
+		got, resp, err := client.Interactions.GetUserRestrictions(ctx)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -43,7 +43,7 @@ func TestInteractionsService_GetRestrictionsForUser(t *testing.T) {
 	})
 }
 
-func TestInteractionsService_UpdateRestrictionsForUser(t *testing.T) {
+func TestInteractionsService_UpdateUserRestrictions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -59,19 +59,19 @@ func TestInteractionsService_UpdateRestrictionsForUser(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	userInteractions, _, err := client.Interactions.UpdateRestrictionsForUser(ctx, input)
+	userInteractions, _, err := client.Interactions.UpdateUserRestrictions(ctx, input)
 	if err != nil {
-		t.Errorf("Interactions.UpdateRestrictionsForUser returned error: %v", err)
+		t.Errorf("Interactions.UpdateUserRestrictions returned error: %v", err)
 	}
 
 	want := &InteractionRestriction{Limit: new("collaborators_only"), Origin: new("user")}
 	if !cmp.Equal(userInteractions, want) {
-		t.Errorf("Interactions.UpdateRestrictionsForUser returned %+v, want %+v", userInteractions, want)
+		t.Errorf("Interactions.UpdateUserRestrictions returned %+v, want %+v", userInteractions, want)
 	}
 
-	const methodName = "UpdateRestrictionsForUser"
+	const methodName = "UpdateUserRestrictions"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Interactions.UpdateRestrictionsForUser(ctx, input)
+		got, resp, err := client.Interactions.UpdateUserRestrictions(ctx, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -79,7 +79,7 @@ func TestInteractionsService_UpdateRestrictionsForUser(t *testing.T) {
 	})
 }
 
-func TestInteractionsService_RemoveRestrictionsFromUser(t *testing.T) {
+func TestInteractionsService_RemoveUserRestrictions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -88,13 +88,13 @@ func TestInteractionsService_RemoveRestrictionsFromUser(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Interactions.RemoveRestrictionsFromUser(ctx)
+	_, err := client.Interactions.RemoveUserRestrictions(ctx)
 	if err != nil {
-		t.Errorf("Interactions.RemoveRestrictionsFromUser returned error: %v", err)
+		t.Errorf("Interactions.RemoveUserRestrictions returned error: %v", err)
 	}
 
-	const methodName = "RemoveRestrictionsFromUser"
+	const methodName = "RemoveUserRestrictions"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Interactions.RemoveRestrictionsFromUser(ctx)
+		return client.Interactions.RemoveUserRestrictions(ctx)
 	})
 }
