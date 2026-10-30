@@ -658,9 +658,8 @@ func (s *CodeScanningService) GetDefaultSetupConfiguration(ctx context.Context, 
 	return cfg, resp, nil
 }
 
-// UpdateDefaultSetupConfigurationOptions specifies parameters to the CodeScanningService.UpdateDefaultSetupConfiguration
-// method.
-type UpdateDefaultSetupConfigurationOptions struct {
+// UpdateDefaultSetupConfigurationRequest represents a request to update a code scanning default setup configuration.
+type UpdateDefaultSetupConfigurationRequest struct {
 	State       *string  `json:"state,omitempty"`
 	RunnerType  *string  `json:"runner_type,omitempty"`
 	RunnerLabel *string  `json:"runner_label,omitempty"`
@@ -687,7 +686,7 @@ type UpdateDefaultSetupConfigurationResponse struct {
 // GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning?apiVersion=2022-11-28#update-a-code-scanning-default-setup-configuration
 //
 //meta:operation PATCH /repos/{owner}/{repo}/code-scanning/default-setup
-func (s *CodeScanningService) UpdateDefaultSetupConfiguration(ctx context.Context, owner, repo string, body *UpdateDefaultSetupConfigurationOptions) (*UpdateDefaultSetupConfigurationResponse, *Response, error) {
+func (s *CodeScanningService) UpdateDefaultSetupConfiguration(ctx context.Context, owner, repo string, body UpdateDefaultSetupConfigurationRequest) (*UpdateDefaultSetupConfigurationResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/default-setup", owner, repo)
 
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)

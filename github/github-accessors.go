@@ -47103,7 +47103,7 @@ func (u *UpdateCustomRepoRoleRequest) GetPermissions() []string {
 }
 
 // GetLanguages returns the Languages slice if it's non-nil, nil otherwise.
-func (u *UpdateDefaultSetupConfigurationOptions) GetLanguages() []string {
+func (u *UpdateDefaultSetupConfigurationRequest) GetLanguages() []string {
 	if u == nil || u.Languages == nil {
 		return nil
 	}
@@ -47111,7 +47111,7 @@ func (u *UpdateDefaultSetupConfigurationOptions) GetLanguages() []string {
 }
 
 // GetQuerySuite returns the QuerySuite field if it's non-nil, zero value otherwise.
-func (u *UpdateDefaultSetupConfigurationOptions) GetQuerySuite() string {
+func (u *UpdateDefaultSetupConfigurationRequest) GetQuerySuite() string {
 	if u == nil || u.QuerySuite == nil {
 		return ""
 	}
@@ -47119,7 +47119,7 @@ func (u *UpdateDefaultSetupConfigurationOptions) GetQuerySuite() string {
 }
 
 // GetRunnerLabel returns the RunnerLabel field if it's non-nil, zero value otherwise.
-func (u *UpdateDefaultSetupConfigurationOptions) GetRunnerLabel() string {
+func (u *UpdateDefaultSetupConfigurationRequest) GetRunnerLabel() string {
 	if u == nil || u.RunnerLabel == nil {
 		return ""
 	}
@@ -47127,7 +47127,7 @@ func (u *UpdateDefaultSetupConfigurationOptions) GetRunnerLabel() string {
 }
 
 // GetRunnerType returns the RunnerType field if it's non-nil, zero value otherwise.
-func (u *UpdateDefaultSetupConfigurationOptions) GetRunnerType() string {
+func (u *UpdateDefaultSetupConfigurationRequest) GetRunnerType() string {
 	if u == nil || u.RunnerType == nil {
 		return ""
 	}
@@ -47135,7 +47135,7 @@ func (u *UpdateDefaultSetupConfigurationOptions) GetRunnerType() string {
 }
 
 // GetState returns the State field if it's non-nil, zero value otherwise.
-func (u *UpdateDefaultSetupConfigurationOptions) GetState() string {
+func (u *UpdateDefaultSetupConfigurationRequest) GetState() string {
 	if u == nil || u.State == nil {
 		return ""
 	}
@@ -47143,7 +47143,7 @@ func (u *UpdateDefaultSetupConfigurationOptions) GetState() string {
 }
 
 // GetThreatModel returns the ThreatModel field if it's non-nil, zero value otherwise.
-func (u *UpdateDefaultSetupConfigurationOptions) GetThreatModel() string {
+func (u *UpdateDefaultSetupConfigurationRequest) GetThreatModel() string {
 	if u == nil || u.ThreatModel == nil {
 		return ""
 	}
