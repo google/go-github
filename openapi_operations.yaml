@@ -154,6 +154,8 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/actions/policies?apiVersion=2026-03-10#update-a-repository-actions-policy
   - name: GET /repos/{owner}/{repo}/agents/organization-secrets
     documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#list-repository-organization-secrets
+  - name: GET /repos/{owner}/{repo}/agents/organization-variables
+    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#list-repository-organization-variables
   - name: GET /repos/{owner}/{repo}/agents/secrets
     documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#list-repository-secrets
   - name: GET /repos/{owner}/{repo}/agents/secrets/public-key
@@ -164,8 +166,6 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#get-a-repository-secret
   - name: PUT /repos/{owner}/{repo}/agents/secrets/{secret_name}
     documentation_url: https://docs.github.com/rest/agents/secrets?apiVersion=2026-03-10#create-or-update-a-repository-secret
-  - name: GET /repos/{owner}/{repo}/agents/organization-variables
-    documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#list-repository-organization-variables
   - name: GET /repos/{owner}/{repo}/agents/variables
     documentation_url: https://docs.github.com/rest/agents/variables?apiVersion=2026-03-10#list-repository-variables
   - name: POST /repos/{owner}/{repo}/agents/variables
@@ -190,7 +190,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 642960c36df7752f0b1aa307a4bdb99d12dd7ff5
+openapi_commit: 066b825d08409eb6c48ddfdd7547c0b70a72dfaf
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -342,6 +342,71 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
+  - name: GET /agents/automations
+    documentation_url: https://docs.github.com/rest/agent-automations/agent-automations#list-automations-for-user
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /agents/repos/{owner}/{repo}/automations
+    documentation_url: https://docs.github.com/rest/agent-automations/agent-automations#list-automations-for-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /agents/repos/{owner}/{repo}/automations
+    documentation_url: https://docs.github.com/rest/agent-automations/agent-automations#create-an-automation-for-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /agents/repos/{owner}/{repo}/automations/available-tools
+    documentation_url: https://docs.github.com/rest/agent-automations/agent-automations#list-available-automation-tools-for-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /agents/repos/{owner}/{repo}/automations/available-triggers
+    documentation_url: https://docs.github.com/rest/agent-automations/agent-automations#list-available-automation-triggers-for-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /agents/repos/{owner}/{repo}/automations/{automation_id}
+    documentation_url: https://docs.github.com/rest/agent-automations/agent-automations#delete-an-automation
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /agents/repos/{owner}/{repo}/automations/{automation_id}
+    documentation_url: https://docs.github.com/rest/agent-automations/agent-automations#get-an-automation
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /agents/repos/{owner}/{repo}/automations/{automation_id}
+    documentation_url: https://docs.github.com/rest/agent-automations/agent-automations#update-an-automation
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /agents/repos/{owner}/{repo}/automations/{automation_id}/tasks
+    documentation_url: https://docs.github.com/rest/agent-automations/agent-automations#list-tasks-for-an-automation-in-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /agents/repos/{owner}/{repo}/automations/{automation_id}/tasks
+    documentation_url: https://docs.github.com/rest/agent-automations/agent-automations#run-an-automation
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /agents/repos/{owner}/{repo}/pulls/{pull_number}/agent-merge
+    documentation_url: https://docs.github.com/rest/pulls/agent-merge#disable-agent-merge-for-a-pull-request
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /agents/repos/{owner}/{repo}/pulls/{pull_number}/agent-merge
+    documentation_url: https://docs.github.com/rest/pulls/agent-merge#get-agent-merge-configuration-for-a-pull-request
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /agents/repos/{owner}/{repo}/pulls/{pull_number}/agent-merge
+    documentation_url: https://docs.github.com/rest/pulls/agent-merge#update-agent-merge-configuration-for-a-pull-request
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /agents/repos/{owner}/{repo}/tasks
     documentation_url: https://docs.github.com/rest/agent-tasks/agent-tasks#list-tasks-for-repository
     openapi_files:
@@ -1260,6 +1325,14 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing#list-enterprise-consumed-licenses
     openapi_files:
       - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/copilot/apps/model-policies
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/ai-controls#get-model-policies-for-agent-apps
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PATCH /enterprises/{enterprise}/copilot/apps/model-policies
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/ai-controls#update-model-policies-for-enterprise-apps
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/copilot/billing/seats
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-user-management#list-all-copilot-seat-assignments-for-an-enterprise
     openapi_files:
@@ -1304,6 +1377,14 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-custom-agents#set-the-source-organization-for-custom-agents-in-an-enterprise
     openapi_files:
       - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/copilot/feature-policies
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/ai-controls#get-feature-policies-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PATCH /enterprises/{enterprise}/copilot/feature-policies
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/ai-controls#update-feature-policies-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-1-day
     documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-enterprise-usage-metrics-for-a-specific-day
     openapi_files:
@@ -1333,6 +1414,14 @@ openapi_operations:
     documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-users-usage-metrics
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/copilot/model-policies
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/ai-controls#get-model-policies-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PATCH /enterprises/{enterprise}/copilot/model-policies
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/ai-controls#update-model-policies-for-an-enterprise
+    openapi_files:
       - descriptions/ghec/ghec.json
   - name: PUT /enterprises/{enterprise}/copilot/policies/coding_agent
     documentation_url: https://docs.github.com/rest/copilot/copilot-coding-agent-management#set-the-coding-agent-policy-for-an-enterprise
@@ -1381,6 +1470,7 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/token-inventory#list-enterprise-token-inventory
     openapi_files:
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: POST /enterprises/{enterprise}/credentials/exports
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/token-inventory#create-an-enterprise-token-inventory-export
     openapi_files:
@@ -1393,6 +1483,7 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/token-inventory#get-an-enterprise-token-inventory-item
     openapi_files:
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /enterprises/{enterprise}/dependabot/alerts
     documentation_url: https://docs.github.com/rest/dependabot/alerts#list-dependabot-alerts-for-an-enterprise
     openapi_files:
@@ -1472,6 +1563,14 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
+  - name: GET /enterprises/{enterprise}/license-compliance/policies/{policy_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/dependency-graph/license-compliance#get-the-license-compliance-policy-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PUT /enterprises/{enterprise}/license-compliance/policies/{policy_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/dependency-graph/license-compliance#set-the-license-compliance-policy-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/license-sync-status
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing#get-a-license-sync-status
     openapi_files:
@@ -1481,9 +1580,8 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/members/{username}/teams
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#list-enterprise-teams-for-a-user
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-team-members#list-enterprise-teams-for-a-user
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/network-configurations
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations#list-hosted-compute-network-configurations-for-an-enterprise
@@ -1631,6 +1729,18 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
+  - name: GET /enterprises/{enterprise}/secret-scanning/public-monitoring-alerts
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/secret-scanning#list-public-monitoring-alerts-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/secret-scanning/public-monitoring-alerts/{alert_number}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/secret-scanning#get-a-public-monitoring-alert-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PATCH /enterprises/{enterprise}/secret-scanning/public-monitoring-alerts/{alert_number}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/secret-scanning#update-a-public-monitoring-alert-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/settings/billing/advanced-security
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing#get-github-advanced-security-active-committers-for-an-enterprise
     openapi_files:
@@ -1717,104 +1827,95 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/teams
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-teams#list-enterprise-teams
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-teams#list-enterprise-teams
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: POST /enterprises/{enterprise}/teams
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-teams#create-an-enterprise-team
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-teams#create-an-enterprise-team
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#list-members-in-an-enterprise-team
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-team-members#list-members-in-an-enterprise-team
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/add
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#bulk-add-team-members
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-team-members#bulk-add-team-members
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/remove
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#bulk-remove-team-members
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-team-members#bulk-remove-team-members
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: DELETE /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#remove-team-membership
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-team-members#remove-team-membership
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#get-enterprise-team-membership
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-team-members#get-enterprise-team-membership
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: PUT /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#add-team-member
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-team-members#add-team-member
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: GET /enterprises/{enterprise}/teams/{enterprise-team}/organizations
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#get-organization-assignments
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-team-organizations#get-organization-assignments
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: POST /enterprises/{enterprise}/teams/{enterprise-team}/organizations/add
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#add-organization-assignments
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-team-organizations#add-organization-assignments
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: POST /enterprises/{enterprise}/teams/{enterprise-team}/organizations/remove
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#remove-organization-assignments
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-team-organizations#remove-organization-assignments
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: DELETE /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#delete-an-organization-assignment
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-team-organizations#delete-an-organization-assignment
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: GET /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#get-organization-assignment
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-team-organizations#get-organization-assignment
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: PUT /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#add-an-organization-assignment
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-team-organizations#add-an-organization-assignment
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
-  - name: DELETE /enterprises/{enterprise}/teams/{team_slug}
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-teams#delete-an-enterprise-team
+  - name: GET /enterprises/{enterprise}/teams/{team_id}/copilot/model-policies
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/ai-controls#get-model-policies-for-an-enterprise-team
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /enterprises/{enterprise}/teams/{team_id}/copilot/model-policies
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/ai-controls#update-model-policies-for-an-enterprise-team
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: DELETE /enterprises/{enterprise}/teams/{team_slug}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-teams#delete-an-enterprise-team
+    openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: GET /enterprises/{enterprise}/teams/{team_slug}
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-teams#get-an-enterprise-team
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-teams#get-an-enterprise-team
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: PATCH /enterprises/{enterprise}/teams/{team_slug}
-    documentation_url: https://docs.github.com/rest/enterprise-teams/enterprise-teams#update-an-enterprise-team
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-teams/enterprise-teams#update-an-enterprise-team
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
   - name: GET /enterprises/{enterprise}/visual-studio-subscriptions
@@ -3357,6 +3458,14 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/copilot/feature-policies
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-feature-policy-management#get-feature-policies-for-an-organization
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PATCH /orgs/{org}/copilot/feature-policies
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-feature-policy-management#update-feature-policies-for-an-organization
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/copilot/metrics/reports/organization-1-day
     documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-organization-usage-metrics-for-a-specific-day
     openapi_files:
@@ -3386,6 +3495,14 @@ openapi_operations:
     documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-organization-users-usage-metrics
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/copilot/model-policies
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-model-policy-management#get-model-policies-for-an-organization
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PATCH /orgs/{org}/copilot/model-policies
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-model-policy-management#update-model-policies-for-an-organization
+    openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/credential-authorizations
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/orgs/orgs#list-saml-sso-authorizations-for-an-organization
@@ -4227,6 +4344,36 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
+  - name: GET /orgs/{org}/properties/installations
+    documentation_url: https://docs.github.com/rest/orgs/custom-properties#get-registered-app-installations-for-external-custom-properties
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /orgs/{org}/properties/installations
+    documentation_url: https://docs.github.com/rest/orgs/custom-properties#register-an-app-installation-for-external-custom-properties
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/properties/installations/schema
+    documentation_url: https://docs.github.com/rest/orgs/custom-properties#get-all-external-custom-properties-for-a-github-app-installation-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /orgs/{org}/properties/installations/values
+    documentation_url: https://docs.github.com/rest/orgs/custom-properties#create-or-update-external-custom-property-values-for-organization-repositories
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/properties/installations/values/{property_name}
+    documentation_url: https://docs.github.com/rest/orgs/custom-properties#remove-all-external-custom-property-values-for-a-property-across-all-organization-repositories
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /orgs/{org}/properties/installations/values/{property_name}
+    documentation_url: https://docs.github.com/rest/orgs/custom-properties#create-or-update-external-custom-property-values-for-a-property-across-organization-repositories
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/properties/schema
     documentation_url: https://docs.github.com/rest/orgs/custom-properties#get-all-custom-properties-for-an-organization
     openapi_files:
@@ -4950,6 +5097,11 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
+  - name: GET /repos/{owner}/{repo}/actions/jobs/{job_id}/steps/{step_number}/logs
+    documentation_url: https://docs.github.com/rest/actions/workflow-jobs#download-step-logs-for-a-workflow-run-job
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/actions/oidc/customization/sub
     documentation_url: https://docs.github.com/rest/actions/oidc#get-the-customization-template-for-an-oidc-subject-claim-for-a-repository
     openapi_files:
@@ -6925,6 +7077,31 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
+  - name: GET /repos/{owner}/{repo}/issues/{issue_number}/artifacts
+    documentation_url: https://docs.github.com/rest/issues/artifacts#list-issue-artifacts
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/issues/{issue_number}/artifacts
+    documentation_url: https://docs.github.com/rest/issues/artifacts#create-an-issue-artifact
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /repos/{owner}/{repo}/issues/{issue_number}/artifacts/{artifact_number}
+    documentation_url: https://docs.github.com/rest/issues/artifacts#delete-an-issue-artifact
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/issues/{issue_number}/artifacts/{artifact_number}
+    documentation_url: https://docs.github.com/rest/issues/artifacts#get-an-issue-artifact
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /repos/{owner}/{repo}/issues/{issue_number}/artifacts/{artifact_number}
+    documentation_url: https://docs.github.com/rest/issues/artifacts#update-an-issue-artifact
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: DELETE /repos/{owner}/{repo}/issues/{issue_number}/assignees
     documentation_url: https://docs.github.com/rest/issues/assignees#remove-assignees-from-an-issue
     openapi_files:
@@ -7071,6 +7248,21 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
+  - name: GET /repos/{owner}/{repo}/issues/{issue_number}/relates_to
+    documentation_url: https://docs.github.com/rest/issues/issues#list-issues-related-to-an-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/issues/{issue_number}/relates_to
+    documentation_url: https://docs.github.com/rest/issues/issues#add-a-related-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /repos/{owner}/{repo}/issues/{issue_number}/relates_to/{issue_id}
+    documentation_url: https://docs.github.com/rest/issues/issues#remove-a-related-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: DELETE /repos/{owner}/{repo}/issues/{issue_number}/sub_issue
     documentation_url: https://docs.github.com/rest/issues/sub-issues#remove-sub-issue
     openapi_files:
@@ -7188,6 +7380,10 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
+  - name: POST /repos/{owner}/{repo}/license-compliance/package-checks
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/dependency-graph/license-compliance#check-license-compliance-for-packages
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: POST /repos/{owner}/{repo}/merge-upstream
     documentation_url: https://docs.github.com/rest/branches/branches#sync-a-fork-branch-with-the-upstream-repository
     openapi_files:
@@ -7518,6 +7714,11 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.22/ghes-3.22.json
+  - name: POST /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers/rerequest
+    documentation_url: https://docs.github.com/rest/pulls/review-requests#rerequest-reviewers-for-a-pull-request
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews
     documentation_url: https://docs.github.com/rest/pulls/reviews#list-reviews-for-a-pull-request
     openapi_files:
@@ -7822,6 +8023,26 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: PATCH /repos/{owner}/{repo}/security-advisories/{ghsa_id}
     documentation_url: https://docs.github.com/rest/security-advisories/repository-advisories#update-a-repository-security-advisory
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/security-advisories/{ghsa_id}/comments
+    documentation_url: https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisory-comments
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/comments
+    documentation_url: https://docs.github.com/rest/security-advisories/repository-advisories#create-a-repository-advisory-comment
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/security-advisories/{ghsa_id}/comments/{comment_id}
+    documentation_url: https://docs.github.com/rest/security-advisories/repository-advisories#get-a-repository-advisory-comment
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /repos/{owner}/{repo}/security-advisories/{ghsa_id}/comments/{comment_id}
+    documentation_url: https://docs.github.com/rest/security-advisories/repository-advisories#update-a-repository-advisory-comment
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
