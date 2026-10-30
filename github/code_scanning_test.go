@@ -1475,8 +1475,15 @@ func TestCodeScanningService_UpdateDefaultSetupConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	options := &UpdateDefaultSetupConfigurationOptions{
+		State:      new("configured"),
+		Languages:  []string{"go"},
+		QuerySuite: new("default"),
+	}
+
 	mux.HandleFunc("/repos/o/r/code-scanning/default-setup", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
+		testJSONBody(t, r, options)
 		_, err := fmt.Fprint(w, `{
 		"run_id": 5301214200,
 		"run_url": "https://api.github.com/repos/o/r/actions/runs/5301214200"
@@ -1487,11 +1494,6 @@ func TestCodeScanningService_UpdateDefaultSetupConfiguration(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	options := &UpdateDefaultSetupConfigurationOptions{
-		State:      "configured",
-		Languages:  []string{"go"},
-		QuerySuite: new("default"),
-	}
 	got, _, err := client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "o", "r", options)
 	if err != nil {
 		t.Errorf("CodeScanning.UpdateDefaultSetupConfiguration returned error: %v", err)

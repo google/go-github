@@ -58779,7 +58779,10 @@ func TestUpdateDefaultSetupConfigurationOptions_GetQuerySuite(tt *testing.T) {
 
 func TestUpdateDefaultSetupConfigurationOptions_GetState(tt *testing.T) {
 	tt.Parallel()
-	u := &UpdateDefaultSetupConfigurationOptions{}
+	var zeroValue string
+	u := &UpdateDefaultSetupConfigurationOptions{State: &zeroValue}
+	u.GetState()
+	u = &UpdateDefaultSetupConfigurationOptions{}
 	u.GetState()
 	u = nil
 	u.GetState()

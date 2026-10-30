@@ -47118,12 +47118,12 @@ func (u *UpdateDefaultSetupConfigurationOptions) GetQuerySuite() string {
 	return *u.QuerySuite
 }
 
-// GetState returns the State field.
+// GetState returns the State field if it's non-nil, zero value otherwise.
 func (u *UpdateDefaultSetupConfigurationOptions) GetState() string {
-	if u == nil {
+	if u == nil || u.State == nil {
 		return ""
 	}
-	return u.State
+	return *u.State
 }
 
 // GetRunID returns the RunID field if it's non-nil, zero value otherwise.
