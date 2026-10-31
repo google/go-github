@@ -15,7 +15,12 @@
 # CreateRepositoryRequest.AllowForking and CreateRepositoryRequest.AllowUpdateBranch
 # preserve fields previously available through the Repository request body,
 # although they are absent from the pinned repository creation request schemas.
+#
+# CreateInstallationTokenListReposRequest.RepositoryIDs has no omit option on purpose:
+# CreateInstallationTokenListRepos exists to send repository_ids even when it is nil or
+# empty (see #3106).
 CodeSecurityConfiguration.Description
+CreateInstallationTokenListReposRequest.RepositoryIDs
 CreateCheckSuiteOptions.HeadBranch
 CreateRepositoryRequest.AllowForking
 CreateRepositoryRequest.AllowUpdateBranch
