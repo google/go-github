@@ -128,14 +128,7 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/scim/v2/organizations/o/Users", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		w.WriteHeader(http.StatusCreated)
-		fmt.Fprint(w, `{"id":"1234567890","userName":"userName"}`)
-	})
-
-	ctx := t.Context()
-	opts := &SCIMUserAttributes{
+	body := ProvisionAndInviteSCIMUserRequest{
 		UserName: "userName",
 		Name: SCIMUserName{
 			GivenName:  "givenName",
@@ -147,7 +140,16 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 			},
 		},
 	}
-	user, _, err := client.SCIM.ProvisionAndInviteSCIMUser(ctx, "o", opts)
+
+	mux.HandleFunc("/scim/v2/organizations/o/Users", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, body)
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprint(w, `{"id":"1234567890","userName":"userName"}`)
+	})
+
+	ctx := t.Context()
+	user, _, err := client.SCIM.ProvisionAndInviteSCIMUser(ctx, "o", body)
 	if err != nil {
 		t.Errorf("SCIM.ProvisionAndInviteSCIMUser returned error: %v", err)
 	}
@@ -162,12 +164,12 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 
 	const methodName = "ProvisionAndInviteSCIMUser"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.SCIM.ProvisionAndInviteSCIMUser(ctx, "\n", opts)
+		_, _, err = client.SCIM.ProvisionAndInviteSCIMUser(ctx, "\n", body)
 		return err
 	})
 
 	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
-		got, resp, err := client.SCIM.ProvisionAndInviteSCIMUser(ctx, "o", opts)
+		got, resp, err := client.SCIM.ProvisionAndInviteSCIMUser(ctx, "o", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

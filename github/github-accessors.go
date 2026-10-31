@@ -33230,6 +33230,70 @@ func (p *ProtectionRule) GetWaitTimer() int {
 	return *p.WaitTimer
 }
 
+// GetActive returns the Active field if it's non-nil, zero value otherwise.
+func (p *ProvisionAndInviteSCIMUserRequest) GetActive() bool {
+	if p == nil || p.Active == nil {
+		return false
+	}
+	return *p.Active
+}
+
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (p *ProvisionAndInviteSCIMUserRequest) GetDisplayName() string {
+	if p == nil || p.DisplayName == nil {
+		return ""
+	}
+	return *p.DisplayName
+}
+
+// GetEmails returns the Emails slice if it's non-nil, nil otherwise.
+func (p *ProvisionAndInviteSCIMUserRequest) GetEmails() []*SCIMUserEmail {
+	if p == nil || p.Emails == nil {
+		return nil
+	}
+	return p.Emails
+}
+
+// GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
+func (p *ProvisionAndInviteSCIMUserRequest) GetExternalID() string {
+	if p == nil || p.ExternalID == nil {
+		return ""
+	}
+	return *p.ExternalID
+}
+
+// GetGroups returns the Groups slice if it's non-nil, nil otherwise.
+func (p *ProvisionAndInviteSCIMUserRequest) GetGroups() []string {
+	if p == nil || p.Groups == nil {
+		return nil
+	}
+	return p.Groups
+}
+
+// GetName returns the Name field.
+func (p *ProvisionAndInviteSCIMUserRequest) GetName() SCIMUserName {
+	if p == nil {
+		return SCIMUserName{}
+	}
+	return p.Name
+}
+
+// GetSchemas returns the Schemas slice if it's non-nil, nil otherwise.
+func (p *ProvisionAndInviteSCIMUserRequest) GetSchemas() []string {
+	if p == nil || p.Schemas == nil {
+		return nil
+	}
+	return p.Schemas
+}
+
+// GetUserName returns the UserName field.
+func (p *ProvisionAndInviteSCIMUserRequest) GetUserName() string {
+	if p == nil {
+		return ""
+	}
+	return p.UserName
+}
+
 // GetInstallation returns the Installation field.
 func (p *PublicEvent) GetInstallation() *Installation {
 	if p == nil {

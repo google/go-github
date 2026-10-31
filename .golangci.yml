@@ -226,7 +226,6 @@ linters:
             - Repository
             - RepositoryContentFileOptions
             - RequiredStatusChecksRequest
-            - SCIMUserAttributes
             - SourceImportAuthor
             - Subscription
           # Body type names exempt from the "Options" suffix rule.
