@@ -4033,6 +4033,146 @@ func TestRoundTripWithOptionalFollowRedirect_MissingRedirectLocation(t *testing.
 	}
 }
 
+// TestRoundTripWithOptionalFollowRedirect_HonorsClientTimeout is the regression
+// for a client timeout that never reached the transport: the helper calls the
+// configured RoundTripper directly to inspect the first response, which skips
+// http.Client.Do - and http.Client.Do is where http.Client.Timeout is applied.
+// A RoundTripper that waits for its request context therefore used to wait out
+// the caller's context instead of the configured deadline.
+func TestRoundTripWithOptionalFollowRedirect_HonorsClientTimeout(t *testing.T) {
+	t.Parallel()
+
+	const timeout = 20 * time.Millisecond
+	transport := roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+		select {
+		case <-req.Context().Done():
+			return nil, req.Context().Err()
+		case <-time.After(2 * time.Second):
+			// Fails rather than hangs when the deadline is not propagated.
+			return nil, errors.New("transport never saw the client deadline")
+		}
+	})
+
+	client, err := NewClient(WithTimeout(timeout), WithTransport(transport))
+	if err != nil {
+		t.Fatalf("NewClient returned error: %v", err)
+	}
+
+	start := time.Now()
+	_, err = client.roundTripWithOptionalFollowRedirect(t.Context(), "archive", 0)
+	elapsed := time.Since(start)
+
+	if err == nil {
+		t.Fatal("Expected a timeout error, got nil.")
+	}
+	if !errors.Is(err, context.DeadlineExceeded) {
+		t.Errorf("Expected context.DeadlineExceeded, got: %v", err)
+	}
+	if elapsed > time.Second {
+		t.Errorf("Request took %v; the %v client timeout was not applied to the transport", elapsed, timeout)
+	}
+}
+
+// TestRoundTripWithOptionalFollowRedirect_ReleaseTimeoutOnClose pins the other
+// half of the http.Client.Timeout contract: on a successful response the
+// deadline has to outlive the call, because the caller still has a body to
+// read, and it has to be released when that body is closed so the timer does
+// not leak.
+func TestRoundTripWithOptionalFollowRedirect_ReleaseTimeoutOnClose(t *testing.T) {
+	t.Parallel()
+
+	var reqCtx context.Context
+	client, _, _ := setup(t)
+	client.client.Timeout = time.Hour
+	client.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+		reqCtx = req.Context()
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Header:     http.Header{},
+			Body:       io.NopCloser(strings.NewReader("payload")),
+			Request:    req,
+		}, nil
+	})
+
+	resp, err := client.roundTripWithOptionalFollowRedirect(t.Context(), "archive", 0)
+	if err != nil {
+		t.Fatalf("roundTripWithOptionalFollowRedirect returned error: %v", err)
+	}
+	if reqCtx == nil {
+		t.Fatal("the transport never saw a request context")
+	}
+	if err := reqCtx.Err(); err != nil {
+		t.Fatalf("the request context ended before the body was closed: %v", err)
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("reading the response body returned error: %v", err)
+	}
+	if got, want := string(body), "payload"; got != want {
+		t.Errorf("got body %q, want %q", got, want)
+	}
+	if err := resp.Body.Close(); err != nil {
+		t.Fatalf("closing the response body returned error: %v", err)
+	}
+	if err := reqCtx.Err(); !errors.Is(err, context.Canceled) {
+		t.Errorf("the request context was not cancelled when the body was closed: err = %v", err)
+	}
+}
+
+// TestRoundTripWithOptionalFollowRedirect_TimeoutCoversAllRedirects pins the
+// http.Client.Timeout contract - the deadline spans the whole request, not one
+// hop - by checking that every transport call in a redirect chain shares one
+// deadline instead of getting a fresh timeout per hop.
+func TestRoundTripWithOptionalFollowRedirect_TimeoutCoversAllRedirects(t *testing.T) {
+	t.Parallel()
+
+	const timeout = 30 * time.Millisecond
+	var deadlines []time.Time
+	var mu sync.Mutex
+	var calls int
+
+	client, _, _ := setup(t)
+	transport := roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+		mu.Lock()
+		calls++
+		n := calls
+		if dl, ok := req.Context().Deadline(); ok {
+			deadlines = append(deadlines, dl)
+		}
+		mu.Unlock()
+
+		if n == 1 {
+			return &http.Response{
+				StatusCode: http.StatusMovedPermanently,
+				Header:     http.Header{"Location": []string{baseURLPath + "/archive-target"}},
+				Body:       http.NoBody,
+				Request:    req,
+			}, nil
+		}
+		select {
+		case <-req.Context().Done():
+			return nil, req.Context().Err()
+		case <-time.After(2 * time.Second):
+			return nil, errors.New("transport never saw the client deadline")
+		}
+	})
+	client.client.Timeout = timeout
+	client.client.Transport = transport
+
+	if _, err := client.roundTripWithOptionalFollowRedirect(t.Context(), "archive", 2); err == nil {
+		t.Fatal("Expected a timeout error, got nil.")
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+	if len(deadlines) != 2 {
+		t.Fatalf("Expected 2 transport calls with a deadline, got %d", len(deadlines))
+	}
+	if !deadlines[0].Equal(deadlines[1]) {
+		t.Errorf("Each hop got its own deadline (%v then %v); http.Client.Timeout spans the whole request", deadlines[0], deadlines[1])
+	}
+}
+
 // TestRoundTripWithOptionalFollowRedirect_AllowsSameHostRedirect ensures the
 // cross-host check does not break legitimate same-host 301 follow behavior
 // (the path that rate-limit redirection relies on).
