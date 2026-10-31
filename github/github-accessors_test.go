@@ -22581,12 +22581,34 @@ func TestEnterpriseCreateBudget_GetBudgetType(tt *testing.T) {
 	e.GetBudgetType()
 }
 
+func TestEnterpriseCreateBudget_GetExpiresAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseCreateBudget{ExpiresAt: &zeroValue}
+	e.GetExpiresAt()
+	e = &EnterpriseCreateBudget{}
+	e.GetExpiresAt()
+	e = nil
+	e.GetExpiresAt()
+}
+
 func TestEnterpriseCreateBudget_GetPreventFurtherUsage(tt *testing.T) {
 	tt.Parallel()
 	e := &EnterpriseCreateBudget{}
 	e.GetPreventFurtherUsage()
 	e = nil
 	e.GetPreventFurtherUsage()
+}
+
+func TestEnterpriseCreateBudget_GetUser(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseCreateBudget{User: &zeroValue}
+	e.GetUser()
+	e = &EnterpriseCreateBudget{}
+	e.GetUser()
+	e = nil
+	e.GetUser()
 }
 
 func TestEnterpriseCreateOrUpdateBudgetResponse_GetBudget(tt *testing.T) {
@@ -23379,6 +23401,17 @@ func TestEnterpriseUpdateBudget_GetBudgetAmount(tt *testing.T) {
 	e.GetBudgetAmount()
 	e = nil
 	e.GetBudgetAmount()
+}
+
+func TestEnterpriseUpdateBudget_GetExpiresAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseUpdateBudget{ExpiresAt: &zeroValue}
+	e.GetExpiresAt()
+	e = &EnterpriseUpdateBudget{}
+	e.GetExpiresAt()
+	e = nil
+	e.GetExpiresAt()
 }
 
 func TestEnterpriseUpdateBudget_GetPreventFurtherUsage(tt *testing.T) {

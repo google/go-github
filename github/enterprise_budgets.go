@@ -105,6 +105,8 @@ type EnterpriseCreateBudget struct {
 	BudgetEntityName    *string                  `json:"budget_entity_name,omitempty"`
 	BudgetType          string                   `json:"budget_type"`
 	BudgetProductSKU    *string                  `json:"budget_product_sku,omitempty"`
+	User                *string                  `json:"user,omitempty"`
+	ExpiresAt           *string                  `json:"expires_at,omitempty"`
 }
 
 // EnterpriseUpdateBudget represents the payload to update a GitHub enterprise budget.
@@ -112,6 +114,7 @@ type EnterpriseUpdateBudget struct {
 	BudgetAmount        *int                      `json:"budget_amount,omitempty"`
 	PreventFurtherUsage *bool                     `json:"prevent_further_usage,omitempty"`
 	BudgetAlerting      *EnterpriseBudgetAlerting `json:"budget_alerting,omitempty"`
+	ExpiresAt           *string                   `json:"expires_at,omitempty"`
 }
 
 // EnterpriseCreateOrUpdateBudgetResponse represents the response when creating or updating a budget.
