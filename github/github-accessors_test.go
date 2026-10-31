@@ -23381,50 +23381,6 @@ func TestEnterpriseUpdateBudget_GetBudgetAmount(tt *testing.T) {
 	e.GetBudgetAmount()
 }
 
-func TestEnterpriseUpdateBudget_GetBudgetEntityName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	e := &EnterpriseUpdateBudget{BudgetEntityName: &zeroValue}
-	e.GetBudgetEntityName()
-	e = &EnterpriseUpdateBudget{}
-	e.GetBudgetEntityName()
-	e = nil
-	e.GetBudgetEntityName()
-}
-
-func TestEnterpriseUpdateBudget_GetBudgetProductSKU(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	e := &EnterpriseUpdateBudget{BudgetProductSKU: &zeroValue}
-	e.GetBudgetProductSKU()
-	e = &EnterpriseUpdateBudget{}
-	e.GetBudgetProductSKU()
-	e = nil
-	e.GetBudgetProductSKU()
-}
-
-func TestEnterpriseUpdateBudget_GetBudgetScope(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	e := &EnterpriseUpdateBudget{BudgetScope: &zeroValue}
-	e.GetBudgetScope()
-	e = &EnterpriseUpdateBudget{}
-	e.GetBudgetScope()
-	e = nil
-	e.GetBudgetScope()
-}
-
-func TestEnterpriseUpdateBudget_GetBudgetType(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	e := &EnterpriseUpdateBudget{BudgetType: &zeroValue}
-	e.GetBudgetType()
-	e = &EnterpriseUpdateBudget{}
-	e.GetBudgetType()
-	e = nil
-	e.GetBudgetType()
-}
-
 func TestEnterpriseUpdateBudget_GetPreventFurtherUsage(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool

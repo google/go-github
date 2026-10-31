@@ -112,10 +112,6 @@ type EnterpriseUpdateBudget struct {
 	BudgetAmount        *int                      `json:"budget_amount,omitempty"`
 	PreventFurtherUsage *bool                     `json:"prevent_further_usage,omitempty"`
 	BudgetAlerting      *EnterpriseBudgetAlerting `json:"budget_alerting,omitempty"`
-	BudgetScope         *string                   `json:"budget_scope,omitempty"`
-	BudgetEntityName    *string                   `json:"budget_entity_name,omitempty"`
-	BudgetType          *string                   `json:"budget_type,omitempty"`
-	BudgetProductSKU    *string                   `json:"budget_product_sku,omitempty"`
 }
 
 // EnterpriseCreateOrUpdateBudgetResponse represents the response when creating or updating a budget.

@@ -18646,38 +18646,6 @@ func (e *EnterpriseUpdateBudget) GetBudgetAmount() int {
 	return *e.BudgetAmount
 }
 
-// GetBudgetEntityName returns the BudgetEntityName field if it's non-nil, zero value otherwise.
-func (e *EnterpriseUpdateBudget) GetBudgetEntityName() string {
-	if e == nil || e.BudgetEntityName == nil {
-		return ""
-	}
-	return *e.BudgetEntityName
-}
-
-// GetBudgetProductSKU returns the BudgetProductSKU field if it's non-nil, zero value otherwise.
-func (e *EnterpriseUpdateBudget) GetBudgetProductSKU() string {
-	if e == nil || e.BudgetProductSKU == nil {
-		return ""
-	}
-	return *e.BudgetProductSKU
-}
-
-// GetBudgetScope returns the BudgetScope field if it's non-nil, zero value otherwise.
-func (e *EnterpriseUpdateBudget) GetBudgetScope() string {
-	if e == nil || e.BudgetScope == nil {
-		return ""
-	}
-	return *e.BudgetScope
-}
-
-// GetBudgetType returns the BudgetType field if it's non-nil, zero value otherwise.
-func (e *EnterpriseUpdateBudget) GetBudgetType() string {
-	if e == nil || e.BudgetType == nil {
-		return ""
-	}
-	return *e.BudgetType
-}
-
 // GetPreventFurtherUsage returns the PreventFurtherUsage field if it's non-nil, zero value otherwise.
 func (e *EnterpriseUpdateBudget) GetPreventFurtherUsage() bool {
 	if e == nil || e.PreventFurtherUsage == nil {
