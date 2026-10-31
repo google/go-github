@@ -41604,6 +41604,88 @@ func TestProtectionRule_GetWaitTimer(tt *testing.T) {
 	p.GetWaitTimer()
 }
 
+func TestProvisionAndInviteSCIMUserRequest_GetActive(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	p := &ProvisionAndInviteSCIMUserRequest{Active: &zeroValue}
+	p.GetActive()
+	p = &ProvisionAndInviteSCIMUserRequest{}
+	p.GetActive()
+	p = nil
+	p.GetActive()
+}
+
+func TestProvisionAndInviteSCIMUserRequest_GetDisplayName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProvisionAndInviteSCIMUserRequest{DisplayName: &zeroValue}
+	p.GetDisplayName()
+	p = &ProvisionAndInviteSCIMUserRequest{}
+	p.GetDisplayName()
+	p = nil
+	p.GetDisplayName()
+}
+
+func TestProvisionAndInviteSCIMUserRequest_GetEmails(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SCIMUserEmail{}
+	p := &ProvisionAndInviteSCIMUserRequest{Emails: zeroValue}
+	p.GetEmails()
+	p = &ProvisionAndInviteSCIMUserRequest{}
+	p.GetEmails()
+	p = nil
+	p.GetEmails()
+}
+
+func TestProvisionAndInviteSCIMUserRequest_GetExternalID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProvisionAndInviteSCIMUserRequest{ExternalID: &zeroValue}
+	p.GetExternalID()
+	p = &ProvisionAndInviteSCIMUserRequest{}
+	p.GetExternalID()
+	p = nil
+	p.GetExternalID()
+}
+
+func TestProvisionAndInviteSCIMUserRequest_GetGroups(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	p := &ProvisionAndInviteSCIMUserRequest{Groups: zeroValue}
+	p.GetGroups()
+	p = &ProvisionAndInviteSCIMUserRequest{}
+	p.GetGroups()
+	p = nil
+	p.GetGroups()
+}
+
+func TestProvisionAndInviteSCIMUserRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	p := &ProvisionAndInviteSCIMUserRequest{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
+func TestProvisionAndInviteSCIMUserRequest_GetSchemas(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	p := &ProvisionAndInviteSCIMUserRequest{Schemas: zeroValue}
+	p.GetSchemas()
+	p = &ProvisionAndInviteSCIMUserRequest{}
+	p.GetSchemas()
+	p = nil
+	p.GetSchemas()
+}
+
+func TestProvisionAndInviteSCIMUserRequest_GetUserName(tt *testing.T) {
+	tt.Parallel()
+	p := &ProvisionAndInviteSCIMUserRequest{}
+	p.GetUserName()
+	p = nil
+	p.GetUserName()
+}
+
 func TestPublicEvent_GetInstallation(tt *testing.T) {
 	tt.Parallel()
 	p := &PublicEvent{}
@@ -53176,6 +53258,39 @@ func TestSCIMUserAttributes_GetName(tt *testing.T) {
 	s.GetName()
 	s = nil
 	s.GetName()
+}
+
+func TestSCIMUserAttributes_GetOperations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*UpdateAttributeForSCIMUserOperations{}
+	s := &SCIMUserAttributes{Operations: zeroValue}
+	s.GetOperations()
+	s = &SCIMUserAttributes{}
+	s.GetOperations()
+	s = nil
+	s.GetOperations()
+}
+
+func TestSCIMUserAttributes_GetOrganizationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	s := &SCIMUserAttributes{OrganizationID: &zeroValue}
+	s.GetOrganizationID()
+	s = &SCIMUserAttributes{}
+	s.GetOrganizationID()
+	s = nil
+	s.GetOrganizationID()
+}
+
+func TestSCIMUserAttributes_GetProfileURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMUserAttributes{ProfileURL: &zeroValue}
+	s.GetProfileURL()
+	s = &SCIMUserAttributes{}
+	s.GetProfileURL()
+	s = nil
+	s.GetProfileURL()
 }
 
 func TestSCIMUserAttributes_GetRoles(tt *testing.T) {

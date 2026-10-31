@@ -128,14 +128,7 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/scim/v2/organizations/o/Users", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		w.WriteHeader(http.StatusCreated)
-		fmt.Fprint(w, `{"id":"1234567890","userName":"userName"}`)
-	})
-
-	ctx := t.Context()
-	opts := &SCIMUserAttributes{
+	body := ProvisionAndInviteSCIMUserRequest{
 		UserName: "userName",
 		Name: SCIMUserName{
 			GivenName:  "givenName",
@@ -147,7 +140,16 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 			},
 		},
 	}
-	user, _, err := client.SCIM.ProvisionAndInviteSCIMUser(ctx, "o", opts)
+
+	mux.HandleFunc("/scim/v2/organizations/o/Users", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, body)
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprint(w, `{"id":"1234567890","userName":"userName"}`)
+	})
+
+	ctx := t.Context()
+	user, _, err := client.SCIM.ProvisionAndInviteSCIMUser(ctx, "o", body)
 	if err != nil {
 		t.Errorf("SCIM.ProvisionAndInviteSCIMUser returned error: %v", err)
 	}
@@ -162,12 +164,12 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 
 	const methodName = "ProvisionAndInviteSCIMUser"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.SCIM.ProvisionAndInviteSCIMUser(ctx, "\n", opts)
+		_, _, err = client.SCIM.ProvisionAndInviteSCIMUser(ctx, "\n", body)
 		return err
 	})
 
 	testNewRequestAndDoFailureCategory(t, methodName, client, ScimCategory, func() (*Response, error) {
-		got, resp, err := client.SCIM.ProvisionAndInviteSCIMUser(ctx, "o", opts)
+		got, resp, err := client.SCIM.ProvisionAndInviteSCIMUser(ctx, "o", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -210,7 +212,16 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 			  "created": ` + refTimeStr(1136178000) + `,
 			  "lastModified": ` + refTimeStr(1136178001) + `,
 			  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"
-			}
+			},
+			"organization_id": 1,
+			"profileUrl": "https://example.com/mona",
+			"operations": [
+			  {
+				"op": "replace",
+				"path": "active",
+				"value": false
+			  }
+			]
 		  }`))
 	})
 
@@ -244,10 +255,19 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 				Value: "mona@octocat.github.com",
 			},
 		},
-		Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
-		ExternalID: new("a7d0f98382"),
-		Groups:     nil,
-		Active:     new(true),
+		Schemas:        []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
+		ExternalID:     new("a7d0f98382"),
+		Groups:         nil,
+		Active:         new(true),
+		OrganizationID: new(int64(1)),
+		ProfileURL:     new("https://example.com/mona"),
+		Operations: []*UpdateAttributeForSCIMUserOperations{
+			{
+				Op:    "replace",
+				Path:  new("active"),
+				Value: json.RawMessage(`false`),
+			},
+		},
 	}
 
 	if !cmp.Equal(user, &want) {
