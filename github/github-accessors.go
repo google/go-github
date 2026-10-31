@@ -4534,6 +4534,150 @@ func (b *BypassReviewer) GetSecurityConfigurationID() int64 {
 	return *b.SecurityConfigurationID
 }
 
+// GetAlertStats returns the AlertStats field.
+func (c *Campaign) GetAlertStats() *CampaignAlertStats {
+	if c == nil {
+		return nil
+	}
+	return c.AlertStats
+}
+
+// GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
+func (c *Campaign) GetClosedAt() Timestamp {
+	if c == nil || c.ClosedAt == nil {
+		return Timestamp{}
+	}
+	return *c.ClosedAt
+}
+
+// GetContactLink returns the ContactLink field.
+func (c *Campaign) GetContactLink() string {
+	if c == nil {
+		return ""
+	}
+	return c.ContactLink
+}
+
+// GetCreatedAt returns the CreatedAt field.
+func (c *Campaign) GetCreatedAt() Timestamp {
+	if c == nil {
+		return Timestamp{}
+	}
+	return c.CreatedAt
+}
+
+// GetDescription returns the Description field.
+func (c *Campaign) GetDescription() string {
+	if c == nil {
+		return ""
+	}
+	return c.Description
+}
+
+// GetEndsAt returns the EndsAt field.
+func (c *Campaign) GetEndsAt() Timestamp {
+	if c == nil {
+		return Timestamp{}
+	}
+	return c.EndsAt
+}
+
+// GetManagers returns the Managers slice if it's non-nil, nil otherwise.
+func (c *Campaign) GetManagers() []*User {
+	if c == nil || c.Managers == nil {
+		return nil
+	}
+	return c.Managers
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *Campaign) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetNumber returns the Number field.
+func (c *Campaign) GetNumber() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.Number
+}
+
+// GetPublishedAt returns the PublishedAt field if it's non-nil, zero value otherwise.
+func (c *Campaign) GetPublishedAt() Timestamp {
+	if c == nil || c.PublishedAt == nil {
+		return Timestamp{}
+	}
+	return *c.PublishedAt
+}
+
+// GetState returns the State field.
+func (c *Campaign) GetState() string {
+	if c == nil {
+		return ""
+	}
+	return c.State
+}
+
+// GetTeamManagers returns the TeamManagers slice if it's non-nil, nil otherwise.
+func (c *Campaign) GetTeamManagers() []*Team {
+	if c == nil || c.TeamManagers == nil {
+		return nil
+	}
+	return c.TeamManagers
+}
+
+// GetUpdatedAt returns the UpdatedAt field.
+func (c *Campaign) GetUpdatedAt() Timestamp {
+	if c == nil {
+		return Timestamp{}
+	}
+	return c.UpdatedAt
+}
+
+// GetClosedCount returns the ClosedCount field.
+func (c *CampaignAlertStats) GetClosedCount() int {
+	if c == nil {
+		return 0
+	}
+	return c.ClosedCount
+}
+
+// GetInProgressCount returns the InProgressCount field.
+func (c *CampaignAlertStats) GetInProgressCount() int {
+	if c == nil {
+		return 0
+	}
+	return c.InProgressCount
+}
+
+// GetOpenCount returns the OpenCount field.
+func (c *CampaignAlertStats) GetOpenCount() int {
+	if c == nil {
+		return 0
+	}
+	return c.OpenCount
+}
+
+// GetAlertNumbers returns the AlertNumbers slice if it's non-nil, nil otherwise.
+func (c *CampaignCodeScanningAlert) GetAlertNumbers() []int64 {
+	if c == nil || c.AlertNumbers == nil {
+		return nil
+	}
+	return c.AlertNumbers
+}
+
+// GetRepositoryID returns the RepositoryID field.
+func (c *CampaignCodeScanningAlert) GetRepositoryID() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.RepositoryID
+}
+
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
@@ -12556,6 +12700,70 @@ func (c *CreateAutolinkRequest) GetURLTemplate() string {
 		return ""
 	}
 	return c.URLTemplate
+}
+
+// GetCodeScanningAlerts returns the CodeScanningAlerts slice if it's non-nil, nil otherwise.
+func (c *CreateCampaignRequest) GetCodeScanningAlerts() []*CampaignCodeScanningAlert {
+	if c == nil || c.CodeScanningAlerts == nil {
+		return nil
+	}
+	return c.CodeScanningAlerts
+}
+
+// GetContactLink returns the ContactLink field if it's non-nil, zero value otherwise.
+func (c *CreateCampaignRequest) GetContactLink() string {
+	if c == nil || c.ContactLink == nil {
+		return ""
+	}
+	return *c.ContactLink
+}
+
+// GetDescription returns the Description field.
+func (c *CreateCampaignRequest) GetDescription() string {
+	if c == nil {
+		return ""
+	}
+	return c.Description
+}
+
+// GetEndsAt returns the EndsAt field.
+func (c *CreateCampaignRequest) GetEndsAt() Timestamp {
+	if c == nil {
+		return Timestamp{}
+	}
+	return c.EndsAt
+}
+
+// GetGenerateIssues returns the GenerateIssues field if it's non-nil, zero value otherwise.
+func (c *CreateCampaignRequest) GetGenerateIssues() bool {
+	if c == nil || c.GenerateIssues == nil {
+		return false
+	}
+	return *c.GenerateIssues
+}
+
+// GetManagers returns the Managers slice if it's non-nil, nil otherwise.
+func (c *CreateCampaignRequest) GetManagers() []string {
+	if c == nil || c.Managers == nil {
+		return nil
+	}
+	return c.Managers
+}
+
+// GetName returns the Name field.
+func (c *CreateCampaignRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+// GetTeamManagers returns the TeamManagers slice if it's non-nil, nil otherwise.
+func (c *CreateCampaignRequest) GetTeamManagers() []string {
+	if c == nil || c.TeamManagers == nil {
+		return nil
+	}
+	return c.TeamManagers
 }
 
 // GetActions returns the Actions slice if it's non-nil, nil otherwise.
@@ -25244,6 +25452,30 @@ func (l *ListArtifactsOptions) GetName() string {
 		return ""
 	}
 	return *l.Name
+}
+
+// GetDirection returns the Direction field.
+func (l *ListCampaignsOptions) GetDirection() string {
+	if l == nil {
+		return ""
+	}
+	return l.Direction
+}
+
+// GetSort returns the Sort field.
+func (l *ListCampaignsOptions) GetSort() string {
+	if l == nil {
+		return ""
+	}
+	return l.Sort
+}
+
+// GetState returns the State field.
+func (l *ListCampaignsOptions) GetState() string {
+	if l == nil {
+		return ""
+	}
+	return l.State
 }
 
 // GetAppID returns the AppID field if it's non-nil, zero value otherwise.
@@ -46860,6 +47092,62 @@ func (u *UpdateBranchRule) GetParameters() UpdateRuleParameters {
 		return UpdateRuleParameters{}
 	}
 	return u.Parameters
+}
+
+// GetContactLink returns the ContactLink field if it's non-nil, zero value otherwise.
+func (u *UpdateCampaignRequest) GetContactLink() string {
+	if u == nil || u.ContactLink == nil {
+		return ""
+	}
+	return *u.ContactLink
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateCampaignRequest) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
+}
+
+// GetEndsAt returns the EndsAt field if it's non-nil, zero value otherwise.
+func (u *UpdateCampaignRequest) GetEndsAt() Timestamp {
+	if u == nil || u.EndsAt == nil {
+		return Timestamp{}
+	}
+	return *u.EndsAt
+}
+
+// GetManagers returns the Managers slice if it's non-nil, nil otherwise.
+func (u *UpdateCampaignRequest) GetManagers() []string {
+	if u == nil || u.Managers == nil {
+		return nil
+	}
+	return u.Managers
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateCampaignRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (u *UpdateCampaignRequest) GetState() string {
+	if u == nil || u.State == nil {
+		return ""
+	}
+	return *u.State
+}
+
+// GetTeamManagers returns the TeamManagers slice if it's non-nil, nil otherwise.
+func (u *UpdateCampaignRequest) GetTeamManagers() []string {
+	if u == nil || u.TeamManagers == nil {
+		return nil
+	}
+	return u.TeamManagers
 }
 
 // GetActions returns the Actions slice if it's non-nil, nil otherwise.

@@ -4919,6 +4919,37 @@ func (s *OrganizationsService) ListBlockedUsersIter(ctx context.Context, org str
 	}
 }
 
+// ListCampaignsIter returns an iterator that paginates through all results of ListCampaigns.
+func (s *OrganizationsService) ListCampaignsIter(ctx context.Context, org string, opts *ListCampaignsOptions) iter.Seq2[*Campaign, error] {
+	return func(yield func(*Campaign, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListCampaignsOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListCampaigns(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListCodeSecurityConfigurationRepositoriesIter returns an iterator that paginates through all results of ListCodeSecurityConfigurationRepositories.
 func (s *OrganizationsService) ListCodeSecurityConfigurationRepositoriesIter(ctx context.Context, org string, configurationID int64, opts *ListCodeSecurityConfigurationRepositoriesOptions) iter.Seq2[*RepositoryAttachment, error] {
 	return func(yield func(*RepositoryAttachment, error) bool) {
