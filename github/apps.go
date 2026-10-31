@@ -43,8 +43,9 @@ type InstallationToken struct {
 	Repositories []*Repository            `json:"repositories,omitempty"`
 }
 
-// InstallationTokenOptions allow restricting a token's access to specific repositories.
-type InstallationTokenOptions struct {
+// CreateInstallationTokenRequest represents the body of a request to create an installation token.
+// It allows restricting a token's access to specific repositories.
+type CreateInstallationTokenRequest struct {
 	// The IDs of the repositories that the installation token can access.
 	// Providing repository IDs restricts the access of an installation token to specific repositories.
 	RepositoryIDs []int64 `json:"repository_ids,omitempty"`
@@ -58,9 +59,10 @@ type InstallationTokenOptions struct {
 	Permissions *InstallationPermissions `json:"permissions,omitempty"`
 }
 
-// InstallationTokenListRepoOptions allow restricting a token's access to a list of all repositories in an installation.
-// It differs from InstallationTokenOptions as a parameter which does not omit RepositoryIDs if that field is nil or an empty array.
-type InstallationTokenListRepoOptions struct {
+// CreateInstallationTokenListReposRequest represents the body of a request to create an installation token
+// with a list of all repositories in an installation.
+// It differs from CreateInstallationTokenRequest in that it does not omit RepositoryIDs if that field is nil or an empty array.
+type CreateInstallationTokenListReposRequest struct {
 	// The IDs of the repositories that the installation token can access.
 	// Providing repository IDs restricts the access of an installation token to specific repositories.
 	RepositoryIDs []int64 `json:"repository_ids"`
@@ -402,7 +404,7 @@ func (s *AppsService) DeleteInstallation(ctx context.Context, id int64) (*Respon
 // GitHub API docs: https://docs.github.com/rest/apps/apps?apiVersion=2022-11-28#create-an-installation-access-token-for-an-app
 //
 //meta:operation POST /app/installations/{installation_id}/access_tokens
-func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, body *InstallationTokenOptions) (*InstallationToken, *Response, error) {
+func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, body CreateInstallationTokenRequest) (*InstallationToken, *Response, error) {
 	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
@@ -421,12 +423,12 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, bod
 
 // CreateInstallationTokenListRepos creates a new installation token with a list of all repositories in an installation which is not possible with CreateInstallationToken.
 //
-// It differs from CreateInstallationToken by taking InstallationTokenListRepoOptions as a parameter which does not omit RepositoryIDs if that field is nil or an empty array.
+// It differs from CreateInstallationToken by taking CreateInstallationTokenListReposRequest as a parameter which does not omit RepositoryIDs if that field is nil or an empty array.
 //
 // GitHub API docs: https://docs.github.com/rest/apps/apps?apiVersion=2022-11-28#create-an-installation-access-token-for-an-app
 //
 //meta:operation POST /app/installations/{installation_id}/access_tokens
-func (s *AppsService) CreateInstallationTokenListRepos(ctx context.Context, id int64, body *InstallationTokenListRepoOptions) (*InstallationToken, *Response, error) {
+func (s *AppsService) CreateInstallationTokenListRepos(ctx context.Context, id int64, body CreateInstallationTokenListReposRequest) (*InstallationToken, *Response, error) {
 	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)

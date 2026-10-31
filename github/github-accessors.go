@@ -13310,6 +13310,54 @@ func (c *CreateHostedRunnerRequest) GetSize() string {
 	return c.Size
 }
 
+// GetPermissions returns the Permissions field.
+func (c *CreateInstallationTokenListReposRequest) GetPermissions() *InstallationPermissions {
+	if c == nil {
+		return nil
+	}
+	return c.Permissions
+}
+
+// GetRepositories returns the Repositories slice if it's non-nil, nil otherwise.
+func (c *CreateInstallationTokenListReposRequest) GetRepositories() []string {
+	if c == nil || c.Repositories == nil {
+		return nil
+	}
+	return c.Repositories
+}
+
+// GetRepositoryIDs returns the RepositoryIDs slice if it's non-nil, nil otherwise.
+func (c *CreateInstallationTokenListReposRequest) GetRepositoryIDs() []int64 {
+	if c == nil || c.RepositoryIDs == nil {
+		return nil
+	}
+	return c.RepositoryIDs
+}
+
+// GetPermissions returns the Permissions field.
+func (c *CreateInstallationTokenRequest) GetPermissions() *InstallationPermissions {
+	if c == nil {
+		return nil
+	}
+	return c.Permissions
+}
+
+// GetRepositories returns the Repositories slice if it's non-nil, nil otherwise.
+func (c *CreateInstallationTokenRequest) GetRepositories() []string {
+	if c == nil || c.Repositories == nil {
+		return nil
+	}
+	return c.Repositories
+}
+
+// GetRepositoryIDs returns the RepositoryIDs slice if it's non-nil, nil otherwise.
+func (c *CreateInstallationTokenRequest) GetRepositoryIDs() []int64 {
+	if c == nil || c.RepositoryIDs == nil {
+		return nil
+	}
+	return c.RepositoryIDs
+}
+
 // GetColor returns the Color field if it's non-nil, zero value otherwise.
 func (c *CreateIssueLabelRequest) GetColor() string {
 	if c == nil || c.Color == nil {
@@ -22972,54 +23020,6 @@ func (i *InstallationToken) GetToken() string {
 		return ""
 	}
 	return *i.Token
-}
-
-// GetPermissions returns the Permissions field.
-func (i *InstallationTokenListRepoOptions) GetPermissions() *InstallationPermissions {
-	if i == nil {
-		return nil
-	}
-	return i.Permissions
-}
-
-// GetRepositories returns the Repositories slice if it's non-nil, nil otherwise.
-func (i *InstallationTokenListRepoOptions) GetRepositories() []string {
-	if i == nil || i.Repositories == nil {
-		return nil
-	}
-	return i.Repositories
-}
-
-// GetRepositoryIDs returns the RepositoryIDs slice if it's non-nil, nil otherwise.
-func (i *InstallationTokenListRepoOptions) GetRepositoryIDs() []int64 {
-	if i == nil || i.RepositoryIDs == nil {
-		return nil
-	}
-	return i.RepositoryIDs
-}
-
-// GetPermissions returns the Permissions field.
-func (i *InstallationTokenOptions) GetPermissions() *InstallationPermissions {
-	if i == nil {
-		return nil
-	}
-	return i.Permissions
-}
-
-// GetRepositories returns the Repositories slice if it's non-nil, nil otherwise.
-func (i *InstallationTokenOptions) GetRepositories() []string {
-	if i == nil || i.Repositories == nil {
-		return nil
-	}
-	return i.Repositories
-}
-
-// GetRepositoryIDs returns the RepositoryIDs slice if it's non-nil, nil otherwise.
-func (i *InstallationTokenOptions) GetRepositoryIDs() []int64 {
-	if i == nil || i.RepositoryIDs == nil {
-		return nil
-	}
-	return i.RepositoryIDs
 }
 
 // GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
