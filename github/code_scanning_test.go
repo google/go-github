@@ -1475,8 +1475,18 @@ func TestCodeScanningService_UpdateDefaultSetupConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	body := UpdateDefaultSetupConfigurationRequest{
+		State:       new("configured"),
+		RunnerType:  new("labeled"),
+		RunnerLabel: new("code-scanning"),
+		QuerySuite:  new("default"),
+		ThreatModel: new("remote_and_local"),
+		Languages:   []string{"go"},
+	}
+
 	mux.HandleFunc("/repos/o/r/code-scanning/default-setup", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
+		testJSONBody(t, r, body)
 		_, err := fmt.Fprint(w, `{
 		"run_id": 5301214200,
 		"run_url": "https://api.github.com/repos/o/r/actions/runs/5301214200"
@@ -1487,12 +1497,7 @@ func TestCodeScanningService_UpdateDefaultSetupConfiguration(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	options := &UpdateDefaultSetupConfigurationOptions{
-		State:      "configured",
-		Languages:  []string{"go"},
-		QuerySuite: new("default"),
-	}
-	got, _, err := client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "o", "r", options)
+	got, _, err := client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "o", "r", body)
 	if err != nil {
 		t.Errorf("CodeScanning.UpdateDefaultSetupConfiguration returned error: %v", err)
 	}
@@ -1507,12 +1512,12 @@ func TestCodeScanningService_UpdateDefaultSetupConfiguration(t *testing.T) {
 
 	const methodName = "UpdateDefaultSetupConfiguration"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "\n", "\n", nil)
+		_, _, err = client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "\n", "\n", UpdateDefaultSetupConfigurationRequest{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "o", "r", nil)
+		got, resp, err := client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "o", "r", UpdateDefaultSetupConfigurationRequest{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

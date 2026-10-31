@@ -58755,34 +58755,70 @@ func TestUpdateCustomRepoRoleRequest_GetPermissions(tt *testing.T) {
 	u.GetPermissions()
 }
 
-func TestUpdateDefaultSetupConfigurationOptions_GetLanguages(tt *testing.T) {
+func TestUpdateDefaultSetupConfigurationRequest_GetLanguages(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
-	u := &UpdateDefaultSetupConfigurationOptions{Languages: zeroValue}
+	u := &UpdateDefaultSetupConfigurationRequest{Languages: zeroValue}
 	u.GetLanguages()
-	u = &UpdateDefaultSetupConfigurationOptions{}
+	u = &UpdateDefaultSetupConfigurationRequest{}
 	u.GetLanguages()
 	u = nil
 	u.GetLanguages()
 }
 
-func TestUpdateDefaultSetupConfigurationOptions_GetQuerySuite(tt *testing.T) {
+func TestUpdateDefaultSetupConfigurationRequest_GetQuerySuite(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	u := &UpdateDefaultSetupConfigurationOptions{QuerySuite: &zeroValue}
+	u := &UpdateDefaultSetupConfigurationRequest{QuerySuite: &zeroValue}
 	u.GetQuerySuite()
-	u = &UpdateDefaultSetupConfigurationOptions{}
+	u = &UpdateDefaultSetupConfigurationRequest{}
 	u.GetQuerySuite()
 	u = nil
 	u.GetQuerySuite()
 }
 
-func TestUpdateDefaultSetupConfigurationOptions_GetState(tt *testing.T) {
+func TestUpdateDefaultSetupConfigurationRequest_GetRunnerLabel(tt *testing.T) {
 	tt.Parallel()
-	u := &UpdateDefaultSetupConfigurationOptions{}
+	var zeroValue string
+	u := &UpdateDefaultSetupConfigurationRequest{RunnerLabel: &zeroValue}
+	u.GetRunnerLabel()
+	u = &UpdateDefaultSetupConfigurationRequest{}
+	u.GetRunnerLabel()
+	u = nil
+	u.GetRunnerLabel()
+}
+
+func TestUpdateDefaultSetupConfigurationRequest_GetRunnerType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateDefaultSetupConfigurationRequest{RunnerType: &zeroValue}
+	u.GetRunnerType()
+	u = &UpdateDefaultSetupConfigurationRequest{}
+	u.GetRunnerType()
+	u = nil
+	u.GetRunnerType()
+}
+
+func TestUpdateDefaultSetupConfigurationRequest_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateDefaultSetupConfigurationRequest{State: &zeroValue}
+	u.GetState()
+	u = &UpdateDefaultSetupConfigurationRequest{}
 	u.GetState()
 	u = nil
 	u.GetState()
+}
+
+func TestUpdateDefaultSetupConfigurationRequest_GetThreatModel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateDefaultSetupConfigurationRequest{ThreatModel: &zeroValue}
+	u.GetThreatModel()
+	u = &UpdateDefaultSetupConfigurationRequest{}
+	u.GetThreatModel()
+	u = nil
+	u.GetThreatModel()
 }
 
 func TestUpdateDefaultSetupConfigurationResponse_GetRunID(tt *testing.T) {
