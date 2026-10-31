@@ -1063,6 +1063,44 @@ func TestIssue_String(t *testing.T) {
 	}
 }
 
+func TestIssueArtifact_String(t *testing.T) {
+	t.Parallel()
+	v := IssueArtifact{
+		ID:             0,
+		Number:         0,
+		Type:           "",
+		Name:           "",
+		Body:           "",
+		BodyHTML:       new(""),
+		Description:    new(""),
+		HTMLURL:        new(""),
+		Creator:        &User{},
+		UpdatedByActor: &User{},
+		CreatedAt:      &Timestamp{},
+		UpdatedAt:      &Timestamp{},
+	}
+	want := `github.IssueArtifact{ID:0, Number:0, Type:"", Name:"", Body:"", BodyHTML:"", Description:"", HTMLURL:"", Creator:github.User{}, UpdatedByActor:github.User{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	if got := v.String(); got != want {
+		t.Errorf("IssueArtifact.String = %v, want %v", got, want)
+	}
+}
+
+func TestIssueArtifactVersion_String(t *testing.T) {
+	t.Parallel()
+	v := IssueArtifactVersion{
+		Version:   0,
+		Name:      "",
+		Body:      "",
+		BodyHTML:  new(""),
+		CreatedAt: &Timestamp{},
+		Actor:     &User{},
+	}
+	want := `github.IssueArtifactVersion{Version:0, Name:"", Body:"", BodyHTML:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Actor:github.User{}}`
+	if got := v.String(); got != want {
+		t.Errorf("IssueArtifactVersion.String = %v, want %v", got, want)
+	}
+}
+
 func TestIssueComment_String(t *testing.T) {
 	t.Parallel()
 	v := IssueComment{

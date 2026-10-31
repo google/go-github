@@ -45,7 +45,9 @@ var (
 	skipStructMethods = map[string]bool{}
 	// skipStructs lists structs to skip.
 	skipStructs = map[string]bool{
-		"RateLimits": true,
+		// Its nested artifact has required value fields; tested manually.
+		"IssueArtifactWithVersions": true,
+		"RateLimits":                true,
 	}
 
 	funcMap = template.FuncMap{

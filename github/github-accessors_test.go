@@ -16734,6 +16734,33 @@ func TestCreateHostedRunnerRequest_GetSize(tt *testing.T) {
 	c.GetSize()
 }
 
+func TestCreateIssueArtifactRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateIssueArtifactRequest{}
+	c.GetBody()
+	c = nil
+	c.GetBody()
+}
+
+func TestCreateIssueArtifactRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateIssueArtifactRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateIssueArtifactRequest_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateIssueArtifactRequest{Type: &zeroValue}
+	c.GetType()
+	c = &CreateIssueArtifactRequest{}
+	c.GetType()
+	c = nil
+	c.GetType()
+}
+
 func TestCreateIssueLabelRequest_GetColor(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -29419,6 +29446,198 @@ func TestIssue_GetUser(tt *testing.T) {
 	i.GetUser()
 	i = nil
 	i.GetUser()
+}
+
+func TestIssueArtifact_GetBody(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueArtifact{}
+	i.GetBody()
+	i = nil
+	i.GetBody()
+}
+
+func TestIssueArtifact_GetBodyHTML(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueArtifact{BodyHTML: &zeroValue}
+	i.GetBodyHTML()
+	i = &IssueArtifact{}
+	i.GetBodyHTML()
+	i = nil
+	i.GetBodyHTML()
+}
+
+func TestIssueArtifact_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	i := &IssueArtifact{CreatedAt: &zeroValue}
+	i.GetCreatedAt()
+	i = &IssueArtifact{}
+	i.GetCreatedAt()
+	i = nil
+	i.GetCreatedAt()
+}
+
+func TestIssueArtifact_GetCreator(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueArtifact{}
+	i.GetCreator()
+	i = nil
+	i.GetCreator()
+}
+
+func TestIssueArtifact_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueArtifact{Description: &zeroValue}
+	i.GetDescription()
+	i = &IssueArtifact{}
+	i.GetDescription()
+	i = nil
+	i.GetDescription()
+}
+
+func TestIssueArtifact_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueArtifact{HTMLURL: &zeroValue}
+	i.GetHTMLURL()
+	i = &IssueArtifact{}
+	i.GetHTMLURL()
+	i = nil
+	i.GetHTMLURL()
+}
+
+func TestIssueArtifact_GetID(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueArtifact{}
+	i.GetID()
+	i = nil
+	i.GetID()
+}
+
+func TestIssueArtifact_GetName(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueArtifact{}
+	i.GetName()
+	i = nil
+	i.GetName()
+}
+
+func TestIssueArtifact_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueArtifact{}
+	i.GetNumber()
+	i = nil
+	i.GetNumber()
+}
+
+func TestIssueArtifact_GetType(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueArtifact{}
+	i.GetType()
+	i = nil
+	i.GetType()
+}
+
+func TestIssueArtifact_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	i := &IssueArtifact{UpdatedAt: &zeroValue}
+	i.GetUpdatedAt()
+	i = &IssueArtifact{}
+	i.GetUpdatedAt()
+	i = nil
+	i.GetUpdatedAt()
+}
+
+func TestIssueArtifact_GetUpdatedByActor(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueArtifact{}
+	i.GetUpdatedByActor()
+	i = nil
+	i.GetUpdatedByActor()
+}
+
+func TestIssueArtifactListOptions_GetType(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueArtifactListOptions{}
+	i.GetType()
+	i = nil
+	i.GetType()
+}
+
+func TestIssueArtifactVersion_GetActor(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueArtifactVersion{}
+	i.GetActor()
+	i = nil
+	i.GetActor()
+}
+
+func TestIssueArtifactVersion_GetBody(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueArtifactVersion{}
+	i.GetBody()
+	i = nil
+	i.GetBody()
+}
+
+func TestIssueArtifactVersion_GetBodyHTML(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueArtifactVersion{BodyHTML: &zeroValue}
+	i.GetBodyHTML()
+	i = &IssueArtifactVersion{}
+	i.GetBodyHTML()
+	i = nil
+	i.GetBodyHTML()
+}
+
+func TestIssueArtifactVersion_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	i := &IssueArtifactVersion{CreatedAt: &zeroValue}
+	i.GetCreatedAt()
+	i = &IssueArtifactVersion{}
+	i.GetCreatedAt()
+	i = nil
+	i.GetCreatedAt()
+}
+
+func TestIssueArtifactVersion_GetName(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueArtifactVersion{}
+	i.GetName()
+	i = nil
+	i.GetName()
+}
+
+func TestIssueArtifactVersion_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueArtifactVersion{}
+	i.GetVersion()
+	i = nil
+	i.GetVersion()
+}
+
+func TestIssueArtifactWithVersions_GetArtifact(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueArtifactWithVersions{}
+	i.GetArtifact()
+	i = nil
+	i.GetArtifact()
+}
+
+func TestIssueArtifactWithVersions_GetVersions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*IssueArtifactVersion{}
+	i := &IssueArtifactWithVersions{Versions: zeroValue}
+	i.GetVersions()
+	i = &IssueArtifactWithVersions{}
+	i.GetVersions()
+	i = nil
+	i.GetVersions()
 }
 
 func TestIssueComment_GetAuthorAssociation(tt *testing.T) {
@@ -59104,6 +59323,28 @@ func TestUpdateHostedRunnerRequest_GetSize(tt *testing.T) {
 	u.GetSize()
 	u = nil
 	u.GetSize()
+}
+
+func TestUpdateIssueArtifactRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateIssueArtifactRequest{Body: &zeroValue}
+	u.GetBody()
+	u = &UpdateIssueArtifactRequest{}
+	u.GetBody()
+	u = nil
+	u.GetBody()
+}
+
+func TestUpdateIssueArtifactRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateIssueArtifactRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateIssueArtifactRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
 }
 
 func TestUpdateIssueLabelRequest_GetColor(tt *testing.T) {

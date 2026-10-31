@@ -13310,6 +13310,30 @@ func (c *CreateHostedRunnerRequest) GetSize() string {
 	return c.Size
 }
 
+// GetBody returns the Body field.
+func (c *CreateIssueArtifactRequest) GetBody() string {
+	if c == nil {
+		return ""
+	}
+	return c.Body
+}
+
+// GetName returns the Name field.
+func (c *CreateIssueArtifactRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (c *CreateIssueArtifactRequest) GetType() string {
+	if c == nil || c.Type == nil {
+		return ""
+	}
+	return *c.Type
+}
+
 // GetColor returns the Color field if it's non-nil, zero value otherwise.
 func (c *CreateIssueLabelRequest) GetColor() string {
 	if c == nil || c.Color == nil {
@@ -23436,6 +23460,174 @@ func (i *Issue) GetUser() *User {
 		return nil
 	}
 	return i.User
+}
+
+// GetBody returns the Body field.
+func (i *IssueArtifact) GetBody() string {
+	if i == nil {
+		return ""
+	}
+	return i.Body
+}
+
+// GetBodyHTML returns the BodyHTML field if it's non-nil, zero value otherwise.
+func (i *IssueArtifact) GetBodyHTML() string {
+	if i == nil || i.BodyHTML == nil {
+		return ""
+	}
+	return *i.BodyHTML
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (i *IssueArtifact) GetCreatedAt() Timestamp {
+	if i == nil || i.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *i.CreatedAt
+}
+
+// GetCreator returns the Creator field.
+func (i *IssueArtifact) GetCreator() *User {
+	if i == nil {
+		return nil
+	}
+	return i.Creator
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (i *IssueArtifact) GetDescription() string {
+	if i == nil || i.Description == nil {
+		return ""
+	}
+	return *i.Description
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (i *IssueArtifact) GetHTMLURL() string {
+	if i == nil || i.HTMLURL == nil {
+		return ""
+	}
+	return *i.HTMLURL
+}
+
+// GetID returns the ID field.
+func (i *IssueArtifact) GetID() int64 {
+	if i == nil {
+		return 0
+	}
+	return i.ID
+}
+
+// GetName returns the Name field.
+func (i *IssueArtifact) GetName() string {
+	if i == nil {
+		return ""
+	}
+	return i.Name
+}
+
+// GetNumber returns the Number field.
+func (i *IssueArtifact) GetNumber() int {
+	if i == nil {
+		return 0
+	}
+	return i.Number
+}
+
+// GetType returns the Type field.
+func (i *IssueArtifact) GetType() string {
+	if i == nil {
+		return ""
+	}
+	return i.Type
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (i *IssueArtifact) GetUpdatedAt() Timestamp {
+	if i == nil || i.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *i.UpdatedAt
+}
+
+// GetUpdatedByActor returns the UpdatedByActor field.
+func (i *IssueArtifact) GetUpdatedByActor() *User {
+	if i == nil {
+		return nil
+	}
+	return i.UpdatedByActor
+}
+
+// GetType returns the Type field.
+func (i *IssueArtifactListOptions) GetType() string {
+	if i == nil {
+		return ""
+	}
+	return i.Type
+}
+
+// GetActor returns the Actor field.
+func (i *IssueArtifactVersion) GetActor() *User {
+	if i == nil {
+		return nil
+	}
+	return i.Actor
+}
+
+// GetBody returns the Body field.
+func (i *IssueArtifactVersion) GetBody() string {
+	if i == nil {
+		return ""
+	}
+	return i.Body
+}
+
+// GetBodyHTML returns the BodyHTML field if it's non-nil, zero value otherwise.
+func (i *IssueArtifactVersion) GetBodyHTML() string {
+	if i == nil || i.BodyHTML == nil {
+		return ""
+	}
+	return *i.BodyHTML
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (i *IssueArtifactVersion) GetCreatedAt() Timestamp {
+	if i == nil || i.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *i.CreatedAt
+}
+
+// GetName returns the Name field.
+func (i *IssueArtifactVersion) GetName() string {
+	if i == nil {
+		return ""
+	}
+	return i.Name
+}
+
+// GetVersion returns the Version field.
+func (i *IssueArtifactVersion) GetVersion() int {
+	if i == nil {
+		return 0
+	}
+	return i.Version
+}
+
+// GetArtifact returns the Artifact field.
+func (i *IssueArtifactWithVersions) GetArtifact() *IssueArtifact {
+	if i == nil {
+		return nil
+	}
+	return i.Artifact
+}
+
+// GetVersions returns the Versions slice if it's non-nil, nil otherwise.
+func (i *IssueArtifactWithVersions) GetVersions() []*IssueArtifactVersion {
+	if i == nil || i.Versions == nil {
+		return nil
+	}
+	return i.Versions
 }
 
 // GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
@@ -47364,6 +47556,22 @@ func (u *UpdateHostedRunnerRequest) GetSize() string {
 		return ""
 	}
 	return *u.Size
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueArtifactRequest) GetBody() string {
+	if u == nil || u.Body == nil {
+		return ""
+	}
+	return *u.Body
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueArtifactRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
 }
 
 // GetColor returns the Color field if it's non-nil, zero value otherwise.
