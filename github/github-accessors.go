@@ -42614,6 +42614,30 @@ func (s *SCIMUserAttributes) GetName() SCIMUserName {
 	return s.Name
 }
 
+// GetOperations returns the Operations slice if it's non-nil, nil otherwise.
+func (s *SCIMUserAttributes) GetOperations() []*UpdateAttributeForSCIMUserOperations {
+	if s == nil || s.Operations == nil {
+		return nil
+	}
+	return s.Operations
+}
+
+// GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
+func (s *SCIMUserAttributes) GetOrganizationID() int64 {
+	if s == nil || s.OrganizationID == nil {
+		return 0
+	}
+	return *s.OrganizationID
+}
+
+// GetProfileURL returns the ProfileURL field if it's non-nil, zero value otherwise.
+func (s *SCIMUserAttributes) GetProfileURL() string {
+	if s == nil || s.ProfileURL == nil {
+		return ""
+	}
+	return *s.ProfileURL
+}
+
 // GetRoles returns the Roles slice if it's non-nil, nil otherwise.
 func (s *SCIMUserAttributes) GetRoles() []*SCIMUserRole {
 	if s == nil || s.Roles == nil {

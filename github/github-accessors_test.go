@@ -53178,6 +53178,39 @@ func TestSCIMUserAttributes_GetName(tt *testing.T) {
 	s.GetName()
 }
 
+func TestSCIMUserAttributes_GetOperations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*UpdateAttributeForSCIMUserOperations{}
+	s := &SCIMUserAttributes{Operations: zeroValue}
+	s.GetOperations()
+	s = &SCIMUserAttributes{}
+	s.GetOperations()
+	s = nil
+	s.GetOperations()
+}
+
+func TestSCIMUserAttributes_GetOrganizationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	s := &SCIMUserAttributes{OrganizationID: &zeroValue}
+	s.GetOrganizationID()
+	s = &SCIMUserAttributes{}
+	s.GetOrganizationID()
+	s = nil
+	s.GetOrganizationID()
+}
+
+func TestSCIMUserAttributes_GetProfileURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMUserAttributes{ProfileURL: &zeroValue}
+	s.GetProfileURL()
+	s = &SCIMUserAttributes{}
+	s.GetProfileURL()
+	s = nil
+	s.GetProfileURL()
+}
+
 func TestSCIMUserAttributes_GetRoles(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*SCIMUserRole{}

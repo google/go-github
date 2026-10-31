@@ -210,7 +210,16 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 			  "created": ` + refTimeStr(1136178000) + `,
 			  "lastModified": ` + refTimeStr(1136178001) + `,
 			  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"
-			}
+			},
+			"organization_id": 1,
+			"profileUrl": "https://example.com/mona",
+			"operations": [
+			  {
+				"op": "replace",
+				"path": "active",
+				"value": false
+			  }
+			]
 		  }`))
 	})
 
@@ -244,10 +253,19 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 				Value: "mona@octocat.github.com",
 			},
 		},
-		Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
-		ExternalID: new("a7d0f98382"),
-		Groups:     nil,
-		Active:     new(true),
+		Schemas:        []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
+		ExternalID:     new("a7d0f98382"),
+		Groups:         nil,
+		Active:         new(true),
+		OrganizationID: new(int64(1)),
+		ProfileURL:     new("https://example.com/mona"),
+		Operations: []*UpdateAttributeForSCIMUserOperations{
+			{
+				Op:    "replace",
+				Path:  new("active"),
+				Value: json.RawMessage(`false`),
+			},
+		},
 	}
 
 	if !cmp.Equal(user, &want) {

@@ -32,8 +32,11 @@ type SCIMUserAttributes struct {
 	Roles       []*SCIMUserRole  `json:"roles,omitempty"`       // (Optional, GHES only.)
 	Active      *bool            `json:"active,omitempty"`      // (Optional.)
 	// Only populated as a result of calling ListSCIMProvisionedIdentitiesOptions or GetSCIMProvisioningInfoForUser:
-	ID   *string   `json:"id,omitempty"`
-	Meta *SCIMMeta `json:"meta,omitempty"`
+	ID             *string                                 `json:"id,omitempty"`
+	Meta           *SCIMMeta                               `json:"meta,omitempty"`
+	OrganizationID *int64                                  `json:"organization_id,omitempty"`
+	ProfileURL     *string                                 `json:"profileUrl,omitempty"`
+	Operations     []*UpdateAttributeForSCIMUserOperations `json:"operations,omitempty"`
 }
 
 // SCIMUserName represents SCIM user information.
