@@ -17990,12 +17990,28 @@ func (e *EnterpriseCreateBudget) GetBudgetType() string {
 	return e.BudgetType
 }
 
+// GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
+func (e *EnterpriseCreateBudget) GetExpiresAt() string {
+	if e == nil || e.ExpiresAt == nil {
+		return ""
+	}
+	return *e.ExpiresAt
+}
+
 // GetPreventFurtherUsage returns the PreventFurtherUsage field.
 func (e *EnterpriseCreateBudget) GetPreventFurtherUsage() bool {
 	if e == nil {
 		return false
 	}
 	return e.PreventFurtherUsage
+}
+
+// GetUser returns the User field if it's non-nil, zero value otherwise.
+func (e *EnterpriseCreateBudget) GetUser() string {
+	if e == nil || e.User == nil {
+		return ""
+	}
+	return *e.User
 }
 
 // GetBudget returns the Budget field.
@@ -18646,36 +18662,12 @@ func (e *EnterpriseUpdateBudget) GetBudgetAmount() int {
 	return *e.BudgetAmount
 }
 
-// GetBudgetEntityName returns the BudgetEntityName field if it's non-nil, zero value otherwise.
-func (e *EnterpriseUpdateBudget) GetBudgetEntityName() string {
-	if e == nil || e.BudgetEntityName == nil {
+// GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUpdateBudget) GetExpiresAt() string {
+	if e == nil || e.ExpiresAt == nil {
 		return ""
 	}
-	return *e.BudgetEntityName
-}
-
-// GetBudgetProductSKU returns the BudgetProductSKU field if it's non-nil, zero value otherwise.
-func (e *EnterpriseUpdateBudget) GetBudgetProductSKU() string {
-	if e == nil || e.BudgetProductSKU == nil {
-		return ""
-	}
-	return *e.BudgetProductSKU
-}
-
-// GetBudgetScope returns the BudgetScope field if it's non-nil, zero value otherwise.
-func (e *EnterpriseUpdateBudget) GetBudgetScope() string {
-	if e == nil || e.BudgetScope == nil {
-		return ""
-	}
-	return *e.BudgetScope
-}
-
-// GetBudgetType returns the BudgetType field if it's non-nil, zero value otherwise.
-func (e *EnterpriseUpdateBudget) GetBudgetType() string {
-	if e == nil || e.BudgetType == nil {
-		return ""
-	}
-	return *e.BudgetType
+	return *e.ExpiresAt
 }
 
 // GetPreventFurtherUsage returns the PreventFurtherUsage field if it's non-nil, zero value otherwise.
