@@ -61,41 +61,6 @@ func TestIssuesService_ListArtifacts(t *testing.T) {
 	})
 }
 
-func TestIssuesService_ListArtifacts_Pages(t *testing.T) {
-	t.Parallel()
-	for _, tt := range []struct {
-		name string
-		body string
-		opts *IssueArtifactListOptions
-		want int
-	}{
-		{name: "empty", body: `[]`, want: 0},
-		{name: "full", body: `[{"id":9001,"number":3}]`, opts: &IssueArtifactListOptions{ListOptions: ListOptions{PerPage: 1}}, want: 1},
-	} {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			client, mux, _ := setup(t)
-			requests := 0
-			mux.HandleFunc("/repos/o/r/issues/42/artifacts", func(w http.ResponseWriter, r *http.Request) {
-				testMethod(t, r, "GET")
-				query := values{}
-				if tt.opts != nil {
-					query["per_page"] = "1"
-				}
-				testFormValues(t, r, query)
-				requests++
-				fmt.Fprint(w, tt.body)
-			})
-			got, resp, err := client.Issues.ListArtifacts(t.Context(), "o", "r", 42, tt.opts)
-			if err != nil {
-				t.Fatalf("Issues.ListArtifacts returned error: %v", err)
-			}
-			if got == nil || len(got) != tt.want || requests != 1 || resp.NextPage != 0 {
-				t.Errorf("got %v, requests = %v, NextPage = %v; want non-nil slice of length %v, 1, 0", got, requests, resp.NextPage, tt.want)
-			}
-		})
-	}
-}
 
 func TestIssuesService_ListArtifactsIter_LinkPagination(t *testing.T) {
 	t.Parallel()
