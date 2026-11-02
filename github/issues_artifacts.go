@@ -80,10 +80,6 @@ type UpdateIssueArtifactRequest struct {
 
 // ListArtifacts lists artifacts attached to an issue.
 //
-// The response uses standard Link headers for pagination, which are exposed
-// through Response and supported by ListArtifactsIter. Offset pagination has
-// no snapshot guarantee.
-//
 // GitHub API docs: https://docs.github.com/rest/issues/artifacts?apiVersion=2022-11-28#list-issue-artifacts
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/artifacts
