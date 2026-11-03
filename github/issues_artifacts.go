@@ -18,13 +18,13 @@ type IssueArtifact struct {
 	Type           string     `json:"type"`
 	Name           string     `json:"name"`
 	Body           string     `json:"body"`
-	BodyHTML       *string    `json:"body_html,omitempty"`
-	Description    *string    `json:"description,omitempty"`
+	BodyHTML       *string    `json:"body_html"`
+	Description    string     `json:"description"`
 	HTMLURL        *string    `json:"html_url,omitempty"`
-	Creator        *User      `json:"creator,omitempty"`
-	UpdatedByActor *User      `json:"updated_by_actor,omitempty"`
-	CreatedAt      *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt      *Timestamp `json:"updated_at,omitempty"`
+	Creator        *User      `json:"creator"`
+	UpdatedByActor *User      `json:"updated_by_actor"`
+	CreatedAt      *Timestamp `json:"created_at"`
+	UpdatedAt      *Timestamp `json:"updated_at"`
 }
 
 func (a IssueArtifact) String() string {
@@ -36,9 +36,9 @@ type IssueArtifactVersion struct {
 	Version   int        `json:"version"`
 	Name      string     `json:"name"`
 	Body      string     `json:"body"`
-	BodyHTML  *string    `json:"body_html,omitempty"`
-	CreatedAt *Timestamp `json:"created_at,omitempty"`
-	Actor     *User      `json:"actor,omitempty"`
+	BodyHTML  *string    `json:"body_html"`
+	CreatedAt *Timestamp `json:"created_at"`
+	Actor     *User      `json:"actor"`
 }
 
 func (v IssueArtifactVersion) String() string {
@@ -79,10 +79,6 @@ type UpdateIssueArtifactRequest struct {
 }
 
 // ListArtifacts lists artifacts attached to an issue.
-//
-// The response uses standard Link headers for pagination, which are exposed
-// through Response and supported by ListArtifactsIter. Offset pagination has
-// no snapshot guarantee.
 //
 // GitHub API docs: https://docs.github.com/rest/issues/artifacts?apiVersion=2022-11-28#list-issue-artifacts
 //

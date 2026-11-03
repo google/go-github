@@ -23494,12 +23494,12 @@ func (i *IssueArtifact) GetCreator() *User {
 	return i.Creator
 }
 
-// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+// GetDescription returns the Description field.
 func (i *IssueArtifact) GetDescription() string {
-	if i == nil || i.Description == nil {
+	if i == nil {
 		return ""
 	}
-	return *i.Description
+	return i.Description
 }
 
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.

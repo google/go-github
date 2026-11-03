@@ -1072,7 +1072,7 @@ func TestIssueArtifact_String(t *testing.T) {
 		Name:           "",
 		Body:           "",
 		BodyHTML:       new(""),
-		Description:    new(""),
+		Description:    "",
 		HTMLURL:        new(""),
 		Creator:        &User{},
 		UpdatedByActor: &User{},

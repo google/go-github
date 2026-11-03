@@ -29488,10 +29488,7 @@ func TestIssueArtifact_GetCreator(tt *testing.T) {
 
 func TestIssueArtifact_GetDescription(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &IssueArtifact{Description: &zeroValue}
-	i.GetDescription()
-	i = &IssueArtifact{}
+	i := &IssueArtifact{}
 	i.GetDescription()
 	i = nil
 	i.GetDescription()
