@@ -157,7 +157,7 @@ func ExampleTeamsService_ListTeams() {
 
 	// Note that authentication is needed here as you are performing a lookup on
 	// an organization's administrative configuration, so you will need to modify
-	// the example to to provide authentication to github.NewClient(). See the
+	// the example to provide authentication to github.NewClient(). See the
 	//  following documentation for more information on how to authenticate with
 	// the client:
 	// https://pkg.go.dev/github.com/google/go-github/v93/github#hdr-Authentication

@@ -32,8 +32,11 @@ type SCIMUserAttributes struct {
 	Roles       []*SCIMUserRole  `json:"roles,omitempty"`       // (Optional, GHES only.)
 	Active      *bool            `json:"active,omitempty"`      // (Optional.)
 	// Only populated as a result of calling ListSCIMProvisionedIdentitiesOptions or GetSCIMProvisioningInfoForUser:
-	ID   *string   `json:"id,omitempty"`
-	Meta *SCIMMeta `json:"meta,omitempty"`
+	ID             *string                                 `json:"id,omitempty"`
+	Meta           *SCIMMeta                               `json:"meta,omitempty"`
+	OrganizationID *int64                                  `json:"organization_id,omitempty"`
+	ProfileURL     *string                                 `json:"profileUrl,omitempty"`
+	Operations     []*UpdateAttributeForSCIMUserOperations `json:"operations,omitempty"`
 }
 
 // SCIMUserName represents SCIM user information.
@@ -119,12 +122,25 @@ func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org str
 	return identities, resp, nil
 }
 
+// ProvisionAndInviteSCIMUserRequest represents the body of a request to
+// provision and invite a SCIM user.
+type ProvisionAndInviteSCIMUserRequest struct {
+	UserName    string           `json:"userName"`              // Configured by the admin. Could be an email, login, or username. (Required.)
+	Name        SCIMUserName     `json:"name"`                  // (Required.)
+	DisplayName *string          `json:"displayName,omitempty"` // The name of the user, suitable for display to end-users. (Optional.)
+	Emails      []*SCIMUserEmail `json:"emails"`                // User emails. (Required.)
+	Schemas     []string         `json:"schemas,omitzero"`      // (Optional.)
+	ExternalID  *string          `json:"externalId,omitempty"`  // (Optional.)
+	Groups      []string         `json:"groups,omitzero"`       // (Optional.)
+	Active      *bool            `json:"active,omitempty"`      // (Optional.)
+}
+
 // ProvisionAndInviteSCIMUser provisions organization membership for a user, and sends an activation email to the email address.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim?apiVersion=2022-11-28#provision-and-invite-a-scim-user
 //
 //meta:operation POST /scim/v2/organizations/{org}/Users
-func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string, body *SCIMUserAttributes) (*SCIMUserAttributes, *Response, error) {
+func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string, body ProvisionAndInviteSCIMUserRequest) (*SCIMUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users", org)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)

@@ -33422,6 +33422,70 @@ func (p *ProtectionRule) GetWaitTimer() int {
 	return *p.WaitTimer
 }
 
+// GetActive returns the Active field if it's non-nil, zero value otherwise.
+func (p *ProvisionAndInviteSCIMUserRequest) GetActive() bool {
+	if p == nil || p.Active == nil {
+		return false
+	}
+	return *p.Active
+}
+
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (p *ProvisionAndInviteSCIMUserRequest) GetDisplayName() string {
+	if p == nil || p.DisplayName == nil {
+		return ""
+	}
+	return *p.DisplayName
+}
+
+// GetEmails returns the Emails slice if it's non-nil, nil otherwise.
+func (p *ProvisionAndInviteSCIMUserRequest) GetEmails() []*SCIMUserEmail {
+	if p == nil || p.Emails == nil {
+		return nil
+	}
+	return p.Emails
+}
+
+// GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
+func (p *ProvisionAndInviteSCIMUserRequest) GetExternalID() string {
+	if p == nil || p.ExternalID == nil {
+		return ""
+	}
+	return *p.ExternalID
+}
+
+// GetGroups returns the Groups slice if it's non-nil, nil otherwise.
+func (p *ProvisionAndInviteSCIMUserRequest) GetGroups() []string {
+	if p == nil || p.Groups == nil {
+		return nil
+	}
+	return p.Groups
+}
+
+// GetName returns the Name field.
+func (p *ProvisionAndInviteSCIMUserRequest) GetName() SCIMUserName {
+	if p == nil {
+		return SCIMUserName{}
+	}
+	return p.Name
+}
+
+// GetSchemas returns the Schemas slice if it's non-nil, nil otherwise.
+func (p *ProvisionAndInviteSCIMUserRequest) GetSchemas() []string {
+	if p == nil || p.Schemas == nil {
+		return nil
+	}
+	return p.Schemas
+}
+
+// GetUserName returns the UserName field.
+func (p *ProvisionAndInviteSCIMUserRequest) GetUserName() string {
+	if p == nil {
+		return ""
+	}
+	return p.UserName
+}
+
 // GetInstallation returns the Installation field.
 func (p *PublicEvent) GetInstallation() *Installation {
 	if p == nil {
@@ -42806,6 +42870,30 @@ func (s *SCIMUserAttributes) GetName() SCIMUserName {
 	return s.Name
 }
 
+// GetOperations returns the Operations slice if it's non-nil, nil otherwise.
+func (s *SCIMUserAttributes) GetOperations() []*UpdateAttributeForSCIMUserOperations {
+	if s == nil || s.Operations == nil {
+		return nil
+	}
+	return s.Operations
+}
+
+// GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
+func (s *SCIMUserAttributes) GetOrganizationID() int64 {
+	if s == nil || s.OrganizationID == nil {
+		return 0
+	}
+	return *s.OrganizationID
+}
+
+// GetProfileURL returns the ProfileURL field if it's non-nil, zero value otherwise.
+func (s *SCIMUserAttributes) GetProfileURL() string {
+	if s == nil || s.ProfileURL == nil {
+		return ""
+	}
+	return *s.ProfileURL
+}
+
 // GetRoles returns the Roles slice if it's non-nil, nil otherwise.
 func (s *SCIMUserAttributes) GetRoles() []*SCIMUserRole {
 	if s == nil || s.Roles == nil {
@@ -47295,7 +47383,7 @@ func (u *UpdateCustomRepoRoleRequest) GetPermissions() []string {
 }
 
 // GetLanguages returns the Languages slice if it's non-nil, nil otherwise.
-func (u *UpdateDefaultSetupConfigurationOptions) GetLanguages() []string {
+func (u *UpdateDefaultSetupConfigurationRequest) GetLanguages() []string {
 	if u == nil || u.Languages == nil {
 		return nil
 	}
@@ -47303,19 +47391,43 @@ func (u *UpdateDefaultSetupConfigurationOptions) GetLanguages() []string {
 }
 
 // GetQuerySuite returns the QuerySuite field if it's non-nil, zero value otherwise.
-func (u *UpdateDefaultSetupConfigurationOptions) GetQuerySuite() string {
+func (u *UpdateDefaultSetupConfigurationRequest) GetQuerySuite() string {
 	if u == nil || u.QuerySuite == nil {
 		return ""
 	}
 	return *u.QuerySuite
 }
 
-// GetState returns the State field.
-func (u *UpdateDefaultSetupConfigurationOptions) GetState() string {
-	if u == nil {
+// GetRunnerLabel returns the RunnerLabel field if it's non-nil, zero value otherwise.
+func (u *UpdateDefaultSetupConfigurationRequest) GetRunnerLabel() string {
+	if u == nil || u.RunnerLabel == nil {
 		return ""
 	}
-	return u.State
+	return *u.RunnerLabel
+}
+
+// GetRunnerType returns the RunnerType field if it's non-nil, zero value otherwise.
+func (u *UpdateDefaultSetupConfigurationRequest) GetRunnerType() string {
+	if u == nil || u.RunnerType == nil {
+		return ""
+	}
+	return *u.RunnerType
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (u *UpdateDefaultSetupConfigurationRequest) GetState() string {
+	if u == nil || u.State == nil {
+		return ""
+	}
+	return *u.State
+}
+
+// GetThreatModel returns the ThreatModel field if it's non-nil, zero value otherwise.
+func (u *UpdateDefaultSetupConfigurationRequest) GetThreatModel() string {
+	if u == nil || u.ThreatModel == nil {
+		return ""
+	}
+	return *u.ThreatModel
 }
 
 // GetRunID returns the RunID field if it's non-nil, zero value otherwise.
