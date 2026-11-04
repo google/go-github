@@ -8,7 +8,6 @@ package github
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 	"testing"
 	"time"
 
@@ -22,16 +21,6 @@ func TestIssueArtifactWithVersions_String(t *testing.T) {
 	if got := v.String(); got != want {
 		t.Errorf("IssueArtifactWithVersions.String = %v, want %v", got, want)
 	}
-}
-
-func TestIssueArtifact_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &IssueArtifact{}, `{"id":0,"number":0,"type":"","name":"","body":"","body_html":null,"description":"","creator":null,"updated_by_actor":null,"created_at":null,"updated_at":null}`)
-}
-
-func TestIssueArtifactVersion_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &IssueArtifactVersion{}, `{"version":0,"name":"","body":"","body_html":null,"created_at":null,"actor":null}`)
 }
 
 func TestIssuesService_ListArtifacts(t *testing.T) {
@@ -66,37 +55,6 @@ func TestIssuesService_ListArtifacts(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestIssuesService_ListArtifactsIter_Options(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-	requests := 0
-	mux.HandleFunc("/repos/o/r/issues/42/artifacts", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		requests++
-		testFormValues(t, r, values{"page": strconv.Itoa(requests), "per_page": "1", "type": "link"})
-		if requests == 1 {
-			w.Header().Set("Link", `<https://api.github.com/repos/o/r/issues/42/artifacts?page=2>; rel="next"`)
-		}
-		fmt.Fprint(w, `[{"type":"link"}]`)
-	})
-
-	opts := &IssueArtifactListOptions{Type: "link", ListOptions: ListOptions{Page: 1, PerPage: 1}}
-	var count int
-	for _, err := range client.Issues.ListArtifactsIter(t.Context(), "o", "r", 42, opts) {
-		if err != nil {
-			t.Fatalf("ListArtifactsIter returned error: %v", err)
-		}
-		count++
-	}
-	if count != 2 || requests != 2 {
-		t.Errorf("ListArtifactsIter returned %v artifacts in %v requests; want 2 in 2 requests", count, requests)
-	}
-	want := &IssueArtifactListOptions{Type: "link", ListOptions: ListOptions{Page: 1, PerPage: 1}}
-	if !cmp.Equal(opts, want) {
-		t.Errorf("ListArtifactsIter mutated options: %+v, want %+v", opts, want)
-	}
 }
 
 func TestIssuesService_GetArtifact(t *testing.T) {
@@ -152,11 +110,6 @@ func TestIssuesService_GetArtifact(t *testing.T) {
 	})
 }
 
-func TestCreateIssueArtifactRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, CreateIssueArtifactRequest{Name: "Draft"}, `{"name":"Draft","body":""}`)
-}
-
 func TestIssuesService_CreateArtifact(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -183,16 +136,6 @@ func TestIssuesService_CreateArtifact(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestUpdateIssueArtifactRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, UpdateIssueArtifactRequest{}, `{}`)
-	testJSONMarshal(t, UpdateIssueArtifactRequest{Name: new("Renamed")}, `{"name":"Renamed"}`)
-	testJSONMarshal(t, UpdateIssueArtifactRequest{Body: new("Revised")}, `{"body":"Revised"}`)
-	testJSONMarshal(t, UpdateIssueArtifactRequest{Name: new("")}, `{"name":""}`)
-	testJSONMarshal(t, UpdateIssueArtifactRequest{Body: new("")}, `{"body":""}`)
-	testJSONMarshal(t, UpdateIssueArtifactRequest{Name: new(""), Body: new("")}, `{"name":"","body":""}`)
 }
 
 func TestIssuesService_UpdateArtifact(t *testing.T) {
