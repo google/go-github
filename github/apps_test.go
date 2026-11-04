@@ -574,6 +574,38 @@ func TestAppsService_CreateInstallationTokenListReposWithNoOptions(t *testing.T)
 	})
 }
 
+func TestAppsService_CreateInstallationTokenListRepos_repositoryIDs(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name          string
+		repositoryIDs []int64
+		wantBody      string
+	}{
+		{name: "nil", repositoryIDs: nil, wantBody: `{}`},
+		{name: "empty", repositoryIDs: []int64{}, wantBody: `{"repository_ids":[]}`},
+		{name: "non-empty", repositoryIDs: []int64{1}, wantBody: `{"repository_ids":[1]}`},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+
+			mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "POST")
+				testJSONBodyRaw(t, r, tt.wantBody)
+				fmt.Fprint(w, `{"token":"t"}`)
+			})
+
+			body := CreateInstallationTokenListReposRequest{RepositoryIDs: tt.repositoryIDs}
+			if _, _, err := client.Apps.CreateInstallationTokenListRepos(t.Context(), 1, body); err != nil {
+				t.Errorf("Apps.CreateInstallationTokenListRepos returned error: %v", err)
+			}
+		})
+	}
+}
+
 func TestAppsService_CreateAttachment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

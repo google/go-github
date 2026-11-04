@@ -61,11 +61,11 @@ type CreateInstallationTokenRequest struct {
 
 // CreateInstallationTokenListReposRequest represents the body of a request to create an installation token
 // with a list of all repositories in an installation.
-// It differs from CreateInstallationTokenRequest in that it does not omit RepositoryIDs if that field is nil or an empty array.
+// It differs from CreateInstallationTokenRequest in that it does not omit RepositoryIDs if that field is an empty array.
 type CreateInstallationTokenListReposRequest struct {
 	// The IDs of the repositories that the installation token can access.
 	// Providing repository IDs restricts the access of an installation token to specific repositories.
-	RepositoryIDs []int64 `json:"repository_ids"`
+	RepositoryIDs []int64 `json:"repository_ids,omitzero"`
 
 	// The names of the repositories that the installation token can access.
 	// Providing repository names restricts the access of an installation token to specific repositories.
@@ -423,7 +423,7 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, bod
 
 // CreateInstallationTokenListRepos creates a new installation token with a list of all repositories in an installation which is not possible with CreateInstallationToken.
 //
-// It differs from CreateInstallationToken by taking CreateInstallationTokenListReposRequest as a parameter which does not omit RepositoryIDs if that field is nil or an empty array.
+// It differs from CreateInstallationToken by taking CreateInstallationTokenListReposRequest as a parameter which does not omit RepositoryIDs if that field is an empty array.
 //
 // GitHub API docs: https://docs.github.com/rest/apps/apps?apiVersion=2022-11-28#create-an-installation-access-token-for-an-app
 //
