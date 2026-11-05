@@ -16734,36 +16734,6 @@ func TestCreateHostedRunnerRequest_GetSize(tt *testing.T) {
 	c.GetSize()
 }
 
-func TestCreateInstallationTokenListReposRequest_GetPermissions(tt *testing.T) {
-	tt.Parallel()
-	c := &CreateInstallationTokenListReposRequest{}
-	c.GetPermissions()
-	c = nil
-	c.GetPermissions()
-}
-
-func TestCreateInstallationTokenListReposRequest_GetRepositories(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	c := &CreateInstallationTokenListReposRequest{Repositories: zeroValue}
-	c.GetRepositories()
-	c = &CreateInstallationTokenListReposRequest{}
-	c.GetRepositories()
-	c = nil
-	c.GetRepositories()
-}
-
-func TestCreateInstallationTokenListReposRequest_GetRepositoryIDs(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []int64{}
-	c := &CreateInstallationTokenListReposRequest{RepositoryIDs: zeroValue}
-	c.GetRepositoryIDs()
-	c = &CreateInstallationTokenListReposRequest{}
-	c.GetRepositoryIDs()
-	c = nil
-	c.GetRepositoryIDs()
-}
-
 func TestCreateInstallationTokenRequest_GetPermissions(tt *testing.T) {
 	tt.Parallel()
 	c := &CreateInstallationTokenRequest{}

@@ -13311,30 +13311,6 @@ func (c *CreateHostedRunnerRequest) GetSize() string {
 }
 
 // GetPermissions returns the Permissions field.
-func (c *CreateInstallationTokenListReposRequest) GetPermissions() *InstallationPermissions {
-	if c == nil {
-		return nil
-	}
-	return c.Permissions
-}
-
-// GetRepositories returns the Repositories slice if it's non-nil, nil otherwise.
-func (c *CreateInstallationTokenListReposRequest) GetRepositories() []string {
-	if c == nil || c.Repositories == nil {
-		return nil
-	}
-	return c.Repositories
-}
-
-// GetRepositoryIDs returns the RepositoryIDs slice if it's non-nil, nil otherwise.
-func (c *CreateInstallationTokenListReposRequest) GetRepositoryIDs() []int64 {
-	if c == nil || c.RepositoryIDs == nil {
-		return nil
-	}
-	return c.RepositoryIDs
-}
-
-// GetPermissions returns the Permissions field.
 func (c *CreateInstallationTokenRequest) GetPermissions() *InstallationPermissions {
 	if c == nil {
 		return nil
