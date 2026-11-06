@@ -258,7 +258,7 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 	})
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
 	updateCheckRunOpt := UpdateCheckRunOptions{
-		Name:        "testUpdateCheckRun",
+		Name:        new("testUpdateCheckRun"),
 		Status:      new("completed"),
 		CompletedAt: &Timestamp{startedAt},
 		Output: &CheckRunOutput{
@@ -516,8 +516,8 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	a := []*AutoTriggerCheck{{
-		AppID:   new(int64(2)),
-		Setting: new(false),
+		AppID:   2,
+		Setting: false,
 	}}
 	opt := CheckSuitePreferenceOptions{AutoTriggerChecks: a}
 
@@ -578,8 +578,7 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 	})
 
 	checkSuiteOpt := CreateCheckSuiteOptions{
-		HeadSHA:    "deadbeef",
-		HeadBranch: new("master"),
+		HeadSHA: "deadbeef",
 	}
 
 	ctx := t.Context()

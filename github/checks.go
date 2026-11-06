@@ -156,7 +156,7 @@ type CreateCheckRunOptions struct {
 	StartedAt   *Timestamp        `json:"started_at,omitempty"`   // The time that the check run began. (Optional.)
 	CompletedAt *Timestamp        `json:"completed_at,omitempty"` // The time the check completed. (Optional. Required if you provide conclusion.)
 	Output      *CheckRunOutput   `json:"output,omitempty"`       // Provide descriptive details about the run. (Optional)
-	Actions     []*CheckRunAction `json:"actions,omitempty"`      // Possible further actions the integrator can perform, which a user may trigger. (Optional.)
+	Actions     []*CheckRunAction `json:"actions,omitzero"`       // Possible further actions the integrator can perform, which a user may trigger. (Optional.)
 }
 
 // CheckRunAction exposes further actions the integrator can perform, which a user may trigger.
@@ -191,14 +191,14 @@ func (s *ChecksService) CreateCheckRun(ctx context.Context, owner, repo string, 
 
 // UpdateCheckRunOptions sets up parameters needed to update a CheckRun.
 type UpdateCheckRunOptions struct {
-	Name        string            `json:"name"`                   // The name of the check (e.g., "code-coverage"). (Required.)
+	Name        *string           `json:"name,omitempty"`         // The name of the check (e.g., "code-coverage"). (Optional.)
 	DetailsURL  *string           `json:"details_url,omitempty"`  // The URL of the integrator's site that has the full details of the check. (Optional.)
 	ExternalID  *string           `json:"external_id,omitempty"`  // A reference for the run on the integrator's system. (Optional.)
 	Status      *string           `json:"status,omitempty"`       // The current status. Can be one of "queued", "in_progress", or "completed". Default: "queued". (Optional.)
 	Conclusion  *string           `json:"conclusion,omitempty"`   // Can be one of "success", "failure", "neutral", "cancelled", "skipped", "timed_out", or "action_required". (Optional. Required if you provide a status of "completed".)
 	CompletedAt *Timestamp        `json:"completed_at,omitempty"` // The time the check completed. (Optional. Required if you provide conclusion.)
 	Output      *CheckRunOutput   `json:"output,omitempty"`       // Provide descriptive details about the run. (Optional)
-	Actions     []*CheckRunAction `json:"actions,omitempty"`      // Possible further actions the integrator can perform, which a user may trigger. (Optional.)
+	Actions     []*CheckRunAction `json:"actions,omitzero"`       // Possible further actions the integrator can perform, which a user may trigger. (Optional.)
 }
 
 // UpdateCheckRun updates a check run for a specific commit in a repository.
@@ -390,13 +390,13 @@ func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner, repo, 
 
 // AutoTriggerCheck enables or disables automatic creation of CheckSuite events upon pushes to the repository.
 type AutoTriggerCheck struct {
-	AppID   *int64 `json:"app_id,omitempty"`  // The id of the GitHub App. (Required.)
-	Setting *bool  `json:"setting,omitempty"` // Set to "true" to enable automatic creation of CheckSuite events upon pushes to the repository, or "false" to disable them. Default: "true" (Required.)
+	AppID   int64 `json:"app_id"`  // The id of the GitHub App. (Required.)
+	Setting bool  `json:"setting"` // Set to "true" to enable automatic creation of CheckSuite events upon pushes to the repository, or "false" to disable them. Default: "true" (Required.)
 }
 
 // CheckSuitePreferenceOptions set options for check suite preferences for a repository.
 type CheckSuitePreferenceOptions struct {
-	AutoTriggerChecks []*AutoTriggerCheck `json:"auto_trigger_checks,omitempty"` // A slice of auto trigger checks that can be set for a check suite in a repository.
+	AutoTriggerChecks []*AutoTriggerCheck `json:"auto_trigger_checks,omitzero"` // A slice of auto trigger checks that can be set for a check suite in a repository.
 }
 
 // CheckSuitePreferenceResults represents the results of the preference set operation.
@@ -435,8 +435,7 @@ func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner, rep
 
 // CreateCheckSuiteOptions sets up parameters to manually create a check suite.
 type CreateCheckSuiteOptions struct {
-	HeadSHA    string  `json:"head_sha"`              // The sha of the head commit. (Required.)
-	HeadBranch *string `json:"head_branch,omitempty"` // The name of the head branch where the code changes are implemented.
+	HeadSHA string `json:"head_sha"` // The sha of the head commit. (Required.)
 }
 
 // CreateCheckSuite manually creates a check suite for a repository.

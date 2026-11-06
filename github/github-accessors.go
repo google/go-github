@@ -3654,20 +3654,20 @@ func (a *AutomatedSecurityFixes) GetPaused() bool {
 	return *a.Paused
 }
 
-// GetAppID returns the AppID field if it's non-nil, zero value otherwise.
+// GetAppID returns the AppID field.
 func (a *AutoTriggerCheck) GetAppID() int64 {
-	if a == nil || a.AppID == nil {
+	if a == nil {
 		return 0
 	}
-	return *a.AppID
+	return a.AppID
 }
 
-// GetSetting returns the Setting field if it's non-nil, zero value otherwise.
+// GetSetting returns the Setting field.
 func (a *AutoTriggerCheck) GetSetting() bool {
-	if a == nil || a.Setting == nil {
+	if a == nil {
 		return false
 	}
-	return *a.Setting
+	return a.Setting
 }
 
 // GetContainer returns the Container field.
@@ -12636,14 +12636,6 @@ func (c *CreateCheckRunOptions) GetStatus() string {
 		return ""
 	}
 	return *c.Status
-}
-
-// GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
-func (c *CreateCheckSuiteOptions) GetHeadBranch() string {
-	if c == nil || c.HeadBranch == nil {
-		return ""
-	}
-	return *c.HeadBranch
 }
 
 // GetHeadSHA returns the HeadSHA field.
@@ -47158,12 +47150,12 @@ func (u *UpdateCheckRunOptions) GetExternalID() string {
 	return *u.ExternalID
 }
 
-// GetName returns the Name field.
+// GetName returns the Name field if it's non-nil, zero value otherwise.
 func (u *UpdateCheckRunOptions) GetName() string {
-	if u == nil {
+	if u == nil || u.Name == nil {
 		return ""
 	}
-	return u.Name
+	return *u.Name
 }
 
 // GetOutput returns the Output field.

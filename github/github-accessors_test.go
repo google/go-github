@@ -4599,10 +4599,7 @@ func TestAutomatedSecurityFixes_GetPaused(tt *testing.T) {
 
 func TestAutoTriggerCheck_GetAppID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	a := &AutoTriggerCheck{AppID: &zeroValue}
-	a.GetAppID()
-	a = &AutoTriggerCheck{}
+	a := &AutoTriggerCheck{}
 	a.GetAppID()
 	a = nil
 	a.GetAppID()
@@ -4610,10 +4607,7 @@ func TestAutoTriggerCheck_GetAppID(tt *testing.T) {
 
 func TestAutoTriggerCheck_GetSetting(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	a := &AutoTriggerCheck{Setting: &zeroValue}
-	a.GetSetting()
-	a = &AutoTriggerCheck{}
+	a := &AutoTriggerCheck{}
 	a.GetSetting()
 	a = nil
 	a.GetSetting()
@@ -15889,17 +15883,6 @@ func TestCreateCheckRunOptions_GetStatus(tt *testing.T) {
 	c.GetStatus()
 	c = nil
 	c.GetStatus()
-}
-
-func TestCreateCheckSuiteOptions_GetHeadBranch(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateCheckSuiteOptions{HeadBranch: &zeroValue}
-	c.GetHeadBranch()
-	c = &CreateCheckSuiteOptions{}
-	c.GetHeadBranch()
-	c = nil
-	c.GetHeadBranch()
 }
 
 func TestCreateCheckSuiteOptions_GetHeadSHA(tt *testing.T) {
@@ -58798,7 +58781,10 @@ func TestUpdateCheckRunOptions_GetExternalID(tt *testing.T) {
 
 func TestUpdateCheckRunOptions_GetName(tt *testing.T) {
 	tt.Parallel()
-	u := &UpdateCheckRunOptions{}
+	var zeroValue string
+	u := &UpdateCheckRunOptions{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateCheckRunOptions{}
 	u.GetName()
 	u = nil
 	u.GetName()
