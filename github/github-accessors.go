@@ -47166,6 +47166,14 @@ func (u *UpdateCheckRunOptions) GetOutput() *CheckRunOutput {
 	return u.Output
 }
 
+// GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
+func (u *UpdateCheckRunOptions) GetStartedAt() Timestamp {
+	if u == nil || u.StartedAt == nil {
+		return Timestamp{}
+	}
+	return *u.StartedAt
+}
+
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
 func (u *UpdateCheckRunOptions) GetStatus() string {
 	if u == nil || u.Status == nil {

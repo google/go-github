@@ -259,6 +259,7 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
 	updateCheckRunOpt := UpdateCheckRunOptions{
 		Name:        new("testUpdateCheckRun"),
+		StartedAt:   &Timestamp{startedAt},
 		Status:      new("completed"),
 		CompletedAt: &Timestamp{startedAt},
 		Output: &CheckRunOutput{

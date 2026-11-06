@@ -58798,6 +58798,17 @@ func TestUpdateCheckRunOptions_GetOutput(tt *testing.T) {
 	u.GetOutput()
 }
 
+func TestUpdateCheckRunOptions_GetStartedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	u := &UpdateCheckRunOptions{StartedAt: &zeroValue}
+	u.GetStartedAt()
+	u = &UpdateCheckRunOptions{}
+	u.GetStartedAt()
+	u = nil
+	u.GetStartedAt()
+}
+
 func TestUpdateCheckRunOptions_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

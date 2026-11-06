@@ -194,6 +194,7 @@ type UpdateCheckRunOptions struct {
 	Name        *string           `json:"name,omitempty"`         // The name of the check (e.g., "code-coverage"). (Optional.)
 	DetailsURL  *string           `json:"details_url,omitempty"`  // The URL of the integrator's site that has the full details of the check. (Optional.)
 	ExternalID  *string           `json:"external_id,omitempty"`  // A reference for the run on the integrator's system. (Optional.)
+	StartedAt   *Timestamp        `json:"started_at,omitempty"`   // The time that the check run began. (Optional.)
 	Status      *string           `json:"status,omitempty"`       // The current status. Can be one of "queued", "in_progress", or "completed". Default: "queued". (Optional.)
 	Conclusion  *string           `json:"conclusion,omitempty"`   // Can be one of "success", "failure", "neutral", "cancelled", "skipped", "timed_out", or "action_required". (Optional. Required if you provide a status of "completed".)
 	CompletedAt *Timestamp        `json:"completed_at,omitempty"` // The time the check completed. (Optional. Required if you provide conclusion.)
