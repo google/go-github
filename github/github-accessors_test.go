@@ -6410,17 +6410,6 @@ func TestCheckSuiteEvent_GetSender(tt *testing.T) {
 	c.GetSender()
 }
 
-func TestCheckSuitePreferenceOptions_GetAutoTriggerChecks(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []*AutoTriggerCheck{}
-	c := &CheckSuitePreferenceOptions{AutoTriggerChecks: zeroValue}
-	c.GetAutoTriggerChecks()
-	c = &CheckSuitePreferenceOptions{}
-	c.GetAutoTriggerChecks()
-	c = nil
-	c.GetAutoTriggerChecks()
-}
-
 func TestCheckSuitePreferenceResults_GetPreferences(tt *testing.T) {
 	tt.Parallel()
 	c := &CheckSuitePreferenceResults{}
@@ -15784,110 +15773,110 @@ func TestCreateAutolinkRequest_GetURLTemplate(tt *testing.T) {
 	c.GetURLTemplate()
 }
 
-func TestCreateCheckRunOptions_GetActions(tt *testing.T) {
+func TestCreateCheckRunRequest_GetActions(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*CheckRunAction{}
-	c := &CreateCheckRunOptions{Actions: zeroValue}
+	c := &CreateCheckRunRequest{Actions: zeroValue}
 	c.GetActions()
-	c = &CreateCheckRunOptions{}
+	c = &CreateCheckRunRequest{}
 	c.GetActions()
 	c = nil
 	c.GetActions()
 }
 
-func TestCreateCheckRunOptions_GetCompletedAt(tt *testing.T) {
+func TestCreateCheckRunRequest_GetCompletedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	c := &CreateCheckRunOptions{CompletedAt: &zeroValue}
+	c := &CreateCheckRunRequest{CompletedAt: &zeroValue}
 	c.GetCompletedAt()
-	c = &CreateCheckRunOptions{}
+	c = &CreateCheckRunRequest{}
 	c.GetCompletedAt()
 	c = nil
 	c.GetCompletedAt()
 }
 
-func TestCreateCheckRunOptions_GetConclusion(tt *testing.T) {
+func TestCreateCheckRunRequest_GetConclusion(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCheckRunOptions{Conclusion: &zeroValue}
+	c := &CreateCheckRunRequest{Conclusion: &zeroValue}
 	c.GetConclusion()
-	c = &CreateCheckRunOptions{}
+	c = &CreateCheckRunRequest{}
 	c.GetConclusion()
 	c = nil
 	c.GetConclusion()
 }
 
-func TestCreateCheckRunOptions_GetDetailsURL(tt *testing.T) {
+func TestCreateCheckRunRequest_GetDetailsURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCheckRunOptions{DetailsURL: &zeroValue}
+	c := &CreateCheckRunRequest{DetailsURL: &zeroValue}
 	c.GetDetailsURL()
-	c = &CreateCheckRunOptions{}
+	c = &CreateCheckRunRequest{}
 	c.GetDetailsURL()
 	c = nil
 	c.GetDetailsURL()
 }
 
-func TestCreateCheckRunOptions_GetExternalID(tt *testing.T) {
+func TestCreateCheckRunRequest_GetExternalID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCheckRunOptions{ExternalID: &zeroValue}
+	c := &CreateCheckRunRequest{ExternalID: &zeroValue}
 	c.GetExternalID()
-	c = &CreateCheckRunOptions{}
+	c = &CreateCheckRunRequest{}
 	c.GetExternalID()
 	c = nil
 	c.GetExternalID()
 }
 
-func TestCreateCheckRunOptions_GetHeadSHA(tt *testing.T) {
+func TestCreateCheckRunRequest_GetHeadSHA(tt *testing.T) {
 	tt.Parallel()
-	c := &CreateCheckRunOptions{}
+	c := &CreateCheckRunRequest{}
 	c.GetHeadSHA()
 	c = nil
 	c.GetHeadSHA()
 }
 
-func TestCreateCheckRunOptions_GetName(tt *testing.T) {
+func TestCreateCheckRunRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	c := &CreateCheckRunOptions{}
+	c := &CreateCheckRunRequest{}
 	c.GetName()
 	c = nil
 	c.GetName()
 }
 
-func TestCreateCheckRunOptions_GetOutput(tt *testing.T) {
+func TestCreateCheckRunRequest_GetOutput(tt *testing.T) {
 	tt.Parallel()
-	c := &CreateCheckRunOptions{}
+	c := &CreateCheckRunRequest{}
 	c.GetOutput()
 	c = nil
 	c.GetOutput()
 }
 
-func TestCreateCheckRunOptions_GetStartedAt(tt *testing.T) {
+func TestCreateCheckRunRequest_GetStartedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	c := &CreateCheckRunOptions{StartedAt: &zeroValue}
+	c := &CreateCheckRunRequest{StartedAt: &zeroValue}
 	c.GetStartedAt()
-	c = &CreateCheckRunOptions{}
+	c = &CreateCheckRunRequest{}
 	c.GetStartedAt()
 	c = nil
 	c.GetStartedAt()
 }
 
-func TestCreateCheckRunOptions_GetStatus(tt *testing.T) {
+func TestCreateCheckRunRequest_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCheckRunOptions{Status: &zeroValue}
+	c := &CreateCheckRunRequest{Status: &zeroValue}
 	c.GetStatus()
-	c = &CreateCheckRunOptions{}
+	c = &CreateCheckRunRequest{}
 	c.GetStatus()
 	c = nil
 	c.GetStatus()
 }
 
-func TestCreateCheckSuiteOptions_GetHeadSHA(tt *testing.T) {
+func TestCreateCheckSuiteRequest_GetHeadSHA(tt *testing.T) {
 	tt.Parallel()
-	c := &CreateCheckSuiteOptions{}
+	c := &CreateCheckSuiteRequest{}
 	c.GetHeadSHA()
 	c = nil
 	c.GetHeadSHA()
@@ -58724,100 +58713,111 @@ func TestUpdateBranchRule_GetParameters(tt *testing.T) {
 	u.GetParameters()
 }
 
-func TestUpdateCheckRunOptions_GetActions(tt *testing.T) {
+func TestUpdateCheckRunRequest_GetActions(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*CheckRunAction{}
-	u := &UpdateCheckRunOptions{Actions: zeroValue}
+	u := &UpdateCheckRunRequest{Actions: zeroValue}
 	u.GetActions()
-	u = &UpdateCheckRunOptions{}
+	u = &UpdateCheckRunRequest{}
 	u.GetActions()
 	u = nil
 	u.GetActions()
 }
 
-func TestUpdateCheckRunOptions_GetCompletedAt(tt *testing.T) {
+func TestUpdateCheckRunRequest_GetCompletedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	u := &UpdateCheckRunOptions{CompletedAt: &zeroValue}
+	u := &UpdateCheckRunRequest{CompletedAt: &zeroValue}
 	u.GetCompletedAt()
-	u = &UpdateCheckRunOptions{}
+	u = &UpdateCheckRunRequest{}
 	u.GetCompletedAt()
 	u = nil
 	u.GetCompletedAt()
 }
 
-func TestUpdateCheckRunOptions_GetConclusion(tt *testing.T) {
+func TestUpdateCheckRunRequest_GetConclusion(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	u := &UpdateCheckRunOptions{Conclusion: &zeroValue}
+	u := &UpdateCheckRunRequest{Conclusion: &zeroValue}
 	u.GetConclusion()
-	u = &UpdateCheckRunOptions{}
+	u = &UpdateCheckRunRequest{}
 	u.GetConclusion()
 	u = nil
 	u.GetConclusion()
 }
 
-func TestUpdateCheckRunOptions_GetDetailsURL(tt *testing.T) {
+func TestUpdateCheckRunRequest_GetDetailsURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	u := &UpdateCheckRunOptions{DetailsURL: &zeroValue}
+	u := &UpdateCheckRunRequest{DetailsURL: &zeroValue}
 	u.GetDetailsURL()
-	u = &UpdateCheckRunOptions{}
+	u = &UpdateCheckRunRequest{}
 	u.GetDetailsURL()
 	u = nil
 	u.GetDetailsURL()
 }
 
-func TestUpdateCheckRunOptions_GetExternalID(tt *testing.T) {
+func TestUpdateCheckRunRequest_GetExternalID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	u := &UpdateCheckRunOptions{ExternalID: &zeroValue}
+	u := &UpdateCheckRunRequest{ExternalID: &zeroValue}
 	u.GetExternalID()
-	u = &UpdateCheckRunOptions{}
+	u = &UpdateCheckRunRequest{}
 	u.GetExternalID()
 	u = nil
 	u.GetExternalID()
 }
 
-func TestUpdateCheckRunOptions_GetName(tt *testing.T) {
+func TestUpdateCheckRunRequest_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	u := &UpdateCheckRunOptions{Name: &zeroValue}
+	u := &UpdateCheckRunRequest{Name: &zeroValue}
 	u.GetName()
-	u = &UpdateCheckRunOptions{}
+	u = &UpdateCheckRunRequest{}
 	u.GetName()
 	u = nil
 	u.GetName()
 }
 
-func TestUpdateCheckRunOptions_GetOutput(tt *testing.T) {
+func TestUpdateCheckRunRequest_GetOutput(tt *testing.T) {
 	tt.Parallel()
-	u := &UpdateCheckRunOptions{}
+	u := &UpdateCheckRunRequest{}
 	u.GetOutput()
 	u = nil
 	u.GetOutput()
 }
 
-func TestUpdateCheckRunOptions_GetStartedAt(tt *testing.T) {
+func TestUpdateCheckRunRequest_GetStartedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	u := &UpdateCheckRunOptions{StartedAt: &zeroValue}
+	u := &UpdateCheckRunRequest{StartedAt: &zeroValue}
 	u.GetStartedAt()
-	u = &UpdateCheckRunOptions{}
+	u = &UpdateCheckRunRequest{}
 	u.GetStartedAt()
 	u = nil
 	u.GetStartedAt()
 }
 
-func TestUpdateCheckRunOptions_GetStatus(tt *testing.T) {
+func TestUpdateCheckRunRequest_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	u := &UpdateCheckRunOptions{Status: &zeroValue}
+	u := &UpdateCheckRunRequest{Status: &zeroValue}
 	u.GetStatus()
-	u = &UpdateCheckRunOptions{}
+	u = &UpdateCheckRunRequest{}
 	u.GetStatus()
 	u = nil
 	u.GetStatus()
+}
+
+func TestUpdateCheckSuitePreferencesRequest_GetAutoTriggerChecks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AutoTriggerCheck{}
+	u := &UpdateCheckSuitePreferencesRequest{AutoTriggerChecks: zeroValue}
+	u.GetAutoTriggerChecks()
+	u = &UpdateCheckSuitePreferencesRequest{}
+	u.GetAutoTriggerChecks()
+	u = nil
+	u.GetAutoTriggerChecks()
 }
 
 func TestUpdateCodeScanningAlertRequest_GetAssignees(tt *testing.T) {

@@ -131,7 +131,7 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
                         "output":{"title": "Mighty test report", "summary":"", "text":""}}`)
 	})
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
-	checkRunOpt := CreateCheckRunOptions{
+	body := CreateCheckRunRequest{
 		Name:      "testCreateCheckRun",
 		HeadSHA:   "deadbeef",
 		Status:    new("in_progress"),
@@ -144,7 +144,7 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	checkRun, _, err := client.Checks.CreateCheckRun(ctx, "o", "r", checkRunOpt)
+	checkRun, _, err := client.Checks.CreateCheckRun(ctx, "o", "r", body)
 	if err != nil {
 		t.Errorf("Checks.CreateCheckRun return error: %v", err)
 	}
@@ -167,12 +167,12 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 
 	const methodName = "CreateCheckRun"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Checks.CreateCheckRun(ctx, "\n", "\n", CreateCheckRunOptions{})
+		_, _, err = client.Checks.CreateCheckRun(ctx, "\n", "\n", CreateCheckRunRequest{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Checks.CreateCheckRun(ctx, "o", "r", checkRunOpt)
+		got, resp, err := client.Checks.CreateCheckRun(ctx, "o", "r", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -257,7 +257,7 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
                         "output":{"title": "Mighty test report", "summary":"There are 0 failures, 2 warnings and 1 notice", "text":"You may have misspelled some words."}}`)
 	})
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
-	updateCheckRunOpt := UpdateCheckRunOptions{
+	body := UpdateCheckRunRequest{
 		Name:        new("testUpdateCheckRun"),
 		StartedAt:   &Timestamp{startedAt},
 		Status:      new("completed"),
@@ -270,7 +270,7 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	checkRun, _, err := client.Checks.UpdateCheckRun(ctx, "o", "r", 1, updateCheckRunOpt)
+	checkRun, _, err := client.Checks.UpdateCheckRun(ctx, "o", "r", 1, body)
 	if err != nil {
 		t.Errorf("Checks.UpdateCheckRun return error: %v", err)
 	}
@@ -294,12 +294,12 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 
 	const methodName = "UpdateCheckRun"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Checks.UpdateCheckRun(ctx, "\n", "\n", -1, UpdateCheckRunOptions{})
+		_, _, err = client.Checks.UpdateCheckRun(ctx, "\n", "\n", -1, UpdateCheckRunRequest{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Checks.UpdateCheckRun(ctx, "o", "r", 1, updateCheckRunOpt)
+		got, resp, err := client.Checks.UpdateCheckRun(ctx, "o", "r", 1, body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -512,7 +512,7 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 	})
 }
 
-func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
+func TestChecksService_UpdateCheckSuitePreferences(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -520,19 +520,19 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 		AppID:   2,
 		Setting: false,
 	}}
-	opt := CheckSuitePreferenceOptions{AutoTriggerChecks: a}
+	body := UpdateCheckSuitePreferencesRequest{AutoTriggerChecks: a}
 
 	mux.HandleFunc("/repos/o/r/check-suites/preferences", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"preferences":{"auto_trigger_checks":[{"app_id": 2,"setting": false}]}}`)
 	})
 
 	ctx := t.Context()
-	prefResults, _, err := client.Checks.SetCheckSuitePreferences(ctx, "o", "r", opt)
+	prefResults, _, err := client.Checks.UpdateCheckSuitePreferences(ctx, "o", "r", body)
 	if err != nil {
-		t.Errorf("Checks.SetCheckSuitePreferences return error: %v", err)
+		t.Errorf("Checks.UpdateCheckSuitePreferences return error: %v", err)
 	}
 
 	p := &PreferenceList{
@@ -543,17 +543,17 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 	}
 
 	if !cmp.Equal(prefResults, want) {
-		t.Errorf("Checks.SetCheckSuitePreferences return %+v, want %+v", prefResults, want)
+		t.Errorf("Checks.UpdateCheckSuitePreferences return %+v, want %+v", prefResults, want)
 	}
 
-	const methodName = "SetCheckSuitePreferences"
+	const methodName = "UpdateCheckSuitePreferences"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Checks.SetCheckSuitePreferences(ctx, "\n", "\n", CheckSuitePreferenceOptions{})
+		_, _, err = client.Checks.UpdateCheckSuitePreferences(ctx, "\n", "\n", UpdateCheckSuitePreferencesRequest{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Checks.SetCheckSuitePreferences(ctx, "o", "r", opt)
+		got, resp, err := client.Checks.UpdateCheckSuitePreferences(ctx, "o", "r", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -578,12 +578,12 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
                         "after": "deadbeefa"}`)
 	})
 
-	checkSuiteOpt := CreateCheckSuiteOptions{
+	body := CreateCheckSuiteRequest{
 		HeadSHA: "deadbeef",
 	}
 
 	ctx := t.Context()
-	checkSuite, _, err := client.Checks.CreateCheckSuite(ctx, "o", "r", checkSuiteOpt)
+	checkSuite, _, err := client.Checks.CreateCheckSuite(ctx, "o", "r", body)
 	if err != nil {
 		t.Errorf("Checks.CreateCheckSuite return error: %v", err)
 	}
@@ -603,12 +603,12 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 
 	const methodName = "CreateCheckSuite"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Checks.CreateCheckSuite(ctx, "\n", "\n", CreateCheckSuiteOptions{})
+		_, _, err = client.Checks.CreateCheckSuite(ctx, "\n", "\n", CreateCheckSuiteRequest{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Checks.CreateCheckSuite(ctx, "o", "r", checkSuiteOpt)
+		got, resp, err := client.Checks.CreateCheckSuite(ctx, "o", "r", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
