@@ -70,9 +70,11 @@ type InstallationPermissions struct {
 	Actions                                 *string `json:"actions,omitempty"`
 	ActionsVariables                        *string `json:"actions_variables,omitempty"`
 	Administration                          *string `json:"administration,omitempty"`
+	ArtifactMetadata                        *string `json:"artifact_metadata,omitempty"`
 	Attestations                            *string `json:"attestations,omitempty"`
 	Blocking                                *string `json:"blocking,omitempty"`
 	Checks                                  *string `json:"checks,omitempty"`
+	CodeQuality                             *string `json:"code_quality,omitempty"`
 	Codespaces                              *string `json:"codespaces,omitempty"`
 	CodespacesLifecycleAdmin                *string `json:"codespaces_lifecycle_admin,omitempty"`
 	CodespacesMetadata                      *string `json:"codespaces_metadata,omitempty"`
@@ -81,6 +83,7 @@ type InstallationPermissions struct {
 	Contents                                *string `json:"contents,omitempty"`
 	ContentReferences                       *string `json:"content_references,omitempty"`
 	CopilotMessages                         *string `json:"copilot_messages,omitempty"`
+	CustomPropertiesForOrgs                 *string `json:"custom_properties_for_organizations,omitempty"`
 	DependabotSecrets                       *string `json:"dependabot_secrets,omitempty"`
 	Deployments                             *string `json:"deployments,omitempty"`
 	Discussions                             *string `json:"discussions,omitempty"`
@@ -103,6 +106,7 @@ type InstallationPermissions struct {
 	Gists                                   *string `json:"gists,omitempty"`
 	GitSigningSSHPublicKeys                 *string `json:"git_signing_ssh_public_keys,omitempty"`
 	GPGKeys                                 *string `json:"gpg_keys,omitempty"`
+	InstallationRepos                       *string `json:"installation_repositories,omitempty"`
 	InteractionLimits                       *string `json:"interaction_limits,omitempty"`
 	Issues                                  *string `json:"issues,omitempty"`
 	Keys                                    *string `json:"keys,omitempty"`
@@ -116,13 +120,16 @@ type InstallationPermissions struct {
 	OrganizationCodespaces                  *string `json:"organization_codespaces,omitempty"`
 	OrganizationCodespacesSecrets           *string `json:"organization_codespaces_secrets,omitempty"`
 	OrganizationCodespacesSettings          *string `json:"organization_codespaces_settings,omitempty"`
+	OrganizationCopilotAgentSettings        *string `json:"organization_copilot_agent_settings,omitempty"`
 	OrganizationCopilotMetrics              *string `json:"organization_copilot_metrics,omitempty"`
+	OrganizationCopilotRequests             *string `json:"organization_copilot_requests,omitempty"`
 	OrganizationCopilotSeatManagement       *string `json:"organization_copilot_seat_management,omitempty"`
 	OrganizationCustomProperties            *string `json:"organization_custom_properties,omitempty"`
 	OrganizationCustomRoles                 *string `json:"organization_custom_roles,omitempty"`
 	OrganizationCustomOrgRoles              *string `json:"organization_custom_org_roles,omitempty"`
 	OrganizationDependabotSecrets           *string `json:"organization_dependabot_secrets,omitempty"`
 	OrganizationEvents                      *string `json:"organization_events,omitempty"`
+	OrganizationExternalPropertiesForRepos  *string `json:"organization_external_properties_for_repos,omitempty"`
 	OrganizationHooks                       *string `json:"organization_hooks,omitempty"`
 	OrganizationKnowledgeBases              *string `json:"organization_knowledge_bases,omitempty"`
 	OrganizationPackages                    *string `json:"organization_packages,omitempty"`
@@ -141,6 +148,7 @@ type InstallationPermissions struct {
 	Profile                                 *string `json:"profile,omitempty"`
 	PullRequests                            *string `json:"pull_requests,omitempty"`
 	RepositoryAdvisories                    *string `json:"repository_advisories,omitempty"`
+	RepositoryCreation                      *string `json:"repository_creation,omitempty"`
 	RepositoryCustomProperties              *string `json:"repository_custom_properties,omitempty"`
 	RepositoryHooks                         *string `json:"repository_hooks,omitempty"`
 	RepositoryProjects                      *string `json:"repository_projects,omitempty"`

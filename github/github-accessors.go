@@ -22126,6 +22126,14 @@ func (i *InstallationPermissions) GetAdministration() string {
 	return *i.Administration
 }
 
+// GetArtifactMetadata returns the ArtifactMetadata field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetArtifactMetadata() string {
+	if i == nil || i.ArtifactMetadata == nil {
+		return ""
+	}
+	return *i.ArtifactMetadata
+}
+
 // GetAttestations returns the Attestations field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetAttestations() string {
 	if i == nil || i.Attestations == nil {
@@ -22148,6 +22156,14 @@ func (i *InstallationPermissions) GetChecks() string {
 		return ""
 	}
 	return *i.Checks
+}
+
+// GetCodeQuality returns the CodeQuality field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetCodeQuality() string {
+	if i == nil || i.CodeQuality == nil {
+		return ""
+	}
+	return *i.CodeQuality
 }
 
 // GetCodespaces returns the Codespaces field if it's non-nil, zero value otherwise.
@@ -22212,6 +22228,14 @@ func (i *InstallationPermissions) GetCopilotMessages() string {
 		return ""
 	}
 	return *i.CopilotMessages
+}
+
+// GetCustomPropertiesForOrgs returns the CustomPropertiesForOrgs field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetCustomPropertiesForOrgs() string {
+	if i == nil || i.CustomPropertiesForOrgs == nil {
+		return ""
+	}
+	return *i.CustomPropertiesForOrgs
 }
 
 // GetDependabotSecrets returns the DependabotSecrets field if it's non-nil, zero value otherwise.
@@ -22390,6 +22414,14 @@ func (i *InstallationPermissions) GetGPGKeys() string {
 	return *i.GPGKeys
 }
 
+// GetInstallationRepos returns the InstallationRepos field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetInstallationRepos() string {
+	if i == nil || i.InstallationRepos == nil {
+		return ""
+	}
+	return *i.InstallationRepos
+}
+
 // GetInteractionLimits returns the InteractionLimits field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetInteractionLimits() string {
 	if i == nil || i.InteractionLimits == nil {
@@ -22494,12 +22526,28 @@ func (i *InstallationPermissions) GetOrganizationCodespacesSettings() string {
 	return *i.OrganizationCodespacesSettings
 }
 
+// GetOrganizationCopilotAgentSettings returns the OrganizationCopilotAgentSettings field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationCopilotAgentSettings() string {
+	if i == nil || i.OrganizationCopilotAgentSettings == nil {
+		return ""
+	}
+	return *i.OrganizationCopilotAgentSettings
+}
+
 // GetOrganizationCopilotMetrics returns the OrganizationCopilotMetrics field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetOrganizationCopilotMetrics() string {
 	if i == nil || i.OrganizationCopilotMetrics == nil {
 		return ""
 	}
 	return *i.OrganizationCopilotMetrics
+}
+
+// GetOrganizationCopilotRequests returns the OrganizationCopilotRequests field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationCopilotRequests() string {
+	if i == nil || i.OrganizationCopilotRequests == nil {
+		return ""
+	}
+	return *i.OrganizationCopilotRequests
 }
 
 // GetOrganizationCopilotSeatManagement returns the OrganizationCopilotSeatManagement field if it's non-nil, zero value otherwise.
@@ -22548,6 +22596,14 @@ func (i *InstallationPermissions) GetOrganizationEvents() string {
 		return ""
 	}
 	return *i.OrganizationEvents
+}
+
+// GetOrganizationExternalPropertiesForRepos returns the OrganizationExternalPropertiesForRepos field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationExternalPropertiesForRepos() string {
+	if i == nil || i.OrganizationExternalPropertiesForRepos == nil {
+		return ""
+	}
+	return *i.OrganizationExternalPropertiesForRepos
 }
 
 // GetOrganizationHooks returns the OrganizationHooks field if it's non-nil, zero value otherwise.
@@ -22692,6 +22748,14 @@ func (i *InstallationPermissions) GetRepositoryAdvisories() string {
 		return ""
 	}
 	return *i.RepositoryAdvisories
+}
+
+// GetRepositoryCreation returns the RepositoryCreation field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetRepositoryCreation() string {
+	if i == nil || i.RepositoryCreation == nil {
+		return ""
+	}
+	return *i.RepositoryCreation
 }
 
 // GetRepositoryCustomProperties returns the RepositoryCustomProperties field if it's non-nil, zero value otherwise.

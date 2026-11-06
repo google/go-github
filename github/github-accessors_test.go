@@ -27692,6 +27692,17 @@ func TestInstallationPermissions_GetAdministration(tt *testing.T) {
 	i.GetAdministration()
 }
 
+func TestInstallationPermissions_GetArtifactMetadata(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{ArtifactMetadata: &zeroValue}
+	i.GetArtifactMetadata()
+	i = &InstallationPermissions{}
+	i.GetArtifactMetadata()
+	i = nil
+	i.GetArtifactMetadata()
+}
+
 func TestInstallationPermissions_GetAttestations(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -27723,6 +27734,17 @@ func TestInstallationPermissions_GetChecks(tt *testing.T) {
 	i.GetChecks()
 	i = nil
 	i.GetChecks()
+}
+
+func TestInstallationPermissions_GetCodeQuality(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{CodeQuality: &zeroValue}
+	i.GetCodeQuality()
+	i = &InstallationPermissions{}
+	i.GetCodeQuality()
+	i = nil
+	i.GetCodeQuality()
 }
 
 func TestInstallationPermissions_GetCodespaces(tt *testing.T) {
@@ -27811,6 +27833,17 @@ func TestInstallationPermissions_GetCopilotMessages(tt *testing.T) {
 	i.GetCopilotMessages()
 	i = nil
 	i.GetCopilotMessages()
+}
+
+func TestInstallationPermissions_GetCustomPropertiesForOrgs(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{CustomPropertiesForOrgs: &zeroValue}
+	i.GetCustomPropertiesForOrgs()
+	i = &InstallationPermissions{}
+	i.GetCustomPropertiesForOrgs()
+	i = nil
+	i.GetCustomPropertiesForOrgs()
 }
 
 func TestInstallationPermissions_GetDependabotSecrets(tt *testing.T) {
@@ -28055,6 +28088,17 @@ func TestInstallationPermissions_GetGPGKeys(tt *testing.T) {
 	i.GetGPGKeys()
 }
 
+func TestInstallationPermissions_GetInstallationRepos(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{InstallationRepos: &zeroValue}
+	i.GetInstallationRepos()
+	i = &InstallationPermissions{}
+	i.GetInstallationRepos()
+	i = nil
+	i.GetInstallationRepos()
+}
+
 func TestInstallationPermissions_GetInteractionLimits(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -28198,6 +28242,17 @@ func TestInstallationPermissions_GetOrganizationCodespacesSettings(tt *testing.T
 	i.GetOrganizationCodespacesSettings()
 }
 
+func TestInstallationPermissions_GetOrganizationCopilotAgentSettings(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationCopilotAgentSettings: &zeroValue}
+	i.GetOrganizationCopilotAgentSettings()
+	i = &InstallationPermissions{}
+	i.GetOrganizationCopilotAgentSettings()
+	i = nil
+	i.GetOrganizationCopilotAgentSettings()
+}
+
 func TestInstallationPermissions_GetOrganizationCopilotMetrics(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -28207,6 +28262,17 @@ func TestInstallationPermissions_GetOrganizationCopilotMetrics(tt *testing.T) {
 	i.GetOrganizationCopilotMetrics()
 	i = nil
 	i.GetOrganizationCopilotMetrics()
+}
+
+func TestInstallationPermissions_GetOrganizationCopilotRequests(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationCopilotRequests: &zeroValue}
+	i.GetOrganizationCopilotRequests()
+	i = &InstallationPermissions{}
+	i.GetOrganizationCopilotRequests()
+	i = nil
+	i.GetOrganizationCopilotRequests()
 }
 
 func TestInstallationPermissions_GetOrganizationCopilotSeatManagement(tt *testing.T) {
@@ -28273,6 +28339,17 @@ func TestInstallationPermissions_GetOrganizationEvents(tt *testing.T) {
 	i.GetOrganizationEvents()
 	i = nil
 	i.GetOrganizationEvents()
+}
+
+func TestInstallationPermissions_GetOrganizationExternalPropertiesForRepos(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationExternalPropertiesForRepos: &zeroValue}
+	i.GetOrganizationExternalPropertiesForRepos()
+	i = &InstallationPermissions{}
+	i.GetOrganizationExternalPropertiesForRepos()
+	i = nil
+	i.GetOrganizationExternalPropertiesForRepos()
 }
 
 func TestInstallationPermissions_GetOrganizationHooks(tt *testing.T) {
@@ -28471,6 +28548,17 @@ func TestInstallationPermissions_GetRepositoryAdvisories(tt *testing.T) {
 	i.GetRepositoryAdvisories()
 	i = nil
 	i.GetRepositoryAdvisories()
+}
+
+func TestInstallationPermissions_GetRepositoryCreation(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{RepositoryCreation: &zeroValue}
+	i.GetRepositoryCreation()
+	i = &InstallationPermissions{}
+	i.GetRepositoryCreation()
+	i = nil
+	i.GetRepositoryCreation()
 }
 
 func TestInstallationPermissions_GetRepositoryCustomProperties(tt *testing.T) {
