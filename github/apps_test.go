@@ -424,7 +424,7 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	token, _, err := client.Apps.CreateInstallationToken(ctx, 1, nil)
+	token, _, err := client.Apps.CreateInstallationToken(ctx, 1, CreateInstallationTokenRequest{})
 	if err != nil {
 		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
 	}
@@ -436,12 +436,12 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 
 	const methodName = "CreateInstallationToken"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Apps.CreateInstallationToken(ctx, -1, nil)
+		_, _, err = client.Apps.CreateInstallationToken(ctx, -1, CreateInstallationTokenRequest{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Apps.CreateInstallationToken(ctx, 1, nil)
+		got, resp, err := client.Apps.CreateInstallationToken(ctx, 1, CreateInstallationTokenRequest{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -467,7 +467,7 @@ func TestAppsService_CreateInstallationTokenStateless(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Apps.CreateInstallationToken(ctx, 1, nil)
+	got, _, err := client.Apps.CreateInstallationToken(ctx, 1, CreateInstallationTokenRequest{})
 	if err != nil {
 		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
 	}
@@ -482,7 +482,7 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	installationTokenOptions := &InstallationTokenOptions{
+	body := CreateInstallationTokenRequest{
 		RepositoryIDs: []int64{1234},
 		Repositories:  []string{"foo"},
 		Permissions: &InstallationPermissions{
@@ -493,12 +493,12 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, installationTokenOptions)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"token":"t"}`)
 	})
 
 	ctx := t.Context()
-	token, _, err := client.Apps.CreateInstallationToken(ctx, 1, installationTokenOptions)
+	token, _, err := client.Apps.CreateInstallationToken(ctx, 1, body)
 	if err != nil {
 		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
 	}
@@ -509,69 +509,36 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 	}
 }
 
-func TestAppsService_CreateInstallationTokenListReposWithOptions(t *testing.T) {
+func TestAppsService_CreateInstallationToken_repositoryIDs(t *testing.T) {
 	t.Parallel()
-	client, mux, _ := setup(t)
 
-	installationTokenListRepoOptions := &InstallationTokenListRepoOptions{
-		Repositories: []string{"foo"},
-		Permissions: &InstallationPermissions{
-			Contents: new("write"),
-			Issues:   new("read"),
-		},
+	tests := []struct {
+		name          string
+		repositoryIDs []int64
+		wantBody      string
+	}{
+		{name: "nil", repositoryIDs: nil, wantBody: `{}`},
+		{name: "empty", repositoryIDs: []int64{}, wantBody: `{"repository_ids":[]}`},
+		{name: "non-empty", repositoryIDs: []int64{1}, wantBody: `{"repository_ids":[1]}`},
 	}
 
-	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testJSONBody(t, r, installationTokenListRepoOptions)
-		fmt.Fprint(w, `{"token":"t"}`)
-	})
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
 
-	ctx := t.Context()
-	token, _, err := client.Apps.CreateInstallationTokenListRepos(ctx, 1, installationTokenListRepoOptions)
-	if err != nil {
-		t.Errorf("Apps.CreateInstallationTokenListRepos returned error: %v", err)
+			mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "POST")
+				testJSONBodyRaw(t, r, tt.wantBody)
+				fmt.Fprint(w, `{"token":"t"}`)
+			})
+
+			body := CreateInstallationTokenRequest{RepositoryIDs: tt.repositoryIDs}
+			if _, _, err := client.Apps.CreateInstallationToken(t.Context(), 1, body); err != nil {
+				t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
+			}
+		})
 	}
-
-	want := &InstallationToken{Token: new("t")}
-	if !cmp.Equal(token, want) {
-		t.Errorf("Apps.CreateInstallationTokenListRepos returned %+v, want %+v", token, want)
-	}
-}
-
-func TestAppsService_CreateInstallationTokenListReposWithNoOptions(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		fmt.Fprint(w, `{"token":"t"}`)
-	})
-
-	ctx := t.Context()
-	token, _, err := client.Apps.CreateInstallationTokenListRepos(ctx, 1, nil)
-	if err != nil {
-		t.Errorf("Apps.CreateInstallationTokenListRepos returned error: %v", err)
-	}
-
-	want := &InstallationToken{Token: new("t")}
-	if !cmp.Equal(token, want) {
-		t.Errorf("Apps.CreateInstallationTokenListRepos returned %+v, want %+v", token, want)
-	}
-
-	const methodName = "CreateInstallationTokenListRepos"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Apps.CreateInstallationTokenListRepos(ctx, -1, nil)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Apps.CreateInstallationTokenListRepos(ctx, 1, nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestAppsService_CreateAttachment(t *testing.T) {

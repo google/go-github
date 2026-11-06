@@ -213,8 +213,6 @@ linters:
             - EnterpriseSecurityAnalysisSettings
             - Hook
             - Import
-            - InstallationTokenListRepoOptions
-            - InstallationTokenOptions
             - IssueImportRequest
             - MaintenanceOptions
             - Organization
@@ -235,8 +233,6 @@ linters:
             - ConfigApplyOptions
             - CreateCheckRunOptions
             - CreateCheckSuiteOptions
-            - InstallationTokenListRepoOptions
-            - InstallationTokenOptions
             - MaintenanceOptions
             - RepositoryContentFileOptions
             - UpdateCheckRunOptions

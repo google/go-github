@@ -16734,6 +16734,36 @@ func TestCreateHostedRunnerRequest_GetSize(tt *testing.T) {
 	c.GetSize()
 }
 
+func TestCreateInstallationTokenRequest_GetPermissions(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateInstallationTokenRequest{}
+	c.GetPermissions()
+	c = nil
+	c.GetPermissions()
+}
+
+func TestCreateInstallationTokenRequest_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateInstallationTokenRequest{Repositories: zeroValue}
+	c.GetRepositories()
+	c = &CreateInstallationTokenRequest{}
+	c.GetRepositories()
+	c = nil
+	c.GetRepositories()
+}
+
+func TestCreateInstallationTokenRequest_GetRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	c := &CreateInstallationTokenRequest{RepositoryIDs: zeroValue}
+	c.GetRepositoryIDs()
+	c = &CreateInstallationTokenRequest{}
+	c.GetRepositoryIDs()
+	c = nil
+	c.GetRepositoryIDs()
+}
+
 func TestCreateIssueArtifactRequest_GetBody(tt *testing.T) {
 	tt.Parallel()
 	c := &CreateIssueArtifactRequest{}
@@ -28853,66 +28883,6 @@ func TestInstallationToken_GetToken(tt *testing.T) {
 	i.GetToken()
 	i = nil
 	i.GetToken()
-}
-
-func TestInstallationTokenListRepoOptions_GetPermissions(tt *testing.T) {
-	tt.Parallel()
-	i := &InstallationTokenListRepoOptions{}
-	i.GetPermissions()
-	i = nil
-	i.GetPermissions()
-}
-
-func TestInstallationTokenListRepoOptions_GetRepositories(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	i := &InstallationTokenListRepoOptions{Repositories: zeroValue}
-	i.GetRepositories()
-	i = &InstallationTokenListRepoOptions{}
-	i.GetRepositories()
-	i = nil
-	i.GetRepositories()
-}
-
-func TestInstallationTokenListRepoOptions_GetRepositoryIDs(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []int64{}
-	i := &InstallationTokenListRepoOptions{RepositoryIDs: zeroValue}
-	i.GetRepositoryIDs()
-	i = &InstallationTokenListRepoOptions{}
-	i.GetRepositoryIDs()
-	i = nil
-	i.GetRepositoryIDs()
-}
-
-func TestInstallationTokenOptions_GetPermissions(tt *testing.T) {
-	tt.Parallel()
-	i := &InstallationTokenOptions{}
-	i.GetPermissions()
-	i = nil
-	i.GetPermissions()
-}
-
-func TestInstallationTokenOptions_GetRepositories(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	i := &InstallationTokenOptions{Repositories: zeroValue}
-	i.GetRepositories()
-	i = &InstallationTokenOptions{}
-	i.GetRepositories()
-	i = nil
-	i.GetRepositories()
-}
-
-func TestInstallationTokenOptions_GetRepositoryIDs(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []int64{}
-	i := &InstallationTokenOptions{RepositoryIDs: zeroValue}
-	i.GetRepositoryIDs()
-	i = &InstallationTokenOptions{}
-	i.GetRepositoryIDs()
-	i = nil
-	i.GetRepositoryIDs()
 }
 
 func TestInteractionRestriction_GetExpiresAt(tt *testing.T) {
