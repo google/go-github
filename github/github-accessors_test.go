@@ -27879,6 +27879,17 @@ func TestInstallationPermissions_GetDiscussions(tt *testing.T) {
 	i.GetDiscussions()
 }
 
+func TestInstallationPermissions_GetEmailAddresses(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EmailAddresses: &zeroValue}
+	i.GetEmailAddresses()
+	i = &InstallationPermissions{}
+	i.GetEmailAddresses()
+	i = nil
+	i.GetEmailAddresses()
+}
+
 func TestInstallationPermissions_GetEmails(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -28075,6 +28086,17 @@ func TestInstallationPermissions_GetGitSigningSSHPublicKeys(tt *testing.T) {
 	i.GetGitSigningSSHPublicKeys()
 	i = nil
 	i.GetGitSigningSSHPublicKeys()
+}
+
+func TestInstallationPermissions_GetGitSSHKeys(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{GitSSHKeys: &zeroValue}
+	i.GetGitSSHKeys()
+	i = &InstallationPermissions{}
+	i.GetGitSSHKeys()
+	i = nil
+	i.GetGitSSHKeys()
 }
 
 func TestInstallationPermissions_GetGPGKeys(tt *testing.T) {

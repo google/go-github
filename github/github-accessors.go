@@ -22262,6 +22262,14 @@ func (i *InstallationPermissions) GetDiscussions() string {
 	return *i.Discussions
 }
 
+// GetEmailAddresses returns the EmailAddresses field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEmailAddresses() string {
+	if i == nil || i.EmailAddresses == nil {
+		return ""
+	}
+	return *i.EmailAddresses
+}
+
 // GetEmails returns the Emails field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetEmails() string {
 	if i == nil || i.Emails == nil {
@@ -22404,6 +22412,14 @@ func (i *InstallationPermissions) GetGitSigningSSHPublicKeys() string {
 		return ""
 	}
 	return *i.GitSigningSSHPublicKeys
+}
+
+// GetGitSSHKeys returns the GitSSHKeys field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetGitSSHKeys() string {
+	if i == nil || i.GitSSHKeys == nil {
+		return ""
+	}
+	return *i.GitSSHKeys
 }
 
 // GetGPGKeys returns the GPGKeys field if it's non-nil, zero value otherwise.

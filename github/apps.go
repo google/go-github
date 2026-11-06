@@ -87,6 +87,7 @@ type InstallationPermissions struct {
 	DependabotSecrets                       *string `json:"dependabot_secrets,omitempty"`
 	Deployments                             *string `json:"deployments,omitempty"`
 	Discussions                             *string `json:"discussions,omitempty"`
+	EmailAddresses                          *string `json:"email_addresses,omitempty"`
 	Emails                                  *string `json:"emails,omitempty"`
 	EnterpriseAIControls                    *string `json:"enterprise_ai_controls,omitempty"`
 	EnterpriseCopilotMetrics                *string `json:"enterprise_copilot_metrics,omitempty"`
@@ -105,6 +106,7 @@ type InstallationPermissions struct {
 	Followers                               *string `json:"followers,omitempty"`
 	Gists                                   *string `json:"gists,omitempty"`
 	GitSigningSSHPublicKeys                 *string `json:"git_signing_ssh_public_keys,omitempty"`
+	GitSSHKeys                              *string `json:"git_ssh_keys,omitempty"`
 	GPGKeys                                 *string `json:"gpg_keys,omitempty"`
 	InstallationRepos                       *string `json:"installation_repositories,omitempty"`
 	InteractionLimits                       *string `json:"interaction_limits,omitempty"`
