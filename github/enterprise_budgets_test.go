@@ -204,6 +204,8 @@ func TestEnterpriseService_CreateBudget(t *testing.T) {
 		BudgetType:          BudgetTypeProductPricing,
 		BudgetProductSKU:    new("actions"),
 		BudgetAlerting:      EnterpriseBudgetAlerting{},
+		User:                new("octocat"),
+		ExpiresAt:           new("2026-12-31"),
 	}
 
 	mux.HandleFunc("/enterprises/e/settings/billing/budgets", func(w http.ResponseWriter, r *http.Request) {
@@ -326,6 +328,7 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 	req := EnterpriseUpdateBudget{
 		BudgetAmount:        new(10),
 		PreventFurtherUsage: new(false),
+		ExpiresAt:           new("2026-12-31"),
 	}
 
 	mux.HandleFunc("/enterprises/e/settings/billing/budgets/b-123", func(w http.ResponseWriter, r *http.Request) {
