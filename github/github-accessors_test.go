@@ -55786,6 +55786,28 @@ func TestSetRepoAccessRunnerGroupRequest_GetSelectedRepositoryIDs(tt *testing.T)
 	s.GetSelectedRepositoryIDs()
 }
 
+func TestSetRepositorySubscriptionRequest_GetIgnored(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SetRepositorySubscriptionRequest{Ignored: &zeroValue}
+	s.GetIgnored()
+	s = &SetRepositorySubscriptionRequest{}
+	s.GetIgnored()
+	s = nil
+	s.GetIgnored()
+}
+
+func TestSetRepositorySubscriptionRequest_GetSubscribed(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SetRepositorySubscriptionRequest{Subscribed: &zeroValue}
+	s.GetSubscribed()
+	s = &SetRepositorySubscriptionRequest{}
+	s.GetSubscribed()
+	s = nil
+	s.GetSubscribed()
+}
+
 func TestSetRunnerGroupRunnersRequest_GetRunners(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []int64{}
@@ -55795,6 +55817,17 @@ func TestSetRunnerGroupRunnersRequest_GetRunners(tt *testing.T) {
 	s.GetRunners()
 	s = nil
 	s.GetRunners()
+}
+
+func TestSetThreadSubscriptionRequest_GetIgnored(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SetThreadSubscriptionRequest{Ignored: &zeroValue}
+	s.GetIgnored()
+	s = &SetThreadSubscriptionRequest{}
+	s.GetIgnored()
+	s = nil
+	s.GetIgnored()
 }
 
 func TestSignatureRequirementEnforcementLevelChanges_GetFrom(tt *testing.T) {

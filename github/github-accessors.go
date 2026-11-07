@@ -44790,12 +44790,36 @@ func (s *SetRepoAccessRunnerGroupRequest) GetSelectedRepositoryIDs() []int64 {
 	return s.SelectedRepositoryIDs
 }
 
+// GetIgnored returns the Ignored field if it's non-nil, zero value otherwise.
+func (s *SetRepositorySubscriptionRequest) GetIgnored() bool {
+	if s == nil || s.Ignored == nil {
+		return false
+	}
+	return *s.Ignored
+}
+
+// GetSubscribed returns the Subscribed field if it's non-nil, zero value otherwise.
+func (s *SetRepositorySubscriptionRequest) GetSubscribed() bool {
+	if s == nil || s.Subscribed == nil {
+		return false
+	}
+	return *s.Subscribed
+}
+
 // GetRunners returns the Runners slice if it's non-nil, nil otherwise.
 func (s *SetRunnerGroupRunnersRequest) GetRunners() []int64 {
 	if s == nil || s.Runners == nil {
 		return nil
 	}
 	return s.Runners
+}
+
+// GetIgnored returns the Ignored field if it's non-nil, zero value otherwise.
+func (s *SetThreadSubscriptionRequest) GetIgnored() bool {
+	if s == nil || s.Ignored == nil {
+		return false
+	}
+	return *s.Ignored
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.

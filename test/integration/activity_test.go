@@ -90,14 +90,14 @@ func deleteSubscription(t *testing.T) {
 
 func createSubscription(t *testing.T) {
 	// watch the target repository
-	sub := &github.Subscription{Subscribed: new(true)}
-	_, _, err := client.Activity.SetRepositorySubscription(t.Context(), owner, repo, sub)
+	body := github.SetRepositorySubscriptionRequest{Subscribed: new(true)}
+	_, _, err := client.Activity.SetRepositorySubscription(t.Context(), owner, repo, body)
 	if err != nil {
 		t.Fatalf("Activity.SetRepositorySubscription returned error: %v", err)
 	}
 
 	// check again and verify watching
-	sub, _, err = client.Activity.GetRepositorySubscription(t.Context(), owner, repo)
+	sub, _, err := client.Activity.GetRepositorySubscription(t.Context(), owner, repo)
 	if err != nil {
 		t.Fatalf("Activity.GetRepositorySubscription returned error: %v", err)
 	}

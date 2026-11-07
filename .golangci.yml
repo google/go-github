@@ -225,7 +225,6 @@ linters:
             - RepositoryContentFileOptions
             - RequiredStatusChecksRequest
             - SourceImportAuthor
-            - Subscription
           # Body type names exempt from the "Options" suffix rule.
           # TODO: fix and remove these exceptions.
           body-allowed-wrong-names:
