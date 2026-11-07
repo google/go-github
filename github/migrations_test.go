@@ -237,6 +237,42 @@ func TestMigrationService_UnlockRepo(t *testing.T) {
 	})
 }
 
+func TestMigrationService_ListMigrationRepositories(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/migrations/1/repositories", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "1", "per_page": "2"})
+		fmt.Fprint(w, `[{"id":1,"name":"r","full_name":"o/r"}]`)
+	})
+
+	ctx := t.Context()
+	opts := &ListOptions{Page: 1, PerPage: 2}
+	got, _, err := client.Migrations.ListMigrationRepositories(ctx, "o", 1, opts)
+	if err != nil {
+		t.Errorf("ListMigrationRepositories returned error: %v", err)
+	}
+	want := []*Repository{{ID: new(int64(1)), Name: new("r"), FullName: new("o/r")}}
+	if !cmp.Equal(got, want) {
+		t.Errorf("ListMigrationRepositories = %+v, want %+v", got, want)
+	}
+
+	const methodName = "ListMigrationRepositories"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Migrations.ListMigrationRepositories(ctx, "\n", 1, opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Migrations.ListMigrationRepositories(ctx, "o", 1, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 var migrationJSON = []byte(`{
   "id": 79,
   "guid": "0b989ba4-242f-11e5-81e1-c7b6966d2516",
