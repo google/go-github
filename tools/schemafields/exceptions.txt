@@ -16,7 +16,6 @@
 # preserve fields previously available through the Repository request body,
 # although they are absent from the pinned repository creation request schemas.
 CodeSecurityConfiguration.Description
-CreateCheckSuiteOptions.HeadBranch
 CreateRepositoryRequest.AllowForking
 CreateRepositoryRequest.AllowUpdateBranch
 CreateTeamRequest.LDAPDN
@@ -24,5 +23,4 @@ IDPGroupList.Groups
 OIDCSubjectClaimCustomTemplate.UseDefault
 ReviewCustomDeploymentProtectionRuleRequest.Comment
 ReviewCustomDeploymentProtectionRuleRequest.State
-UpdateCheckRunOptions.Name
 UpdateTeamRequest.Name

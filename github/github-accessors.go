@@ -3654,20 +3654,20 @@ func (a *AutomatedSecurityFixes) GetPaused() bool {
 	return *a.Paused
 }
 
-// GetAppID returns the AppID field if it's non-nil, zero value otherwise.
+// GetAppID returns the AppID field.
 func (a *AutoTriggerCheck) GetAppID() int64 {
-	if a == nil || a.AppID == nil {
+	if a == nil {
 		return 0
 	}
-	return *a.AppID
+	return a.AppID
 }
 
-// GetSetting returns the Setting field if it's non-nil, zero value otherwise.
+// GetSetting returns the Setting field.
 func (a *AutoTriggerCheck) GetSetting() bool {
-	if a == nil || a.Setting == nil {
+	if a == nil {
 		return false
 	}
-	return *a.Setting
+	return a.Setting
 }
 
 // GetContainer returns the Container field.
@@ -5084,14 +5084,6 @@ func (c *CheckSuiteEvent) GetSender() *User {
 		return nil
 	}
 	return c.Sender
-}
-
-// GetAutoTriggerChecks returns the AutoTriggerChecks slice if it's non-nil, nil otherwise.
-func (c *CheckSuitePreferenceOptions) GetAutoTriggerChecks() []*AutoTriggerCheck {
-	if c == nil || c.AutoTriggerChecks == nil {
-		return nil
-	}
-	return c.AutoTriggerChecks
 }
 
 // GetPreferences returns the Preferences field.
@@ -12559,7 +12551,7 @@ func (c *CreateAutolinkRequest) GetURLTemplate() string {
 }
 
 // GetActions returns the Actions slice if it's non-nil, nil otherwise.
-func (c *CreateCheckRunOptions) GetActions() []*CheckRunAction {
+func (c *CreateCheckRunRequest) GetActions() []*CheckRunAction {
 	if c == nil || c.Actions == nil {
 		return nil
 	}
@@ -12567,7 +12559,7 @@ func (c *CreateCheckRunOptions) GetActions() []*CheckRunAction {
 }
 
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
-func (c *CreateCheckRunOptions) GetCompletedAt() Timestamp {
+func (c *CreateCheckRunRequest) GetCompletedAt() Timestamp {
 	if c == nil || c.CompletedAt == nil {
 		return Timestamp{}
 	}
@@ -12575,7 +12567,7 @@ func (c *CreateCheckRunOptions) GetCompletedAt() Timestamp {
 }
 
 // GetConclusion returns the Conclusion field if it's non-nil, zero value otherwise.
-func (c *CreateCheckRunOptions) GetConclusion() string {
+func (c *CreateCheckRunRequest) GetConclusion() string {
 	if c == nil || c.Conclusion == nil {
 		return ""
 	}
@@ -12583,7 +12575,7 @@ func (c *CreateCheckRunOptions) GetConclusion() string {
 }
 
 // GetDetailsURL returns the DetailsURL field if it's non-nil, zero value otherwise.
-func (c *CreateCheckRunOptions) GetDetailsURL() string {
+func (c *CreateCheckRunRequest) GetDetailsURL() string {
 	if c == nil || c.DetailsURL == nil {
 		return ""
 	}
@@ -12591,7 +12583,7 @@ func (c *CreateCheckRunOptions) GetDetailsURL() string {
 }
 
 // GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
-func (c *CreateCheckRunOptions) GetExternalID() string {
+func (c *CreateCheckRunRequest) GetExternalID() string {
 	if c == nil || c.ExternalID == nil {
 		return ""
 	}
@@ -12599,7 +12591,7 @@ func (c *CreateCheckRunOptions) GetExternalID() string {
 }
 
 // GetHeadSHA returns the HeadSHA field.
-func (c *CreateCheckRunOptions) GetHeadSHA() string {
+func (c *CreateCheckRunRequest) GetHeadSHA() string {
 	if c == nil {
 		return ""
 	}
@@ -12607,7 +12599,7 @@ func (c *CreateCheckRunOptions) GetHeadSHA() string {
 }
 
 // GetName returns the Name field.
-func (c *CreateCheckRunOptions) GetName() string {
+func (c *CreateCheckRunRequest) GetName() string {
 	if c == nil {
 		return ""
 	}
@@ -12615,7 +12607,7 @@ func (c *CreateCheckRunOptions) GetName() string {
 }
 
 // GetOutput returns the Output field.
-func (c *CreateCheckRunOptions) GetOutput() *CheckRunOutput {
+func (c *CreateCheckRunRequest) GetOutput() *CheckRunOutput {
 	if c == nil {
 		return nil
 	}
@@ -12623,7 +12615,7 @@ func (c *CreateCheckRunOptions) GetOutput() *CheckRunOutput {
 }
 
 // GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
-func (c *CreateCheckRunOptions) GetStartedAt() Timestamp {
+func (c *CreateCheckRunRequest) GetStartedAt() Timestamp {
 	if c == nil || c.StartedAt == nil {
 		return Timestamp{}
 	}
@@ -12631,23 +12623,15 @@ func (c *CreateCheckRunOptions) GetStartedAt() Timestamp {
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
-func (c *CreateCheckRunOptions) GetStatus() string {
+func (c *CreateCheckRunRequest) GetStatus() string {
 	if c == nil || c.Status == nil {
 		return ""
 	}
 	return *c.Status
 }
 
-// GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
-func (c *CreateCheckSuiteOptions) GetHeadBranch() string {
-	if c == nil || c.HeadBranch == nil {
-		return ""
-	}
-	return *c.HeadBranch
-}
-
 // GetHeadSHA returns the HeadSHA field.
-func (c *CreateCheckSuiteOptions) GetHeadSHA() string {
+func (c *CreateCheckSuiteRequest) GetHeadSHA() string {
 	if c == nil {
 		return ""
 	}
@@ -47119,7 +47103,7 @@ func (u *UpdateBranchRule) GetParameters() UpdateRuleParameters {
 }
 
 // GetActions returns the Actions slice if it's non-nil, nil otherwise.
-func (u *UpdateCheckRunOptions) GetActions() []*CheckRunAction {
+func (u *UpdateCheckRunRequest) GetActions() []*CheckRunAction {
 	if u == nil || u.Actions == nil {
 		return nil
 	}
@@ -47127,7 +47111,7 @@ func (u *UpdateCheckRunOptions) GetActions() []*CheckRunAction {
 }
 
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
-func (u *UpdateCheckRunOptions) GetCompletedAt() Timestamp {
+func (u *UpdateCheckRunRequest) GetCompletedAt() Timestamp {
 	if u == nil || u.CompletedAt == nil {
 		return Timestamp{}
 	}
@@ -47135,7 +47119,7 @@ func (u *UpdateCheckRunOptions) GetCompletedAt() Timestamp {
 }
 
 // GetConclusion returns the Conclusion field if it's non-nil, zero value otherwise.
-func (u *UpdateCheckRunOptions) GetConclusion() string {
+func (u *UpdateCheckRunRequest) GetConclusion() string {
 	if u == nil || u.Conclusion == nil {
 		return ""
 	}
@@ -47143,7 +47127,7 @@ func (u *UpdateCheckRunOptions) GetConclusion() string {
 }
 
 // GetDetailsURL returns the DetailsURL field if it's non-nil, zero value otherwise.
-func (u *UpdateCheckRunOptions) GetDetailsURL() string {
+func (u *UpdateCheckRunRequest) GetDetailsURL() string {
 	if u == nil || u.DetailsURL == nil {
 		return ""
 	}
@@ -47151,35 +47135,51 @@ func (u *UpdateCheckRunOptions) GetDetailsURL() string {
 }
 
 // GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
-func (u *UpdateCheckRunOptions) GetExternalID() string {
+func (u *UpdateCheckRunRequest) GetExternalID() string {
 	if u == nil || u.ExternalID == nil {
 		return ""
 	}
 	return *u.ExternalID
 }
 
-// GetName returns the Name field.
-func (u *UpdateCheckRunOptions) GetName() string {
-	if u == nil {
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateCheckRunRequest) GetName() string {
+	if u == nil || u.Name == nil {
 		return ""
 	}
-	return u.Name
+	return *u.Name
 }
 
 // GetOutput returns the Output field.
-func (u *UpdateCheckRunOptions) GetOutput() *CheckRunOutput {
+func (u *UpdateCheckRunRequest) GetOutput() *CheckRunOutput {
 	if u == nil {
 		return nil
 	}
 	return u.Output
 }
 
+// GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
+func (u *UpdateCheckRunRequest) GetStartedAt() Timestamp {
+	if u == nil || u.StartedAt == nil {
+		return Timestamp{}
+	}
+	return *u.StartedAt
+}
+
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
-func (u *UpdateCheckRunOptions) GetStatus() string {
+func (u *UpdateCheckRunRequest) GetStatus() string {
 	if u == nil || u.Status == nil {
 		return ""
 	}
 	return *u.Status
+}
+
+// GetAutoTriggerChecks returns the AutoTriggerChecks slice if it's non-nil, nil otherwise.
+func (u *UpdateCheckSuitePreferencesRequest) GetAutoTriggerChecks() []*AutoTriggerCheck {
+	if u == nil || u.AutoTriggerChecks == nil {
+		return nil
+	}
+	return u.AutoTriggerChecks
 }
 
 // GetAssignees returns the Assignees slice if it's non-nil, nil otherwise.
