@@ -4760,6 +4760,37 @@ func (s *MarketplaceService) ListPlansIter(ctx context.Context, opts *ListOption
 	}
 }
 
+// ListMigrationRepositoriesIter returns an iterator that paginates through all results of ListMigrationRepositories.
+func (s *MigrationService) ListMigrationRepositoriesIter(ctx context.Context, org string, id int64, opts *ListOptions) iter.Seq2[*Repository, error] {
+	return func(yield func(*Repository, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListMigrationRepositories(ctx, org, id, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListMigrationsIter returns an iterator that paginates through all results of ListMigrations.
 func (s *MigrationService) ListMigrationsIter(ctx context.Context, org string, opts *ListOptions) iter.Seq2[*Migration, error] {
 	return func(yield func(*Migration, error) bool) {
@@ -4772,6 +4803,37 @@ func (s *MigrationService) ListMigrationsIter(ctx context.Context, org string, o
 
 		for {
 			results, resp, err := s.ListMigrations(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListUserMigrationRepositoriesIter returns an iterator that paginates through all results of ListUserMigrationRepositories.
+func (s *MigrationService) ListUserMigrationRepositoriesIter(ctx context.Context, id int64, opts *ListOptions) iter.Seq2[*Repository, error] {
+	return func(yield func(*Repository, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListUserMigrationRepositories(ctx, id, opts)
 			if err != nil {
 				yield(nil, err)
 				return
