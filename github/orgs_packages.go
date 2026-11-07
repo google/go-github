@@ -178,3 +178,26 @@ func (s *OrganizationsService) PackageRestoreVersion(ctx context.Context, org, p
 
 	return s.client.Do(req, nil)
 }
+
+// ListDockerMigrationConflictingPackages lists all packages in an organization,
+// readable by the requesting user, that encountered a conflict during a Docker migration.
+//
+// GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#get-list-of-conflicting-packages-during-docker-migration-for-organization
+//
+//meta:operation GET /orgs/{org}/docker/conflicts
+func (s *OrganizationsService) ListDockerMigrationConflictingPackages(ctx context.Context, org string) ([]*Package, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/docker/conflicts", org)
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var packages []*Package
+	resp, err := s.client.Do(req, &packages)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return packages, resp, nil
+}
