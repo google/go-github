@@ -279,3 +279,35 @@ func (s *UsersService) PackageRestoreVersion(ctx context.Context, user, packageT
 
 	return s.client.Do(req, nil)
 }
+
+// ListDockerMigrationConflictingPackages lists all packages in a user's namespace
+// that encountered a conflict during a Docker migration. Passing the empty string
+// for "user" will list them for the authenticated user.
+//
+// GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#get-list-of-conflicting-packages-during-docker-migration-for-authenticated-user
+//
+// GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#get-list-of-conflicting-packages-during-docker-migration-for-user
+//
+//meta:operation GET /user/docker/conflicts
+//meta:operation GET /users/{username}/docker/conflicts
+func (s *UsersService) ListDockerMigrationConflictingPackages(ctx context.Context, user string) ([]*Package, *Response, error) {
+	var u string
+	if user != "" {
+		u = fmt.Sprintf("users/%v/docker/conflicts", user)
+	} else {
+		u = "user/docker/conflicts"
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var packages []*Package
+	resp, err := s.client.Do(req, &packages)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return packages, resp, nil
+}

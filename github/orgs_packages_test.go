@@ -417,3 +417,38 @@ func TestOrganizationsService_PackageRestoreVersion(t *testing.T) {
 		return client.Organizations.PackageRestoreVersion(ctx, "", "", "", 45763)
 	})
 }
+
+func TestOrganizationsService_ListDockerMigrationConflictingPackages(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/docker/conflicts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		assertWrite(t, w, []byte(`[{"id":197,"name":"hello_docker","package_type":"container"}]`))
+	})
+
+	ctx := t.Context()
+	packages, _, err := client.Organizations.ListDockerMigrationConflictingPackages(ctx, "o")
+	if err != nil {
+		t.Errorf("Organizations.ListDockerMigrationConflictingPackages returned error: %v", err)
+	}
+
+	want := []*Package{{ID: new(int64(197)), Name: new("hello_docker"), PackageType: new("container")}}
+	if !cmp.Equal(packages, want) {
+		t.Errorf("Organizations.ListDockerMigrationConflictingPackages returned %+v, want %+v", packages, want)
+	}
+
+	const methodName = "ListDockerMigrationConflictingPackages"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListDockerMigrationConflictingPackages(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListDockerMigrationConflictingPackages(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
