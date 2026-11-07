@@ -176,7 +176,7 @@ func (s *EnterpriseService) AttachCodeSecurityConfigurationToRepositories(ctx co
 		return nil, err
 	}
 	resp, err := s.client.Do(req, nil)
-	if err != nil && resp.StatusCode != http.StatusAccepted { // StatusAccepted(202) is the expected status code as job is queued for processing
+	if err != nil && (resp == nil || resp.StatusCode != http.StatusAccepted) { // StatusAccepted(202) is the expected status code as job is queued for processing
 		return resp, err
 	}
 	return resp, nil
