@@ -190,16 +190,16 @@ func TestActivityService_SetRepositorySubscription(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Subscription{Subscribed: new(true)}
+	body := SetRepositorySubscriptionRequest{Subscribed: new(true)}
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"ignored":true}`)
 	})
 
 	ctx := t.Context()
-	sub, _, err := client.Activity.SetRepositorySubscription(ctx, "o", "r", input)
+	sub, _, err := client.Activity.SetRepositorySubscription(ctx, "o", "r", body)
 	if err != nil {
 		t.Errorf("Activity.SetRepositorySubscription returned error: %v", err)
 	}
@@ -211,12 +211,12 @@ func TestActivityService_SetRepositorySubscription(t *testing.T) {
 
 	const methodName = "SetRepositorySubscription"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Activity.SetRepositorySubscription(ctx, "\n", "\n", input)
+		_, _, err = client.Activity.SetRepositorySubscription(ctx, "\n", "\n", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Activity.SetRepositorySubscription(ctx, "o", "r", input)
+		got, resp, err := client.Activity.SetRepositorySubscription(ctx, "o", "r", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

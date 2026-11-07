@@ -320,16 +320,16 @@ func TestActivityService_SetThreadSubscription(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Subscription{Subscribed: new(true)}
+	body := SetThreadSubscriptionRequest{Ignored: new(true)}
 
 	mux.HandleFunc("/notifications/threads/1/subscription", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"ignored":true}`)
 	})
 
 	ctx := t.Context()
-	sub, _, err := client.Activity.SetThreadSubscription(ctx, "1", input)
+	sub, _, err := client.Activity.SetThreadSubscription(ctx, "1", body)
 	if err != nil {
 		t.Errorf("Activity.SetThreadSubscription returned error: %v", err)
 	}
@@ -341,12 +341,12 @@ func TestActivityService_SetThreadSubscription(t *testing.T) {
 
 	const methodName = "SetThreadSubscription"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Activity.SetThreadSubscription(ctx, "\n", input)
+		_, _, err = client.Activity.SetThreadSubscription(ctx, "\n", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Activity.SetThreadSubscription(ctx, "1", input)
+		got, resp, err := client.Activity.SetThreadSubscription(ctx, "1", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
