@@ -4760,37 +4760,6 @@ func (s *MarketplaceService) ListPlansIter(ctx context.Context, opts *ListOption
 	}
 }
 
-// ListMigrationRepositoriesIter returns an iterator that paginates through all results of ListMigrationRepositories.
-func (s *MigrationService) ListMigrationRepositoriesIter(ctx context.Context, org string, id int64, opts *ListOptions) iter.Seq2[*Repository, error] {
-	return func(yield func(*Repository, error) bool) {
-		// Create a copy of opts to avoid mutating the caller's struct
-		if opts == nil {
-			opts = &ListOptions{}
-		} else {
-			opts = new(*opts)
-		}
-
-		for {
-			results, resp, err := s.ListMigrationRepositories(ctx, org, id, opts)
-			if err != nil {
-				yield(nil, err)
-				return
-			}
-
-			for _, item := range results {
-				if !yield(item, nil) {
-					return
-				}
-			}
-
-			if resp.NextPage == 0 {
-				break
-			}
-			opts.Page = resp.NextPage
-		}
-	}
-}
-
 // ListMigrationsIter returns an iterator that paginates through all results of ListMigrations.
 func (s *MigrationService) ListMigrationsIter(ctx context.Context, org string, opts *ListOptions) iter.Seq2[*Migration, error] {
 	return func(yield func(*Migration, error) bool) {
@@ -4822,8 +4791,8 @@ func (s *MigrationService) ListMigrationsIter(ctx context.Context, org string, o
 	}
 }
 
-// ListUserMigrationRepositoriesIter returns an iterator that paginates through all results of ListUserMigrationRepositories.
-func (s *MigrationService) ListUserMigrationRepositoriesIter(ctx context.Context, id int64, opts *ListOptions) iter.Seq2[*Repository, error] {
+// ListRepositoriesIter returns an iterator that paginates through all results of ListRepositories.
+func (s *MigrationService) ListRepositoriesIter(ctx context.Context, org string, migrationID int64, opts *ListOptions) iter.Seq2[*Repository, error] {
 	return func(yield func(*Repository, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
@@ -4833,7 +4802,7 @@ func (s *MigrationService) ListUserMigrationRepositoriesIter(ctx context.Context
 		}
 
 		for {
-			results, resp, err := s.ListUserMigrationRepositories(ctx, id, opts)
+			results, resp, err := s.ListRepositories(ctx, org, migrationID, opts)
 			if err != nil {
 				yield(nil, err)
 				return
@@ -4865,6 +4834,37 @@ func (s *MigrationService) ListUserMigrationsIter(ctx context.Context, opts *Lis
 
 		for {
 			results, resp, err := s.ListUserMigrations(ctx, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListUserRepositoriesIter returns an iterator that paginates through all results of ListUserRepositories.
+func (s *MigrationService) ListUserRepositoriesIter(ctx context.Context, migrationID int64, opts *ListOptions) iter.Seq2[*Repository, error] {
+	return func(yield func(*Repository, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListUserRepositories(ctx, migrationID, opts)
 			if err != nil {
 				yield(nil, err)
 				return

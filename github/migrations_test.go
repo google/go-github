@@ -237,7 +237,7 @@ func TestMigrationService_UnlockRepo(t *testing.T) {
 	})
 }
 
-func TestMigrationService_ListMigrationRepositories(t *testing.T) {
+func TestMigrationService_ListRepositories(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -249,23 +249,23 @@ func TestMigrationService_ListMigrationRepositories(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &ListOptions{Page: 1, PerPage: 2}
-	got, _, err := client.Migrations.ListMigrationRepositories(ctx, "o", 1, opts)
+	got, _, err := client.Migrations.ListRepositories(ctx, "o", 1, opts)
 	if err != nil {
-		t.Errorf("ListMigrationRepositories returned error: %v", err)
+		t.Errorf("ListRepositories returned error: %v", err)
 	}
 	want := []*Repository{{ID: new(int64(1)), Name: new("r"), FullName: new("o/r")}}
 	if !cmp.Equal(got, want) {
-		t.Errorf("ListMigrationRepositories = %+v, want %+v", got, want)
+		t.Errorf("ListRepositories = %+v, want %+v", got, want)
 	}
 
-	const methodName = "ListMigrationRepositories"
+	const methodName = "ListRepositories"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Migrations.ListMigrationRepositories(ctx, "\n", 1, opts)
+		_, _, err = client.Migrations.ListRepositories(ctx, "\n", 1, opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Migrations.ListMigrationRepositories(ctx, "o", 1, opts)
+		got, resp, err := client.Migrations.ListRepositories(ctx, "o", 1, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

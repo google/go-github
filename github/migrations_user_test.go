@@ -211,7 +211,7 @@ func TestMigrationService_UnlockUserRepo(t *testing.T) {
 	})
 }
 
-func TestMigrationService_ListUserMigrationRepositories(t *testing.T) {
+func TestMigrationService_ListUserRepositories(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -223,18 +223,18 @@ func TestMigrationService_ListUserMigrationRepositories(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &ListOptions{Page: 1, PerPage: 2}
-	got, _, err := client.Migrations.ListUserMigrationRepositories(ctx, 1, opts)
+	got, _, err := client.Migrations.ListUserRepositories(ctx, 1, opts)
 	if err != nil {
-		t.Errorf("ListUserMigrationRepositories returned error: %v", err)
+		t.Errorf("ListUserRepositories returned error: %v", err)
 	}
 	want := []*Repository{{ID: new(int64(1)), Name: new("r"), FullName: new("o/r")}}
 	if !cmp.Equal(got, want) {
-		t.Errorf("ListUserMigrationRepositories = %+v, want %+v", got, want)
+		t.Errorf("ListUserRepositories = %+v, want %+v", got, want)
 	}
 
-	const methodName = "ListUserMigrationRepositories"
+	const methodName = "ListUserRepositories"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Migrations.ListUserMigrationRepositories(ctx, 1, opts)
+		got, resp, err := client.Migrations.ListUserRepositories(ctx, 1, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

@@ -224,14 +224,13 @@ func (s *MigrationService) UnlockUserRepo(ctx context.Context, id int64, repo st
 	return s.client.Do(req, nil)
 }
 
-// ListUserMigrationRepositories lists all the repositories for a user migration.
-// id is the migration ID.
+// ListUserRepositories lists all the repositories for a user migration.
 //
 // GitHub API docs: https://docs.github.com/rest/migrations/users?apiVersion=2022-11-28#list-repositories-for-a-user-migration
 //
 //meta:operation GET /user/migrations/{migration_id}/repositories
-func (s *MigrationService) ListUserMigrationRepositories(ctx context.Context, id int64, opts *ListOptions) ([]*Repository, *Response, error) {
-	u := fmt.Sprintf("user/migrations/%v/repositories", id)
+func (s *MigrationService) ListUserRepositories(ctx context.Context, migrationID int64, opts *ListOptions) ([]*Repository, *Response, error) {
+	u := fmt.Sprintf("user/migrations/%v/repositories", migrationID)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err

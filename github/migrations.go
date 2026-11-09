@@ -238,14 +238,13 @@ func (s *MigrationService) UnlockRepo(ctx context.Context, org string, id int64,
 	return s.client.Do(req, nil)
 }
 
-// ListMigrationRepositories lists all the repositories for an organization migration.
-// id is the migration ID.
+// ListRepositories lists all the repositories for an organization migration.
 //
 // GitHub API docs: https://docs.github.com/rest/migrations/orgs?apiVersion=2022-11-28#list-repositories-in-an-organization-migration
 //
 //meta:operation GET /orgs/{org}/migrations/{migration_id}/repositories
-func (s *MigrationService) ListMigrationRepositories(ctx context.Context, org string, id int64, opts *ListOptions) ([]*Repository, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/migrations/%v/repositories", org, id)
+func (s *MigrationService) ListRepositories(ctx context.Context, org string, migrationID int64, opts *ListOptions) ([]*Repository, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/migrations/%v/repositories", org, migrationID)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
