@@ -14,6 +14,7 @@ type MaintenanceOperationStatus struct {
 	Hostname *string `json:"hostname,omitempty"`
 	UUID     *string `json:"uuid,omitempty"`
 	Message  *string `json:"message,omitempty"`
+	Error    *string `json:"error,omitempty"`
 }
 
 // MaintenanceStatus represents the status of maintenance mode for all nodes.

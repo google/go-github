@@ -33221,6 +33221,17 @@ func TestLockIssueRequest_GetLockReason(tt *testing.T) {
 	l.GetLockReason()
 }
 
+func TestMaintenanceOperationStatus_GetError(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	m := &MaintenanceOperationStatus{Error: &zeroValue}
+	m.GetError()
+	m = &MaintenanceOperationStatus{}
+	m.GetError()
+	m = nil
+	m.GetError()
+}
+
 func TestMaintenanceOperationStatus_GetHostname(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

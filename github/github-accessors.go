@@ -26614,6 +26614,14 @@ func (l *LockIssueRequest) GetLockReason() string {
 	return *l.LockReason
 }
 
+// GetError returns the Error field if it's non-nil, zero value otherwise.
+func (m *MaintenanceOperationStatus) GetError() string {
+	if m == nil || m.Error == nil {
+		return ""
+	}
+	return *m.Error
+}
+
 // GetHostname returns the Hostname field if it's non-nil, zero value otherwise.
 func (m *MaintenanceOperationStatus) GetHostname() string {
 	if m == nil || m.Hostname == nil {

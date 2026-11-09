@@ -95,7 +95,7 @@ func TestEnterpriseService_CreateMaintenance(t *testing.T) {
 	mux.HandleFunc("/manage/v1/maintenance", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testJSONBody(t, r, input)
-		fmt.Fprint(w, `[ { "hostname": "primary", "uuid": "1b6cf518-f97c-11ed-8544-061d81f7eedb", "message": "Scheduled maintenance for upgrading." } ]`)
+		fmt.Fprint(w, `[ { "hostname": "primary", "uuid": "1b6cf518-f97c-11ed-8544-061d81f7eedb", "message": "Scheduled maintenance for upgrading." }, { "hostname": "replica", "error": "Node is unreachable." } ]`)
 	})
 
 	ctx := t.Context()
@@ -104,7 +104,10 @@ func TestEnterpriseService_CreateMaintenance(t *testing.T) {
 		t.Errorf("Enterprise.CreateMaintenance returned error: %v", err)
 	}
 
-	want := []*MaintenanceOperationStatus{{Hostname: new("primary"), UUID: new("1b6cf518-f97c-11ed-8544-061d81f7eedb"), Message: new("Scheduled maintenance for upgrading.")}}
+	want := []*MaintenanceOperationStatus{
+		{Hostname: new("primary"), UUID: new("1b6cf518-f97c-11ed-8544-061d81f7eedb"), Message: new("Scheduled maintenance for upgrading.")},
+		{Hostname: new("replica"), Error: new("Node is unreachable.")},
+	}
 	if diff := cmp.Diff(want, maintenanceStatus); diff != "" {
 		t.Errorf("diff mismatch (-want +got):\n%v", diff)
 	}
