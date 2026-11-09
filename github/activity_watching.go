@@ -112,20 +112,26 @@ func (s *ActivityService) GetRepositorySubscription(ctx context.Context, owner, 
 	return sub, resp, nil
 }
 
+// SetRepositorySubscriptionRequest represents the request body for SetRepositorySubscription.
+type SetRepositorySubscriptionRequest struct {
+	Subscribed *bool `json:"subscribed,omitempty"`
+	Ignored    *bool `json:"ignored,omitempty"`
+}
+
 // SetRepositorySubscription sets the subscription for the specified repository
 // for the authenticated user.
 //
-// To watch a repository, set subscription.Subscribed to true.
-// To ignore notifications made within a repository, set subscription.Ignored to true.
+// To watch a repository, set body.Subscribed to true.
+// To ignore notifications made within a repository, set body.Ignored to true.
 // To stop watching a repository, use DeleteRepositorySubscription.
 //
 // GitHub API docs: https://docs.github.com/rest/activity/watching?apiVersion=2022-11-28#set-a-repository-subscription
 //
 //meta:operation PUT /repos/{owner}/{repo}/subscription
-func (s *ActivityService) SetRepositorySubscription(ctx context.Context, owner, repo string, body *Subscription) (*Subscription, *Response, error) {
+func (s *ActivityService) SetRepositorySubscription(ctx context.Context, owner, repo string, body SetRepositorySubscriptionRequest) (*Subscription, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/subscription", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, body)
+	req, err := s.client.NewRequest(ctx, "PUT", u, &body)
 	if err != nil {
 		return nil, nil, err
 	}
