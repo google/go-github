@@ -35,13 +35,13 @@ type ConnectionServiceItem struct {
 	Number *int    `json:"number,omitempty"`
 }
 
-// MaintenanceOptions represents the options for setting the maintenance mode for the instance.
+// SetMaintenanceStatusRequest represents a request to set the maintenance mode for the instance.
 // When can be a string, so we can't use a Timestamp type.
-type MaintenanceOptions struct {
+type SetMaintenanceStatusRequest struct {
 	Enabled                bool     `json:"enabled"`
 	UUID                   *string  `json:"uuid,omitempty"`
 	When                   *string  `json:"when,omitempty"`
-	IPExceptionList        []string `json:"ip_exception_list,omitempty"`
+	IPExceptionList        []string `json:"ip_exception_list,omitzero"`
 	MaintenanceModeMessage *string  `json:"maintenance_mode_message,omitempty"`
 }
 
@@ -69,16 +69,13 @@ func (s *EnterpriseService) GetMaintenanceStatus(ctx context.Context, opts *Node
 	return status, resp, nil
 }
 
-// CreateMaintenance sets the maintenance mode for the instance.
-// With the enable parameter we can control to put instance into maintenance mode or not. With false we can disable the maintenance mode.
+// SetMaintenanceStatus sets the maintenance mode for the instance.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.22/rest/enterprise-admin/manage-ghes#set-the-status-of-maintenance-mode
 //
 //meta:operation POST /manage/v1/maintenance
-func (s *EnterpriseService) CreateMaintenance(ctx context.Context, enable bool, body *MaintenanceOptions) ([]*MaintenanceOperationStatus, *Response, error) {
+func (s *EnterpriseService) SetMaintenanceStatus(ctx context.Context, body SetMaintenanceStatusRequest) ([]*MaintenanceOperationStatus, *Response, error) {
 	u := "manage/v1/maintenance"
-
-	body.Enabled = enable
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
