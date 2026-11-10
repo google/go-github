@@ -4791,6 +4791,37 @@ func (s *MigrationService) ListMigrationsIter(ctx context.Context, org string, o
 	}
 }
 
+// ListRepositoriesIter returns an iterator that paginates through all results of ListRepositories.
+func (s *MigrationService) ListRepositoriesIter(ctx context.Context, org string, migrationID int64, opts *ListOptions) iter.Seq2[*Repository, error] {
+	return func(yield func(*Repository, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListRepositories(ctx, org, migrationID, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListUserMigrationsIter returns an iterator that paginates through all results of ListUserMigrations.
 func (s *MigrationService) ListUserMigrationsIter(ctx context.Context, opts *ListOptions) iter.Seq2[*UserMigration, error] {
 	return func(yield func(*UserMigration, error) bool) {
@@ -4803,6 +4834,37 @@ func (s *MigrationService) ListUserMigrationsIter(ctx context.Context, opts *Lis
 
 		for {
 			results, resp, err := s.ListUserMigrations(ctx, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListUserRepositoriesIter returns an iterator that paginates through all results of ListUserRepositories.
+func (s *MigrationService) ListUserRepositoriesIter(ctx context.Context, migrationID int64, opts *ListOptions) iter.Seq2[*Repository, error] {
+	return func(yield func(*Repository, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListUserRepositories(ctx, migrationID, opts)
 			if err != nil {
 				yield(nil, err)
 				return
