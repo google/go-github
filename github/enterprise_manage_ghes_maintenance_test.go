@@ -78,11 +78,11 @@ func TestEnterpriseService_GetMaintenanceStatus(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_CreateMaintenance(t *testing.T) {
+func TestEnterpriseService_SetMaintenanceStatus(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &MaintenanceOptions{
+	body := SetMaintenanceStatusRequest{
 		Enabled: true,
 		UUID:    new("1234-1234"),
 		When:    new("now"),
@@ -94,24 +94,27 @@ func TestEnterpriseService_CreateMaintenance(t *testing.T) {
 
 	mux.HandleFunc("/manage/v1/maintenance", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, input)
-		fmt.Fprint(w, `[ { "hostname": "primary", "uuid": "1b6cf518-f97c-11ed-8544-061d81f7eedb", "message": "Scheduled maintenance for upgrading." } ]`)
+		testJSONBody(t, r, body)
+		fmt.Fprint(w, `[ { "hostname": "primary", "uuid": "1b6cf518-f97c-11ed-8544-061d81f7eedb", "message": "Scheduled maintenance for upgrading." }, { "hostname": "replica", "error": "Node is unreachable." } ]`)
 	})
 
 	ctx := t.Context()
-	maintenanceStatus, _, err := client.Enterprise.CreateMaintenance(ctx, true, input)
+	maintenanceStatus, _, err := client.Enterprise.SetMaintenanceStatus(ctx, body)
 	if err != nil {
-		t.Errorf("Enterprise.CreateMaintenance returned error: %v", err)
+		t.Errorf("Enterprise.SetMaintenanceStatus returned error: %v", err)
 	}
 
-	want := []*MaintenanceOperationStatus{{Hostname: new("primary"), UUID: new("1b6cf518-f97c-11ed-8544-061d81f7eedb"), Message: new("Scheduled maintenance for upgrading.")}}
+	want := []*MaintenanceOperationStatus{
+		{Hostname: new("primary"), UUID: new("1b6cf518-f97c-11ed-8544-061d81f7eedb"), Message: new("Scheduled maintenance for upgrading.")},
+		{Hostname: new("replica"), Error: new("Node is unreachable.")},
+	}
 	if diff := cmp.Diff(want, maintenanceStatus); diff != "" {
 		t.Errorf("diff mismatch (-want +got):\n%v", diff)
 	}
 
-	const methodName = "CreateMaintenance"
+	const methodName = "SetMaintenanceStatus"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.CreateMaintenance(ctx, true, input)
+		got, resp, err := client.Enterprise.SetMaintenanceStatus(ctx, body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

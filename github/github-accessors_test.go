@@ -33210,6 +33210,17 @@ func TestLockIssueRequest_GetLockReason(tt *testing.T) {
 	l.GetLockReason()
 }
 
+func TestMaintenanceOperationStatus_GetError(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	m := &MaintenanceOperationStatus{Error: &zeroValue}
+	m.GetError()
+	m = &MaintenanceOperationStatus{}
+	m.GetError()
+	m = nil
+	m.GetError()
+}
+
 func TestMaintenanceOperationStatus_GetHostname(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -33241,58 +33252,6 @@ func TestMaintenanceOperationStatus_GetUUID(tt *testing.T) {
 	m.GetUUID()
 	m = nil
 	m.GetUUID()
-}
-
-func TestMaintenanceOptions_GetEnabled(tt *testing.T) {
-	tt.Parallel()
-	m := &MaintenanceOptions{}
-	m.GetEnabled()
-	m = nil
-	m.GetEnabled()
-}
-
-func TestMaintenanceOptions_GetIPExceptionList(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	m := &MaintenanceOptions{IPExceptionList: zeroValue}
-	m.GetIPExceptionList()
-	m = &MaintenanceOptions{}
-	m.GetIPExceptionList()
-	m = nil
-	m.GetIPExceptionList()
-}
-
-func TestMaintenanceOptions_GetMaintenanceModeMessage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	m := &MaintenanceOptions{MaintenanceModeMessage: &zeroValue}
-	m.GetMaintenanceModeMessage()
-	m = &MaintenanceOptions{}
-	m.GetMaintenanceModeMessage()
-	m = nil
-	m.GetMaintenanceModeMessage()
-}
-
-func TestMaintenanceOptions_GetUUID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	m := &MaintenanceOptions{UUID: &zeroValue}
-	m.GetUUID()
-	m = &MaintenanceOptions{}
-	m.GetUUID()
-	m = nil
-	m.GetUUID()
-}
-
-func TestMaintenanceOptions_GetWhen(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	m := &MaintenanceOptions{When: &zeroValue}
-	m.GetWhen()
-	m = &MaintenanceOptions{}
-	m.GetWhen()
-	m = nil
-	m.GetWhen()
 }
 
 func TestMaintenanceStatus_GetCanUnsetMaintenance(tt *testing.T) {
@@ -55861,6 +55820,58 @@ func TestSetCopilotCustomAgentsSourceRequest_GetOrganizationID(tt *testing.T) {
 	s.GetOrganizationID()
 	s = nil
 	s.GetOrganizationID()
+}
+
+func TestSetMaintenanceStatusRequest_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	s := &SetMaintenanceStatusRequest{}
+	s.GetEnabled()
+	s = nil
+	s.GetEnabled()
+}
+
+func TestSetMaintenanceStatusRequest_GetIPExceptionList(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SetMaintenanceStatusRequest{IPExceptionList: zeroValue}
+	s.GetIPExceptionList()
+	s = &SetMaintenanceStatusRequest{}
+	s.GetIPExceptionList()
+	s = nil
+	s.GetIPExceptionList()
+}
+
+func TestSetMaintenanceStatusRequest_GetMaintenanceModeMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SetMaintenanceStatusRequest{MaintenanceModeMessage: &zeroValue}
+	s.GetMaintenanceModeMessage()
+	s = &SetMaintenanceStatusRequest{}
+	s.GetMaintenanceModeMessage()
+	s = nil
+	s.GetMaintenanceModeMessage()
+}
+
+func TestSetMaintenanceStatusRequest_GetUUID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SetMaintenanceStatusRequest{UUID: &zeroValue}
+	s.GetUUID()
+	s = &SetMaintenanceStatusRequest{}
+	s.GetUUID()
+	s = nil
+	s.GetUUID()
+}
+
+func TestSetMaintenanceStatusRequest_GetWhen(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SetMaintenanceStatusRequest{When: &zeroValue}
+	s.GetWhen()
+	s = &SetMaintenanceStatusRequest{}
+	s.GetWhen()
+	s = nil
+	s.GetWhen()
 }
 
 func TestSetOrgAccessRunnerGroupRequest_GetSelectedOrganizationIDs(tt *testing.T) {

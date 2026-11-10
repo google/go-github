@@ -26606,6 +26606,14 @@ func (l *LockIssueRequest) GetLockReason() string {
 	return *l.LockReason
 }
 
+// GetError returns the Error field if it's non-nil, zero value otherwise.
+func (m *MaintenanceOperationStatus) GetError() string {
+	if m == nil || m.Error == nil {
+		return ""
+	}
+	return *m.Error
+}
+
 // GetHostname returns the Hostname field if it's non-nil, zero value otherwise.
 func (m *MaintenanceOperationStatus) GetHostname() string {
 	if m == nil || m.Hostname == nil {
@@ -26628,46 +26636,6 @@ func (m *MaintenanceOperationStatus) GetUUID() string {
 		return ""
 	}
 	return *m.UUID
-}
-
-// GetEnabled returns the Enabled field.
-func (m *MaintenanceOptions) GetEnabled() bool {
-	if m == nil {
-		return false
-	}
-	return m.Enabled
-}
-
-// GetIPExceptionList returns the IPExceptionList slice if it's non-nil, nil otherwise.
-func (m *MaintenanceOptions) GetIPExceptionList() []string {
-	if m == nil || m.IPExceptionList == nil {
-		return nil
-	}
-	return m.IPExceptionList
-}
-
-// GetMaintenanceModeMessage returns the MaintenanceModeMessage field if it's non-nil, zero value otherwise.
-func (m *MaintenanceOptions) GetMaintenanceModeMessage() string {
-	if m == nil || m.MaintenanceModeMessage == nil {
-		return ""
-	}
-	return *m.MaintenanceModeMessage
-}
-
-// GetUUID returns the UUID field if it's non-nil, zero value otherwise.
-func (m *MaintenanceOptions) GetUUID() string {
-	if m == nil || m.UUID == nil {
-		return ""
-	}
-	return *m.UUID
-}
-
-// GetWhen returns the When field if it's non-nil, zero value otherwise.
-func (m *MaintenanceOptions) GetWhen() string {
-	if m == nil || m.When == nil {
-		return ""
-	}
-	return *m.When
 }
 
 // GetCanUnsetMaintenance returns the CanUnsetMaintenance field if it's non-nil, zero value otherwise.
@@ -44844,6 +44812,46 @@ func (s *SetCopilotCustomAgentsSourceRequest) GetOrganizationID() int64 {
 		return 0
 	}
 	return s.OrganizationID
+}
+
+// GetEnabled returns the Enabled field.
+func (s *SetMaintenanceStatusRequest) GetEnabled() bool {
+	if s == nil {
+		return false
+	}
+	return s.Enabled
+}
+
+// GetIPExceptionList returns the IPExceptionList slice if it's non-nil, nil otherwise.
+func (s *SetMaintenanceStatusRequest) GetIPExceptionList() []string {
+	if s == nil || s.IPExceptionList == nil {
+		return nil
+	}
+	return s.IPExceptionList
+}
+
+// GetMaintenanceModeMessage returns the MaintenanceModeMessage field if it's non-nil, zero value otherwise.
+func (s *SetMaintenanceStatusRequest) GetMaintenanceModeMessage() string {
+	if s == nil || s.MaintenanceModeMessage == nil {
+		return ""
+	}
+	return *s.MaintenanceModeMessage
+}
+
+// GetUUID returns the UUID field if it's non-nil, zero value otherwise.
+func (s *SetMaintenanceStatusRequest) GetUUID() string {
+	if s == nil || s.UUID == nil {
+		return ""
+	}
+	return *s.UUID
+}
+
+// GetWhen returns the When field if it's non-nil, zero value otherwise.
+func (s *SetMaintenanceStatusRequest) GetWhen() string {
+	if s == nil || s.When == nil {
+		return ""
+	}
+	return *s.When
 }
 
 // GetSelectedOrganizationIDs returns the SelectedOrganizationIDs slice if it's non-nil, nil otherwise.
