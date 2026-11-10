@@ -16211,6 +16211,17 @@ func TestCreateCopilotSpaceResourceAttributes_GetResourceType(tt *testing.T) {
 	c.GetResourceType()
 }
 
+func TestCreateCustomDeploymentProtectionRuleRequest_GetIntegrationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CreateCustomDeploymentProtectionRuleRequest{IntegrationID: &zeroValue}
+	c.GetIntegrationID()
+	c = &CreateCustomDeploymentProtectionRuleRequest{}
+	c.GetIntegrationID()
+	c = nil
+	c.GetIntegrationID()
+}
+
 func TestCreateCustomOrgRoleRequest_GetBaseRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -18605,17 +18616,6 @@ func TestCustomDeploymentProtectionRuleApp_GetSlug(tt *testing.T) {
 	c.GetSlug()
 	c = nil
 	c.GetSlug()
-}
-
-func TestCustomDeploymentProtectionRuleRequest_GetIntegrationID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	c := &CustomDeploymentProtectionRuleRequest{IntegrationID: &zeroValue}
-	c.GetIntegrationID()
-	c = &CustomDeploymentProtectionRuleRequest{}
-	c.GetIntegrationID()
-	c = nil
-	c.GetIntegrationID()
 }
 
 func TestCustomOrgRole_GetBaseRole(tt *testing.T) {

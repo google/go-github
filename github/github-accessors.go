@@ -12886,6 +12886,14 @@ func (c *CreateCopilotSpaceResourceAttributes) GetResourceType() string {
 	return *c.ResourceType
 }
 
+// GetIntegrationID returns the IntegrationID field if it's non-nil, zero value otherwise.
+func (c *CreateCustomDeploymentProtectionRuleRequest) GetIntegrationID() int64 {
+	if c == nil || c.IntegrationID == nil {
+		return 0
+	}
+	return *c.IntegrationID
+}
+
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
 func (c *CreateCustomOrgRoleRequest) GetBaseRole() string {
 	if c == nil || c.BaseRole == nil {
@@ -14764,14 +14772,6 @@ func (c *CustomDeploymentProtectionRuleApp) GetSlug() string {
 		return ""
 	}
 	return *c.Slug
-}
-
-// GetIntegrationID returns the IntegrationID field if it's non-nil, zero value otherwise.
-func (c *CustomDeploymentProtectionRuleRequest) GetIntegrationID() int64 {
-	if c == nil || c.IntegrationID == nil {
-		return 0
-	}
-	return *c.IntegrationID
 }
 
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
