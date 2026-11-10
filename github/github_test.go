@@ -4062,6 +4062,89 @@ func TestRoundTripWithOptionalFollowRedirect_AllowsSameHostRedirect(t *testing.T
 	}
 }
 
+func TestRoundTripWithOptionalFollowRedirect_HonorsHTTPClientTimeout(t *testing.T) {
+	t.Parallel()
+	synctest.Test(t, func(t *testing.T) {
+		const (
+			clientTimeout = time.Second
+			parentTimeout = 2 * clientTimeout
+		)
+
+		transportStarted := make(chan struct{})
+		client, err := NewClient(WithTimeout(clientTimeout), WithTransport(roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+			close(transportStarted)
+			<-req.Context().Done()
+			return nil, req.Context().Err()
+		})))
+		if err != nil {
+			t.Fatalf("NewClient returned error: %v", err)
+		}
+
+		ctx, cancel := context.WithTimeout(t.Context(), parentTimeout)
+		defer cancel()
+
+		errCh := make(chan error, 1)
+		startedAt := time.Now()
+		go func() {
+			_, err := client.roundTripWithOptionalFollowRedirect(ctx, ".", 0)
+			errCh <- err
+		}()
+
+		<-transportStarted
+		err = <-errCh
+		if !errors.Is(err, context.DeadlineExceeded) {
+			t.Fatalf("roundTripWithOptionalFollowRedirect error = %v, want context deadline exceeded", err)
+		}
+		if _, ok := errors.AsType[*url.Error](err); ok {
+			t.Fatalf("roundTripWithOptionalFollowRedirect error = %v, want the underlying transport error", err)
+		}
+		if elapsed := time.Since(startedAt); elapsed != clientTimeout {
+			t.Fatalf("request took %v, want client timeout %v", elapsed, clientTimeout)
+		}
+	})
+}
+
+func TestRoundTripWithOptionalFollowRedirect_KeepsTimeoutUntilBodyClosed(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	want := strings.Repeat("x", 1<<20)
+	mux.HandleFunc("/archive", func(w http.ResponseWriter, _ *http.Request) {
+		fmt.Fprint(w, want)
+	})
+
+	var reqCtx context.Context
+	transport := client.client.Transport
+	client.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+		reqCtx = req.Context()
+		return transport.RoundTrip(req)
+	})
+	client.client.Timeout = time.Hour
+
+	resp, err := client.roundTripWithOptionalFollowRedirect(t.Context(), "archive", 0)
+	if err != nil {
+		t.Fatalf("roundTripWithOptionalFollowRedirect returned error: %v", err)
+	}
+	if _, ok := reqCtx.Deadline(); !ok {
+		t.Error("request context has no deadline, want the client timeout")
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("reading the response body returned error: %v", err)
+	}
+	if string(body) != want {
+		t.Errorf("read %v bytes of the response body, want %v", len(body), len(want))
+	}
+
+	if err := resp.Body.Close(); err != nil {
+		t.Fatalf("closing the response body returned error: %v", err)
+	}
+	if err := reqCtx.Err(); !errors.Is(err, context.Canceled) {
+		t.Errorf("request context error after closing the body = %v, want context canceled", err)
+	}
+}
+
 func TestSanitizeURL(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
