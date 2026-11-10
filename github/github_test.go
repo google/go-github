@@ -4104,6 +4104,48 @@ func TestRoundTripWithOptionalFollowRedirect_HonorsHTTPClientTimeout(t *testing.
 	})
 }
 
+func TestRoundTripWithOptionalFollowRedirect_RedirectDoesNotResetTimeout(t *testing.T) {
+	t.Parallel()
+	synctest.Test(t, func(t *testing.T) {
+		const (
+			clientTimeout = time.Second
+			firstHop      = clientTimeout * 3 / 5
+		)
+
+		var hops int
+		client, err := NewClient(WithTimeout(clientTimeout), WithTransport(roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+			hops++
+			if hops == 1 {
+				time.Sleep(firstHop)
+				location := *req.URL
+				location.Path += "redirected"
+				return &http.Response{
+					StatusCode: http.StatusMovedPermanently,
+					Header:     http.Header{"Location": []string{location.String()}},
+					Body:       io.NopCloser(strings.NewReader("")),
+				}, nil
+			}
+			<-req.Context().Done()
+			return nil, req.Context().Err()
+		})))
+		if err != nil {
+			t.Fatalf("NewClient returned error: %v", err)
+		}
+
+		startedAt := time.Now()
+		_, err = client.roundTripWithOptionalFollowRedirect(t.Context(), ".", 1)
+		if !errors.Is(err, context.DeadlineExceeded) {
+			t.Fatalf("roundTripWithOptionalFollowRedirect error = %v, want context deadline exceeded", err)
+		}
+		if hops != 2 {
+			t.Fatalf("transport called %v times, want 2", hops)
+		}
+		if elapsed := time.Since(startedAt); elapsed != clientTimeout {
+			t.Fatalf("request took %v, want client timeout %v", elapsed, clientTimeout)
+		}
+	})
+}
+
 func TestRoundTripWithOptionalFollowRedirect_KeepsTimeoutUntilBodyClosed(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
