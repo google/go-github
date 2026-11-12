@@ -86,18 +86,18 @@ func TestRepositoriesService_CreateCustomDeploymentProtectionRule(t *testing.T) 
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &CustomDeploymentProtectionRuleRequest{
+	body := CreateCustomDeploymentProtectionRuleRequest{
 		IntegrationID: new(int64(5)),
 	}
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment_protection_rules", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"id":3, "node_id": "IEH37kRlcGxveW1lbnRTdGF0ddiv", "enabled": true, "app": {"id": 1, "node_id": "GHT58kRlcGxveW1lbnRTdTY!bbcy", "slug": "a-custom-app", "integration_url": "https://api.github.com/apps/a-custom-app"}}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Repositories.CreateCustomDeploymentProtectionRule(ctx, "o", "r", "e", input)
+	got, _, err := client.Repositories.CreateCustomDeploymentProtectionRule(ctx, "o", "r", "e", body)
 	if err != nil {
 		t.Errorf("Repositories.CreateCustomDeploymentProtectionRule returned error: %v", err)
 	}
@@ -119,12 +119,12 @@ func TestRepositoriesService_CreateCustomDeploymentProtectionRule(t *testing.T) 
 
 	const methodName = "CreateCustomDeploymentProtectionRule"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.CreateCustomDeploymentProtectionRule(ctx, "\n", "\n", "\n", input)
+		_, _, err = client.Repositories.CreateCustomDeploymentProtectionRule(ctx, "\n", "\n", "\n", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.CreateCustomDeploymentProtectionRule(ctx, "o", "r", "e", input)
+		got, resp, err := client.Repositories.CreateCustomDeploymentProtectionRule(ctx, "o", "r", "e", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

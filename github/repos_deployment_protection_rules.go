@@ -39,8 +39,8 @@ type ListCustomDeploymentRuleIntegrationsResponse struct {
 	AvailableIntegrations []*CustomDeploymentProtectionRuleApp `json:"available_custom_deployment_protection_rule_integrations,omitempty"`
 }
 
-// CustomDeploymentProtectionRuleRequest represents a deployment protection rule request.
-type CustomDeploymentProtectionRuleRequest struct {
+// CreateCustomDeploymentProtectionRuleRequest represents a request to create a custom deployment protection rule.
+type CreateCustomDeploymentProtectionRuleRequest struct {
 	IntegrationID *int64 `json:"integration_id,omitempty"`
 }
 
@@ -75,7 +75,7 @@ func (s *RepositoriesService) GetAllDeploymentProtectionRules(ctx context.Contex
 // GitHub API docs: https://docs.github.com/rest/deployments/protection-rules?apiVersion=2022-11-28#create-a-custom-deployment-protection-rule-on-an-environment
 //
 //meta:operation POST /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules
-func (s *RepositoriesService) CreateCustomDeploymentProtectionRule(ctx context.Context, owner, repo, environment string, body *CustomDeploymentProtectionRuleRequest) (*CustomDeploymentProtectionRule, *Response, error) {
+func (s *RepositoriesService) CreateCustomDeploymentProtectionRule(ctx context.Context, owner, repo, environment string, body CreateCustomDeploymentProtectionRuleRequest) (*CustomDeploymentProtectionRule, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules", owner, repo, url.PathEscape(environment))
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
