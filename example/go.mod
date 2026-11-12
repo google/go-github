@@ -9,7 +9,7 @@ require (
 	github.com/golang/snappy v1.0.0
 	github.com/google/go-github/otel/v93 v93.0.0
 	github.com/google/go-github/v93 v93.0.0
-	github.com/jferrl/go-githubauth v1.9.1
+	github.com/jferrl/go-githubauth v1.12.0
 	github.com/sigstore/sigstore-go v1.2.2
 	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.47.0
 	go.opentelemetry.io/otel/sdk v1.47.0
