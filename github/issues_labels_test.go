@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -359,6 +360,90 @@ func TestIssuesService_RemoveLabelForIssue_invalidOwner(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Issues.RemoveLabelForIssue(ctx, "%", "%", 1, "%")
 	testURLParseError(t, err)
+}
+
+func TestIssuesService_labelName_isEscaped(t *testing.T) {
+	t.Parallel()
+	for _, label := range []struct {
+		name        string
+		escapedName string
+	}{
+		{name: "bug", escapedName: "bug"},
+		{name: "good first issue", escapedName: "good%20first%20issue"},
+		{name: "kind/bug", escapedName: "kind%2Fbug"},
+		{name: "bug?", escapedName: "bug%3F"},
+		{name: "C#", escapedName: "C%23"},
+		{name: "100%", escapedName: "100%25"},
+	} {
+		for _, tt := range []struct {
+			method     string
+			wantPath   string
+			wantMethod string
+			body       string
+			call       func(ctx context.Context, client *Client) error
+		}{
+			{
+				method:     "GetLabel",
+				wantPath:   "/repos/o/r/labels/",
+				wantMethod: "GET",
+				body:       `{}`,
+				call: func(ctx context.Context, client *Client) error {
+					_, _, err := client.Issues.GetLabel(ctx, "o", "r", label.name)
+					return err
+				},
+			},
+			{
+				method:     "UpdateLabel",
+				wantPath:   "/repos/o/r/labels/",
+				wantMethod: "PATCH",
+				body:       `{}`,
+				call: func(ctx context.Context, client *Client) error {
+					_, _, err := client.Issues.UpdateLabel(ctx, "o", "r", label.name, UpdateIssueLabelRequest{})
+					return err
+				},
+			},
+			{
+				method:     "DeleteLabel",
+				wantPath:   "/repos/o/r/labels/",
+				wantMethod: "DELETE",
+				call: func(ctx context.Context, client *Client) error {
+					_, err := client.Issues.DeleteLabel(ctx, "o", "r", label.name)
+					return err
+				},
+			},
+			{
+				method:     "RemoveLabelForIssue",
+				wantPath:   "/repos/o/r/issues/1/labels/",
+				wantMethod: "DELETE",
+				call: func(ctx context.Context, client *Client) error {
+					_, err := client.Issues.RemoveLabelForIssue(ctx, "o", "r", 1, label.name)
+					return err
+				},
+			},
+		} {
+			t.Run(tt.method+"/"+label.name, func(t *testing.T) {
+				t.Parallel()
+				client, mux, _ := setup(t)
+
+				mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+					testMethod(t, r, tt.wantMethod)
+					if got, want := r.URL.EscapedPath(), tt.wantPath+label.escapedName; got != want {
+						t.Errorf("Request path = %q, want %q", got, want)
+					}
+					if got, want := r.URL.Path, tt.wantPath+label.name; got != want {
+						t.Errorf("Decoded request path = %q, want %q", got, want)
+					}
+					if tt.body != "" {
+						fmt.Fprint(w, tt.body)
+					}
+				})
+
+				if err := tt.call(t.Context(), client); err != nil {
+					t.Fatalf("Issues.%v returned error: %v", tt.method, err)
+				}
+			})
+		}
+	}
 }
 
 func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
