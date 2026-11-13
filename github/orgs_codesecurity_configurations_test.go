@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -607,4 +608,20 @@ func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testi
 		}
 		return resp, err
 	})
+}
+
+func TestOrganizationsService_AttachCodeSecurityConfigurationToRepositories_doFailureNilResp(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel() // force client.Do to return a nil *Response together with an error
+
+	// Must not panic: err is non-nil while resp is nil.
+	resp, err := client.Organizations.AttachCodeSecurityConfigurationToRepositories(ctx, "o", 1, "all", nil)
+	if err == nil {
+		t.Error("Organizations.AttachCodeSecurityConfigurationToRepositories: expected error, got nil")
+	}
+	if resp != nil {
+		t.Errorf("Organizations.AttachCodeSecurityConfigurationToRepositories: expected nil resp, got %#v", resp)
+	}
 }
