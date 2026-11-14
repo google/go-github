@@ -662,7 +662,8 @@ func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
 
 	mux.HandleFunc("/manage/v1/config/apply", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testJSONBody(t, r, input)
+		testFormValues(t, r, values{"run_id": "1234"})
+		testPlainBody(t, r, "")
 		fmt.Fprint(w, `{
 			"running": true,
 			"successful": false,
@@ -704,4 +705,39 @@ func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestEnterpriseService_ConfigApplyStatus_options(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+		opts *ConfigApplyOptions
+		want values
+	}{
+		{name: "nil options", want: values{}},
+		{name: "empty options", opts: &ConfigApplyOptions{}, want: values{}},
+		{name: "empty run ID", opts: &ConfigApplyOptions{RunID: new("")}, want: values{}},
+		{
+			name: "escaped run ID",
+			opts: &ConfigApplyOptions{RunID: new("run +&/?#%")},
+			want: values{"run_id": "run +&/?#%"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+			mux.HandleFunc("/manage/v1/config/apply", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				testFormValues(t, r, tt.want)
+				testPlainBody(t, r, "")
+				fmt.Fprint(w, `{}`)
+			})
+
+			if _, _, err := client.Enterprise.ConfigApplyStatus(t.Context(), tt.opts); err != nil {
+				t.Fatalf("Enterprise.ConfigApplyStatus returned error: %v", err)
+			}
+		})
+	}
 }
