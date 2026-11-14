@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"net/url"
 )
 
 // Label represents a GitHub label on an Issue.
@@ -67,11 +68,13 @@ func (s *IssuesService) ListLabels(ctx context.Context, owner, repo string, opts
 
 // GetLabel gets a single label.
 //
+// Note: the label name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#get-a-label
 //
 //meta:operation GET /repos/{owner}/{repo}/labels/{name}
 func (s *IssuesService) GetLabel(ctx context.Context, owner, repo, name string) (*Label, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, name)
+	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, url.PathEscape(name))
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -109,11 +112,13 @@ func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, bod
 
 // UpdateLabel updates a label.
 //
+// Note: the label name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#update-a-label
 //
 //meta:operation PATCH /repos/{owner}/{repo}/labels/{name}
 func (s *IssuesService) UpdateLabel(ctx context.Context, owner, repo, name string, body UpdateIssueLabelRequest) (*Label, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, name)
+	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, url.PathEscape(name))
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
@@ -130,11 +135,13 @@ func (s *IssuesService) UpdateLabel(ctx context.Context, owner, repo, name strin
 
 // DeleteLabel deletes a label.
 //
+// Note: the label name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#delete-a-label
 //
 //meta:operation DELETE /repos/{owner}/{repo}/labels/{name}
 func (s *IssuesService) DeleteLabel(ctx context.Context, owner, repo, name string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, name)
+	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, url.PathEscape(name))
 	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -191,11 +198,13 @@ func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner, repo string
 
 // RemoveLabelForIssue removes a label for an issue.
 //
+// Note: the label name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#remove-a-label-from-an-issue
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels/{name}
 func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner, repo string, number int, label string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%v/labels/%v", owner, repo, number, label)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/labels/%v", owner, repo, number, url.PathEscape(label))
 	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
