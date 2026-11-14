@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"errors"
+	"net/url"
 )
 
 // ConfigApplyOptions is a struct to hold the options for the ConfigApply API and the response.
@@ -507,12 +508,9 @@ func (s *EnterpriseService) ConfigApply(ctx context.Context, body *ConfigApplyOp
 //
 //meta:operation GET /manage/v1/config/apply
 func (s *EnterpriseService) ConfigApplyStatus(ctx context.Context, opts *ConfigApplyOptions) (*ConfigApplyStatus, *Response, error) {
-	query := &struct {
-		RunID string `url:"run_id,omitempty"`
-	}{RunID: opts.GetRunID()}
-	u, err := addOptions("manage/v1/config/apply", query)
-	if err != nil {
-		return nil, nil, err
+	u := "manage/v1/config/apply"
+	if runID := opts.GetRunID(); runID != "" {
+		u += "?run_id=" + url.QueryEscape(runID)
 	}
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
