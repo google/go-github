@@ -266,7 +266,8 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 //
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, body *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, path)
+	escapedPath := (&url.URL{Path: path}).String()
+	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, escapedPath)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
@@ -288,7 +289,8 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 //
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, body *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, path)
+	escapedPath := (&url.URL{Path: path}).String()
+	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, escapedPath)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
@@ -310,7 +312,8 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 //
 //meta:operation DELETE /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, path)
+	escapedPath := (&url.URL{Path: path}).String()
+	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, escapedPath)
 	req, err := s.client.NewRequest(ctx, "DELETE", u, opts)
 	if err != nil {
 		return nil, nil, err
