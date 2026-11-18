@@ -224,6 +224,8 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 // as possible, both result types will be returned but only one will contain a
 // value and the other will be nil.
 //
+// Note: the file path is URL path escaped for you. Slashes are left as separators.
+//
 // GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#get-repository-content
 //
 //meta:operation GET /repos/{owner}/{repo}/contents/{path}
@@ -262,6 +264,8 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 // CreateFile creates a new file in a repository at the given path and returns
 // the commit and file metadata.
 //
+// Note: the file path is URL path escaped for you. Slashes are left as separators.
+//
 // GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#create-or-update-file-contents
 //
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
@@ -285,6 +289,8 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 // UpdateFile updates a file in a repository at the given path and returns the
 // commit and file metadata. Requires the blob SHA of the file being updated.
 //
+// Note: the file path is URL path escaped for you. Slashes are left as separators.
+//
 // GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#create-or-update-file-contents
 //
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
@@ -307,6 +313,8 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 
 // DeleteFile deletes a file from a repository and returns the commit.
 // Requires the blob SHA of the file to be deleted.
+//
+// Note: the file path is URL path escaped for you. Slashes are left as separators.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#delete-a-file
 //
