@@ -230,7 +230,7 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 //
 //meta:operation GET /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path string, opts *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
-	escapedPath := (&url.URL{Path: strings.TrimSuffix(path, "/")}).String()
+	escapedPath := (&url.URL{Path: strings.TrimSuffix(path, "/")}).EscapedPath()
 	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, escapedPath)
 	u, err = addOptions(u, opts)
 	if err != nil {
@@ -270,7 +270,7 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 //
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, body *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	escapedPath := (&url.URL{Path: path}).String()
+	escapedPath := (&url.URL{Path: path}).EscapedPath()
 	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, escapedPath)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
@@ -295,7 +295,7 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 //
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, body *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	escapedPath := (&url.URL{Path: path}).String()
+	escapedPath := (&url.URL{Path: path}).EscapedPath()
 	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, escapedPath)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
@@ -320,7 +320,7 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 //
 //meta:operation DELETE /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	escapedPath := (&url.URL{Path: path}).String()
+	escapedPath := (&url.URL{Path: path}).EscapedPath()
 	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, escapedPath)
 	req, err := s.client.NewRequest(ctx, "DELETE", u, opts)
 	if err != nil {

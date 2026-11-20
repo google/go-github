@@ -946,7 +946,7 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_filePath_isEscaped(t *testing.T) {
+func TestRepositoriesService_CreateUpdateDeleteFile_EscapesPath(t *testing.T) {
 	t.Parallel()
 	for _, file := range []struct {
 		path        string
@@ -958,6 +958,7 @@ func TestRepositoriesService_filePath_isEscaped(t *testing.T) {
 		{path: "docs/why?.md", escapedPath: "docs/why%3F.md"},
 		{path: "docs/100%.md", escapedPath: "docs/100%25.md"},
 		{path: "docs/50%25.md", escapedPath: "docs/50%2525.md"},
+		{path: "release:v1/x", escapedPath: "release:v1/x"},
 	} {
 		for _, tt := range []struct {
 			method     string
