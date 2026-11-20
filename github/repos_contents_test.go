@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -943,6 +944,77 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestRepositoriesService_CreateUpdateDeleteFile_EscapesPath(t *testing.T) {
+	t.Parallel()
+	for _, file := range []struct {
+		path        string
+		escapedPath string
+	}{
+		{path: "p", escapedPath: "p"},
+		{path: "some directory/file.go", escapedPath: "some%20directory/file.go"},
+		{path: "docs/C#.md", escapedPath: "docs/C%23.md"},
+		{path: "docs/why?.md", escapedPath: "docs/why%3F.md"},
+		{path: "docs/100%.md", escapedPath: "docs/100%25.md"},
+		{path: "docs/50%25.md", escapedPath: "docs/50%2525.md"},
+		{path: "release:v1/x", escapedPath: "release:v1/x"},
+	} {
+		for _, tt := range []struct {
+			method     string
+			wantMethod string
+			call       func(ctx context.Context, client *Client) error
+		}{
+			{
+				method:     "CreateFile",
+				wantMethod: "PUT",
+				call: func(ctx context.Context, client *Client) error {
+					_, _, err := client.Repositories.CreateFile(ctx, "o", "r", file.path, &RepositoryContentFileOptions{})
+					return err
+				},
+			},
+			{
+				method:     "UpdateFile",
+				wantMethod: "PUT",
+				call: func(ctx context.Context, client *Client) error {
+					_, _, err := client.Repositories.UpdateFile(ctx, "o", "r", file.path, &RepositoryContentFileOptions{})
+					return err
+				},
+			},
+			{
+				method:     "DeleteFile",
+				wantMethod: "DELETE",
+				call: func(ctx context.Context, client *Client) error {
+					_, _, err := client.Repositories.DeleteFile(ctx, "o", "r", file.path, &RepositoryContentFileOptions{})
+					return err
+				},
+			},
+		} {
+			t.Run(tt.method+"/"+file.path, func(t *testing.T) {
+				t.Parallel()
+				client, mux, _ := setup(t)
+
+				const wantPath = "/repos/o/r/contents/"
+				mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+					testMethod(t, r, tt.wantMethod)
+					if got, want := r.URL.EscapedPath(), wantPath+file.escapedPath; got != want {
+						t.Errorf("Request path = %q, want %q", got, want)
+					}
+					if got, want := r.URL.Path, wantPath+file.path; got != want {
+						t.Errorf("Decoded request path = %q, want %q", got, want)
+					}
+					if got := r.URL.RawQuery; got != "" {
+						t.Errorf("Request query = %q, want none", got)
+					}
+					fmt.Fprint(w, `{}`)
+				})
+
+				if err := tt.call(t.Context(), client); err != nil {
+					t.Fatalf("Repositories.%v returned error: %v", tt.method, err)
+				}
+			})
+		}
+	}
 }
 
 func TestRepositoriesService_GetArchiveLink(t *testing.T) {
