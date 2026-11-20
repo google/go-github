@@ -2282,8 +2282,58 @@ func sleepUntilResetWithBuffer(ctx context.Context, reset time.Time) error {
 
 // When using roundTripWithOptionalFollowRedirect, note that it
 // is the responsibility of the caller to close the response body.
-func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, maxRedirects int, opts ...RequestOption) (*http.Response, error) {
-	req, err := c.NewRequest(ctx, "GET", u, nil, opts...)
+func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, maxRedirects int) (*http.Response, error) {
+	// http.Client.Timeout is applied by http.Client.Do, which this helper deliberately
+	// does not use: it calls the transport directly so the first 301/302 response can be
+	// inspected instead of being followed or surfaced. That skipped the timeout, so a
+	// caller using WithTimeout got a request unbounded by it. Attach the deadline here,
+	// once, so that redirect hops share it and body reads stay bounded - the same span
+	// http.Client.Do provides.
+	if timeout := c.client.Timeout; timeout > 0 {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, timeout)
+		// The deadline has to outlive this function so the caller can read the body, so
+		// the cancel func moves to the body on the success path. Any other exit releases
+		// it here instead of leaking the timer.
+		handedOff := false
+		defer func() {
+			if !handedOff {
+				cancel()
+			}
+		}()
+		resp, err := c.roundTripFollowingRedirect(ctx, u, maxRedirects)
+		if err != nil {
+			return nil, err
+		}
+		if resp.Body != nil {
+			resp.Body = &cancelOnCloseBody{ReadCloser: resp.Body, cancel: cancel}
+			handedOff = true
+		}
+		return resp, nil
+	}
+	return c.roundTripFollowingRedirect(ctx, u, maxRedirects)
+}
+
+// cancelOnCloseBody releases the timeout attached by
+// roundTripWithOptionalFollowRedirect when the caller closes the response, the
+// way http.Client releases its own timer.
+type cancelOnCloseBody struct {
+	io.ReadCloser
+	cancel context.CancelFunc
+}
+
+func (b *cancelOnCloseBody) Close() error {
+	err := b.ReadCloser.Close()
+	b.cancel()
+	return err
+}
+
+// roundTripFollowingRedirect performs the request described by
+// roundTripWithOptionalFollowRedirect, following at most maxRedirects same-origin
+// redirects. The deadline, when one applies, is attached by the caller so it spans
+// every hop.
+func (c *Client) roundTripFollowingRedirect(ctx context.Context, u string, maxRedirects int) (*http.Response, error) {
+	req, err := c.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2306,7 +2356,7 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 		if err := c.checkRedirectHost(u); err != nil {
 			return nil, err
 		}
-		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects-1, opts...)
+		resp, err = c.roundTripFollowingRedirect(ctx, u, maxRedirects-1)
 	}
 	return resp, err
 }
