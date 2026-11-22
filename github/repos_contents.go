@@ -224,11 +224,13 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 // as possible, both result types will be returned but only one will contain a
 // value and the other will be nil.
 //
+// Note: the file path is URL path escaped for you. Slashes are left as separators.
+//
 // GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#get-repository-content
 //
 //meta:operation GET /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path string, opts *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
-	escapedPath := (&url.URL{Path: strings.TrimSuffix(path, "/")}).String()
+	escapedPath := (&url.URL{Path: strings.TrimSuffix(path, "/")}).EscapedPath()
 	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, escapedPath)
 	u, err = addOptions(u, opts)
 	if err != nil {
@@ -262,11 +264,14 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 // CreateFile creates a new file in a repository at the given path and returns
 // the commit and file metadata.
 //
+// Note: the file path is URL path escaped for you. Slashes are left as separators.
+//
 // GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#create-or-update-file-contents
 //
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, body *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, path)
+	escapedPath := (&url.URL{Path: path}).EscapedPath()
+	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, escapedPath)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
@@ -284,11 +289,14 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 // UpdateFile updates a file in a repository at the given path and returns the
 // commit and file metadata. Requires the blob SHA of the file being updated.
 //
+// Note: the file path is URL path escaped for you. Slashes are left as separators.
+//
 // GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#create-or-update-file-contents
 //
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, body *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, path)
+	escapedPath := (&url.URL{Path: path}).EscapedPath()
+	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, escapedPath)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
@@ -306,11 +314,14 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 // DeleteFile deletes a file from a repository and returns the commit.
 // Requires the blob SHA of the file to be deleted.
 //
+// Note: the file path is URL path escaped for you. Slashes are left as separators.
+//
 // GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#delete-a-file
 //
 //meta:operation DELETE /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, path)
+	escapedPath := (&url.URL{Path: path}).EscapedPath()
+	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, escapedPath)
 	req, err := s.client.NewRequest(ctx, "DELETE", u, opts)
 	if err != nil {
 		return nil, nil, err
