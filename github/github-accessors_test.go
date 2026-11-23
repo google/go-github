@@ -32475,6 +32475,14 @@ func TestListGlobalSecurityAdvisoriesOptions_GetUpdated(tt *testing.T) {
 	l.GetUpdated()
 }
 
+func TestListHookDeliveriesOptions_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	l := &ListHookDeliveriesOptions{}
+	l.GetStatus()
+	l = nil
+	l.GetStatus()
+}
+
 func TestListIDPGroupsOptions_GetQuery(tt *testing.T) {
 	tt.Parallel()
 	l := &ListIDPGroupsOptions{}

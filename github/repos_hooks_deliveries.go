@@ -83,12 +83,23 @@ func (r HookResponse) String() string {
 	return Stringify(r)
 }
 
+// ListHookDeliveriesOptions specifies the optional parameters to the
+// AppsService.ListHookDeliveries, OrganizationsService.ListHookDeliveries
+// and RepositoriesService.ListHookDeliveries methods.
+type ListHookDeliveriesOptions struct {
+	// Status filters deliveries by outcome: "success" returns deliveries with
+	// a status code in the 200-399 range, "failure" in the 400-599 range.
+	Status string `url:"status,omitempty"`
+
+	ListCursorOptions
+}
+
 // ListHookDeliveries lists webhook deliveries for a webhook configured in a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/webhooks?apiVersion=2022-11-28#list-deliveries-for-a-repository-webhook
 //
 //meta:operation GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries
-func (s *RepositoriesService) ListHookDeliveries(ctx context.Context, owner, repo string, id int64, opts *ListCursorOptions) ([]*HookDelivery, *Response, error) {
+func (s *RepositoriesService) ListHookDeliveries(ctx context.Context, owner, repo string, id int64, opts *ListHookDeliveriesOptions) ([]*HookDelivery, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%v/deliveries", owner, repo, id)
 	u, err := addOptions(u, opts)
 	if err != nil {

@@ -2020,11 +2020,11 @@ func (s *AgentsService) ListSelectedReposForOrgVariableIter(ctx context.Context,
 }
 
 // ListHookDeliveriesIter returns an iterator that paginates through all results of ListHookDeliveries.
-func (s *AppsService) ListHookDeliveriesIter(ctx context.Context, opts *ListCursorOptions) iter.Seq2[*HookDelivery, error] {
+func (s *AppsService) ListHookDeliveriesIter(ctx context.Context, opts *ListHookDeliveriesOptions) iter.Seq2[*HookDelivery, error] {
 	return func(yield func(*HookDelivery, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
-			opts = &ListCursorOptions{}
+			opts = &ListHookDeliveriesOptions{}
 		} else {
 			opts = new(*opts)
 		}
@@ -5230,11 +5230,11 @@ func (s *OrganizationsService) ListFineGrainedPersonalAccessTokensIter(ctx conte
 }
 
 // ListHookDeliveriesIter returns an iterator that paginates through all results of ListHookDeliveries.
-func (s *OrganizationsService) ListHookDeliveriesIter(ctx context.Context, org string, id int64, opts *ListCursorOptions) iter.Seq2[*HookDelivery, error] {
+func (s *OrganizationsService) ListHookDeliveriesIter(ctx context.Context, org string, id int64, opts *ListHookDeliveriesOptions) iter.Seq2[*HookDelivery, error] {
 	return func(yield func(*HookDelivery, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
-			opts = &ListCursorOptions{}
+			opts = &ListHookDeliveriesOptions{}
 		} else {
 			opts = new(*opts)
 		}
@@ -7103,11 +7103,11 @@ func (s *RepositoriesService) ListForksIter(ctx context.Context, owner string, r
 }
 
 // ListHookDeliveriesIter returns an iterator that paginates through all results of ListHookDeliveries.
-func (s *RepositoriesService) ListHookDeliveriesIter(ctx context.Context, owner string, repo string, id int64, opts *ListCursorOptions) iter.Seq2[*HookDelivery, error] {
+func (s *RepositoriesService) ListHookDeliveriesIter(ctx context.Context, owner string, repo string, id int64, opts *ListHookDeliveriesOptions) iter.Seq2[*HookDelivery, error] {
 	return func(yield func(*HookDelivery, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
-			opts = &ListCursorOptions{}
+			opts = &ListHookDeliveriesOptions{}
 		} else {
 			opts = new(*opts)
 		}

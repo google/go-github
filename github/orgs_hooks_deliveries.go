@@ -15,7 +15,7 @@ import (
 // GitHub API docs: https://docs.github.com/rest/orgs/webhooks?apiVersion=2022-11-28#list-deliveries-for-an-organization-webhook
 //
 //meta:operation GET /orgs/{org}/hooks/{hook_id}/deliveries
-func (s *OrganizationsService) ListHookDeliveries(ctx context.Context, org string, id int64, opts *ListCursorOptions) ([]*HookDelivery, *Response, error) {
+func (s *OrganizationsService) ListHookDeliveries(ctx context.Context, org string, id int64, opts *ListHookDeliveriesOptions) ([]*HookDelivery, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/hooks/%v/deliveries", org, id)
 	u, err := addOptions(u, opts)
 	if err != nil {
