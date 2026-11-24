@@ -351,6 +351,8 @@ const (
 // repository. The archiveFormat can be specified by either the github.Tarball
 // or github.Zipball constant.
 //
+// Note: the opts.Ref is URL path escaped for you. Slashes are left as separators.
+//
 // GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#download-a-repository-archive-tar
 //
 // GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#download-a-repository-archive-zip
@@ -360,7 +362,7 @@ const (
 func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat ArchiveFormat, opts *RepositoryContentGetOptions, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/%v", owner, repo, archiveformat)
 	if opts != nil && opts.Ref != "" {
-		u += fmt.Sprintf("/%v", opts.Ref)
+		u += fmt.Sprintf("/%v", refURLEscape(opts.Ref))
 	}
 
 	if s.client.rateLimitRedirectionalEndpoints {
