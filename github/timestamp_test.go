@@ -68,6 +68,7 @@ func TestTimestamp_Unmarshal(t *testing.T) {
 		{"ReferenceUnixMillisecond", referenceUnixTimeStrMilliSeconds, Timestamp{referenceTime}, false, true},
 		{"ReferenceFractional", referenceTimeStrFractional, Timestamp{referenceTime}, false, true},
 		{"Empty", emptyTimeStr, Timestamp{}, false, true},
+		{"Null", `null`, Timestamp{}, false, true},
 		{"UnixStart", `0`, Timestamp{unixOrigin}, false, true},
 		{"Mismatch", referenceTimeStr, Timestamp{}, false, false},
 		{"MismatchUnix", `0`, Timestamp{}, false, false},

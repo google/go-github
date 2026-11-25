@@ -32,8 +32,12 @@ func (t *Timestamp) GetTime() *time.Time {
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
 // Time is expected in RFC3339 or Unix format.
+// A JSON null is a no-op, following the encoding/json convention.
 func (t *Timestamp) UnmarshalJSON(data []byte) (err error) {
 	str := string(data)
+	if str == "null" {
+		return nil
+	}
 	i, err := strconv.ParseInt(str, 10, 64)
 	if err == nil {
 		t.Time = time.Unix(i, 0)
