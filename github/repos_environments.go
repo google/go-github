@@ -200,6 +200,7 @@ type CreateUpdateEnvironment struct {
 // See https://github.com/google/go-github/issues/2602 for more information.
 type createUpdateEnvironmentNoEnterprise struct {
 	DeploymentBranchPolicy *BranchPolicy `json:"deployment_branch_policy"`
+	CanAdminsBypass        *bool         `json:"can_admins_bypass,omitempty"`
 }
 
 // CreateUpdateEnvironment create or update a new environment for a repository.
@@ -225,7 +226,7 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 		// For Free plan private repos the returned error code is 404.
 		// We are checking that the user didn't try to send a value for unsupported fields,
 		// and return an error if they did.
-		if resp != nil && resp.StatusCode == http.StatusUnprocessableEntity && body != nil && len(body.Reviewers) == 0 && body.GetWaitTimer() == 0 {
+		if resp != nil && resp.StatusCode == http.StatusUnprocessableEntity && body != nil && len(body.Reviewers) == 0 && body.GetWaitTimer() == 0 && !body.GetPreventSelfReview() {
 			return s.createNewEnvNoEnterprise(ctx, u, body)
 		}
 		return nil, resp, err
@@ -235,10 +236,11 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 }
 
 // createNewEnvNoEnterprise is an internal function for cases where the original call returned 422.
-// Currently only the `deployment_branch_policy` parameter is supported for Pro/Team private repos.
+// The retry omits required reviewers, wait timers, and self-review protection.
 func (s *RepositoriesService) createNewEnvNoEnterprise(ctx context.Context, u string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
 	req, err := s.client.NewRequest(ctx, "PUT", u, &createUpdateEnvironmentNoEnterprise{
 		DeploymentBranchPolicy: environment.DeploymentBranchPolicy,
+		CanAdminsBypass:        environment.CanAdminsBypass,
 	})
 	if err != nil {
 		return nil, nil, err

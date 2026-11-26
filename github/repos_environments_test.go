@@ -278,8 +278,7 @@ func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			callCount++
 		} else {
-			// The retry sends a createUpdateEnvironmentNoEnterprise, whose only
-			// field is deployment_branch_policy, null here because input is empty.
+			// With no explicit bypass setting, the retry sends only the branch policy.
 			testJSONBodyRaw(t, r, `{"deployment_branch_policy":null}`)
 			fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": []}`)
 		}
@@ -294,6 +293,82 @@ func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
 	want := &Environment{ID: new(int64(1)), Name: new("staging"), ProtectionRules: []*ProtectionRule{}}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned %+v, want %+v", release, want)
+	}
+}
+
+func TestRepositoriesService_CreateEnvironment_noEnterpriseProtectionSettings(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		name              string
+		canAdminsBypass   *bool
+		preventSelfReview *bool
+		wantBody          string
+	}{
+		{"defaults", nil, nil, `{"deployment_branch_policy":null}`},
+		{"allow admins", new(true), nil, `{"deployment_branch_policy":null,"can_admins_bypass":true}`},
+		{"deny admins", new(false), nil, `{"deployment_branch_policy":null,"can_admins_bypass":false}`},
+		{"allow self review", new(false), new(false), `{"deployment_branch_policy":null,"can_admins_bypass":false}`},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+			input := &CreateUpdateEnvironment{
+				CanAdminsBypass:   tt.canAdminsBypass,
+				PreventSelfReview: tt.preventSelfReview,
+			}
+			calls := 0
+			mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "PUT")
+				calls++
+				if calls == 1 {
+					w.WriteHeader(http.StatusUnprocessableEntity)
+					fmt.Fprint(w, `{"message":"Unsupported protection rules"}`)
+					return
+				}
+				testJSONBodyRaw(t, r, tt.wantBody)
+				fmt.Fprint(w, `{"id":1,"name":"staging"}`)
+			})
+			environment, _, err := client.Repositories.CreateUpdateEnvironment(t.Context(), "o", "r", "e", input)
+			if err != nil {
+				t.Fatalf("CreateUpdateEnvironment returned error: %v", err)
+			}
+			if environment.GetID() != 1 || calls != 2 {
+				t.Errorf("CreateUpdateEnvironment returned ID %v after %v calls, want ID 1 after 2 calls", environment.GetID(), calls)
+			}
+			if input.CanAdminsBypass != tt.canAdminsBypass || input.PreventSelfReview != tt.preventSelfReview {
+				t.Error("CreateUpdateEnvironment mutated input protection settings")
+			}
+		})
+	}
+}
+
+func TestRepositoriesService_CreateEnvironment_noEnterpriseUnsupportedProtection(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		name  string
+		input *CreateUpdateEnvironment
+	}{
+		{"prevent self review", &CreateUpdateEnvironment{PreventSelfReview: new(true)}},
+		{"wait timer", &CreateUpdateEnvironment{WaitTimer: new(30)}},
+		{"reviewers", &CreateUpdateEnvironment{Reviewers: []*EnvReviewers{{Type: new("User"), ID: new(int64(1))}}}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+			calls := 0
+			mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, _ *http.Request) {
+				calls++
+				w.WriteHeader(http.StatusUnprocessableEntity)
+				fmt.Fprint(w, `{"message":"Unsupported protection rules"}`)
+			})
+			environment, resp, err := client.Repositories.CreateUpdateEnvironment(t.Context(), "o", "r", "e", tt.input)
+			if err == nil || environment != nil || resp == nil || resp.StatusCode != http.StatusUnprocessableEntity {
+				t.Fatalf("CreateUpdateEnvironment = (%v, %v, %v), want original 422 error", environment, resp, err)
+			}
+			if calls != 1 {
+				t.Errorf("CreateUpdateEnvironment made %v calls, want 1", calls)
+			}
+		})
 	}
 }
 
