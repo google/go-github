@@ -150,7 +150,8 @@ func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo strin
 
 // GetCommit fetches the specified commit, including all details about it.
 //
-// Note: the ref is URL path escaped for you. Slashes are left as separators.
+// The sha parameter can be a commit SHA, a branch name, or a tag name.
+// It is URL path escaped for you. Slashes are left as separators.
 //
 // GitHub API docs: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#get-a-commit
 //
@@ -178,7 +179,8 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha st
 
 // GetCommitRaw fetches the specified commit in raw (diff or patch) format.
 //
-// Note: the ref is URL path escaped for you. Slashes are left as separators.
+// The sha parameter can be a commit SHA, a branch name, or a tag name.
+// It is URL path escaped for you. Slashes are left as separators.
 //
 // GitHub API docs: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#get-a-commit
 //
