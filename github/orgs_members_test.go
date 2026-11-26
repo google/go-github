@@ -582,7 +582,7 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
       						"site_admin": false
 						},
 						"team_count": 2,
-						"invitation_team_url": "https://api.github.com/organizations/2/invitations/1/teams"
+						"invitation_teams_url": "https://api.github.com/organizations/2/invitations/1/teams"
   				}
 			]`)
 	})
@@ -620,8 +620,8 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 				Type:              new("User"),
 				SiteAdmin:         new(false),
 			},
-			TeamCount:         new(2),
-			InvitationTeamURL: new("https://api.github.com/organizations/2/invitations/1/teams"),
+			TeamCount:          new(2),
+			InvitationTeamsURL: new("https://api.github.com/organizations/2/invitations/1/teams"),
 		},
 	}
 
@@ -789,7 +789,7 @@ func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 				  "site_admin":false
 			   },
 			   "team_count":2,
-			   "invitation_team_url":"https://api.github.com/organizations/2/invitations/1/teams"
+			   "invitation_teams_url":"https://api.github.com/organizations/2/invitations/1/teams"
 			}
 		]`)
 	})
@@ -831,8 +831,8 @@ func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 				Type:              new("User"),
 				SiteAdmin:         new(false),
 			},
-			TeamCount:         new(2),
-			InvitationTeamURL: new("https://api.github.com/organizations/2/invitations/1/teams"),
+			TeamCount:          new(2),
+			InvitationTeamsURL: new("https://api.github.com/organizations/2/invitations/1/teams"),
 		},
 	}
 

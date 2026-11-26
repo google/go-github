@@ -29044,15 +29044,15 @@ func TestInvitation_GetID(tt *testing.T) {
 	i.GetID()
 }
 
-func TestInvitation_GetInvitationTeamURL(tt *testing.T) {
+func TestInvitation_GetInvitationTeamsURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	i := &Invitation{InvitationTeamURL: &zeroValue}
-	i.GetInvitationTeamURL()
+	i := &Invitation{InvitationTeamsURL: &zeroValue}
+	i.GetInvitationTeamsURL()
 	i = &Invitation{}
-	i.GetInvitationTeamURL()
+	i.GetInvitationTeamsURL()
 	i = nil
-	i.GetInvitationTeamURL()
+	i.GetInvitationTeamsURL()
 }
 
 func TestInvitation_GetInviter(tt *testing.T) {

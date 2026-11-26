@@ -23142,12 +23142,12 @@ func (i *Invitation) GetID() int64 {
 	return *i.ID
 }
 
-// GetInvitationTeamURL returns the InvitationTeamURL field if it's non-nil, zero value otherwise.
-func (i *Invitation) GetInvitationTeamURL() string {
-	if i == nil || i.InvitationTeamURL == nil {
+// GetInvitationTeamsURL returns the InvitationTeamsURL field if it's non-nil, zero value otherwise.
+func (i *Invitation) GetInvitationTeamsURL() string {
+	if i == nil || i.InvitationTeamsURL == nil {
 		return ""
 	}
-	return *i.InvitationTeamURL
+	return *i.InvitationTeamsURL
 }
 
 // GetInviter returns the Inviter field.
