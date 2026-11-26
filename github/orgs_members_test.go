@@ -620,8 +620,8 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 				Type:              new("User"),
 				SiteAdmin:         new(false),
 			},
-			TeamCount:         new(2),
-			InvitationTeamURL: new("https://api.github.com/organizations/2/invitations/1/teams"),
+			TeamCount:          new(2),
+			InvitationTeamsURL: new("https://api.github.com/organizations/2/invitations/1/teams"),
 		},
 	}
 
@@ -831,8 +831,8 @@ func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 				Type:              new("User"),
 				SiteAdmin:         new(false),
 			},
-			TeamCount:         new(2),
-			InvitationTeamURL: new("https://api.github.com/organizations/2/invitations/1/teams"),
+			TeamCount:          new(2),
+			InvitationTeamsURL: new("https://api.github.com/organizations/2/invitations/1/teams"),
 		},
 	}
 

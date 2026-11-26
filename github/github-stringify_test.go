@@ -1001,19 +1001,19 @@ func TestInstallation_String(t *testing.T) {
 func TestInvitation_String(t *testing.T) {
 	t.Parallel()
 	v := Invitation{
-		ID:                new(int64(0)),
-		NodeID:            new(""),
-		Login:             new(""),
-		Email:             new(""),
-		Role:              new(""),
-		CreatedAt:         &Timestamp{},
-		Inviter:           &User{},
-		TeamCount:         new(0),
-		InvitationTeamURL: new(""),
-		FailedAt:          &Timestamp{},
-		FailedReason:      new(""),
+		ID:                 new(int64(0)),
+		NodeID:             new(""),
+		Login:              new(""),
+		Email:              new(""),
+		Role:               new(""),
+		CreatedAt:          &Timestamp{},
+		Inviter:            &User{},
+		TeamCount:          new(0),
+		InvitationTeamsURL: new(""),
+		FailedAt:           &Timestamp{},
+		FailedReason:       new(""),
 	}
-	want := `github.Invitation{ID:0, NodeID:"", Login:"", Email:"", Role:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Inviter:github.User{}, TeamCount:0, InvitationTeamURL:"", FailedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, FailedReason:""}`
+	want := `github.Invitation{ID:0, NodeID:"", Login:"", Email:"", Role:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Inviter:github.User{}, TeamCount:0, InvitationTeamsURL:"", FailedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, FailedReason:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Invitation.String = %v, want %v", got, want)
 	}

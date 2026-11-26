@@ -254,7 +254,6 @@ linters:
             - Event.RawPayload
             - HookRequest.RawPayload
             - HookResponse.RawPayload
-            - Invitation.InvitationTeamURL # TODO: InvitationTeamsURL
             - Issue.PullRequestLinks # TODO: PullRequest
             - IssueImportRequest.IssueImport # TODO: Issue
             - IssuesSearchResult.Issues # TODO: Items
