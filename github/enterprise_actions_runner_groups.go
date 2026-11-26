@@ -53,7 +53,7 @@ type CreateEnterpriseRunnerGroupRequest struct {
 	// If true, the runner group will be restricted to running only the workflows specified in the SelectedWorkflows slice.
 	RestrictedToWorkflows *bool `json:"restricted_to_workflows,omitempty"`
 	// List of workflows the runner group should be allowed to run. This setting will be ignored unless RestrictedToWorkflows is set to true.
-	SelectedWorkflows []string `json:"selected_workflows,omitempty"`
+	SelectedWorkflows []string `json:"selected_workflows,omitzero"`
 	// The identifier of a hosted compute network configuration.
 	NetworkConfigurationID *string `json:"network_configuration_id,omitempty"`
 }
@@ -64,7 +64,7 @@ type UpdateEnterpriseRunnerGroupRequest struct {
 	Visibility               *string  `json:"visibility,omitempty"`
 	AllowsPublicRepositories *bool    `json:"allows_public_repositories,omitempty"`
 	RestrictedToWorkflows    *bool    `json:"restricted_to_workflows,omitempty"`
-	SelectedWorkflows        []string `json:"selected_workflows,omitempty"`
+	SelectedWorkflows        []string `json:"selected_workflows,omitzero"`
 	NetworkConfigurationID   *string  `json:"network_configuration_id,omitempty"`
 
 	// If true, send a null network_configuration_id to remove the network configuration.
