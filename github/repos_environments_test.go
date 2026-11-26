@@ -356,7 +356,7 @@ func TestRepositoriesService_CreateEnvironment_noEnterpriseUnsupportedProtection
 			t.Parallel()
 			client, mux, _ := setup(t)
 			calls := 0
-			mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
+			mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, _ *http.Request) {
 				calls++
 				w.WriteHeader(http.StatusUnprocessableEntity)
 				fmt.Fprint(w, `{"message":"Unsupported protection rules"}`)
