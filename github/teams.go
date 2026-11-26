@@ -86,7 +86,7 @@ type Invitation struct {
 	CreatedAt         *Timestamp `json:"created_at,omitempty"`
 	Inviter           *User      `json:"inviter,omitempty"`
 	TeamCount         *int       `json:"team_count,omitempty"`
-	InvitationTeamURL *string    `json:"invitation_team_url,omitempty"`
+	InvitationTeamURL *string    `json:"invitation_teams_url,omitempty"`
 	FailedAt          *Timestamp `json:"failed_at,omitempty"`
 	FailedReason      *string    `json:"failed_reason,omitempty"`
 }
