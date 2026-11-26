@@ -2663,6 +2663,59 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_UpdateRequiredStatusChecks_EmptyLists(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name  string
+		input *RequiredStatusChecksRequest
+		want  string
+	}{
+		{
+			name:  "empty checks",
+			input: &RequiredStatusChecksRequest{Strict: new(true), Checks: []*RequiredStatusCheck{}},
+			want:  `{"strict":true,"checks":[]}`,
+		},
+		{
+			name:  "empty contexts",
+			input: &RequiredStatusChecksRequest{Contexts: []string{}},
+			want:  `{"contexts":[]}`,
+		},
+		{
+			name:  "nil lists",
+			input: &RequiredStatusChecksRequest{Strict: new(true)},
+			want:  `{"strict":true}`,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+
+			mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "PATCH")
+				testJSONBodyRaw(t, r, test.want)
+				fmt.Fprint(w, `{"strict":true,"contexts":[],"checks":[]}`)
+			})
+
+			ctx := t.Context()
+			statusChecks, _, err := client.Repositories.UpdateRequiredStatusChecks(ctx, "o", "r", "b", test.input)
+			if err != nil {
+				t.Errorf("Repositories.UpdateRequiredStatusChecks returned error: %v", err)
+			}
+
+			want := &RequiredStatusChecks{
+				Strict:   true,
+				Contexts: &[]string{},
+				Checks:   &[]*RequiredStatusCheck{},
+			}
+			if !cmp.Equal(statusChecks, want) {
+				t.Errorf("Repositories.UpdateRequiredStatusChecks returned %+v, want %+v", statusChecks, want)
+			}
+		})
+	}
+}
+
 func TestRepositoriesService_RemoveRequiredStatusChecks(t *testing.T) {
 	t.Parallel()
 	tests := []struct {

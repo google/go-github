@@ -1205,8 +1205,10 @@ type RequiredStatusChecksRequest struct {
 	Strict *bool `json:"strict,omitempty"`
 	// Deprecated. Note: if both Contexts and Checks are populated,
 	// the GitHub API will only use Checks.
-	Contexts []string               `json:"contexts,omitempty"`
-	Checks   []*RequiredStatusCheck `json:"checks,omitempty"`
+	// A non-nil empty slice is sent as an empty list to remove all contexts.
+	Contexts []string `json:"contexts,omitzero"`
+	// A non-nil empty slice is sent as an empty list to remove all checks.
+	Checks []*RequiredStatusCheck `json:"checks,omitzero"`
 }
 
 // RequiredStatusCheck represents a status check of a protected branch.
