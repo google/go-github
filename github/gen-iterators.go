@@ -429,6 +429,7 @@ func (t *templateData) collectMethodInfo(fd *ast.FuncDecl) (*methodInfo, bool) {
 	if useCursorPagination[recType+"."+fd.Name.Name] {
 		useCursor = true
 		useAfter = false
+		useListCursorOptions = false
 	}
 
 	if !useListCursorOptions && !useListOptions && !usePage && !useAfter && !useCursor {

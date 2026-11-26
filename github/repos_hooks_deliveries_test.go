@@ -21,11 +21,11 @@ func TestRepositoriesService_ListHookDeliveries(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/hooks/1/deliveries", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"cursor": "v1_12077215967"})
+		testFormValues(t, r, values{"cursor": "v1_12077215967", "status": "failure"})
 		fmt.Fprint(w, `[{"id":1,"throttled_at":`+referenceTimeStr+`}, {"id":2}]`)
 	})
 
-	opt := &ListCursorOptions{Cursor: "v1_12077215967"}
+	opt := &ListHookDeliveriesOptions{Status: "failure", ListCursorOptions: ListCursorOptions{Cursor: "v1_12077215967"}}
 
 	ctx := t.Context()
 	hooks, _, err := client.Repositories.ListHookDeliveries(ctx, "o", "r", 1, opt)

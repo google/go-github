@@ -15,7 +15,7 @@ import (
 // GitHub API docs: https://docs.github.com/rest/apps/webhooks?apiVersion=2022-11-28#list-deliveries-for-an-app-webhook
 //
 //meta:operation GET /app/hook/deliveries
-func (s *AppsService) ListHookDeliveries(ctx context.Context, opts *ListCursorOptions) ([]*HookDelivery, *Response, error) {
+func (s *AppsService) ListHookDeliveries(ctx context.Context, opts *ListHookDeliveriesOptions) ([]*HookDelivery, *Response, error) {
 	u, err := addOptions("app/hook/deliveries", opts)
 	if err != nil {
 		return nil, nil, err

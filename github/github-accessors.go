@@ -25958,6 +25958,14 @@ func (l *ListGlobalSecurityAdvisoriesOptions) GetUpdated() string {
 	return *l.Updated
 }
 
+// GetStatus returns the Status field.
+func (l *ListHookDeliveriesOptions) GetStatus() string {
+	if l == nil {
+		return ""
+	}
+	return l.Status
+}
+
 // GetQuery returns the Query field.
 func (l *ListIDPGroupsOptions) GetQuery() string {
 	if l == nil {

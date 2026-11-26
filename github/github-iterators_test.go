@@ -4296,7 +4296,7 @@ func TestAppsService_ListHookDeliveriesIter(t *testing.T) {
 		t.Errorf("client.Apps.ListHookDeliveriesIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	opts := &ListCursorOptions{}
+	opts := &ListHookDeliveriesOptions{}
 	iter = client.Apps.ListHookDeliveriesIter(t.Context(), opts)
 	gotItems = 0
 	for _, err := range iter {
@@ -11424,7 +11424,7 @@ func TestOrganizationsService_ListHookDeliveriesIter(t *testing.T) {
 		t.Errorf("client.Organizations.ListHookDeliveriesIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	opts := &ListCursorOptions{}
+	opts := &ListHookDeliveriesOptions{}
 	iter = client.Organizations.ListHookDeliveriesIter(t.Context(), "", 0, opts)
 	gotItems = 0
 	for _, err := range iter {
@@ -15672,7 +15672,7 @@ func TestRepositoriesService_ListHookDeliveriesIter(t *testing.T) {
 		t.Errorf("client.Repositories.ListHookDeliveriesIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	opts := &ListCursorOptions{}
+	opts := &ListHookDeliveriesOptions{}
 	iter = client.Repositories.ListHookDeliveriesIter(t.Context(), "", "", 0, opts)
 	gotItems = 0
 	for _, err := range iter {
