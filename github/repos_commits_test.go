@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -684,4 +685,81 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestRepositoriesService_refIsEscaped(t *testing.T) {
+	t.Parallel()
+	for _, ref := range []struct {
+		name       string
+		escapedRef string
+	}{
+		{name: "feature/x", escapedRef: "feature/x"},
+		{name: "fix#12", escapedRef: "fix%2312"},
+		{name: "what?", escapedRef: "what%3F"},
+		{name: "100%", escapedRef: "100%25"},
+		{name: "a b", escapedRef: "a%20b"},
+		{name: "50%25", escapedRef: "50%2525"},
+	} {
+		for _, tt := range []struct {
+			method   string
+			wantPath string
+			call     func(ctx context.Context, client *Client) error
+		}{
+			{
+				method:   "GetCommit",
+				wantPath: "/repos/o/r/commits/",
+				call: func(ctx context.Context, client *Client) error {
+					_, _, err := client.Repositories.GetCommit(ctx, "o", "r", ref.name, nil)
+					return err
+				},
+			},
+			{
+				method:   "GetCommitRaw",
+				wantPath: "/repos/o/r/commits/",
+				call: func(ctx context.Context, client *Client) error {
+					_, _, err := client.Repositories.GetCommitRaw(ctx, "o", "r", ref.name, RawOptions{Type: Diff})
+					return err
+				},
+			},
+			{
+				method:   "GetReleaseByTag",
+				wantPath: "/repos/o/r/releases/tags/",
+				call: func(ctx context.Context, client *Client) error {
+					_, _, err := client.Repositories.GetReleaseByTag(ctx, "o", "r", ref.name)
+					return err
+				},
+			},
+			{
+				method:   "GetArchiveLink",
+				wantPath: "/repos/o/r/tarball/",
+				call: func(ctx context.Context, client *Client) error {
+					_, _, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{Ref: ref.name}, 0)
+					return err
+				},
+			},
+		} {
+			t.Run(tt.method+"/"+ref.name, func(t *testing.T) {
+				t.Parallel()
+				client, mux, _ := setup(t)
+
+				mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+					if got, want := r.URL.EscapedPath(), tt.wantPath+ref.escapedRef; got != want {
+						t.Errorf("Repositories.%v requested path %q, want %q", tt.method, got, want)
+					}
+					if r.URL.RawQuery != "" {
+						t.Errorf("Repositories.%v requested query %q, want none", tt.method, r.URL.RawQuery)
+					}
+					if tt.method == "GetArchiveLink" {
+						http.Redirect(w, r, "https://github.com/a", http.StatusFound)
+						return
+					}
+					fmt.Fprint(w, `{}`)
+				})
+
+				if err := tt.call(t.Context(), client); err != nil {
+					t.Errorf("Repositories.%v returned error: %v", tt.method, err)
+				}
+			})
+		}
+	}
 }

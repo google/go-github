@@ -150,11 +150,14 @@ func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo strin
 
 // GetCommit fetches the specified commit, including all details about it.
 //
+// The sha parameter can be a commit SHA, a branch name, or a tag name.
+// It is URL path escaped for you. Slashes are left as separators.
+//
 // GitHub API docs: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#get-a-commit
 //
 //meta:operation GET /repos/{owner}/{repo}/commits/{ref}
 func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha string, opts *ListOptions) (*RepositoryCommit, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, sha)
+	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, refURLEscape(sha))
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -176,11 +179,14 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha st
 
 // GetCommitRaw fetches the specified commit in raw (diff or patch) format.
 //
+// The sha parameter can be a commit SHA, a branch name, or a tag name.
+// It is URL path escaped for you. Slashes are left as separators.
+//
 // GitHub API docs: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#get-a-commit
 //
 //meta:operation GET /repos/{owner}/{repo}/commits/{ref}
 func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner, repo, sha string, opts RawOptions) (string, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, sha)
+	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, refURLEscape(sha))
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return "", nil, err
