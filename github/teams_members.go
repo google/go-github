@@ -11,7 +11,7 @@ import (
 )
 
 // TeamListTeamMembersOptions specifies the optional parameters to the
-// TeamsService.ListTeamMembers method.
+// TeamsService.ListTeamMembersByID and TeamsService.ListTeamMembersBySlug methods.
 type TeamListTeamMembersOptions struct {
 	// Role filters members returned by their role in the team. Possible
 	// values are "all", "member", "maintainer". Default is "all".

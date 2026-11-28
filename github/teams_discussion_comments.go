@@ -32,7 +32,7 @@ func (c DiscussionComment) String() string {
 }
 
 // DiscussionCommentListOptions specifies optional parameters to the
-// TeamServices.ListComments method.
+// TeamsService.ListCommentsByID and TeamsService.ListCommentsBySlug methods.
 type DiscussionCommentListOptions struct {
 	// Sorts the discussion comments by the date they were created.
 	// Accepted values are asc and desc. Default is desc.
