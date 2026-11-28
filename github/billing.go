@@ -34,7 +34,7 @@ type StorageBilling struct {
 }
 
 // ActiveCommittersListOptions specifies optional parameters to the
-// BillingService.GetAdvancedSecurityActiveCommittersOrg method.
+// BillingService.GetOrganizationAdvancedSecurityActiveCommitters method.
 type ActiveCommittersListOptions struct {
 	// The security product to get GitHub Advanced Security active committers for. For standalone
 	// Code Scanning or Secret Protection products, this parameter is required to specify which

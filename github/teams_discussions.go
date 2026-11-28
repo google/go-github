@@ -37,7 +37,7 @@ func (d TeamDiscussion) String() string {
 }
 
 // DiscussionListOptions specifies optional parameters to the
-// TeamServices.ListDiscussions method.
+// TeamsService.ListDiscussionsByID and TeamsService.ListDiscussionsBySlug methods.
 type DiscussionListOptions struct {
 	// Sorts the discussion by the date they were created.
 	// Accepted values are asc and desc. Default is desc.

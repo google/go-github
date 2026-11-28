@@ -129,7 +129,8 @@ type AlertInstancesListOptions struct {
 	ListOptions
 }
 
-// AlertListOptions specifies optional parameters to the CodeScanningService.ListAlerts method.
+// AlertListOptions specifies optional parameters to the CodeScanningService.ListAlertsForOrg
+// and CodeScanningService.ListAlertsForRepo methods.
 type AlertListOptions struct {
 	// State of the code scanning alerts to list. Set to closed to list only closed code scanning alerts. Default: open
 	State string `url:"state,omitempty"`
